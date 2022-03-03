@@ -132,3 +132,158 @@
     - http://www.119ark.org/bbs/board.php?bo_table=0401&wr_id=174&page=3
 - 빅데이터 분석을 통한 유기견 인식 변화 연구
   - http://www.riss.kr/search/detail/DetailView.do?p_mat_type=be54d9b8bc7cdb09&control_no=6f9cb04cf7588256ffe0bdc3ef48d419&outLink=K
+
+
+
+# Team 컨벤션
+
+### Git 커밋 컨벤션
+
+> git commit -m "#jira-id Feat, Fix, Style 등등: 한글~ ”
+
+1. 기능을 추가한 경우
+
+```bash
+# 따옴표 안쪽만 복사하기~~~~
+git commit -m "#jira-id Feat: 로그인 API 구현"
+```
+
+2. 버그를 수정한 경우
+
+```bash
+# 따옴표 안쪽만 복사하기~~~~
+git commit -m "#jira-id Fix: 봉사 신청 버그 수정"
+```
+
+3. 코드 스타일만 변경된 경우 (성능과 무관)
+
+```bash
+# 따옴표 안쪽만 복사하기~~~~
+git commit -m "#jira-id Style: 메인 페이지 메뉴 스타일 변경"
+```
+
+4. 빌드와 관련되거나 잡다한 것들
+
+```bash
+# 따옴표 안쪽만 복사하기~~~~
+git commit -m "#jira-id Chore: 이슈 템플릿 추가"
+git commit -m "#jira-id Chore: 젠킨스..??..??"
+```
+
+5. 문서 작업
+
+```bash
+# 따옴표 안쪽만 복사하기~~~~
+git commit -m "#jira-id Docs: 리드미 작성"
+```
+
+6. 코드를 리팩토링한 경우
+
+```bash
+# 따옴표 안쪽만 복사하기~~~~
+git commit -m "#jira-id Refac: 공지사항 API 호출 콛" 
+```
+
+7. 그 외
+
+| 구분                                               | 태그 이름 | 이모지 | 코드   |
+| -------------------------------------------------- | --------- | ------ | ------ |
+| 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우 | Rename    | 🚚      | truck: |
+| 파일을 삭제하는 작업만 수행한 경우                 | Remove    | 🔥      | fire:  |
+
+### 🌳 Branch 컨벤션
+
+- 참고
+
+  - [배달의 민족](https://techblog.woowahan.com/2553/)
+
+  ![Untitled](/uploads/f9f5ddd46f5f49b8e10540ac442387dd/Untitled.png)
+
+#### “branch-name 양식”
+
+```
+<span style="color:yellow">
+```
+
+### <span style="color:red">`develop`</span>(<span style="color:red">`front` </span>or <span style="color:red">`back`</span>)/<span style="color:red">`유형`</span>-<span style="color:red">`기능 요약`</span>/<span style="color:red">`jira 이슈번호`</span>
+
+예시
+
+```bash
+$ git checkout -b 'branch-name'
+
+$ git checkout -b (front or back)/Add-Login-API/#3EWIAOVAIE
+
+****$ git checkout -b develop:(front or back)/유형-기능요약/jira이슈번호
+					 |=======| 는 파고싶은 브랜치 이름
+
+$ git branch checkout -b front/feature-login-menu-component/#ASDWQ123 
+					 |-----------------------------------------------| (브랜치 이름)
+$ git push 라고 치면 어떻게 쳐야하는지 알아서 알려줌
+
+$ git push origin front-feature/#ASDWQ123-login-menu-component 
+				 |---------------------------------------------| (브랜치 이름)
+
+/////////////////////////////////////////////////////////////////////////////////
+[보낼때]
+$ git add .
+
+$ git commit -m "#S06P12A202-80 Feat: Component 생성"
+
+$ git push origin develop:front/feature-nav-component/#S06P12A202-56
+
+$ git push origin develop:front/fest-home-funding-list/#S06P12A202-82
+
+[받을때]
+$ git pull origin develop
+```
+
+(참고자료 - https://www.inbogi.com/bok/2020/04/1/
+
+https://velog.io/@kim-jaemin420/Git-branch-naming)
+
+### Branch name 실수했을 때
+
+local에서는
+
+```bash
+$ git branch -m back/future/#XXX-XX-XXX back/feature/#XXX-XX-XXX
+			 |-----------------------||-----------------------|
+				   틀린 브랜치 이름          바꿀 브랜치 이름
+```
+
+이미 remote에 올렸다면???
+
+일단 remote에서는 그냥 브랜치 삭제한다
+
+local에서 브랜치 이름 바꾼다음에
+
+```bash
+$ git push origin HEAD
+```
+
+해준다
+
+## Jira
+
+- Story는 서술형 작성([사용자]는 [무엇]을/으로 [액션]할 수 있다)
+- Labels는 대문자로 작성
+- Labels에 업무 직무는 FRONTEND 또는 BACKEND로 작성
+- Labels에 업무 형태는 Git 커밋 메세지와 동일(EX. FEAT, FIX, DOCS 등)
+
+### FE 컨벤션
+
+### BE 컨벤션
+
+**3.1.3 명명 규칙 (Conventional Naming Rules)**
+
+- CRUD 는 URI 에 표시 X
+- 도큐먼트 : 단수
+- 컬렉션 : 복수
+- 스토어 : 복수
+- 컨트롤러 : 동사/동사구
+- Query : 선택 사항
+  - 페이지네이션
+  - 타입
+  - 소팅
+- Controller 이름은 OOApiController
