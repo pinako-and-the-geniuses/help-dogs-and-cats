@@ -201,9 +201,6 @@ git commit -m "#jira-id Refac: 공지사항 API 호출 콛"
 
 #### “branch-name 양식”
 
-```
-<span style="color:yellow">
-```
 
 ### <span style="color:red">`develop`</span>(<span style="color:red">`front` </span>or <span style="color:red">`back`</span>)/<span style="color:red">`유형`</span>-<span style="color:red">`기능 요약`</span>/<span style="color:red">`jira 이슈번호`</span>
 
@@ -215,14 +212,14 @@ $ git checkout -b 'branch-name'
 $ git checkout -b (front or back)/Add-Login-API/#3EWIAOVAIE
 
 ****$ git checkout -b develop:(front or back)/유형-기능요약/jira이슈번호
-					 |=======| 는 파고싶은 브랜치 이름
+					           |=======| 는 파고싶은 브랜치 이름
 
 $ git branch checkout -b front/feature-login-menu-component/#ASDWQ123 
-					 |-----------------------------------------------| (브랜치 이름)
+					              |--------------------------------------------| (브랜치 이름)
 $ git push 라고 치면 어떻게 쳐야하는지 알아서 알려줌
 
 $ git push origin front-feature/#ASDWQ123-login-menu-component 
-				 |---------------------------------------------| (브랜치 이름)
+				         |---------------------------------------------| (브랜치 이름)
 
 /////////////////////////////////////////////////////////////////////////////////
 [보낼때]
@@ -248,8 +245,8 @@ local에서는
 
 ```bash
 $ git branch -m back/future/#XXX-XX-XXX back/feature/#XXX-XX-XXX
-			 |-----------------------||-----------------------|
-				   틀린 브랜치 이름          바꿀 브랜치 이름
+			      |-----------------------||-------------------------|
+				        틀린 브랜치 이름          바꿀 브랜치 이름
 ```
 
 이미 remote에 올렸다면???
