@@ -210,7 +210,7 @@ $ git checkout -b 'branch-name'
 $ git checkout -b (front or back)/Add-Login-API/#3EWIAOVAIE
 
 $ git checkout -b develop:(front or back)/유형-기능요약/jira이슈번호
-	  |=====| 는 파고싶은 브랜치 이름
+	          |=====| 는 파고싶은 브랜치 이름
 
 $ git branch checkout -b front/feature-login-menu-component/#ASDWQ123 
 		        |------------------------------------------| (브랜치 이름)
