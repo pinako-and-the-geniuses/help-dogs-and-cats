@@ -282,3 +282,15 @@ $ git push origin HEAD
   - 타입
   - 소팅
 - Controller 이름은 OOApiController
+
+## CICD
+
+- docker
+- Dockerfile
+- docker-compose
+- dockerhub
+- Jenkins or Travis.CI
+- EC2 or ElasticBeanstalk
+- IAM
+- S3
+- RDS
