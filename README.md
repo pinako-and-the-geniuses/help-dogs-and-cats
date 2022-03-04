@@ -1,4 +1,4 @@
-![waving](https://capsule-render.vercel.app/api?type=waving&height=200&text=🎉BigData_A302팀!🎉&fontAlign=50&fontAlignY=40&color=gradient)
+![waving](https://capsule-render.vercel.app/api?type=waving&height=200&text=🎉BigData_A302팀🎉&fontAlign=50&fontAlignY=40&color=gradient)
 
 # 서비스 - 도와주개냥🐾
 
@@ -188,4 +188,4 @@ $ git push origin HEAD
   ```
 - Labels는 대문자로 작성
 - Labels에 업무 직무는 FRONTEND 또는 BACKEND로 작성
-- Labels에 업무 형태는 Git 커밋 메세지와 동일(EX. FEAT, FIX, DOCS 등)
+- Labels에 업무 형태는 Git 커밋 메세지와 동일(ex. FEAT, FIX, DOCS 등)
