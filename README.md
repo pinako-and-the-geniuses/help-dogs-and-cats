@@ -169,7 +169,7 @@ $ git branch -m back/future/#XXX-XX-XXX back/feature/#XXX-XX-XXX
 
 이미 remote에 올렸다면???
 
-일단 remote에서는 그냥 브랜치 삭제한다
+일단 remote에서는 그냥 브랜치 삭제한다.
 
 local에서 브랜치 이름 바꾼다음에
 
@@ -177,7 +177,7 @@ local에서 브랜치 이름 바꾼다음에
 $ git push origin HEAD
 ```
 
-해준다
+해준다.
 
 ## Jira
 
