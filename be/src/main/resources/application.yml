@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    include: jpa,database,jwt
+
+  devtools:
+    restart:
+      enabled: true
+
+  messages:
+    basename: messages,errors
+
+logging:
+  level:
+    com.ssafy.bjbj: debug
+    org.springframework.web: debug
+    org.hibernate.SQL: debug
+
+server:
+  port: 8080
+#  ssl:
+#    enabled: true
+#    key-store: classpath:keystore.p12
+#    key-store-type: PKCS12
+#    key-store-password: ehdhkwnrosid
+#    trust:
+#      store: classpath:keystore.p12
+#      store.password: ehdhkwnrosid
