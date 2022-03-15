@@ -1,6 +1,8 @@
 package com.ssafy.a302.domain.member.entity;
 
 import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.entity.CommunityComment;
+import com.ssafy.a302.domain.community.entity.CommunityLike;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,7 +45,7 @@ public class Member extends BaseLastModifiedEntity {
     @OneToOne(mappedBy = "member", fetch = EAGER, cascade = ALL)
     private MemberDetail detail;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private boolean isDeleted;
 
     @OneToMany(mappedBy = "member", cascade = ALL)
@@ -51,6 +53,12 @@ public class Member extends BaseLastModifiedEntity {
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<Community> communities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<CommunityLike> communityLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<CommunityComment> communityComments = new ArrayList<>();
 
     @Builder
     public Member(String email, String password, Role role, MemberDetail detail) {
