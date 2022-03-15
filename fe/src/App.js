@@ -16,8 +16,8 @@ function App() {
       <Header></Header>
       <Routes>
         <>
-          <Route path="/user/signup" element={<Signup />} />
-          <Route path="/user/login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="login" element={<Login />} />
           <Route path="/user/findid" element={<FindId />} />
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd" element={<ResetPwd />} />
