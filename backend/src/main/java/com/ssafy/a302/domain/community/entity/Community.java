@@ -1,0 +1,73 @@
+package com.ssafy.a302.domain.community.entity;
+
+import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
+import lombok.*;
+
+import javax.persistence.*;
+
+import static javax.persistence.FetchType.*;
+
+@Entity
+@Table(
+        name = "tb_community"
+)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@ToString(of = {"seq", "title", "content", "viewCount", "category", "isDeleted"})
+public class Community extends BaseLastModifiedEntity {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "community_seq", columnDefinition = "BIGINT UNSIGNED")
+        private Long seq;
+
+        @Column(nullable = false)
+        private String title;
+
+        @Column(nullable = false, columnDefinition = "TEXT")
+        private String content;
+
+        @Column(nullable = false, columnDefinition = "BIGINT UNSIGED")
+        private Long viewCount;
+
+        @Enumerated(EnumType.STRING)
+        @Column(nullable = false)
+        private Category category;
+
+        @Column(nullable = false)
+        private boolean isDeleted;
+
+        @JoinColumn(name = "member_seq", nullable = false)
+        @ManyToOne(fetch = LAZY)
+        private Member member;
+
+        @Builder
+        public Community(String title, String content, Category category, Member member) {
+                this.title = title;
+                this.content = content;
+                this.viewCount = 0L;
+                this.category = category;
+                this.isDeleted = false;
+                this.member = member;
+        }
+
+        public enum Category {
+
+                NOTICE("공지사항"),
+                REPORT("제보"),
+                GENERAL("잡담"),
+                VOLUNTEER("봉사활동 후기"),
+                ADOPTION("입양 후기");
+
+                private final String description;
+
+                Category(String description) {
+                        this.description = description;
+                }
+
+                public String getDescription() {
+                        return description;
+                }
+        }
+}
