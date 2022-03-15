@@ -6,6 +6,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -28,19 +32,25 @@ public class Community extends BaseLastModifiedEntity {
         @Column(nullable = false, columnDefinition = "TEXT")
         private String content;
 
-        @Column(nullable = false, columnDefinition = "BIGINT UNSIGED")
+        @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
         private Long viewCount;
 
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private Category category;
 
-        @Column(nullable = false)
+        @Column(nullable = false, columnDefinition = "TINYINT")
         private boolean isDeleted;
 
         @JoinColumn(name = "member_seq", nullable = false)
         @ManyToOne(fetch = LAZY)
         private Member member;
+
+        @OneToMany(mappedBy = "community", cascade = ALL)
+        private List<CommunityLike> communityLikes = new ArrayList<>();
+
+        @OneToMany(mappedBy = "community", cascade = ALL)
+        private List<CommunityComment> communityComments = new ArrayList<>();
 
         @Builder
         public Community(String title, String content, Category category, Member member) {
