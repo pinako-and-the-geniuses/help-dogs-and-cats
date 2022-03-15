@@ -43,17 +43,12 @@ public class MemberDetail {
     @Column(columnDefinition = "TEXT")
     private String imageInfo;
 
-    @JoinColumn(name = "level_seq", nullable = false)
-    @ManyToOne(fetch = LAZY)
-    private Level level;
-
     @Builder
-    public MemberDetail(String nickname, String tel, String activityArea, String imageInfo, Level level) {
+    public MemberDetail(String nickname, String tel, String activityArea, String imageInfo) {
         this.nickname = nickname;
         this.exp = 0;
         this.tel = tel;
         this.activityArea = activityArea;
         this.imageInfo = imageInfo;
-        this.level = level;
     }
 }
