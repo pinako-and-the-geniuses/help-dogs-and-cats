@@ -1,10 +1,14 @@
 package com.ssafy.a302.domain.member.entity;
 
+import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
@@ -42,6 +46,12 @@ public class Member extends BaseLastModifiedEntity {
     @Column(nullable = false)
     private boolean isDeleted;
 
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<SupportHistory> supportHistories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<Community> communities = new ArrayList<>();
+
     @Builder
     public Member(String email, String password, Role role, MemberDetail detail) {
         this.email = email;
@@ -51,7 +61,7 @@ public class Member extends BaseLastModifiedEntity {
         this.isDeleted = false;
     }
 
-    enum Role implements GrantedAuthority {
+    public enum Role implements GrantedAuthority {
 
         MEMBER(ROLES.MEMBER, "멤버권한"),
         ADMIN(ROLES.ADMIN, "관리자권한");
