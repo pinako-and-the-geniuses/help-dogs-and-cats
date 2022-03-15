@@ -1,0 +1,34 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h2{
+    
+}
+
+.detail-box{
+    display: flex;
+    // border: 1px solid red;
+    width: 50%;
+    // text-align: center;
+    // align-items: center;
+    // justify-self: center;
+}
+
+
+//아래 둘이..왜...크기가 다를까요?
+.title {
+    font-weight: bold;
+    margin: 0;
+}
+
+.content {
+    margin: auto;
+}
+
+.map {
+    // width: 50%;
+}
