@@ -34,7 +34,7 @@ public class MemberDetail {
     @Column(nullable = false, columnDefinition = "INT UNSIGNED")
     private Integer exp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 13)
     private String tel;
 
     @Column(nullable = false)
