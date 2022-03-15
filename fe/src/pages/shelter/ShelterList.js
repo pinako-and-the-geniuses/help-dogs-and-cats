@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import './styles/ShelterList.scss';
 
 function ShelterList(){
 
@@ -30,12 +31,30 @@ function ShelterList(){
             </div>
 
             <div>
-                <table>
+                <table className='table caption-top'>
                     <tr>
                         <th>관할구역</th>
                         <th>보호센터명</th>
                         <th>전화번호</th>
                         <th>보호센터 주소</th>
+                    </tr>
+                    <tr>
+                        <td>000</td>
+                        <td>000</td>
+                        <td>000</td>
+                        <td>000</td>
+                    </tr>
+                    <tr>
+                        <td>000</td>
+                        <td>000</td>
+                        <td>000</td>
+                        <td>000</td>
+                    </tr>
+                    <tr>
+                        <td>000</td>
+                        <td>000</td>
+                        <td>000</td>
+                        <td>000</td>
                     </tr>
                     <tr>
                         <td>000</td>

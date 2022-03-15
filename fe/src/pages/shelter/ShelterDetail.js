@@ -5,25 +5,52 @@ function ShelterDetail(){
 
     return(
         <body>
-            <h2>동물 보호 센터</h2>
+            <header>
+                <h2>동물 보호 센터</h2>
+            </header>
 
-            <div id="content-box">
-                <div className="detail-box">
-                    <p className="title">보호센터명</p>
-                    <p className="content">믿음소망사랑</p>
-                </div>
-                <div className="detail-box">
-                    <p className="title">전화번호</p>
-                    <p className="content">032-000-0000</p>
-                </div>
-                <div className="detail-box">
-                    <p className="title">주소</p>
-                    <p className="content">사랑구 행복동</p>
-                </div>
+            <main>
+                <section className="top-content">
+                    <div className="main-info">
+                        <div className="text-box">
+                            <p className="title">보호센터명</p>
+                            <p>멀티캠퍼스</p>
+                        </div>
+                        <div className="text-box">
+                            <p className="title">전화번호</p>
+                            <p>02-000-0000</p>
+                        </div>
+                        <div className="text-box">
+                            <p className="title">주소</p>
+                            <p>서울특별시 강남구 테헤란로 121</p>
+                        </div>
+                        <div className="text-box">
+                            <p className="title">관리기관명</p>
+                            <p>삼성멀티캠퍼스 (법인)</p>
+                        </div>
+                        <div className="text-box">
+                            <p className="title">운영시간</p>
+                            <p>9:00 ~ 18:00</p>
+                        </div>
+                        <div className="text-box">
+                            <p className="title">휴무일</p>
+                            <p></p>
+                        </div>
+                        <div className="text-box">
+                            <p className="title">구조대상동물</p>
+                            <p>개+고양이+기타</p>
+                        </div>
+                    </div>
 
-                <Map className="map"></Map>            
+                    <div className="map">
+                        <Map></Map>
+                    </div>
+                </section>
 
-            </div>
+                <section className="bottom-content">
+                    {/* <p>음..더 이상은 굳이 필요 없을듯?</p> */}
+                </section>
+            </main>
         </body>
     )
 }
