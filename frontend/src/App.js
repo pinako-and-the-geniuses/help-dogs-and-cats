@@ -13,7 +13,6 @@ import {
   ShelterList,
   ShelterDetail,
 } from './pages/shelter';
-
 import { Animal } from "pages/animals";
 
 function App() {
@@ -28,6 +27,7 @@ function App() {
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
+          <Route path="/animals/animal" element={<Animal />} />
         </>
         <>
           <Route path="/shelter/detail" element={<ShelterDetail/>} />
