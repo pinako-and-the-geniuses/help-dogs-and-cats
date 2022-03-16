@@ -1,7 +1,5 @@
-
 import React from "react";
 import Header from "components/Header";
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   Signup,
@@ -11,6 +9,13 @@ import {
   ResetPwd,
   EditInfo,
 } from "./pages/user";
+import {
+  ShelterList,
+  ShelterDetail,
+} from './pages/shelter';
+
+import { Animal } from "pages/animals";
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,7 +29,13 @@ function App() {
           <Route path="/user/resetpwd" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
         </>
+        <>
+          <Route path="/shelter/detail" element={<ShelterDetail/>} />
+          <Route path="/shelter/list" element={<ShelterList/>} />
+        </>
       </Routes>
+
+      <Animal/>
     </BrowserRouter>
   );
 }
