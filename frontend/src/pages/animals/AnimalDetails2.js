@@ -1,4 +1,3 @@
-/*global kakao*/
 import {
   Table,
   Button,
@@ -7,26 +6,9 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import React, { useEffect } from "react";
-import "./styles/AnimalDetails.scss";
+import Map from "pages/shelter/Map";
+import './styles/AnimalDetails.scss';
 export default function AnimalDetails2() {
-  useEffect(() => {
-    var container = document.getElementById("map");
-    var options = {
-      center: new kakao.maps.LatLng(37.365264512305174, 127.10676860117488),
-      level: 3,
-    };
-    var map = new kakao.maps.Map(container, options);
-    var markerPosition = new kakao.maps.LatLng(
-      37.365264512305174,
-      127.10676860117488
-    );
-    var marker = new kakao.maps.Marker({
-      position: markerPosition,
-    });
-
-    marker.setMap(map);
-  }, []);
   return (
     <div>
       <Table striped bordered hover size="sm" className="one">
@@ -114,7 +96,7 @@ export default function AnimalDetails2() {
           style={{ position: "absolute", right: 0, marginRight: "230px" }}
         >
           입양가이드
-        </Button>{" "}
+        </Button>
         <Modal toggle={function noRefCheck() {}}>
           <ModalHeader toggle={function noRefCheck() {}}>
             Modal title
@@ -136,11 +118,9 @@ export default function AnimalDetails2() {
           </ModalFooter>
         </Modal>
       </div>
-      <div
-        className="map"
-        id="map"
-        style={{ width: "400px", height: "300px" }}
-      ></div>
+      <div className="map">
+        <Map></Map>
+      </div>
     </div>
   );
 }
