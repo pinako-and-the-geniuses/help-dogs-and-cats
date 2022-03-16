@@ -11,6 +11,9 @@ import {
   ResetPwd,
   EditInfo,
 } from "./pages/user";
+import {
+  Animal
+} from "./pages/animals";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +26,7 @@ function App() {
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
+          <Route path="/animals/animal" element={<Animal />} />
         </>
       </Routes>
     </BrowserRouter>

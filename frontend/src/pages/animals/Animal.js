@@ -1,6 +1,6 @@
 import AnimalDetails from "./AnimalDetails";
 import AnimalDetails2 from "./AnimalDetails2";
-import './styles/AnimalDetails.scss'
+import './styles/Animal.scss';
 
 export default function Animal() {
   return (
