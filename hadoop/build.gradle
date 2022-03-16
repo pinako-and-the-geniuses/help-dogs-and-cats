@@ -40,6 +40,10 @@ dependencies {
 
 	// swagger
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.3'
+
+	//hadoop Client Aggregator
+	implementation group: 'org.apache.hadoop', name: 'hadoop-client', version: '3.3.1'
+
 }
 
 tasks.named('test') {

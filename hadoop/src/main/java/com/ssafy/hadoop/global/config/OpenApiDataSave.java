@@ -1,5 +1,6 @@
 package com.ssafy.hadoop.global.config;
 
+import org.apache.hadoop.mapred.MapReduceBase;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
