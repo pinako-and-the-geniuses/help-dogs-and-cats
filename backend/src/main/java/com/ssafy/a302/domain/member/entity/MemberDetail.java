@@ -20,7 +20,6 @@ import static javax.persistence.FetchType.*;
 public class MemberDetail {
 
     @Id
-    @Column(name = "member_seq")
     private Long seq;
 
     @MapsId

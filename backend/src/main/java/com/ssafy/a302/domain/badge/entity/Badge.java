@@ -1,4 +1,4 @@
-package com.ssafy.a302.domain.memberbadge.entity;
+package com.ssafy.a302.domain.badge.entity;
 
 import com.ssafy.a302.global.entity.base.BaseCreatedEntity;
 import lombok.*;
@@ -17,7 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"seq", "name", "imgURL", "content", "howToGet"})
+@ToString(of = {"seq", "name", "imgUrl", "content", "howToGet"})
 public class Badge extends BaseCreatedEntity {
 
     @Id
@@ -28,8 +28,8 @@ public class Badge extends BaseCreatedEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String imgURL;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String imgUrl;
 
     @Column(nullable = false)
     private String content;
@@ -38,12 +38,12 @@ public class Badge extends BaseCreatedEntity {
     private String howToGet;
 
     @OneToMany(mappedBy = "badge", cascade = ALL)
-    private List<MemberBadge>  memberBadges = new ArrayList<>();
+    private List<MemberBadge> memberBadges = new ArrayList<>();
 
     @Builder
-    public Badge(String name, String imgURL, String content, String howToGet) {
+    public Badge(String name, String imgUrl, String content, String howToGet) {
         this.name = name;
-        this.imgURL = imgURL;
+        this.imgUrl = imgUrl;
         this.content = content;
         this.howToGet = howToGet;
     }

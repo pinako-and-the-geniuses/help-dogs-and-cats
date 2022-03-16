@@ -3,12 +3,10 @@ package com.ssafy.a302.domain.member.entity;
 import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.community.entity.CommunityComment;
 import com.ssafy.a302.domain.community.entity.CommunityLike;
-import com.ssafy.a302.domain.memberbadge.entity.MemberBadge;
+import com.ssafy.a302.domain.badge.entity.MemberBadge;
 import com.ssafy.a302.domain.report.entity.CautionHistory;
-import com.ssafy.a302.domain.report.entity.Report;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -64,24 +62,18 @@ public class Member extends BaseLastModifiedEntity {
     @OneToMany(mappedBy = "member", cascade = ALL)
     private final List<CommunityComment> communityComments = new ArrayList<>();
 
-
-    //======== 영진 작성 =========
-
-
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberBadge> memberBadges = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reporter", cascade = ALL)
-    private List<Report> reporters = new ArrayList<>();
+//    @OneToMany(mappedBy = "reporter", cascade = ALL)
+//    private List<Report> reporters = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "respondent", cascade = ALL)
+//    private List<Report> respondents = new ArrayList<>();
 
     @OneToMany(mappedBy = "respondent", cascade = ALL)
-    private List<Report> respondents = new ArrayList<>();
-
-    @OneToMany(mappedBy = "respondentv", cascade = ALL)
     private List<CautionHistory> cautionHistories = new ArrayList<>();
 
-
-    //========================
     @Builder
     public Member(String email, String password, Role role, MemberDetail detail) {
         this.email = email;

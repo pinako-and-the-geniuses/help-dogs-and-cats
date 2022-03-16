@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -16,7 +18,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(of = {"seq", "category", "content", "isProcess"})
-
 public class Report extends BaseCreatedEntity {
 
     @Id
@@ -24,11 +25,11 @@ public class Report extends BaseCreatedEntity {
     @Column(name = "report_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
-    @JoinColumn(name = "member_seq", nullable = false)
+    @JoinColumn(name = "reporter", nullable = false)
     @ManyToOne(fetch = LAZY)
     private Member reporter;
 
-    @JoinColumn(name = "member_seq", nullable = false)
+    @JoinColumn(name = "respondent", nullable = false)
     @ManyToOne(fetch = LAZY)
     private Member respondent;
 
@@ -41,6 +42,9 @@ public class Report extends BaseCreatedEntity {
 
     @Column(nullable = false, columnDefinition = "TINYINT")
     private boolean isProcess;
+
+    @OneToOne(mappedBy = "report", fetch = EAGER, cascade = ALL)
+    private CautionHistory cautionHistory;
 
     @Builder
     public Report(Member reporter, Member respondent, Category category, String content) {

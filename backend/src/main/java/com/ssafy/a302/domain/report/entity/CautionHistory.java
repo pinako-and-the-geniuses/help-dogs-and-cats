@@ -19,20 +19,23 @@ import static javax.persistence.FetchType.*;
 public class CautionHistory extends BaseCreatedEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "caution_history_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
-    @JoinColumn(name = "member_seq", nullable = false)
+    @MapsId
+    @JoinColumn(name = "caution_history_seq", columnDefinition = "BIGINT UNSIGNED")
+    @OneToOne(fetch = EAGER)
+    private Report report;
+
+    @JoinColumn(name = "respondent", nullable = false)
     @ManyToOne(fetch = LAZY)
-    private Member respondant;
+    private Member respondent;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
 
     @Builder
-    public CautionHistory(Member respondant, String message) {
-        this.respondant = respondant;
+    public CautionHistory(Member respondent, String message) {
+        this.respondent = respondent;
         this.message = message;
     }
 }

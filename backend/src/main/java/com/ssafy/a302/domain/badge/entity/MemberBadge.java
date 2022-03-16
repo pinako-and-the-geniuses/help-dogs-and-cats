@@ -1,4 +1,4 @@
-package com.ssafy.a302.domain.memberbadge.entity;
+package com.ssafy.a302.domain.badge.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseCreatedEntity;
@@ -18,7 +18,6 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @IdClass(MemberBadgeSeq.class)
-
 public class MemberBadge extends BaseCreatedEntity {
 
     @Id

@@ -1,9 +1,10 @@
-package com.ssafy.a302.domain.memberbadge.entity;
+package com.ssafy.a302.domain.badge.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 public class MemberBadgeSeq implements Serializable {
+
     private Long member;
 
     private Long badge;
