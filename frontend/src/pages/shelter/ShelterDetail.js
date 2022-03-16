@@ -4,7 +4,7 @@ import './styles/ShelterDetail.scss';
 function ShelterDetail(){
 
     return(
-        <body>
+        <div className='container'>
             <header>
                 <h2>동물 보호 센터</h2>
             </header>
@@ -48,10 +48,10 @@ function ShelterDetail(){
                 </section>
 
                 <section className="bottom-content">
-                    {/* <p>음..더 이상은 굳이 필요 없을듯?</p> */}
+                    <p>음..더 이상은 굳이 필요 없을듯?</p>
                 </section>
             </main>
-        </body>
+        </div>
     )
 }
 

@@ -34,8 +34,6 @@ function App() {
           <Route path="/shelter/list" element={<ShelterList/>} />
         </>
       </Routes>
-
-      <Animal/>
     </BrowserRouter>
   );
 }
