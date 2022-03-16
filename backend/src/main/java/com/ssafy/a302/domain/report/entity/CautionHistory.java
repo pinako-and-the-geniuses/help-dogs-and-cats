@@ -34,8 +34,11 @@ public class CautionHistory extends BaseCreatedEntity {
     private String message;
 
     @Builder
-    public CautionHistory(Member respondent, String message) {
+    public CautionHistory(Report report, Member respondent, String message) {
+        this.report = report;
         this.respondent = respondent;
         this.message = message;
+
+        report.createCautionHistory(this);
     }
 }

@@ -55,6 +55,10 @@ public class Report extends BaseCreatedEntity {
         this.isProcess = false;
     }
 
+    public void createCautionHistory(CautionHistory cautionHistory) {
+        this.cautionHistory = cautionHistory;
+    }
+
     public enum Category {
         NO_SHOW("잠수, 약속 불이행"),
         SEXUAL_ABUSING("성희롱"),

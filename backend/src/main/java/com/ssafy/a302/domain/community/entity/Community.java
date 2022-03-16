@@ -72,7 +72,7 @@ public class Community extends BaseLastModifiedEntity {
 
                 private final String description;
 
-                Category(String description) {
+                Category (String description) {
                         this.description = description;
                 }
 

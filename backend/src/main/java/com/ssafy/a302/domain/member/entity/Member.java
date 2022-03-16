@@ -1,10 +1,14 @@
 package com.ssafy.a302.domain.member.entity;
 
+import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
 import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.community.entity.CommunityComment;
 import com.ssafy.a302.domain.community.entity.CommunityLike;
 import com.ssafy.a302.domain.badge.entity.MemberBadge;
 import com.ssafy.a302.domain.report.entity.CautionHistory;
+import com.ssafy.a302.domain.volunteer.entity.Volunteer;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -59,20 +63,32 @@ public class Member extends BaseLastModifiedEntity {
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<CommunityLike> communityLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private final List<CommunityComment> communityComments = new ArrayList<>();
+    /**
+     * 현재 내가 작성한 커뮤니티 댓글 보기 기능이 없어서 주석 처리하였음
+     */
+//    @OneToMany(mappedBy = "member", cascade = ALL)
+//    private final List<CommunityComment> communityComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberBadge> memberBadges = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "reporter", cascade = ALL)
-//    private List<Report> reporters = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "respondent", cascade = ALL)
-//    private List<Report> respondents = new ArrayList<>();
-
     @OneToMany(mappedBy = "respondent", cascade = ALL)
     private List<CautionHistory> cautionHistories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<Volunteer> volunteers = new ArrayList<>();
+
+    /**
+     * 현재 내가 작성한 봉사활동 댓글 보기 기능이 없어서 주석 처리하였음
+     */
+//    @OneToMany(mappedBy = "member", cascade = ALL)
+//    private List<VolunteerComment> volunteerComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<VolunteerParticipant> volunteerParticipants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<AdoptAuth> adoptAuths = new ArrayList<>();
 
     @Builder
     public Member(String email, String password, Role role, MemberDetail detail) {
@@ -81,6 +97,10 @@ public class Member extends BaseLastModifiedEntity {
         this.role = role;
         this.detail = detail;
         this.isDeleted = false;
+    }
+
+    public void createDetail(MemberDetail detail) {
+        this.detail = detail;
     }
 
     public enum Role implements GrantedAuthority {
@@ -97,7 +117,7 @@ public class Member extends BaseLastModifiedEntity {
 
         private final String description;
 
-        Role(String authority, String description) {
+        Role (String authority, String description) {
             this.authority = authority;
             this.description = description;
         }

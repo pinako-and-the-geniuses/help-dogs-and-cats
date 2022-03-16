@@ -43,11 +43,14 @@ public class MemberDetail {
     private String imageInfo;
 
     @Builder
-    public MemberDetail(String nickname, String tel, String activityArea, String imageInfo) {
+    public MemberDetail(Member member, String nickname, String tel, String activityArea, String imageInfo) {
+        this.member = member;
         this.nickname = nickname;
         this.exp = 0;
         this.tel = tel;
         this.activityArea = activityArea;
         this.imageInfo = imageInfo;
+
+        member.createDetail(this);
     }
 }
