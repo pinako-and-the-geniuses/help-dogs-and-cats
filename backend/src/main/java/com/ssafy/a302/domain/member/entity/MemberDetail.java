@@ -20,7 +20,6 @@ import static javax.persistence.FetchType.*;
 public class MemberDetail {
 
     @Id
-    @Column(name = "member_seq")
     private Long seq;
 
     @MapsId
@@ -34,7 +33,7 @@ public class MemberDetail {
     @Column(nullable = false, columnDefinition = "INT UNSIGNED")
     private Integer exp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 13)
     private String tel;
 
     @Column(nullable = false)
@@ -43,17 +42,15 @@ public class MemberDetail {
     @Column(columnDefinition = "TEXT")
     private String imageInfo;
 
-    @JoinColumn(name = "level_seq", nullable = false)
-    @ManyToOne(fetch = LAZY)
-    private Level level;
-
     @Builder
-    public MemberDetail(String nickname, String tel, String activityArea, String imageInfo, Level level) {
+    public MemberDetail(Member member, String nickname, String tel, String activityArea, String imageInfo) {
+        this.member = member;
         this.nickname = nickname;
         this.exp = 0;
         this.tel = tel;
         this.activityArea = activityArea;
         this.imageInfo = imageInfo;
-        this.level = level;
+
+        member.createDetail(this);
     }
 }
