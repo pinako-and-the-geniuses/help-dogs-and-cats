@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 // styles - SCSS
 import "assets/scss/paper-kit.scss";
-import "assets/demo/demo.css";
+// import "assets/demo/demo.css";
 
 ReactDOM.render(
   <React.StrictMode>
