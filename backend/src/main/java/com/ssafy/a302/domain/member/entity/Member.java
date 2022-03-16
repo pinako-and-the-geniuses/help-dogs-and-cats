@@ -1,13 +1,11 @@
 package com.ssafy.a302.domain.member.entity;
 
 import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
-import com.ssafy.a302.domain.community.entity.Community;
-import com.ssafy.a302.domain.community.entity.CommunityComment;
-import com.ssafy.a302.domain.community.entity.CommunityLike;
 import com.ssafy.a302.domain.badge.entity.MemberBadge;
+import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.entity.CommunityLike;
 import com.ssafy.a302.domain.report.entity.CautionHistory;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
-import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;

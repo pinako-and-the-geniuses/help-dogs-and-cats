@@ -26,7 +26,7 @@ public class MemberBadge extends BaseCreatedEntity {
     private Member member;
 
     @Id
-    @JoinColumn(name = "badge_info_seq", columnDefinition = "BIGINT UNSIGNED")
+    @JoinColumn(name = "badge_seq", columnDefinition = "BIGINT UNSIGNED")
     @ManyToOne(fetch = LAZY)
     private Badge badge;
 

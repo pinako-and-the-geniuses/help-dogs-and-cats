@@ -3,7 +3,6 @@ package com.ssafy.a302.domain.report.entity;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseCreatedEntity;
 import lombok.*;
-import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 

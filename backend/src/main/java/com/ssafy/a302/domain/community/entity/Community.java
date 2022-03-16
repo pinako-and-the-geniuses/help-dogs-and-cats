@@ -21,63 +21,63 @@ import static javax.persistence.FetchType.*;
 @ToString(of = {"seq", "title", "content", "viewCount", "category", "isDeleted"})
 public class Community extends BaseLastModifiedEntity {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "community_seq", columnDefinition = "BIGINT UNSIGNED")
-        private Long seq;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "community_seq", columnDefinition = "BIGINT UNSIGNED")
+    private Long seq;
 
-        @Column(nullable = false)
-        private String title;
+    @Column(nullable = false)
+    private String title;
 
-        @Column(nullable = false, columnDefinition = "TEXT")
-        private String content;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
 
-        @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
-        private Long viewCount;
+    @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
+    private Long viewCount;
 
-        @Enumerated(EnumType.STRING)
-        @Column(nullable = false)
-        private Category category;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Category category;
 
-        @Column(nullable = false, columnDefinition = "TINYINT")
-        private boolean isDeleted;
+    @Column(nullable = false, columnDefinition = "TINYINT")
+    private boolean isDeleted;
 
-        @JoinColumn(name = "member_seq", nullable = false)
-        @ManyToOne(fetch = LAZY)
-        private Member member;
+    @JoinColumn(name = "member_seq", nullable = false)
+    @ManyToOne(fetch = LAZY)
+    private Member member;
 
-        @OneToMany(mappedBy = "community", cascade = ALL)
-        private List<CommunityLike> communityLikes = new ArrayList<>();
+    @OneToMany(mappedBy = "community", cascade = ALL)
+    private List<CommunityLike> communityLikes = new ArrayList<>();
 
-        @OneToMany(mappedBy = "community", cascade = ALL)
-        private List<CommunityComment> communityComments = new ArrayList<>();
+    @OneToMany(mappedBy = "community", cascade = ALL)
+    private List<CommunityComment> communityComments = new ArrayList<>();
 
-        @Builder
-        public Community(String title, String content, Category category, Member member) {
-                this.title = title;
-                this.content = content;
-                this.viewCount = 0L;
-                this.category = category;
-                this.isDeleted = false;
-                this.member = member;
+    @Builder
+    public Community(String title, String content, Category category, Member member) {
+        this.title = title;
+        this.content = content;
+        this.viewCount = 0L;
+        this.category = category;
+        this.isDeleted = false;
+        this.member = member;
+    }
+
+    public enum Category {
+
+        NOTICE("공지사항"),
+        REPORT("제보"),
+        GENERAL("잡담"),
+        VOLUNTEER("봉사활동 후기"),
+        ADOPTION("입양 후기");
+
+        private final String description;
+
+        Category(String description) {
+            this.description = description;
         }
 
-        public enum Category {
-
-                NOTICE("공지사항"),
-                REPORT("제보"),
-                GENERAL("잡담"),
-                VOLUNTEER("봉사활동 후기"),
-                ADOPTION("입양 후기");
-
-                private final String description;
-
-                Category (String description) {
-                        this.description = description;
-                }
-
-                public String getDescription() {
-                        return description;
-                }
+        public String getDescription() {
+            return description;
         }
+    }
 }
