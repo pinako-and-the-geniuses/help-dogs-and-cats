@@ -22,7 +22,7 @@ public class Badge extends BaseCreatedEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "badge_info_seq", columnDefinition = "BIGINT UNSIGNED")
+    @Column(name = "badge_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
     @Column(nullable = false)
