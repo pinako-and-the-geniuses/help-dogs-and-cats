@@ -72,7 +72,7 @@ public class Member extends BaseLastModifiedEntity {
     private List<MemberBadge> memberBadges = new ArrayList<>();
 
     @OneToMany(mappedBy = "reporter", cascade = ALL)
-    private List<Report> repoters = new ArrayList<>();
+    private List<Report> reporters = new ArrayList<>();
 
     @OneToMany(mappedBy = "respondent", cascade = ALL)
     private List<Report> respondents = new ArrayList<>();
