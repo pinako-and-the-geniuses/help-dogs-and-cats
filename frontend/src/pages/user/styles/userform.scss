@@ -1,0 +1,18 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  #root {
+    height: 100%;
+  }
+}
+
+.userform-page {
+  overflow: auto;
+  background: #b59d7c; /* fallback for old browsers */
+  background: #b59d7c;
+  background: linear-gradient(90deg, #e8e8e8 0%, #e8e8e8 50%);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
