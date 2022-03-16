@@ -21,7 +21,8 @@ import static javax.persistence.FetchType.LAZY;
 @ToString(of = {"seq", "content", "isDeleted"})
 public class CommunityComment extends BaseLastModifiedEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
