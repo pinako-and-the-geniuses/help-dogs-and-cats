@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @Table(
-        name = "tb_volunteer"
+        name = "tb_volunteer_comment"
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
