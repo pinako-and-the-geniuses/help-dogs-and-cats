@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import "./styles/user.css";
-import UserForm from "../../components/user/UserForm";
+import UserForm from "./component/UserForm";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -9,7 +8,8 @@ export default function Signup() {
   const [nickName, setNickName] = useState("");
   const [phone, setPhone] = useState("");
   const [region, setRegion] = useState("");
-
+  const [policy, setPolicy] = useState(0);
+  const pagename = "회원가입";
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -34,6 +34,11 @@ export default function Signup() {
     setRegion(event.currentTarget.value);
   };
 
+  const onPolicyHandler = (event) => {
+    console.log(event.currentTarget.value);
+    setPolicy(event.currentTarget.value);
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
     if (password !== confirmPassword) {
@@ -41,21 +46,23 @@ export default function Signup() {
     }
   };
   return (
-    <div className="loginregister">
-      <h2>회원가입</h2>
+    <div className="userform-page">
       <UserForm
+        pagename={pagename}
         email={email}
         password={password}
         confirmPassword={confirmPassword}
         nickName={nickName}
         phone={phone}
         region={region}
+        policy={policy}
         onEmailHandler={onEmailHandler}
         onPasswordHandler={onPasswordHandler}
         onConfirmPasswordHandler={onConfirmPasswordHandler}
         onNickNameHandler={onNickNameHandler}
         onPhoneHandler={onPhoneHandler}
         onRegionHandler={onRegionHandler}
+        onPolicyHandler={onPolicyHandler}
         onSubmit={onSubmit}
       />
     </div>
