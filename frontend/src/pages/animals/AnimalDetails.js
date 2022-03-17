@@ -1,11 +1,5 @@
-import {
-  Card,
-  CardImg,
-  CardBody,
-  Badge,
-  CardSubtitle,
-} from "reactstrap";
-import "./styles/AnimalDetails.scss";
+import { Card, CardImg, CardBody, Badge, CardSubtitle } from "reactstrap";
+import './styles/AnimalDetails.scss';
 export default function AnimalDetails() {
   return (
     <div>
@@ -23,23 +17,21 @@ export default function AnimalDetails() {
           />
           <CardBody>
             
-            <Badge color="success" pill>
-              공고중
-            </Badge>
-            <CardSubtitle tag="h4">
+              <Badge color="success" pill className="mb-3">
+                공고중
+              </Badge>
+            <CardSubtitle tag="h5">
               <b>공고번호</b>
             </CardSubtitle>
-            <CardSubtitle tag="h4">
+            <br />
+            <CardSubtitle tag="h5">
               <b>접수일시</b>
             </CardSubtitle>
-            <CardSubtitle tag="h4">
+            <br />
+            <CardSubtitle tag="h5">
               <b>발견장소</b>
             </CardSubtitle>
-            {/* <CardText>
-              This is a wider card with supporting text below as a natural
-              lead-in to additional content. This content is a little bit
-              longer.
-            </CardText> */}
+            <br />
           </CardBody>
         </Card>
       </div>

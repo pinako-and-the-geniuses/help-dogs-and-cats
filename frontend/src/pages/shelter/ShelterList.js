@@ -1,100 +1,92 @@
-import React from 'react';
-import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import XMLParser from 'react-xml-parser';
 import './styles/ShelterList.scss';
 
 function ShelterList(){
 
+    const APP_KEY = "YhafXRaEZcUraLySTaruWx1ssdPqeN%2B321AePiKP1W%2Be2gVsPFNUBLDUcRsY3wClbC67IASuWXYx2XFGMezJaA%3D%3D";
+
+    const shelterList = async() => {
+        await axios({
+            url: `/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
+            method:"get",
+        })
+        .then((res) => {
+            const XMLParser = require('react-xml-parser');
+            const xml = new XMLParser().parseFromString(res.data)
+            console.log(xml);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    useEffect(() =>{
+        shelterList();
+    }, []);
+
     return(
-        <div>
-            <h2>동물 보호 센터</h2>
+        <div className='main-container'>
+            <header>
+                <h2>동물 보호 센터</h2>
+            </header>
 
-            <div>
-                <p>우리지역 보호소 찾기</p>
-            </div>
-            <div>
-                <span>시도</span>
-                <select name="" id="">
-                    <option value="서울">서울</option>
-                    <option value="경기">경기</option>
-                </select>
-
-                <span>시군구</span>
-                <select name="" id="">
-                    <option value="어쩌구">어쩌구</option>
-                    <option value="저쩌구">저쩌구</option>
-                </select>
-
-                <span>보호센터명</span>
-                <input type="text" />
-
-                <button>조회</button>
+            <div className='my-city'>
+                <p>우리 지역 보호소 찾기</p>
             </div>
 
-            <div>
-                <table className='table caption-top'>
-                    <tr>
-                        <th>관할구역</th>
-                        <th>보호센터명</th>
-                        <th>전화번호</th>
-                        <th>보호센터 주소</th>
-                    </tr>
-                    <tr>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                    </tr>
-                    <tr>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                    </tr>
-                    <tr>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                    </tr>
-                    <tr>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                        <td>000</td>
-                    </tr>
-                </table>
+            <div className='search-bar'>
+                <div className='search-input'>
+                    <p>시도</p>
+                    <select name='searchCd'>
+                        <option value="0">전체</option>
+                    </select>
+
+                    <p>시군구</p>
+                    <select name='searchCgg'>
+                        <option value="0">전체</option>
+                    </select>
+
+                    <p>보호센터명</p>
+                    <input type="text" />
+                </div>
+
+                <button type='submit'>조회</button>
             </div>
 
-            <nav aria-label="Page navigation example">
-                <Pagination>
-                <PaginationItem>
-                    <PaginationLink href="#pablo" onClick={e => e.preventDefault()}>
-                    Previous
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#pablo" onClick={e => e.preventDefault()}>
-                    1
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#pablo" onClick={e => e.preventDefault()}>
-                    2
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#pablo" onClick={e => e.preventDefault()}>
-                    3
-                    </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                    <PaginationLink href="#pablo" onClick={e => e.preventDefault()}>
-                    Next
-                    </PaginationLink>
-                </PaginationItem>
-                </Pagination>
-            </nav>
-
+            {/* <hr/> */}
+            <table className="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                    {/* <th scope="col">#</th> */}
+                    <th scope="col">관할구역</th>
+                    <th scope="col">보호센터명</th>
+                    <th scope="col">전화번호</th>
+                    <th scope="col">보호센터 주소</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td scope="row">어디</td>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">어디</td>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    </tr>
+                    <tr>
+                    <td scope="row">어디</td>
+                    <td>어쩌고저쩌고</td>
+                    <td>Larry the Bird</td>
+                    <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     )
 }

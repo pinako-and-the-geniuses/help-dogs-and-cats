@@ -1,17 +1,19 @@
-import Map from "./Map";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Map from '../../components/Map';
 import './styles/ShelterDetail.scss';
 
 function ShelterDetail(){
 
     return(
-        <body>
+        <div className='main-container'>
             <header>
                 <h2>동물 보호 센터</h2>
             </header>
 
-            <main>
-                <section className="top-content">
-                    <div className="main-info">
+            <section className="container">
+                <div className='row'>
+                    <div className=" col-6 main-info">
                         <div className="text-box">
                             <p className="title">보호센터명</p>
                             <p>멀티캠퍼스</p>
@@ -42,16 +44,12 @@ function ShelterDetail(){
                         </div>
                     </div>
 
-                    <div className="map">
-                        <Map></Map>
+                    <div className="col-6 map">
+                        <Map />
                     </div>
-                </section>
-
-                <section className="bottom-content">
-                    {/* <p>음..더 이상은 굳이 필요 없을듯?</p> */}
-                </section>
-            </main>
-        </body>
+                </div>
+            </section>
+        </div>
     )
 }
 
