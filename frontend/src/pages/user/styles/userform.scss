@@ -11,22 +11,35 @@ body {
 
 .userform-page {
   overflow: auto;
-  background: #b59d7c; /* fallback for old browsers */
-  background: #b59d7c;
-  background: linear-gradient(90deg, #e8e8e8 0%, #e8e8e8 50%);
+  height: 100%;
   font-family: "Roboto", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
-.login-form {
-  max-width: 480px;
-  margin: 100px auto;
-}
+  .login-form {
+    max-width: 500px;
+  }
 
-.userinfo-form {
-  max-width: 600px;
-  margin: 50px auto;
+  .userinfo-form {
+    max-width: 600px;
+    margin: 50px auto;
+  }
+
+  .find-form {
+    max-width: 600px;
+    .find-id {
+      margin-top: 20px;
+    }
+    .find-category {
+      a {
+        text-decoration: none;
+        font-size: medium;
+        color: black;
+      }
+      hr {
+        height: 5px;
+        background-color: rgb(104, 86, 7);
+      }
+    }
+  }
 }
 
 .form {
@@ -34,12 +47,13 @@ body {
   z-index: 1;
   background: #ffffff;
   text-align: inherit;
+  margin: 50px auto;
   padding: 45px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   h2 {
     font-weight: bold;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
   label {
     margin-bottom: 10px;
@@ -78,10 +92,13 @@ body {
     margin: 15px 0 0;
     color: #b3b3b3;
     font-size: 12px;
-  }
-  .message a {
-    color: #6d5029;
-    text-decoration: none;
+    a {
+      color: #6d5029;
+      text-decoration: none;
+    }
+    .find {
+      float: right;
+    }
   }
   select {
     margin: 0 0 15px;
