@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import XMLParser from 'react-xml-parser';
 import './styles/ShelterList.scss';
 
 function ShelterList(){
+
+    const APP_KEY = "YhafXRaEZcUraLySTaruWx1ssdPqeN%2B321AePiKP1W%2Be2gVsPFNUBLDUcRsY3wClbC67IASuWXYx2XFGMezJaA%3D%3D";
+
+    const shelterList = async() => {
+        await axios({
+            url: `/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
+            method:"get",
+        })
+        .then((res) => {
+            const XMLParser = require('react-xml-parser');
+            const xml = new XMLParser().parseFromString(res.data)
+            console.log(xml);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    useEffect(() =>{
+        shelterList();
+    }, []);
 
     return(
         <div className='main-container'>
@@ -15,12 +38,12 @@ function ShelterList(){
 
             <div className='search-bar'>
                 <div className='search-input'>
-                    <p><label for="serachCd">시도</label></p>
+                    <p>시도</p>
                     <select name='searchCd'>
                         <option value="0">전체</option>
                     </select>
 
-                    <p><label for="searchCgg">시군구</label></p>
+                    <p>시군구</p>
                     <select name='searchCgg'>
                         <option value="0">전체</option>
                     </select>

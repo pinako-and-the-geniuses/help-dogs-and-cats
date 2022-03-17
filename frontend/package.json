@@ -16,6 +16,7 @@
     "react-dom": "^16.5.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
+    "react-xml-parser": "^1.1.8",
     "reactstrap": "^9.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -42,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://apis.data.go.kr/1543061/animalShelterSrvc"
 }
