@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles/login.scss";
+import "./styles/userform.scss";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -18,7 +18,7 @@ export default function Login() {
   };
 
   return (
-    <div className="login-page">
+    <div className="userform-page">
       <form className="login-form form">
         <label htmlFor="email"> 아이디 [Email]</label>
         <input

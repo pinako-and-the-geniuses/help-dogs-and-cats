@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UserForm from "../../components/user/UserForm";
+import UserForm from "./component/UserForm";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ export default function Signup() {
   const [phone, setPhone] = useState("");
   const [region, setRegion] = useState("");
   const [policy, setPolicy] = useState(0);
-
+  const pagename = "회원가입";
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
   };
@@ -48,6 +48,7 @@ export default function Signup() {
   return (
     <div className="userform-page">
       <UserForm
+        pagename={pagename}
         email={email}
         password={password}
         confirmPassword={confirmPassword}
