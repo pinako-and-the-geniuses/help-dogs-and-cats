@@ -1,63 +1,18 @@
-h2{
-    margin: 0;
-    // border: 1px solid rebeccapurple;
-}
-
 .main-container {
     margin: 20px 200px;
 }
 
-main{
-    // border: 1px solid violet;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
-    // align-items: center;
-
-    // .top-content{
-    //     border: 1px solid red;
-    //     display: flex;
-    //     justify-content: space-around;
-    //     justify-content: space-between;
-    //     align-items: center;
-    //     width: 100%;
-        
-    //     .main-info{
-    //         border: 1px solid darkblue;
-    //     }
-    //     .text-box{
-    //         display: flex;
-    //         flex-direction: row;
-    //         border: 1px solid blue;
-    //         margin: 20px 0;
-    //         p{
-    //             border: 1px solid salmon;
-    //             padding: 0;
-    //             margin: 0;
-    //             font-size: 18px;
-    //         }
-
-    //         .title{
-    //             font-weight:bold;
-    //             width: 130px;
-    //         }
-    //     }
-    // }
+section {
 
     .main-info{
         display: flex;
         flex-direction: column;
-        // justify-self: center;
-        // align-self: center;
-        // border: 1px solid darkblue;
     }
     .text-box{
         display: flex;
         flex-direction: row;
-        // border: 1px solid blue;
         margin: 20px 0;
         p{
-            // border: 1px solid salmon;
             padding: 0;
             margin: 0;
             font-size: 18px;
@@ -71,10 +26,7 @@ main{
 
     .map{
         display: flex;
-        // align-items: flex-start;
-        // justify-content: flex-start;
         align-items: center;
         justify-content: center;
-        // border: 1px solid goldenrod;
     }
 }

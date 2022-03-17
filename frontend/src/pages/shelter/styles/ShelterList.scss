@@ -5,6 +5,7 @@ $sub-color: #999999;
 *{
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 header {
@@ -78,4 +79,8 @@ header {
         border: 0;
         color: white;
     }
+}
+
+table {
+    margin-top: 20px;
 }

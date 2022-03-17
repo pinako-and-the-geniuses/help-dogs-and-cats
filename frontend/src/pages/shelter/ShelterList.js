@@ -32,6 +32,7 @@ function ShelterList(){
                 <button type='submit'>조회</button>
             </div>
 
+            {/* <hr/> */}
             <table className="table table-bordered table-hover">
                 <thead>
                     <tr>
