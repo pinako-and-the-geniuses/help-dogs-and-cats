@@ -16,6 +16,13 @@ section {
             padding: 0;
             margin: 0;
             font-size: 18px;
+        // justify-content: space-around;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        
+        .main-info{
+            //border: 1px solid darkblue;
         }
 
         .title{
