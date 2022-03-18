@@ -9,14 +9,9 @@ import {
   ResetPwd,
   EditInfo,
 } from "./pages/user";
-import {
-  ShelterList,
-  ShelterDetail,
-} from './pages/shelter';
-import { 
-  AnimalDetails,
-  Animal
-} from "./pages/animals";
+import { ShelterList, ShelterDetail } from "./pages/shelter";
+import { AnimalDetails, Animal } from "./pages/animals";
+import NotFound from "./NotFound";
 
 function App() {
   return (
@@ -34,8 +29,11 @@ function App() {
           <Route path="/animals/animaldetails" element={<AnimalDetails />} />
         </>
         <>
-          <Route path="/shelter/detail" element={<ShelterDetail/>} />
-          <Route path="/shelter/list" element={<ShelterList/>} />
+          <Route path="/shelter/detail" element={<ShelterDetail />} />
+          <Route path="/shelter/list" element={<ShelterList />} />
+        </>
+        <>
+          <Route path="*" element={<NotFound />} />
         </>
       </Routes>
     </BrowserRouter>

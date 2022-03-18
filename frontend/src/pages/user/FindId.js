@@ -1,4 +1,4 @@
-import "./styles/userform.scss";
+import "./styles/userform.module.scss";
 
 export default function FindId() {
   return (
