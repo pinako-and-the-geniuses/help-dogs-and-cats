@@ -18,12 +18,12 @@ export default function FindId() {
         </div>
 
         <div className="find-id">
-          <p>가입 시 핸드폰 번호를 입력하세요.</p>
+          <p>가입 시 핸드폰 번호를 입력하세요. ( '-' 제외)</p>
 
           <input
-            type="email"
+            type="text"
             // onChange={onEmailHandler}
-            placeholder="핸드폰번호"
+            placeholder="01012345678"
           />
         </div>
 
