@@ -21,9 +21,11 @@ export default function FindId() {
           <p>가입 시 핸드폰 번호를 입력하세요. ( '-' 제외)</p>
 
           <input
-            type="text"
+            type="tel"
+            pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
             // onChange={onEmailHandler}
-            placeholder="01012345678"
+            placeholder="010-1234-5678"
+            required
           />
         </div>
 
