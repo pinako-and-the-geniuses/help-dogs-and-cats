@@ -1,15 +1,38 @@
-import "./styles/AnimalDetails.scss";
+import animaldetails from "./styles/AnimalDetails.module.scss";
+import React, { useEffect, useState } from 'react';
 import Map from "components/Map";
+import cn from 'classnames'
+import axios from 'axios';
+import { XMLParser } from 'react-xml-parser';
 export default function AnimalDetails() {
+  function parseStr(dataSet){
+    const dataArr = new XMLParser().parseFromString(dataSet).children;
+    console.log(dataArr);
+  }
+
+  async function getAPI(){
+    await axios({
+      method: "get",
+      url: `http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=eG8m8qY9CcGy8%2FVFSZwJHkwAJBQydbN%2B6v2dshFjA8dkOWbxsMqmot3fXOHl5ieSa8aXcDydP7PKNhGGrLAy6Q%3D%3D`,
+    }).then(function(response){
+      const dataSet = response.data;
+      parseStr(dataSet);
+    });
+  }
+
+  useEffect(() =>{
+    getAPI();
+  }, []);
+
   return (
     <body>
       <header>
         <h2>보호 중 동물</h2>
       </header>
       <main>
-        <section className="top-content">
-          <div className="main-info">
-            <div className="detailscard h-50 mx-5" style={{ width: "23rem" }}>
+        <section className={animaldetails.topContent}>
+          <div className={animaldetails.mainInfo}>
+            <div className={cn(animaldetails.detailscard, "h-50", "mx-5")} style={{ width: "23rem" }}>
               <img
                 src="https://mdbootstrap.com/img/Photos/Others/images/43.webp"
                 className="card-img-top"
@@ -19,16 +42,16 @@ export default function AnimalDetails() {
                 <span className="badge rounded-pill bg-secondary">
                   Secondary
                 </span>
-                <div className="card-text">
-                  <p className="title">공고번호</p>
+                <div className={animaldetails.cardText}>
+                  <p className={animaldetails.title}>공고번호</p>
                   <p>0000000000</p>
                 </div>
-                <div className="card-text">
-                  <p className="title">접수일시</p>
+                <div className={animaldetails.cardText}>
+                  <p className={animaldetails.title}>접수일시</p>
                   <p>2022-03-22</p>
                 </div>
-                <div className="card-text">
-                  <p className="title">발견장소</p>
+                <div className={animaldetails.cardText}>
+                  <p className={animaldetails.title}>발견장소</p>
                   <p>멀티캠퍼스</p>
                 </div>
                 <button
@@ -110,7 +133,7 @@ export default function AnimalDetails() {
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th className="head" scope="col" colspan="4">
+                    <th className={animaldetails.head} scope="col" colspan="4">
                       동물의 정보
                     </th>
                   </tr>
@@ -150,7 +173,7 @@ export default function AnimalDetails() {
               <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th className="head" scope="col" colspan="4">
+                    <th className={animaldetails.head} scope="col" colspan="4">
                       보호정보
                     </th>
                   </tr>

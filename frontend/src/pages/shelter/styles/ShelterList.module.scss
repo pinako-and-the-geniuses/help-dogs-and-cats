@@ -1,19 +1,18 @@
-$main-text: #292E3D;
-$main-color: #B59D7C;
+$main-text: #292e3d;
+$main-color: #b59d7c;
 $sub-color: #999999;
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    // border: 1px solid red;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 header {
-    margin: 40px 0;
-    h2 {
-        font-weight: bold;
-    }
+  margin: 40px 0;
+  h2 {
+    font-weight: bold;
+  }
 }
 
 .my_city {
@@ -21,15 +20,15 @@ header {
     border-radius: 5px;
     margin: 10px 0;
 
-    P {
-        padding: 20px 20px;
-        margin: auto 0;
-        width: fit-content;
+  P {
+    padding: 20px 20px;
+    margin: auto 0;
+    width: fit-content;
 
-        &:hover {
-            font-weight: bold;
-        }
+    &:hover {
+      font-weight: bold;
     }
+  }
 }
 
 .search_bar {
@@ -73,14 +72,31 @@ header {
         }
     }
 
-    button {
-        background-color: $main-color;
-        padding: 5px 13px;
-        margin-left: 30px; //끝으로 보낼거면 없애기
-        border-radius: 5px;
-        border: 0;
-        color: white;
+    input {
+      padding-left: 8px;
+      &:focus {
+        outline: none;
+      }
     }
+  }
+
+  .search-input {
+    p {
+      font-weight: bold;
+    }
+    select {
+      margin-right: 20px;
+    }
+  }
+
+  button {
+    background-color: $main-color;
+    padding: 5px 13px;
+    margin-left: 30px; //끝으로 보낼거면 없애기
+    border-radius: 5px;
+    border: 0;
+    color: white;
+  }
 }
 
 table {
