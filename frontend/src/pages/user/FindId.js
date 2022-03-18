@@ -1,4 +1,4 @@
-import "./styles/userform.scss";
+import "./styles/userform.module.scss";
 
 export default function FindId() {
   return (
@@ -21,9 +21,11 @@ export default function FindId() {
           <p>가입 시 핸드폰 번호를 입력하세요.</p>
 
           <input
-            type="email"
+            type="tel"
+            pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
             // onChange={onEmailHandler}
-            placeholder="핸드폰번호"
+            placeholder="010-1234-5678"
+            required
           />
         </div>
 

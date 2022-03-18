@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import "./styles/userform.module.scss";
 import UserForm from "./component/UserForm";
+// import { useSelector, useDispatch } from "react-redux"; // 리덕스 후크 가져오기
+// 리덕스 액션가져와야함! import { 액션명 } from '../actions/index';
+
+const BASEURL = "http/";
 
 export default function Signup() {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickName, setNickName] = useState("");
@@ -10,9 +14,6 @@ export default function Signup() {
   const [region, setRegion] = useState("");
   const [policy, setPolicy] = useState(0);
   const pagename = "회원가입";
-  const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
-  };
 
   const onPasswordHandler = (event) => {
     setPassword(event.currentTarget.value);
@@ -48,15 +49,14 @@ export default function Signup() {
   return (
     <div className="userform-page">
       <UserForm
+        BASEURL={BASEURL}
         pagename={pagename}
-        email={email}
         password={password}
         confirmPassword={confirmPassword}
         nickName={nickName}
         phone={phone}
         region={region}
         policy={policy}
-        onEmailHandler={onEmailHandler}
         onPasswordHandler={onPasswordHandler}
         onConfirmPasswordHandler={onConfirmPasswordHandler}
         onNickNameHandler={onNickNameHandler}

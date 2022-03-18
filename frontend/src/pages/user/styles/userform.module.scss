@@ -9,26 +9,26 @@ body {
   }
 }
 
-.userform-page {
+.userformPage {
   overflow: auto;
   height: 100%;
   font-family: "Roboto", sans-serif;
 
-  .login-form {
+  .loginForm {
     max-width: 500px;
   }
 
-  .userinfo-form {
+  .userinfoForm {
     max-width: 600px;
     margin: 50px auto;
   }
 
-  .find-form {
+  .findForm {
     max-width: 600px;
-    .find-id {
+    .findId {
       margin-top: 20px;
     }
-    .find-category {
+    .findCategory {
       a {
         text-decoration: none;
         font-size: medium;
@@ -69,7 +69,7 @@ body {
     box-sizing: border-box;
     font-size: 14px;
   }
-  button {
+  .longButton {
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
@@ -87,6 +87,9 @@ body {
   button:active,
   button:focus {
     background: #8f6c3b;
+  }
+  .checkemail {
+    width: auto;
   }
   .message {
     margin: 15px 0 0;
@@ -110,6 +113,15 @@ body {
   justify-content: flex-end;
 
   button {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    border: 0;
+    padding: 15px;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
     width: auto;
     background-color: #ffffff;
     color: #a07947;
