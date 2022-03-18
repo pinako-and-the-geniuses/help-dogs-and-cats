@@ -18,7 +18,7 @@ export default function FindId() {
         </div>
 
         <div className="find-id">
-          <p>가입 시 핸드폰 번호를 입력하세요. ( '-' 제외)</p>
+          <p>가입 시 핸드폰 번호를 입력하세요.</p>
 
           <input
             type="tel"
