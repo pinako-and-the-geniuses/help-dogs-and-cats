@@ -48,11 +48,7 @@
       "last 1 safari version"
     ]
   },
-<<<<<<< HEAD
-  "proxy": "http://apis.data.go.kr/1543061/animalShelterSrvc"
-=======
   "devDependencies": {
     "babel-eslint": "^10.1.0"
   }
->>>>>>> fe
 }
