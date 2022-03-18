@@ -1,15 +1,15 @@
-import "../styles/userform.scss";
 import DeleteUser from "./DeleteUser";
+import Email from "./Email";
+import st from "../styles/userform.module.scss";
 
 export default function UserForm({
+  BASEURL,
   pagename,
-  email,
   password,
   confirmPassword,
   nickName,
   phone,
   region,
-  onEmailHandler,
   onPasswordHandler,
   onConfirmPasswordHandler,
   onNickNameHandler,
@@ -19,19 +19,9 @@ export default function UserForm({
   onSubmit,
 }) {
   return (
-    <form className="userinfo-form form">
+    <form className={`${st.userinfoForm} ${st.form}`}>
       <h2>{pagename}</h2>
-      <div className="">
-        <label htmlFor="email">아이디 [Email]</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="email@ssafy.com"
-          value={email}
-          onChange={onEmailHandler}
-        />
-      </div>
+      <Email BASEURL={BASEURL}></Email>
       <div>
         <label htmlFor="password">비밀번호</label>
         <input
@@ -110,7 +100,9 @@ export default function UserForm({
       </div>
 
       <div>
-        <button onClick={onSubmit}>{pagename}</button>
+        <button className={st.longButton} onClick={onSubmit}>
+          {pagename}
+        </button>
       </div>
       <DeleteUser />
     </form>
