@@ -2,6 +2,7 @@
 application-jpa.yml
 application-database.yml
 application-jwt.yml
+application-mail.yml
 
 ##########
 
