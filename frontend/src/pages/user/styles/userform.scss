@@ -10,20 +10,22 @@ body {
 }
 
 .userform-page {
-  overflow: auto;
   height: 100%;
   font-family: "Roboto", sans-serif;
 
   .login-form {
+    overflow: auto;
     max-width: 500px;
   }
 
   .userinfo-form {
+    overflow: hidden;
     max-width: 600px;
     margin: 50px auto;
   }
 
   .find-form {
+    overflow: auto;
     max-width: 600px;
     .find-id {
       margin-top: 20px;

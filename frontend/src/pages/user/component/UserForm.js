@@ -70,8 +70,9 @@ export default function UserForm({
         <input
           id="phone"
           name="phone"
-          type="text"
-          placeholder="휴대폰 번호"
+          type="tel"
+          pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+          placeholder="010-1234-5678"
           value={phone}
           onChange={onPhoneHandler}
         />
