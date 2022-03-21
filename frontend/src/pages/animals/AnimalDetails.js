@@ -1,15 +1,64 @@
-import "./styles/AnimalDetails.scss";
+import animaldetails from "./styles/AnimalDetails.module.scss";
+import React, { useEffect, useState } from "react";
 import Map from "components/Map";
+import cn from "classnames";
+import axios from "axios";
+import XMLParser from "react-xml-parser";
 export default function AnimalDetails() {
+  function parseStr(dataSet) {
+    const dataArr = new XMLParser().parseFromString(dataSet).children;
+    console.log(dataArr);
+  }
+
+  const APP_KEY = process.env.REACT_APP_ANIMAL_API;
+  async function getAPI() {
+    await axios({
+      method: "get",
+      url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&endde=20211231&
+      pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
+    }).then(function (response) {
+      const dataSet = response.data;
+      // console.log(dataSet);
+
+      parseStr(dataSet);
+    });
+  }
+
+  useEffect(() => {
+    getAPI();
+  }, []);
+
+  // const APP_KEY = process.env.REACT_APP_ANIMAL_API;
+
+  //   const getAPI = async() => {
+  //       await axios({
+  //           url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&
+  //           endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
+  //           method:"get",
+  //       })
+  //       .then((res) => {
+  //           console.log(res.data);
+  //       })
+  //       .catch((err) => {
+  //           console.log(err);
+  //       })
+  //   }
+
+  //   useEffect(() =>{
+  //     getAPI();
+  //   }, []);
   return (
     <body>
       <header>
         <h2>보호 중 동물</h2>
       </header>
       <main>
-        <section className="top-content">
-          <div className="main-info">
-            <div className="detailscard h-50 mx-5" style={{ width: "23rem" }}>
+        <section className={animaldetails.topContent}>
+          <div className={animaldetails.mainInfo}>
+            <div
+              className={cn(animaldetails.detailscard, "h-50", "mx-5")}
+              style={{ width: "23rem" }}
+            >
               <img
                 src="https://mdbootstrap.com/img/Photos/Others/images/43.webp"
                 className="card-img-top"
@@ -19,54 +68,80 @@ export default function AnimalDetails() {
                 <span className="badge rounded-pill bg-secondary">
                   Secondary
                 </span>
-                <div className="card-text">
-                  <p className="title">공고번호</p>
-                  <p>0000000000</p>
+                <div className={animaldetails.cardText}>
+                  <p className={animaldetails.title}>공고번호</p>
+                  <p>0000000000 noticeno</p>
                 </div>
-                <div className="card-text">
-                  <p className="title">접수일시</p>
+                <div className={animaldetails.cardText}>
+                  <p className={animaldetails.title}>접수일시</p>
                   <p>2022-03-22</p>
                 </div>
-                <div className="card-text">
-                  <p className="title">발견장소</p>
+                <div className={animaldetails.cardText}>
+                  <p className={animaldetails.title}>발견장소</p>
                   <p>멀티캠퍼스</p>
                 </div>
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
                   입양가이드
                 </button>
                 <div
-                  class="modal fade"
+                  className="modal fade"
                   id="exampleModal"
                   tabindex="-1"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
                 >
-                  <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
+                  <div className="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
                           입양 가이드
                         </h5>
                         <button
                           type="button"
-                          class="btn-close"
+                          className="btn-close"
                           data-bs-dismiss="modal"
                           aria-label="Close"
                         ></button>
                       </div>
-                      <div class="modal-body">안뇽하세요
-                      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                      <br /></div>
-                      <div class="modal-footer">
+                      <div className="modal-body">
+                        안뇽하세요
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                      </div>
+                      <div className="modal-footer">
                         <button
                           type="button"
-                          class="btn btn-secondary"
+                          className="btn btn-secondary"
                           data-bs-dismiss="modal"
                         >
                           후원하기
@@ -107,10 +182,10 @@ export default function AnimalDetails() {
                 <p className="title">특징</p>
                 <p>개+고양이+기타</p>
               </div> */}
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th className="head" scope="col" colspan="4">
+                    <th className={animaldetails.head} scope="col" colspan="4">
                       동물의 정보
                     </th>
                   </tr>
@@ -147,10 +222,10 @@ export default function AnimalDetails() {
                 </tbody>
               </table>
 
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
-                    <th className="head" scope="col" colspan="4">
+                    <th className={animaldetails.head} scope="col" colspan="4">
                       보호정보
                     </th>
                   </tr>
@@ -178,7 +253,7 @@ export default function AnimalDetails() {
           </div>
         </section>
         <div className="bottom-content">
-            <Map></Map>
+          <Map></Map>
         </div>
       </main>
     </body>
