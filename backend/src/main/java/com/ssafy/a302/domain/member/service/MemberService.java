@@ -12,4 +12,6 @@ public interface MemberService {
     boolean isExistsEmail(String email);
 
     boolean isExistsNickname(String nickname);
+
+    boolean login(MemberDto memberDto);
 }
