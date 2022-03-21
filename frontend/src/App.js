@@ -12,12 +12,16 @@ import {
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
 import NotFound from "./NotFound";
+import Home from './components/Home';
 
 function App() {
   return (
     <BrowserRouter>
       <Header></Header>
       <Routes>
+        <>
+          <Route path="/" element={<Home />} />
+        </>
         <>
           <Route path="signup" element={<Signup />} />
           <Route path="login" element={<Login />} />
