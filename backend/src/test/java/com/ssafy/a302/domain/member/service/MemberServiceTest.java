@@ -140,4 +140,28 @@ class MemberServiceTest {
                 .isInstanceOf(DuplicateNicknameException.class)
                 .hasMessage(Message.DUPLICATE_MEMBER_NICKNAME);
     }
+
+    @Test
+    @DisplayName("회원가입 - 예외 처리 : 패스워드에 이메일이 포함된 경우")
+    void registerFailWhenPasswordContainEmail() {
+        /**
+         * 테스트용 데이터
+         */
+        String email = "test1@test.com";
+        String password = "test12#$";
+        MemberRequestDto.RegisterInfo registerInfo1 = MemberRequestDto.RegisterInfo.builder()
+                .email(email)
+                .password(password)
+                .nickname("good")
+                .tel("010-0001-0001")
+                .activityArea("서울시 강남구")
+                .build();
+
+        /**
+         * 패스워드에 이메일이 포함되었으므로 예외가 발생해야 한다.
+         */
+        assertThatThrownBy(() -> memberService.register(registerInfo1.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_EMAIL);
+    }
 }
