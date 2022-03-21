@@ -7,10 +7,10 @@ import cn from 'classnames';
 function ShelterList(){
 
     const APP_KEY = process.env.REACT_APP_SHELTER_API;
-
+    const API = 'http://apis.data.go.kr/1543061';
     const shelterList = async() => {
         await axios({
-            url: `/animalShelterSrvc/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
+            url: `${API}/animalShelterSrvc/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
             method:"get",
         })
         .then((res) => {
