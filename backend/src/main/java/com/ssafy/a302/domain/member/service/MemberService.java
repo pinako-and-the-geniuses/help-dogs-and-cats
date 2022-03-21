@@ -8,4 +8,6 @@ public interface MemberService {
     Member findMemberByEmail(String email);
 
     MemberDto.Response register(MemberDto memberDto);
+
+    boolean isExistsEmail(String email);
 }
