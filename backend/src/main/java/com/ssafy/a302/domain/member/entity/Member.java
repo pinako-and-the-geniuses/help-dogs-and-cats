@@ -139,4 +139,16 @@ public class Member extends BaseLastModifiedEntity {
     public void encryptPassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }
+
+    public MemberDto.Response toResponseDto() {
+        return MemberDto.Response.builder()
+                .seq(seq)
+                .email(email)
+                .password(password)
+                .role(role)
+                .nickname(detail.getNickname())
+                .tel(detail.getTel())
+                .activityArea(detail.getActivityArea())
+                .build();
+    }
 }
