@@ -32,6 +32,8 @@ class MemberServiceTest {
 
     private MemberRequestDto.RegisterInfo registerInfo1, registerInfo2;
 
+    private MemberRequestDto.LoginInfo loginInfoByRegisterInfo1;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
@@ -50,6 +52,11 @@ class MemberServiceTest {
                 .nickname("good2")
                 .tel("010-0000-0002")
                 .activityArea("서울시 도봉구")
+                .build();
+
+        loginInfoByRegisterInfo1 = MemberRequestDto.LoginInfo.builder()
+                .email(registerInfo1.getEmail())
+                .password(registerInfo1.getPassword())
                 .build();
     }
 
@@ -276,7 +283,9 @@ class MemberServiceTest {
     @Test
     @DisplayName("닉네임 중복 확인 - 중복이 아닌 경우")
     void nicknameDuplicateCheckNo() {
-        // 테스트용 데이터
+        /**
+         * 테스트용 데이터
+         */
         String nickname = "non-exists";
 
         /**
