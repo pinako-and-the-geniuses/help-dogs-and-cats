@@ -4,6 +4,7 @@ application-database.yml
 application-jwt.yml
 application-server.yml
 application-springdoc.yml
+application-mail.yml
 
 ##########
 
