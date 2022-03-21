@@ -1,47 +1,52 @@
 import animaldetails from "./styles/AnimalDetails.module.scss";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Map from "components/Map";
-import cn from 'classnames'
-import axios from 'axios';
-import { XMLParser } from 'react-xml-parser';
+import cn from "classnames";
+import axios from "axios";
+import XMLParser from "react-xml-parser";
 export default function AnimalDetails() {
-  // function parseStr(dataSet){
-  //   const dataArr = new XMLParser().parseFromString(dataSet).children;
-  //   console.log(dataArr);
-  // }
-
-  // async function getAPI(){
-  //   await axios({
-  //     method: "get",
-  //     url: `/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=eG8m8qY9CcGy8%2FVFSZwJHkwAJBQydbN%2B6v2dshFjA8dkOWbxsMqmot3fXOHl5ieSa8aXcDydP7PKNhGGrLAy6Q%3D%3D`,
-  //   }).then(function(response){
-  //     const dataSet = response.data;
-  //     parseStr(dataSet);
-  //   });
-  // }
-
-  // useEffect(() =>{
-  //   getAPI();
-  // }, []);
+  function parseStr(dataSet) {
+    const dataArr = new XMLParser().parseFromString(dataSet).children;
+    console.log(dataArr);
+  }
 
   const APP_KEY = process.env.REACT_APP_ANIMAL_API;
+  async function getAPI() {
+    await axios({
+      method: "get",
+      url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&endde=20211231&
+      pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
+    }).then(function (response) {
+      const dataSet = response.data;
+      // console.log(dataSet);
 
-    const getAPI = async() => {
-        await axios({
-            url: `/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
-            method:"get",
-        })
-        .then((res) => {
-            console.log(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }
+      parseStr(dataSet);
+    });
+  }
 
-    useEffect(() =>{
-      getAPI();
-    }, []);
+  useEffect(() => {
+    getAPI();
+  }, []);
+
+  // const APP_KEY = process.env.REACT_APP_ANIMAL_API;
+
+  //   const getAPI = async() => {
+  //       await axios({
+  //           url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&
+  //           endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
+  //           method:"get",
+  //       })
+  //       .then((res) => {
+  //           console.log(res.data);
+  //       })
+  //       .catch((err) => {
+  //           console.log(err);
+  //       })
+  //   }
+
+  //   useEffect(() =>{
+  //     getAPI();
+  //   }, []);
   return (
     <body>
       <header>
@@ -50,7 +55,10 @@ export default function AnimalDetails() {
       <main>
         <section className={animaldetails.topContent}>
           <div className={animaldetails.mainInfo}>
-            <div className={cn(animaldetails.detailscard, "h-50", "mx-5")} style={{ width: "23rem" }}>
+            <div
+              className={cn(animaldetails.detailscard, "h-50", "mx-5")}
+              style={{ width: "23rem" }}
+            >
               <img
                 src="https://mdbootstrap.com/img/Photos/Others/images/43.webp"
                 className="card-img-top"
@@ -62,7 +70,7 @@ export default function AnimalDetails() {
                 </span>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>공고번호</p>
-                  <p>0000000000</p>
+                  <p>0000000000 noticeno</p>
                 </div>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>접수일시</p>
@@ -100,10 +108,36 @@ export default function AnimalDetails() {
                           aria-label="Close"
                         ></button>
                       </div>
-                      <div className="modal-body">안뇽하세요
-                      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                      <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                      <br /></div>
+                      <div className="modal-body">
+                        안뇽하세요
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                      </div>
                       <div className="modal-footer">
                         <button
                           type="button"
@@ -219,7 +253,7 @@ export default function AnimalDetails() {
           </div>
         </section>
         <div className="bottom-content">
-            <Map></Map>
+          <Map></Map>
         </div>
       </main>
     </body>
