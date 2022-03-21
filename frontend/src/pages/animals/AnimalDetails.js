@@ -28,7 +28,7 @@ export default function AnimalDetails() {
 
     const getAPI = async() => {
         await axios({
-            url: `/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
+            url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
             method:"get",
         })
         .then((res) => {

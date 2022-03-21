@@ -10,7 +10,7 @@ function ShelterList(){
 
     const shelterList = async() => {
         await axios({
-            url: `/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
+            url: `/animalShelterSrvc/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
             method:"get",
         })
         .then((res) => {

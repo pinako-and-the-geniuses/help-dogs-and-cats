@@ -55,5 +55,5 @@
     "babel-eslint": "^10.1.0"
   },
 
-  "proxy" : "http://apis.data.go.kr/1543061/abandonmentPublicSrvc"
+  "proxy" : "http://apis.data.go.kr/1543061"
 }
