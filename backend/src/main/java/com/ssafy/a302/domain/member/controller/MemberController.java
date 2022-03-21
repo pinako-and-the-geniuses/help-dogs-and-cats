@@ -2,10 +2,12 @@ package com.ssafy.a302.domain.member.controller;
 
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
 import com.ssafy.a302.domain.member.service.MemberService;
+import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.util.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -21,6 +23,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -177,6 +182,53 @@ public class MemberController {
 
         return new ResponseEntity<>(BaseResponseDto.builder()
                 .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_NICKNAME : Message.USABLE_MEMBER_NICKNAME)
+                .build(), status);
+    }
+
+    @Operation(
+            summary = "로그인 API",
+            description = "아이디, 패스워드를 전달받고 로그인을 진행합니다. 로그인에 성공하면 JWT 토큰을 반환합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "로그인에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "패스워드를 잘못 입력하셨습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "이메일 형식 검증에 실패하였거나, 회원 데이터가 존재하지 않습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @PostMapping("/login")
+    public ResponseEntity<BaseResponseDto<?>> login(@Validated @RequestBody MemberRequestDto.LoginInfo loginInfo) {
+        HttpStatus status = null;
+        Map<String, Object> data = null;
+
+        if (memberService.login(loginInfo.toServiceDto())) {
+            status = HttpStatus.OK;
+
+            data = new HashMap<>();
+            MemberDto.LoginResponse memberDto = memberService.getMemberLoginResponseDto(loginInfo.getEmail());
+            String jwtToken = JwtTokenUtil.getToken(memberDto.getEmail());
+
+            data.put("jwtToken", jwtToken);
+            data.put("memberInfo", memberDto);
+        } else {
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(BaseResponseDto.builder()
+                .message(status == HttpStatus.OK ? Message.SUCCESS_LOGIN : Message.FAIL_LOGIN)
+                .data(data)
                 .build(), status);
     }
 }

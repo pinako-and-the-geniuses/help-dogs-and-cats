@@ -65,4 +65,20 @@ public class MemberServiceImpl implements MemberService {
     public boolean isExistsNickname(String nickname) {
         return memberDetailRepository.existsByNickname(nickname);
     }
+
+    @Override
+    public boolean login(MemberDto memberDto) {
+        Member findMember = memberRepository.findMemberByEmail(memberDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
+
+        return passwordEncoder.matches(memberDto.getPassword(), findMember.getPassword());
+    }
+
+    @Override
+    public MemberDto.LoginResponse getMemberLoginResponseDto(String email) {
+        Member findMember = memberRepository.findMemberByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
+
+        return findMember.toLoginResponseDto();
+    }
 }

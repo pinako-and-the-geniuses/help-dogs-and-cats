@@ -6,6 +6,7 @@ import com.ssafy.a302.domain.member.exception.DuplicateEmailException;
 import com.ssafy.a302.domain.member.exception.DuplicateNicknameException;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,8 @@ class MemberServiceTest {
 
     private MemberRequestDto.RegisterInfo registerInfo1, registerInfo2;
 
+    private MemberRequestDto.LoginInfo loginInfoByRegisterInfo1;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
@@ -50,6 +53,11 @@ class MemberServiceTest {
                 .nickname("good2")
                 .tel("010-0000-0002")
                 .activityArea("서울시 도봉구")
+                .build();
+
+        loginInfoByRegisterInfo1 = MemberRequestDto.LoginInfo.builder()
+                .email(registerInfo1.getEmail())
+                .password(registerInfo1.getPassword())
                 .build();
     }
 
@@ -276,7 +284,9 @@ class MemberServiceTest {
     @Test
     @DisplayName("닉네임 중복 확인 - 중복이 아닌 경우")
     void nicknameDuplicateCheckNo() {
-        // 테스트용 데이터
+        /**
+         * 테스트용 데이터
+         */
         String nickname = "non-exists";
 
         /**
@@ -289,5 +299,62 @@ class MemberServiceTest {
          * 데이터베이스에 닉네임이 없으면 메서드 반환 값이 false 이다.
          */
         assertThat(existsNicknameFalse).isFalse();
+    }
+
+    @Test
+    @DisplayName("로그인 - 성공")
+    void loginSuccess() {
+        /**
+         * 회원가입
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * 로그인 시도
+         */
+        boolean loginTrue = memberService.login(loginInfoByRegisterInfo1.toServiceDto());
+
+        /**
+         * 로그인 성공
+         */
+        assertThat(loginTrue).isTrue();
+    }
+
+    @Test
+    @DisplayName("로그인 - 실패 : 패스워드 오입")
+    void loginFailWhenInvalidPassword() {
+        /**
+         * 회원가입
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * 패스워드를 잘못 입력한 로그인 DTO 생성
+         */
+        MemberRequestDto.LoginInfo invalidLoginInfo = MemberRequestDto.LoginInfo.builder()
+                .email(registerInfo1.getEmail())
+                .password("invalidPassword")
+                .build();
+
+        /**
+         * 로그인 시도
+         */
+        boolean loginFalse = memberService.login(invalidLoginInfo.toServiceDto());
+
+        /**
+         * 로그인 실패
+         */
+        assertThat(loginFalse).isFalse();
+    }
+
+    @Test
+    @DisplayName("로그인 - 실패 : 회원 데이터 없음")
+    void loginFailWhenMemberNull() {
+        /**
+         * 이메일이 데이터베이스에 없는 경우 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.login(loginInfoByRegisterInfo1.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.NULL_MEMBER);
     }
 }

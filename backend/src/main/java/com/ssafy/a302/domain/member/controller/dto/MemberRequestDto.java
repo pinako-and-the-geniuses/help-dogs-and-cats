@@ -57,4 +57,32 @@ public class MemberRequestDto {
                     .build();
         }
     }
+
+    @Schema(name = "로그인 요청 DTO", description = "로그인 API 호출 시 사용되는 요청 DTO 입니다.")
+    @Getter
+    @NoArgsConstructor
+    @ToString(of = {"email", "password"})
+    public static class LoginInfo {
+
+        @Schema(name = "email", title = "이메일", description = "이메일입니다.", example = "good@good.com", required = true)
+        @Pattern(message = "{pattern.member.email}", regexp = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$")
+        private String email;
+
+        @Schema(name = "password", title = "패스워드", description = "패스워드입니다.", example = "test12#$", minLength = 8, maxLength = 20, required = true)
+        @Pattern(message = "{pattern.member.password}", regexp = "^((?=.*[a-z])(?=.*\\d)((?=.*\\W)|(?=.*[A-Z]))|(?=.*\\W)(?=.*[A-Z])((?=.*\\d)|(?=.*[a-z]))).{8,20}$")
+        private String password;
+
+        @Builder
+        public LoginInfo(String email, String password) {
+            this.email = email;
+            this.password = password;
+        }
+
+        public MemberDto toServiceDto() {
+            return MemberDto.builder()
+                    .email(email)
+                    .password(password)
+                    .build();
+        }
+    }
 }
