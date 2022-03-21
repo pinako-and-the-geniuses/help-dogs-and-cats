@@ -37,7 +37,6 @@ export default function Header() {
 
       
     // </div>
-
     <div id="header" className='fixed-top header-inner-pages'>
       <div class="container d-flex align-items-center justify-content-between">
 
