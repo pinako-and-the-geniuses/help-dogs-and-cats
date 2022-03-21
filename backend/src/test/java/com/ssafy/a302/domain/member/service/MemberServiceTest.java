@@ -164,4 +164,28 @@ class MemberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_EMAIL);
     }
+
+    @Test
+    @DisplayName("회원가입 - 예외 처리 : 패스워드에 닉네임이 포함된 경우")
+    void registerFailWhenPasswordContainNickname() {
+        /**
+         * 테스트용 데이터
+         */
+        String password = "test12#$";
+        String nickname = "test";
+        MemberRequestDto.RegisterInfo registerInfo1 = MemberRequestDto.RegisterInfo.builder()
+                .email("hello@test.com")
+                .password(password)
+                .nickname(nickname)
+                .tel("010-0001-0001")
+                .activityArea("서울시 강남구")
+                .build();
+
+        /**
+         * 패스워드에 닉네임이 포함되었으므로 예외가 발생해야 한다.
+         */
+        assertThatThrownBy(() -> memberService.register(registerInfo1.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
+    }
 }
