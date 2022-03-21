@@ -1,5 +1,6 @@
 import React from "react";
-import Header from "components/Header";
+import Header from './components/Header';
+import Home from './components/Home';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   Signup,
@@ -12,7 +13,6 @@ import {
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
 import NotFound from "./NotFound";
-import Home from './components/Home';
 
 function App() {
   return (
