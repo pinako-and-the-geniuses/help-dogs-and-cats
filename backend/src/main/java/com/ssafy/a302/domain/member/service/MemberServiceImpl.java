@@ -11,7 +11,6 @@ import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +25,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberDetailRepository memberDetailRepository;
 
-    private final MessageSource messageSource;
-
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Member findMemberByEmail(String email) {
         return memberRepository.findMemberByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER);
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
     }
 
     @Transactional
