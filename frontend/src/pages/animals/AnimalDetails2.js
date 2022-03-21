@@ -6,7 +6,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import Map from "pages/shelter/Map";
+import Map from "../../components/Map";
 import './styles/AnimalDetails.scss';
 export default function AnimalDetails2() {
   return (

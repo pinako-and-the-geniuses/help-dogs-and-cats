@@ -62,8 +62,8 @@ dependencies {
 	// devtools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// mysql
-	runtimeOnly 'mysql:mysql-connector-java'
+	// mariadb
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
 	// spring test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

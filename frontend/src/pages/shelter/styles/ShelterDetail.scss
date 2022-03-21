@@ -1,48 +1,39 @@
-body{
-    margin: 60px;
+.main-container {
+    margin: 20px 200px;
 }
 
-h2{
-    margin: 0;
-    // border: 1px solid rebeccapurple;
-}
+section {
 
-main{
-    // border: 1px solid violet;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 40px 0;
-
-    .top-content{
-        // border: 1px solid red;
+    .main-info{
         display: flex;
+        flex-direction: column;
+    }
+    .text-box{
+        display: flex;
+        flex-direction: row;
+        margin: 20px 0;
+        p{
+            padding: 0;
+            margin: 0;
+            font-size: 18px;
         // justify-content: space-around;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         
         .main-info{
-            // border: 1px solid darkblue;
+            //border: 1px solid darkblue;
         }
-        .text-box{
-            display: flex;
-            flex-direction: row;
-            // border: 1px solid blue;
-            margin: 20px 0;
-            p{
-                // border: 1px solid salmon;
-                padding: 0;
-                margin: 0;
-                font-size: 18px;
-                justify-content: space-evenly;
-            }
 
-            .title{
-                font-weight:500;
-                width: 130px;
-            }
+        .title{
+            font-weight:bold;
+            width: 130px;
         }
+    }
+
+    .map{
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
