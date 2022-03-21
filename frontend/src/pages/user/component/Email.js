@@ -2,18 +2,40 @@ import React, { useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
 
-export default function Email({ BASEURL }) {
-  const [email, setEmail] = useState("");
+export default function Email({
+  URL,
+  email,
+  setEmail,
+  setIsEmail,
+  isEmail,
+  inputClass,
+}) {
   const [emailCheck, setEmailCheck] = useState("");
 
-  const onEmailHandler = (event) => {
-    console.log(event.currentTarget.value);
-    setEmail(event.currentTarget.value);
+  // 이메일 유효성 검사
+  const onEmailHandler = (e) => {
+    const emailRegex =
+      /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (emailCurrent.match(emailRegex)) {
+      setIsEmail(true);
+    } else {
+      setIsEmail(false);
+    }
   };
 
+  // 검사에 따른 input css 수정
+  const isEnteredEmailValid = () => {
+    if (email) return isEmail;
+  };
+
+  // 이메일 중복확인 요청
   const onCheckEmail = (event) => {
+    event.preventDefault();
     axios
-      .get(`${BASEURL}/members/email-duplicate-check/`, {
+      .get(`${URL}/members/email-duplicate-check/`, {
         params: {
           email: `${email}`,
         },
@@ -38,7 +60,10 @@ export default function Email({ BASEURL }) {
           placeholder="email@ssafy.com"
           value={email}
           onChange={onEmailHandler}
+          className={`form-control ${inputClass(isEnteredEmailValid())}`}
+          required
         />
+
         <button className={st.checkemail} onClick={onCheckEmail}>
           중복확인
         </button>

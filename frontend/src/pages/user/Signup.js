@@ -1,38 +1,40 @@
 import React, { useState } from "react";
-import "./styles/userform.module.scss";
-import UserForm from "./component/UserForm";
-// import { useSelector, useDispatch } from "react-redux"; // 리덕스 후크 가져오기
-// 리덕스 액션가져와야함! import { 액션명 } from '../actions/index';
+import DeleteUser from "./component/DeleteUser";
+import Email from "./component/Email";
+import Password from "./component/Password";
+import NickName from "./component/NickName";
+import Phone from "./component/Phone";
+import Region from "./component/Region";
+import st from "./styles/userform.module.scss";
 
-const BASEURL = "http/";
+const URL = "http/";
 
 export default function Signup() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  // 입력정보
+  const [email, setEmail] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [pwdConfirm, setPwdConfirm] = useState("");
   const [nickName, setNickName] = useState("");
   const [phone, setPhone] = useState("");
-  const [region, setRegion] = useState("");
+  const [region, setRegion] = useState("전체");
   const [policy, setPolicy] = useState(0);
+  // 유효성 검사
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPwd, setIsPwd] = useState(false);
+  const [isPwdConfirm, setIsPwdConfirm] = useState(false);
+  const [isNickName, setIsNickName] = useState(false);
+  const [isPhone, setIsPhone] = useState(false);
+
   const pagename = "회원가입";
-
-  const onPasswordHandler = (event) => {
-    setPassword(event.currentTarget.value);
-  };
-
-  const onConfirmPasswordHandler = (event) => {
-    setConfirmPassword(event.currentTarget.value);
-  };
-
-  const onNickNameHandler = (event) => {
-    setNickName(event.currentTarget.value);
-  };
-
-  const onPhoneHandler = (event) => {
-    setPhone(event.currentTarget.value);
-  };
-
-  const onRegionHandler = (event) => {
-    setRegion(event.currentTarget.value);
+  const inputClass = (boolean) => {
+    switch (boolean) {
+      case true:
+        return "is-valid";
+      case false:
+        return "is-invalid";
+      default:
+        return "";
+    }
   };
 
   const onPolicyHandler = (event) => {
@@ -42,29 +44,68 @@ export default function Signup() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      return alert("비밀번호와 비밀번호확인은 같아야 합니다.");
-    }
   };
   return (
     <div className="userform-page">
-      <UserForm
-        BASEURL={BASEURL}
-        pagename={pagename}
-        password={password}
-        confirmPassword={confirmPassword}
-        nickName={nickName}
-        phone={phone}
-        region={region}
-        policy={policy}
-        onPasswordHandler={onPasswordHandler}
-        onConfirmPasswordHandler={onConfirmPasswordHandler}
-        onNickNameHandler={onNickNameHandler}
-        onPhoneHandler={onPhoneHandler}
-        onRegionHandler={onRegionHandler}
-        onPolicyHandler={onPolicyHandler}
-        onSubmit={onSubmit}
-      />
+      <form className={`${st.userinfoForm} ${st.form}`}>
+        <h2>{pagename}</h2>
+        <Email
+          URL={URL}
+          email={email}
+          setEmail={setEmail}
+          isEmail={isEmail}
+          setIsEmail={setIsEmail}
+          inputClass={inputClass}
+        ></Email>
+        <Password
+          URL={URL}
+          pwd={pwd}
+          setPwd={setPwd}
+          pwdConfirm={pwdConfirm}
+          setPwdConfirm={setPwdConfirm}
+          isPwd={isPwd}
+          setIsPwd={setIsPwd}
+          isPwdConfirm={isPwdConfirm}
+          setIsPwdConfirm={setIsPwdConfirm}
+          inputClass={inputClass}
+        ></Password>
+        <NickName
+          URL={URL}
+          nickName={nickName}
+          setNickName={setNickName}
+          isNickName={isNickName}
+          setIsNickName={setIsNickName}
+          inputClass={inputClass}
+        />
+        <Phone
+          URL={URL}
+          phone={phone}
+          setPhone={setPhone}
+          isPhone={isPhone}
+          setIsPhone={setIsPhone}
+          inputClass={inputClass}
+        />
+        <Region URL={URL} region={region} setRegion={setRegion} />
+
+        <div className="form-check">
+          <label className="form-check-label" htmlFor="policy">
+            이용약관에 동의합니다.
+          </label>
+          <input
+            className="form-check-input"
+            type="checkbox"
+            style={{ width: "auto", marginRight: "5px" }}
+            onChange={onPolicyHandler}
+          />
+        </div>
+
+        <div>
+          <button className={st.longButton} onClick={onSubmit}>
+            {pagename}
+          </button>
+        </div>
+        <DeleteUser />
+      </form>
     </div>
   );
 }
