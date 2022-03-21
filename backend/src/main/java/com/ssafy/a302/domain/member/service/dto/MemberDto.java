@@ -86,4 +86,29 @@ public class MemberDto {
             this.activityArea = activityArea;
         }
     }
+
+    @Getter
+    @ToString(of = {"seq", "email", "role", "nickname"})
+    public static class LoginResponse {
+
+        @Schema(name = "seq", title = "회원 기본키", description = "회원이 가지고 있는 고유 식별키입니다.")
+        private final Long seq;
+
+        @Schema(name = "email", title = "이메일", description = "이메일입니다.")
+        private final String email;
+
+        @Schema(name = "role", title = "권한", description = "회원이 가지고 있는 권한입니다.")
+        private final Member.Role role;
+
+        @Schema(name = "nickname", title = "닉네임", description = "닉네임입니다.")
+        private final String nickname;
+
+        @Builder
+        public LoginResponse(Long seq, String email, String nickname, Member.Role role) {
+            this.seq = seq;
+            this.email = email;
+            this.nickname = nickname;
+            this.role = role;
+        }
+    }
 }
