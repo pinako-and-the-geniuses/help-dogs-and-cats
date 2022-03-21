@@ -188,4 +188,37 @@ class MemberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
     }
+
+    @Test
+    @DisplayName("이메일 중복 확인 - 중복인 경우")
+    void emailDuplicateCheckYes() {
+        /**
+         * 테스트용 데이터
+         */
+        String email1 = registerInfo1.getEmail();
+        String email2 = registerInfo2.getEmail();
+
+        /**
+         * 회원가입 전이므로 모두 false 가 반환된다.
+         */
+        boolean existsEmailFalse1 = memberService.isExistsEmail(email1);
+        boolean existsEmailFalse2 = memberService.isExistsEmail(email2);
+        assertThat(existsEmailFalse1).isFalse();
+        assertThat(existsEmailFalse2).isFalse();
+
+        /**
+         * registerInfo1 데이터만 회원가입 한다.
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * registerInfo1 데이터로 회원가입했으므로
+         * AfterSaveExistsEmailTrue 에 true 가 저장되어야 한다.
+         * AfterSaveExistsEmailFalse 에 false 가 저장되어야 한다.
+         */
+        boolean AfterSaveExistsEmailTrue = memberService.isExistsEmail(email1);
+        boolean AfterSaveExistsEmailFalse = memberService.isExistsEmail(email2);
+        assertThat(AfterSaveExistsEmailTrue).isTrue();
+        assertThat(AfterSaveExistsEmailFalse).isFalse();
+    }
 }
