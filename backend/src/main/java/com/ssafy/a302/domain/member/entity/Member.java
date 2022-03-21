@@ -131,4 +131,8 @@ public class Member extends BaseLastModifiedEntity {
             return description;
         }
     }
+
+    public void changeRole(Role role) {
+        this.role = role;
+    }
 }
