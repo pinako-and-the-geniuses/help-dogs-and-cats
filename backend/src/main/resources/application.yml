@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: jpa,database,jwt
+    include: jpa,database,jwt,mail
 
   devtools:
     restart:
