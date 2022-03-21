@@ -1,0 +1,16 @@
+.home_img {
+    background-image: url('../../res/img/home.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 720px;
+    position: relative;
+
+    h1{
+        color: white;
+        position: absolute;
+        left: 8rem;
+        top: 15rem;
+        font-size: 40px;
+    }
+}
