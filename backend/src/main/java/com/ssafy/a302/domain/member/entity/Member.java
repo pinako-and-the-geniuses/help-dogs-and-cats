@@ -151,4 +151,13 @@ public class Member extends BaseLastModifiedEntity {
                 .activityArea(detail.getActivityArea())
                 .build();
     }
+
+    public MemberDto.LoginResponse toLoginResponseDto() {
+        return MemberDto.LoginResponse.builder()
+                .seq(seq)
+                .email(email)
+                .role(role)
+                .nickname(detail.getNickname())
+                .build();
+    }
 }
