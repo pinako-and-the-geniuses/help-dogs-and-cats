@@ -1,9 +1,15 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
 .home_img {
     background-image: url('../../res/img/home.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    height: 720px;
+    width: 100wh;
+    height: 100vh;
     position: relative;
 
     h1{
@@ -13,4 +19,14 @@
         top: 15rem;
         font-size: 40px;
     }
+}
+
+.div1{
+    height: 100px;
+    background-color: blue;
+}
+
+.div2 {
+    height: 140px;
+    background-color: red;
 }
