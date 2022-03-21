@@ -38,24 +38,24 @@ export default function Header() {
       
     // </div>
     <div id="header" className='fixed-top header-inner-pages'>
-      <div class="container d-flex align-items-center justify-content-between">
+      <div className="container d-flex align-items-center justify-content-between">
 
-        <a href="/" class="logo">LOGO</a>
+        <a href="/" className="logo">LOGO</a>
 
-        <nav id="navbar" class="navbar">
+        <nav id="navbar" className="navbar">
           <ul>
-            <li><a class="nav-link scrollto active" href="#hero">유기동물현황</a></li>
-            <li class="dropdown"><a href="#"><span>동물 프로필</span> <i class="bi bi-chevron-down"></i></a>
+            <li><a className="nav-link scrollto active" href="#hero">유기동물현황</a></li>
+            <li className="dropdown"><a href="#"><span>동물 프로필</span> <i className="bi bi-chevron-down"></i></a>
               <ul>
                 <li><a href="#">입양 가이드</a></li>
                 <li><a href="/animals/animal">유기동물 조회</a></li>
                 <li><a href="/shelter/list">보호소 조회</a></li>
               </ul>
             </li>
-            <li><a class="nav-link scrollto" href="#about">봉사활동</a></li>
-            <li><a class="nav-link scrollto" href="#portfolio">커뮤니티</a></li>
+            <li><a className="nav-link scrollto" href="/volunteer/list">봉사활동</a></li>
+            <li><a className="nav-link scrollto" href="#portfolio">커뮤니티</a></li>
           </ul>
-          <i class="bi bi-list mobile-nav-toggle"></i>
+          <i className="bi bi-list mobile-nav-toggle"></i>
         </nav>
 
       </div>
