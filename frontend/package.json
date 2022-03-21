@@ -53,14 +53,5 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0"
-  },
-
-  "proxy" : {
-    "/shelter/" :{
-      "target": "http://apis.data.go.kr/1543061/animalShelterSrvc"
-    },
-    "/animal/" :{
-      "target": "http://apis.data.go.kr/1543061/abandonmentPublicSrvc"
-    }
   }
 }
