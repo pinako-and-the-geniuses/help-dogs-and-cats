@@ -6,6 +6,7 @@ import com.ssafy.a302.domain.member.exception.DuplicateEmailException;
 import com.ssafy.a302.domain.member.exception.DuplicateNicknameException;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -344,5 +345,16 @@ class MemberServiceTest {
          * 로그인 실패
          */
         assertThat(loginFalse).isFalse();
+    }
+
+    @Test
+    @DisplayName("로그인 - 실패 : 회원 데이터 없음")
+    void loginFailWhenMemberNull() {
+        /**
+         * 이메일이 데이터베이스에 없는 경우 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.login(loginInfoByRegisterInfo1.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.NULL_MEMBER);
     }
 }
