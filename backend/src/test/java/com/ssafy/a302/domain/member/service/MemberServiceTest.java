@@ -188,4 +188,55 @@ class MemberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
     }
+
+    @Test
+    @DisplayName("이메일 중복 확인 - 중복인 경우")
+    void emailDuplicateCheckYes() {
+        /**
+         * 테스트용 데이터
+         */
+        String email1 = registerInfo1.getEmail();
+        String email2 = registerInfo2.getEmail();
+
+        /**
+         * 회원가입 전이므로 모두 false 가 반환된다.
+         */
+        boolean existsEmailFalse1 = memberService.isExistsEmail(email1);
+        boolean existsEmailFalse2 = memberService.isExistsEmail(email2);
+        assertThat(existsEmailFalse1).isFalse();
+        assertThat(existsEmailFalse2).isFalse();
+
+        /**
+         * registerInfo1 데이터만 회원가입 한다.
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * registerInfo1 데이터로 회원가입했으므로
+         * AfterSaveExistsEmailTrue 에 true 가 저장되어야 한다.
+         * AfterSaveExistsEmailFalse 에 false 가 저장되어야 한다.
+         */
+        boolean AfterSaveExistsEmailTrue = memberService.isExistsEmail(email1);
+        boolean AfterSaveExistsEmailFalse = memberService.isExistsEmail(email2);
+        assertThat(AfterSaveExistsEmailTrue).isTrue();
+        assertThat(AfterSaveExistsEmailFalse).isFalse();
+    }
+
+    @Test
+    @DisplayName("이메일 중복 확인 - 중복이 아닌 경우")
+    void emailDuplicateCheckNo() {
+        // 테스트용 데이터
+        String email = registerInfo1.getEmail();
+
+        /**
+         * 이메일 존재 유무 메서드 호출
+         * 현재 데이터베이스에는 아무 데이터도 저장되지 않았다.
+         */
+        boolean existsEmailFalse = memberService.isExistsEmail(email);
+
+        /**
+         * 데이터베이스에 이메일이 없으면 메서드 반환 값이 false 이다.
+         */
+        assertThat(existsEmailFalse).isFalse();
+    }
 }

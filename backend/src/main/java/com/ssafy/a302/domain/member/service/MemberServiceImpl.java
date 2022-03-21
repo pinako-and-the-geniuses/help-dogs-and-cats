@@ -55,4 +55,9 @@ public class MemberServiceImpl implements MemberService {
 
         return savedMember.toResponseDto();
     }
+
+    @Override
+    public boolean isExistsEmail(String email) {
+        return memberRepository.existsByEmail(email);
+    }
 }
