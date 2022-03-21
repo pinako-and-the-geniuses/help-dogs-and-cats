@@ -10,4 +10,6 @@ public interface MemberService {
     MemberDto.Response register(MemberDto memberDto);
 
     boolean isExistsEmail(String email);
+
+    boolean isExistsNickname(String nickname);
 }

@@ -60,4 +60,9 @@ public class MemberServiceImpl implements MemberService {
     public boolean isExistsEmail(String email) {
         return memberRepository.existsByEmail(email);
     }
+
+    @Override
+    public boolean isExistsNickname(String nickname) {
+        return memberDetailRepository.existsByNickname(nickname);
+    }
 }

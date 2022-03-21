@@ -239,4 +239,55 @@ class MemberServiceTest {
          */
         assertThat(existsEmailFalse).isFalse();
     }
+
+    @Test
+    @DisplayName("닉네임 중복 확인 - 중복인 경우")
+    void nicknameDuplicateCheckYes() {
+        /**
+         * 테스트용 데이터
+         */
+        String nickname1 = registerInfo1.getNickname();
+        String nickname2 = registerInfo2.getNickname();
+
+        /**
+         * 회원가입 전이므로 모두 false 가 반환되어야 한다.
+         */
+        boolean existsNicknameFalse1 = memberService.isExistsNickname(nickname1);
+        boolean existsNicknameFalse2 = memberService.isExistsNickname(nickname2);
+        assertThat(existsNicknameFalse1).isFalse();
+        assertThat(existsNicknameFalse2).isFalse();
+
+        /**
+         * registerInfo1 데이터만 회원가입 한다.
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * registerInfo1 데이터로 회원가입했으므로
+         * AfterSaveExistsNicknameTrue 에 true 가 저장되어야 한다.
+         * AfterSaveExistsNicknameFalse 에 false 가 저장되어야 한다.
+         */
+        boolean AfterSaveExistsNicknameTrue = memberService.isExistsNickname(nickname1);
+        boolean AfterSaveExistsNicknameFalse = memberService.isExistsNickname(nickname2);
+        assertThat(AfterSaveExistsNicknameTrue).isTrue();
+        assertThat(AfterSaveExistsNicknameFalse).isFalse();
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 확인 - 중복이 아닌 경우")
+    void nicknameDuplicateCheckNo() {
+        // 테스트용 데이터
+        String nickname = "non-exists";
+
+        /**
+         * 닉네임 존재 유무 메서드 호출
+         * 현재 데이터베이스에는 아무 데이터도 저장되지 않았다.
+         */
+        boolean existsNicknameFalse = memberService.isExistsNickname(nickname);
+
+        /**
+         * 데이터베이스에 닉네임이 없으면 메서드 반환 값이 false 이다.
+         */
+        assertThat(existsNicknameFalse).isFalse();
+    }
 }

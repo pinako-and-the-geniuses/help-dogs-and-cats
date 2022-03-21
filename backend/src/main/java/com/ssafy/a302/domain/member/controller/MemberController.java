@@ -121,4 +121,62 @@ public class MemberController {
                 .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_EMAIL : Message.USABLE_MEMBER_EMAIL)
                 .build(), status);
     }
+
+    @Operation(
+            summary = "닉네임 중복 확인 API",
+            description = "전달받은 닉네임이 데이터베이스에 존재하는지 확인하고 결과를 반환합니다.",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.PATH,
+                            name = "nickname",
+                            description = "닉네임",
+                            examples = {
+                                    @ExampleObject(name = "good1", summary = "good1", value = "good", description = "영문자, 최소 길이 만족하므로 형식 검증 통과"),
+                                    @ExampleObject(name = "good2", summary = "good2", value = "닉네임1", description = "한글/숫자 사용, 최소 길이 만족하므로 형식 검증 통과"),
+                                    @ExampleObject(name = "bad1", summary = "bad1", value = "bad", description = "최소길이 4자 미만이므로 형식 검증 실패"),
+                                    @ExampleObject(name = "bad2", summary = "bad2", value = "ㅎㅇㅎㅇ", description = "한글 자음만 사용하였으므로 형식 검증 실패"),
+                                    @ExampleObject(name = "bad3", summary = "bad3", value = "ㅗㅗㅗㅗ", description = "한글 모음만 사용하였으므로 형식 검증 실패"),
+                                    @ExampleObject(name = "bad4", summary = "bad4", value = "01234567890", description = "최대 길이 10자 초과이므로 형식 검증 실패")
+                            },
+                            required = true)
+            },
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "중복된 닉네임입니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "사용할 수 있는 닉네임입니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "닉네임 형식 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @GetMapping("/nickname-duplicate-check/{nickname}")
+    public ResponseEntity<BaseResponseDto<?>> nicknameDuplicateCheck(@PathVariable(name = "nickname") String nickname) {
+        String nicknameRegx = "^[0-9|a-z|가-힣|\\s]{4,10}$";
+        if (!nickname.matches(nicknameRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_NICKNAME);
+        }
+
+        HttpStatus status = null;
+        if (memberService.isExistsNickname(nickname)) {
+            status = HttpStatus.OK;
+        } else {
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(BaseResponseDto.builder()
+                .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_NICKNAME : Message.USABLE_MEMBER_NICKNAME)
+                .build(), status);
+    }
 }
