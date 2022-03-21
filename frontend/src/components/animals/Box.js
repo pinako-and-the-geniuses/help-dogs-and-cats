@@ -29,7 +29,7 @@ export default function Box() {
                 <span className="title">발견장소</span>
                 <p>멀티캠퍼스</p>
               </div>
-              <a href="#!" class="btn btn-primary">
+              <a href="#!" className="btn btn-primary">
                 자세히 보기
               </a>
             </div>
@@ -66,7 +66,7 @@ export default function Box() {
               <span className="title">발견장소</span>
               <p>멀티캠퍼스</p>
             </div>
-            <a href="#!" class="btn btn-primary">
+            <a href="#!" className="btn btn-primary">
               자세히 보기
             </a>
           </div>
@@ -97,7 +97,7 @@ export default function Box() {
               <span className="title">발견장소</span>
               <p>멀티캠퍼스</p>
             </div>
-            <a href="#!" class="btn btn-primary">
+            <a href="#!" className="btn btn-primary">
               자세히 보기
             </a>
           </div>
@@ -127,7 +127,7 @@ export default function Box() {
               <span className="title">발견장소</span>
               <p>멀티캠퍼스</p>
             </div>
-            <a href="#!" class="btn btn-primary">
+            <a href="#!" className="btn btn-primary">
               자세히 보기
             </a>
           </div>
@@ -157,7 +157,7 @@ export default function Box() {
               <span className="title">발견장소</span>
               <p>멀티캠퍼스</p>
             </div>
-            <a href="#!" class="btn btn-primary">
+            <a href="#!" className="btn btn-primary">
               자세히 보기
             </a>
           </div>

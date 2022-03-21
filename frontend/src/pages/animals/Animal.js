@@ -30,7 +30,7 @@ export default function Animal() {
             <option value="2">Two</option>
             <option value="3">Three</option>
           </select>
-          <button type="button" className={cn(animal.btn, "btn-secondary")}>
+          <button type="button" className={cn(animal.btn, "btn btn")}>
             조회
           </button>
           <div className={animal.box2}>
