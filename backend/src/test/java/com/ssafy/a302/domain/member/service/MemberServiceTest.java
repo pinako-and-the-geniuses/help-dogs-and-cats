@@ -2,8 +2,11 @@ package com.ssafy.a302.domain.member.service;
 
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.member.exception.DuplicateEmailException;
+import com.ssafy.a302.domain.member.exception.DuplicateNicknameException;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.global.message.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,5 +71,39 @@ class MemberServiceTest {
         assertThat(responseDto.getTel()).isEqualTo(registerInfo1.getTel());
         assertThat(responseDto.getActivityArea()).isEqualTo(registerInfo1.getActivityArea());
         assertThat(responseDto.getRole()).isEqualTo(Member.Role.MEMBER);
+    }
+
+    @Test
+    @DisplayName("회원가입 - 예외 처리 : 이메일 중복")
+    void registerFailWhenEmailDuplicate() {
+        /**
+         * 테스트용 데이터
+         */
+        String email = "test1@test.com";
+        memberService.register(MemberRequestDto.RegisterInfo.builder()
+                .email(email)
+                .password("password12#$")
+                .nickname("good1")
+                .tel("010-0001-0001")
+                .activityArea("서울시 강남구")
+                .build().toServiceDto());
+
+        /**
+         * 중복된 이메일을 가진 데이터를 회원가입시킨다.
+         */
+        MemberRequestDto.RegisterInfo duplicateEmailRegisterInfo = MemberRequestDto.RegisterInfo.builder()
+                .email(email)
+                .password("password12#$")
+                .nickname("good2")
+                .tel("010-0001-0002")
+                .activityArea("서울시 강남구")
+                .build();
+
+        /**
+         * 이메일이 중복되었으므로 예외가 발생해야 한다.
+         */
+        assertThatThrownBy(() -> memberService.register(duplicateEmailRegisterInfo.toServiceDto()))
+                .isInstanceOf(DuplicateEmailException.class)
+                .hasMessage(Message.DUPLICATE_MEMBER_EMAIL);
     }
 }
