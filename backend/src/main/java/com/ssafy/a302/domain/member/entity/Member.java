@@ -135,4 +135,8 @@ public class Member extends BaseLastModifiedEntity {
     public void changeRole(Role role) {
         this.role = role;
     }
+
+    public void encryptPassword(PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(this.password);
+    }
 }
