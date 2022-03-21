@@ -5,25 +5,43 @@ import cn from 'classnames'
 import axios from 'axios';
 import { XMLParser } from 'react-xml-parser';
 export default function AnimalDetails() {
-  function parseStr(dataSet){
-    const dataArr = new XMLParser().parseFromString(dataSet).children;
-    console.log(dataArr);
-  }
+  // function parseStr(dataSet){
+  //   const dataArr = new XMLParser().parseFromString(dataSet).children;
+  //   console.log(dataArr);
+  // }
 
-  async function getAPI(){
-    await axios({
-      method: "get",
-      url: `http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=eG8m8qY9CcGy8%2FVFSZwJHkwAJBQydbN%2B6v2dshFjA8dkOWbxsMqmot3fXOHl5ieSa8aXcDydP7PKNhGGrLAy6Q%3D%3D`,
-    }).then(function(response){
-      const dataSet = response.data;
-      parseStr(dataSet);
-    });
-  }
+  // async function getAPI(){
+  //   await axios({
+  //     method: "get",
+  //     url: `/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=eG8m8qY9CcGy8%2FVFSZwJHkwAJBQydbN%2B6v2dshFjA8dkOWbxsMqmot3fXOHl5ieSa8aXcDydP7PKNhGGrLAy6Q%3D%3D`,
+  //   }).then(function(response){
+  //     const dataSet = response.data;
+  //     parseStr(dataSet);
+  //   });
+  // }
 
-  useEffect(() =>{
-    getAPI();
-  }, []);
+  // useEffect(() =>{
+  //   getAPI();
+  // }, []);
 
+  const APP_KEY = process.env.REACT_APP_ANIMAL_API;
+
+    const getAPI = async() => {
+        await axios({
+            url: `/abandonmentPublic?bgnde=20211201&endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
+            method:"get",
+        })
+        .then((res) => {
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    useEffect(() =>{
+      getAPI();
+    }, []);
   return (
     <body>
       <header>
@@ -56,40 +74,40 @@ export default function AnimalDetails() {
                 </div>
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
                 >
                   입양가이드
                 </button>
                 <div
-                  class="modal fade"
+                  className="modal fade"
                   id="exampleModal"
                   tabindex="-1"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
                 >
-                  <div class="modal-dialog modal-xl modal-dialog-scrollable">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
+                  <div className="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">
                           입양 가이드
                         </h5>
                         <button
                           type="button"
-                          class="btn-close"
+                          className="btn-close"
                           data-bs-dismiss="modal"
                           aria-label="Close"
                         ></button>
                       </div>
-                      <div class="modal-body">안뇽하세요
+                      <div className="modal-body">안뇽하세요
                       <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                       <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                       <br /></div>
-                      <div class="modal-footer">
+                      <div className="modal-footer">
                         <button
                           type="button"
-                          class="btn btn-secondary"
+                          className="btn btn-secondary"
                           data-bs-dismiss="modal"
                         >
                           후원하기
@@ -130,7 +148,7 @@ export default function AnimalDetails() {
                 <p className="title">특징</p>
                 <p>개+고양이+기타</p>
               </div> */}
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th className={animaldetails.head} scope="col" colspan="4">
@@ -170,7 +188,7 @@ export default function AnimalDetails() {
                 </tbody>
               </table>
 
-              <table class="table table-hover">
+              <table className="table table-hover">
                 <thead>
                   <tr>
                     <th className={animaldetails.head} scope="col" colspan="4">
