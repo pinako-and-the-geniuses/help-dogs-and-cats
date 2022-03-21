@@ -4,12 +4,14 @@ import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
 import com.ssafy.a302.domain.badge.entity.MemberBadge;
 import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.community.entity.CommunityLike;
+import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.domain.report.entity.CautionHistory;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 
@@ -46,6 +48,7 @@ public class Member extends BaseLastModifiedEntity {
     @Column(nullable = false)
     private Role role;
 
+    @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "member", fetch = EAGER, cascade = ALL)
     private MemberDetail detail;
 
@@ -89,11 +92,10 @@ public class Member extends BaseLastModifiedEntity {
     private List<AdoptAuth> adoptAuths = new ArrayList<>();
 
     @Builder
-    public Member(String email, String password, Role role, MemberDetail detail) {
+    public Member(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.detail = detail;
         this.isDeleted = false;
     }
 
