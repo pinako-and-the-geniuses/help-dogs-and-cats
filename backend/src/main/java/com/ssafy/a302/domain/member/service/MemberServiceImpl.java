@@ -73,4 +73,12 @@ public class MemberServiceImpl implements MemberService {
 
         return passwordEncoder.matches(memberDto.getPassword(), findMember.getPassword());
     }
+
+    @Override
+    public MemberDto.LoginResponse getMemberLoginResponseDto(String email) {
+        Member findMember = memberRepository.findMemberByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
+
+        return findMember.toLoginResponseDto();
+    }
 }

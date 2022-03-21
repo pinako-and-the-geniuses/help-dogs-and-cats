@@ -14,4 +14,6 @@ public interface MemberService {
     boolean isExistsNickname(String nickname);
 
     boolean login(MemberDto memberDto);
+
+    MemberDto.LoginResponse getMemberLoginResponseDto(String email);
 }
