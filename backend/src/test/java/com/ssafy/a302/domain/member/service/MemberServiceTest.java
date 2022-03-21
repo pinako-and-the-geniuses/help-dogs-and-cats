@@ -299,4 +299,23 @@ class MemberServiceTest {
          */
         assertThat(existsNicknameFalse).isFalse();
     }
+
+    @Test
+    @DisplayName("로그인 - 성공")
+    void loginSuccess() {
+        /**
+         * 회원가입
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * 로그인 시도
+         */
+        boolean loginTrue = memberService.login(loginInfoByRegisterInfo1.toServiceDto());
+
+        /**
+         * 로그인 성공
+         */
+        assertThat(loginTrue).isTrue();
+    }
 }
