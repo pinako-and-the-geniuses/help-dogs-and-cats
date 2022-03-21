@@ -221,4 +221,22 @@ class MemberServiceTest {
         assertThat(AfterSaveExistsEmailTrue).isTrue();
         assertThat(AfterSaveExistsEmailFalse).isFalse();
     }
+
+    @Test
+    @DisplayName("이메일 중복 확인 - 중복이 아닌 경우")
+    void emailDuplicateCheckNo() {
+        // 테스트용 데이터
+        String email = registerInfo1.getEmail();
+
+        /**
+         * 이메일 존재 유무 메서드 호출
+         * 현재 데이터베이스에는 아무 데이터도 저장되지 않았다.
+         */
+        boolean existsEmailFalse = memberService.isExistsEmail(email);
+
+        /**
+         * 데이터베이스에 이메일이 없으면 메서드 반환 값이 false 이다.
+         */
+        assertThat(existsEmailFalse).isFalse();
+    }
 }
