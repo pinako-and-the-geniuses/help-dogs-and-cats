@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import XMLParser from 'react-xml-parser';
-import './styles/ShelterList.scss';
+import style from './styles/ShelterList.module.scss';
+import cn from 'classnames';
 
 function ShelterList(){
 
-    const APP_KEY = "YhafXRaEZcUraLySTaruWx1ssdPqeN%2B321AePiKP1W%2Be2gVsPFNUBLDUcRsY3wClbC67IASuWXYx2XFGMezJaA%3D%3D";
+    const APP_KEY = process.env.REACT_APP_SHELTER_API;
 
     const shelterList = async() => {
         await axios({
@@ -13,31 +14,30 @@ function ShelterList(){
             method:"get",
         })
         .then((res) => {
-            const XMLParser = require('react-xml-parser');
-            const xml = new XMLParser().parseFromString(res.data)
-            console.log(xml);
+            console.log(res.data);
         })
         .catch((err) => {
             console.log(err);
         })
     }
 
+
     useEffect(() =>{
         shelterList();
     }, []);
 
     return(
-        <div className='main-container'>
+        <div className={style.main_container}>
             <header>
                 <h2>동물 보호 센터</h2>
             </header>
 
-            <div className='my-city'>
+            <div className={style.my_city}>
                 <p>우리 지역 보호소 찾기</p>
             </div>
 
-            <div className='search-bar'>
-                <div className='search-input'>
+            <div className={style.search_bar}>
+                <div className={style.search_input}>
                     <p>시도</p>
                     <select name='searchCd'>
                         <option value="0">전체</option>
@@ -55,11 +55,10 @@ function ShelterList(){
                 <button type='submit'>조회</button>
             </div>
 
-            {/* <hr/> */}
-            <table className="table table-bordered table-hover">
+            {/* <table className="table table-bordered table-hover"> */}
+            <table className={cn("table table-bordered table-hover", style.my_table)}>
                 <thead>
                     <tr>
-                    {/* <th scope="col">#</th> */}
                     <th scope="col">관할구역</th>
                     <th scope="col">보호센터명</th>
                     <th scope="col">전화번호</th>
