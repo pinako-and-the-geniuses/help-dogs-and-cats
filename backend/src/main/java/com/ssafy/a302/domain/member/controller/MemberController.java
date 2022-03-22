@@ -3,6 +3,7 @@ package com.ssafy.a302.domain.member.controller;
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
 import com.ssafy.a302.domain.member.service.MemberService;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.global.auth.CustomUserDetails;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.message.ErrorMessage;
@@ -21,6 +22,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -209,7 +214,7 @@ public class MemberController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @PostMapping("/login")
-    public ResponseEntity<BaseResponseDto<?>> login(@Validated @RequestBody MemberRequestDto.LoginInfo loginInfo) {
+    public ResponseEntity<BaseResponseDto<Map<String, Object>>> login(@Validated @RequestBody MemberRequestDto.LoginInfo loginInfo) {
         HttpStatus status = null;
         Map<String, Object> data = null;
 
@@ -226,9 +231,62 @@ public class MemberController {
             status = HttpStatus.NO_CONTENT;
         }
 
-        return new ResponseEntity<>(BaseResponseDto.builder()
+        return new ResponseEntity<>(BaseResponseDto.<Map<String, Object>>builder()
                 .message(status == HttpStatus.OK ? Message.SUCCESS_LOGIN : Message.FAIL_LOGIN)
                 .data(data)
                 .build(), status);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "회원정보 수정 API",
+            description = "회원 기본키, 비밀번호, 닉네임, 핸드폰 번호, 활동 지역을 전달받고 회원 정보를 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "회원정보를 수정하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "데이터 형식 검증에 실패하였습니다. (패스워드, 닉네임, 핸드폰 번호)",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "다른 회원의 식별키를 전달하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{memberSeq}")
+    public BaseResponseDto<?> modify(@PathVariable(name = "memberSeq") Long memberSeq,
+                                     @Validated @RequestBody MemberRequestDto.ModifyInfo modifyInfo,
+                                     Authentication authentication) {
+
+        Long findSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        if (!findSeq.equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.INVALID_MEMBER_SEQ);
+        }
+
+        /**
+         * 패스워드를 수정하지 않은 경우 null 을 전달한다.
+         * 따라서, MemberRequestDto.ModifyInfo 클래스의 필드에서 검증하지 않고 아래처럼 컨트롤러에서 검증한다.
+         */
+        if (StringUtils.hasText(modifyInfo.getPassword())) {
+            String passwordRegx = "^((?=.*[a-z])(?=.*\\d)((?=.*\\W)|(?=.*[A-Z]))|(?=.*\\W)(?=.*[A-Z])((?=.*\\d)|(?=.*[a-z]))).{8,20}$";
+            if (!modifyInfo.getPassword().matches(passwordRegx)) {
+                throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_PASSWORD);
+            }
+        }
+
+        memberService.modify(findSeq, modifyInfo.toServiceDto());
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_MODIFY)
+                .build();
     }
 }

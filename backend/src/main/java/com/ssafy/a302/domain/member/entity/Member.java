@@ -140,6 +140,14 @@ public class Member extends BaseLastModifiedEntity {
         this.password = passwordEncoder.encode(this.password);
     }
 
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
+
     public MemberDto.Response toResponseDto() {
         return MemberDto.Response.builder()
                 .seq(seq)

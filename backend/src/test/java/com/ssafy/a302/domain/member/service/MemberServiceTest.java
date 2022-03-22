@@ -2,8 +2,10 @@ package com.ssafy.a302.domain.member.service;
 
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.exception.DuplicateEmailException;
 import com.ssafy.a302.domain.member.exception.DuplicateNicknameException;
+import com.ssafy.a302.domain.member.exception.DuplicateTelException;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.message.ErrorMessage;
@@ -35,6 +37,8 @@ class MemberServiceTest {
 
     private MemberRequestDto.LoginInfo loginInfoByRegisterInfo1;
 
+    private MemberRequestDto.ModifyInfo modifyInfo1;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
@@ -59,6 +63,13 @@ class MemberServiceTest {
                 .email(registerInfo1.getEmail())
                 .password(registerInfo1.getPassword())
                 .build();
+
+        modifyInfo1 = MemberRequestDto.ModifyInfo.builder()
+                .password("modifyPass12#$")
+                .nickname("modifyNickname1")
+                .tel("010-9999-9999")
+                .activityArea("서울시 도봉구")
+                .build();
     }
 
     @Test
@@ -67,18 +78,24 @@ class MemberServiceTest {
         /**
          * registerInfo1 회원가입
          */
-        MemberDto.Response responseDto = memberService.register(registerInfo1.toServiceDto());
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * 데이터베이스에 저장된 회원 데이터를 가져온다.
+         */
+        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
+        MemberDetail memberDetail = savedMember.getDetail();
 
         /**
          * 데이터 검증
          */
-        assertThat(responseDto.getSeq()).isNotNull();
-        assertThat(responseDto.getEmail()).isEqualTo(registerInfo1.getEmail());
-        assertThat(passwordEncoder.matches(registerInfo1.getPassword(), responseDto.getPassword())).isTrue();
-        assertThat(responseDto.getNickname()).isEqualTo(registerInfo1.getNickname());
-        assertThat(responseDto.getTel()).isEqualTo(registerInfo1.getTel());
-        assertThat(responseDto.getActivityArea()).isEqualTo(registerInfo1.getActivityArea());
-        assertThat(responseDto.getRole()).isEqualTo(Member.Role.MEMBER);
+        assertThat(savedMember.getSeq()).isNotNull();
+        assertThat(savedMember.getEmail()).isEqualTo(registerInfo1.getEmail());
+        assertThat(passwordEncoder.matches(registerInfo1.getPassword(), savedMember.getPassword())).isTrue();
+        assertThat(memberDetail.getNickname()).isEqualTo(registerInfo1.getNickname());
+        assertThat(memberDetail.getTel()).isEqualTo(registerInfo1.getTel());
+        assertThat(memberDetail.getActivityArea()).isEqualTo(registerInfo1.getActivityArea());
+        assertThat(savedMember.getRole()).isEqualTo(Member.Role.MEMBER);
     }
 
     @Test
@@ -147,6 +164,40 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.register(nicknameDuplicateRegisterInfo.toServiceDto()))
                 .isInstanceOf(DuplicateNicknameException.class)
                 .hasMessage(Message.DUPLICATE_MEMBER_NICKNAME);
+    }
+
+    @Test
+    @DisplayName("회원가입 - 예외 처리 : 핸드폰 번호 중복")
+    void registerFailWhenTelDuplicate() {
+        /**
+         * 테스트용 데이터
+         */
+        String tel = "010-0001-0001";
+        memberService.register(MemberRequestDto.RegisterInfo.builder()
+                .email("test1@test.com")
+                .password("password12#$")
+                .nickname("good1")
+                .tel(tel)
+                .activityArea("서울시 강남구")
+                .build().toServiceDto());
+
+        /**
+         * 중복된 이메일을 가진 데이터를 회원가입시킨다.
+         */
+        MemberRequestDto.RegisterInfo TelDuplicateRegisterInfo = MemberRequestDto.RegisterInfo.builder()
+                .email("test2@tst.com")
+                .password("password12#$")
+                .nickname("good2")
+                .tel(tel)
+                .activityArea("서울시 강남구")
+                .build();
+
+        /**
+         * 이메일이 중복되었으므로 예외가 발생해야 한다.
+         */
+        assertThatThrownBy(() -> memberService.register(TelDuplicateRegisterInfo.toServiceDto()))
+                .isInstanceOf(DuplicateTelException.class)
+                .hasMessage(Message.DUPLICATE_MEMBER_TEL);
     }
 
     @Test
@@ -356,5 +407,162 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.login(loginInfoByRegisterInfo1.toServiceDto()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.NULL_MEMBER);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 - 성공")
+    void memberInfoModifySuccess() {
+        /**
+         * registerInfo1 회원가입
+         */
+        MemberDto.Response savedMemberDto = memberService.register(registerInfo1.toServiceDto());
+
+
+        /**
+         * 회원가입된 정보와 변경할 정보가 다른 것을 확인
+         */
+        assertThat(passwordEncoder.matches(modifyInfo1.getPassword(), savedMemberDto.getPassword())).isFalse();
+        assertThat(savedMemberDto.getNickname()).isNotEqualTo(modifyInfo1.getNickname());
+        assertThat(savedMemberDto.getTel()).isNotEqualTo(modifyInfo1.getTel());
+        assertThat(savedMemberDto.getActivityArea()).isNotEqualTo(modifyInfo1.getActivityArea());
+
+        /**
+         * 회원정보 수정
+         */
+        memberService.modify(savedMemberDto.getSeq(), modifyInfo1.toServiceDto());
+
+        /**
+         * DB에 저장된 회원 정보를 가져온다.
+         */
+        Member findMember = memberService.getMemberBySeq(savedMemberDto.getSeq());
+        MemberDetail memberDetail = findMember.getDetail();
+
+        /**
+         * 데이터가 잘 변경되었는지 검증
+         */
+        assertThat(passwordEncoder.matches(modifyInfo1.getPassword(), findMember.getPassword())).isTrue();
+        assertThat(memberDetail.getNickname()).isEqualTo(modifyInfo1.getNickname());
+        assertThat(memberDetail.getTel()).isEqualTo(modifyInfo1.getTel());
+        assertThat(memberDetail.getActivityArea()).isEqualTo(modifyInfo1.getActivityArea());
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외 처리 : 회원 데이터 없음")
+    void memberInfoModifyFailWhenMemberNull() {
+        assertThatThrownBy(() -> memberService.modify(0L, modifyInfo1.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.NULL_MEMBER);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외처리 : 중복된 닉네임")
+    void memberInfoModifyFailWhenNicknameDuplicate() {
+        /**
+         * registerInfo1 데이터로 회원가입
+         */
+        Long savedMemberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 새로운 데이터를 회원가입 시키는데, 이 때 modifyInfo1의 닉네임을 사용한다.
+         * 현재 registerInfo1의 닉네임은 modifyInfo1의 닉네임과 다르다.
+         */
+        memberService.register(MemberRequestDto.RegisterInfo.builder()
+                .email("newEmail@test.com")
+                .password("newPassword")
+                .nickname(modifyInfo1.getNickname())
+                .tel("010-0001-0001")
+                .activityArea("서울시 강남구")
+                .build().toServiceDto());
+
+        /**
+         * registerInfo1 데이터로 회원가입한 정보를 modifyInfo1 데이터로 수정한다.
+         * 이 때, 이미 위에서 modifyInfo1의 닉네임으로 가입하였기 때문에 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo1.toServiceDto()))
+                .isInstanceOf(DuplicateNicknameException.class)
+                .hasMessage(Message.DUPLICATE_MEMBER_NICKNAME);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외처리 : 중복된 핸드폰 번호")
+    void memberInfoModifyFailWhenTelDuplicate() {
+        /**
+         * registerInfo1 데이터로 회원가입
+         */
+        Long savedMemberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 새로운 데이터를 회원가입 시키는데, 이 때 modifyInfo1의 핸드폰 번호를 사용한다.
+         * 현재 registerInfo1의 핸드폰 번호는 modifyInfo1의 핸드폰 번호와 다르다.
+         */
+        memberService.register(MemberRequestDto.RegisterInfo.builder()
+                .email("newEmail@test.com")
+                .password("newPassword")
+                .nickname("newNickname")
+                .tel(modifyInfo1.getTel())
+                .activityArea("서울시 강남구")
+                .build().toServiceDto());
+
+        /**
+         * registerInfo1 데이터로 회원가입한 정보를 modifyInfo1 데이터로 수정한다.
+         * 이 때, 이미 위에서 modifyInfo1의 핸드폰 번호로 가입하였기 때문에 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo1.toServiceDto()))
+                .isInstanceOf(DuplicateTelException.class)
+                .hasMessage(Message.DUPLICATE_MEMBER_TEL);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외처리 : 패스워드에 이메일이 포함된 경우")
+    void memberInfoModifyFailWhenPasswordContainEmail() {
+        /**
+         * registerInfo1 데이터로 회원가입
+         */
+        Long savedMemberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 회원정보 수정용 데이터를 만든다. registerInfo1의 이메일을 가져와서 패스워드를 조합한다.
+         */
+        MemberRequestDto.ModifyInfo modifyInfo = MemberRequestDto.ModifyInfo.builder()
+                .password(registerInfo1.getEmail().split("@")[0] + "12#$")
+                .nickname(registerInfo1.getNickname())
+                .tel(registerInfo1.getTel())
+                .activityArea(registerInfo1.getActivityArea())
+                .build();
+
+        /**
+         * 패스워드에 이메일이 포함되어 있으므로 예외가 발생해야 한다.
+         * 이 때, 이미 위에서 modifyInfo1의 핸드폰 번호로 가입하였기 때문에 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_EMAIL);
+    }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외처리 : 패스워드에 닉네임이 포함된 경우")
+    void memberInfoModifyFailWhenPasswordContainNickname() {
+        /**
+         * registerInfo1 데이터로 회원가입
+         */
+        Long savedMemberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 회원정보 수정용 데이터를 만든다. registerInfo1의 이메일을 가져와서 패스워드를 조합한다.
+         */
+        MemberRequestDto.ModifyInfo modifyInfo = MemberRequestDto.ModifyInfo.builder()
+                .password(registerInfo1.getNickname() + "12#$")
+                .nickname(registerInfo1.getNickname())
+                .tel(registerInfo1.getTel())
+                .activityArea(registerInfo1.getActivityArea())
+                .build();
+
+        /**
+         * 패스워드에 이메일이 포함되어 있으므로 예외가 발생해야 한다.
+         * 이 때, 이미 위에서 modifyInfo1의 핸드폰 번호로 가입하였기 때문에 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
     }
 }
