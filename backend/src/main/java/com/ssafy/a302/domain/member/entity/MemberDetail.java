@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.member.entity;
 
+import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -57,5 +58,11 @@ public class MemberDetail {
 
     public void changeImage(String imageInfo) {
         this.imageInfo = imageInfo;
+    }
+
+    public void modifyInfo(MemberDto memberDto) {
+        this.nickname = memberDto.getNickname();
+        this.tel = memberDto.getTel();
+        this.activityArea = memberDto.getActivityArea();
     }
 }
