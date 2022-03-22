@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
-
+import cn from "classnames";
 export default function Email({
   URL,
   email,
@@ -26,11 +26,6 @@ export default function Email({
     }
   };
 
-  // 검사에 따른 input css 수정
-  const isEnteredEmailValid = () => {
-    if (email) return isEmail;
-  };
-
   // 이메일 중복확인 요청
   const onCheckEmail = (event) => {
     event.preventDefault();
@@ -51,20 +46,24 @@ export default function Email({
 
   return (
     <>
-      <div>
+      <div className="input-group mb-3">
         <label htmlFor="email">아이디 [Email]</label>
+
         <input
           id="email"
           name="email"
           type="email"
           placeholder="email@ssafy.com"
-          value={email}
           onChange={onEmailHandler}
-          className={`form-control ${inputClass(isEnteredEmailValid())}`}
           required
+          className={cn("form-control")}
         />
-
-        <button className={st.checkemail} onClick={onCheckEmail}>
+        <button
+          className="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
+          onClick={onCheckEmail}
+        >
           중복확인
         </button>
         {emailCheck === 200 ? <p>사용중인 이메일입니다.</p> : ""}
