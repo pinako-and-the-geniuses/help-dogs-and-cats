@@ -2,8 +2,10 @@ package com.ssafy.a302.domain.member.service;
 
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.exception.DuplicateEmailException;
 import com.ssafy.a302.domain.member.exception.DuplicateNicknameException;
+import com.ssafy.a302.domain.member.exception.DuplicateTelException;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.message.ErrorMessage;
@@ -76,18 +78,24 @@ class MemberServiceTest {
         /**
          * registerInfo1 회원가입
          */
-        MemberDto.Response responseDto = memberService.register(registerInfo1.toServiceDto());
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * 데이터베이스에 저장된 회원 데이터를 가져온다.
+         */
+        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
+        MemberDetail memberDetail = savedMember.getDetail();
 
         /**
          * 데이터 검증
          */
-        assertThat(responseDto.getSeq()).isNotNull();
-        assertThat(responseDto.getEmail()).isEqualTo(registerInfo1.getEmail());
-        assertThat(passwordEncoder.matches(registerInfo1.getPassword(), responseDto.getPassword())).isTrue();
-        assertThat(responseDto.getNickname()).isEqualTo(registerInfo1.getNickname());
-        assertThat(responseDto.getTel()).isEqualTo(registerInfo1.getTel());
-        assertThat(responseDto.getActivityArea()).isEqualTo(registerInfo1.getActivityArea());
-        assertThat(responseDto.getRole()).isEqualTo(Member.Role.MEMBER);
+        assertThat(savedMember.getSeq()).isNotNull();
+        assertThat(savedMember.getEmail()).isEqualTo(registerInfo1.getEmail());
+        assertThat(passwordEncoder.matches(registerInfo1.getPassword(), savedMember.getPassword())).isTrue();
+        assertThat(memberDetail.getNickname()).isEqualTo(registerInfo1.getNickname());
+        assertThat(memberDetail.getTel()).isEqualTo(registerInfo1.getTel());
+        assertThat(memberDetail.getActivityArea()).isEqualTo(registerInfo1.getActivityArea());
+        assertThat(savedMember.getRole()).isEqualTo(Member.Role.MEMBER);
     }
 
     @Test
