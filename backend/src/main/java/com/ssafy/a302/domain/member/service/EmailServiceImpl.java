@@ -1,8 +1,11 @@
 package com.ssafy.a302.domain.member.service;
 
 import com.ssafy.a302.domain.member.entity.EmailAuth;
+import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.EmailAuthRepository;
 import com.ssafy.a302.domain.member.service.dto.EmailAuthVerifyServiceDto;
+import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.domain.member.service.dto.PasswordResetServiceDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
 import com.ssafy.a302.global.util.JwtTokenUtil;
@@ -11,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +33,8 @@ public class EmailServiceImpl implements EmailService {
 
     private final EmailAuthRepository emailAuthRepository;
     private final JavaMailSender javaMailSender;
+    private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${spring.mail.username}")
     private static String sender;
@@ -88,5 +94,24 @@ public class EmailServiceImpl implements EmailService {
                 "\n============================================\n" +
                 "감사합니다.");
         javaMailSender.send(message);
+    }
+
+    @Override
+    @Transactional
+    public MemberDto.Response resetPassword(PasswordResetServiceDto passwordResetServiceDto) {
+        String newPassword = passwordResetServiceDto.getNewPassword();
+        Long memberSeq = passwordResetServiceDto.getMemberSeq();
+
+        Member member = memberService.getMemberBySeq(memberSeq);
+
+        if (newPassword.contains(member.getEmail().split("@")[0])) {
+            throw new IllegalArgumentException(Message.PASSWORD_CONTAIN_MEMBER_EMAIL);
+        } else if (newPassword.contains(member.getDetail().getNickname())) {
+            throw new IllegalArgumentException(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
+        }
+
+        member.changePassword(passwordEncoder.encode(newPassword));
+
+        return member.toResponseDto();
     }
 }
