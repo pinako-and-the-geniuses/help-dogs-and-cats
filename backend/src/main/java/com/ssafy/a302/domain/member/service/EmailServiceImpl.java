@@ -5,6 +5,7 @@ import com.ssafy.a302.domain.member.repository.EmailAuthRepository;
 import com.ssafy.a302.domain.member.service.dto.EmailAuthVerifyServiceDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,5 +73,20 @@ public class EmailServiceImpl implements EmailService {
         return emailAuthRepository.existsEmailAuthByEmailAndAuthKey(email, authKey);
     }
 
+    @Override
+    public void sendPasswordResetMail(String email) {
+        String jwtToken = JwtTokenUtil.getToken(email);
 
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setFrom(sender);
+        message.setSubject("도와주개냥 비밀번호 재설정 링크입니다.");
+        message.setText("안녕하세요 도와주개냥입니다.\n" +
+                "비밀번호 재설정 링크는 다음과 같습니다.\n" +
+                "============================================\n" +
+                "주소 : " + "http://localhost:3000/user/resetpwd/" + jwtToken +
+                "\n============================================\n" +
+                "감사합니다.");
+        javaMailSender.send(message);
+    }
 }

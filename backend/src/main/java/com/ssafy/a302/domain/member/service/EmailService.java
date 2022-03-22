@@ -11,4 +11,5 @@ public interface EmailService {
 
     boolean isExistsEmailAndAuthKey(String email, String authKey);
 
+    void sendPasswordResetMail(String email);
 }
