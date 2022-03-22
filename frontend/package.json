@@ -54,10 +54,6 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0"
   },
-<<<<<<< HEAD
 
   "proxy" : "http://apis.data.go.kr/1543061"
-=======
-  "proxy": "http://apis.data.go.kr/1543061/abandonmentPublicSrvc"
->>>>>>> front/feat/user/edit-components/#S06P22A302-59
 }
