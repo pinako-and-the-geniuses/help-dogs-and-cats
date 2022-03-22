@@ -2,12 +2,6 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
 header {
   margin: 40px 0;
   h2 {
@@ -16,9 +10,9 @@ header {
 }
 
 .my_city {
-    border: 1px solid $sub-color;
-    border-radius: 5px;
-    margin: 10px 0;
+  border: 1px solid $sub-color;
+  border-radius: 5px;
+  margin: 10px 0;
 
   P {
     padding: 20px 20px;
@@ -32,44 +26,27 @@ header {
 }
 
 .search_bar {
-    border: 1px solid $sub-color;
-    border-radius: 5px;
+  border: 1px solid $sub-color;
+  border-radius: 5px;
+  display: flex;
+  justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
+  // justify-content: space-between;
+  padding: 20px 20px;
+  margin: 10px 0;
+
+  div {
     display: flex;
-    justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
-    // justify-content: space-between;
-    padding: 20px 20px;
-    margin: 10px 0;
+    margin-right: 30px;
 
-    div {
-        display: flex;
-        margin-right: 30px;
-
-        p {
-            margin: auto;
-        }
-
-        select,
-        input{
-            border: 1px solid $sub-color;
-            margin-left: 10px;
-            border-radius: 5px;
-        }
-
-        input {
-            padding-left: 8px;
-            &:focus {
-                outline: none;
-            }
-        }
+    p {
+      margin: auto;
     }
 
-    .search_input {
-        p {
-            font-weight: bold;
-        }
-        select {
-            margin-right: 20px;
-        }
+    select,
+    input {
+      border: 1px solid $sub-color;
+      margin-left: 10px;
+      border-radius: 5px;
     }
 
     input {
@@ -78,7 +55,23 @@ header {
         outline: none;
       }
     }
-  
+  }
+
+  .search_input {
+    p {
+      font-weight: bold;
+    }
+    select {
+      margin-right: 20px;
+    }
+  }
+
+  input {
+    padding-left: 8px;
+    &:focus {
+      outline: none;
+    }
+  }
 
   .search-input {
     p {
@@ -100,6 +93,9 @@ header {
 }
 
 table {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+}
+
+.my_table {
+  text-align: center;
 }
