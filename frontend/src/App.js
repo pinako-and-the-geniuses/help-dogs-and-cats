@@ -14,7 +14,6 @@ import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
 import { Community, CommunityDetail } from "./pages/community";
 import NotFound from "./NotFound";
-import Home from "./components/Home";
 
 function App() {
   return (

@@ -34,11 +34,11 @@ export default function Community() {
         
       </div>
       <div className="d-md-flex justify-content-md-end">
-        <button type="submit">글쓰기</button>
+        <button className={style.communitybutton} type="submit">글쓰기</button>
       </div>
       
       {/* <table className="table table-bordered table-hover"> */}
-      <table className={cn("table table-bordered table-hover", style.my_table)}>
+      <table className={cn("table table-hover", style.my_table)}>
         <thead>
           <tr>
             <th scope="col">태그</th>
