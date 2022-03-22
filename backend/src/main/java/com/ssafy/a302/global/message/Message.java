@@ -25,6 +25,14 @@ public class Message {
 
     public static String PASSWORD_CONTAIN_MEMBER_NICKNAME;
 
+    public static String SUCCESS_AUTHENTICATE_EMAIL;
+
+    public static String FAIL_AUTHENTICATE_EMAIL;
+
+    public static String SUCCESS_SEND_EMAIL;
+
+    public static String FAIL_SEND_EMAIL;
+
     @Autowired
     public Message(MessageSource messageSource) {
         REGISTER_MEMBER = messageSource.getMessage("register.member", null, null);
@@ -40,5 +48,12 @@ public class Message {
 
         PASSWORD_CONTAIN_MEMBER_EMAIL = messageSource.getMessage("password-contain.member.email", null, null);
         PASSWORD_CONTAIN_MEMBER_NICKNAME = messageSource.getMessage("password-contain.member.nickname", null, null);
+
+        SUCCESS_AUTHENTICATE_EMAIL = messageSource.getMessage("success.authenticate.email",null,null);
+        FAIL_AUTHENTICATE_EMAIL = messageSource.getMessage("fail.authenticate.email",null,null);
+
+        SUCCESS_SEND_EMAIL = messageSource.getMessage("success.send.email",null,null);
+        FAIL_SEND_EMAIL = messageSource.getMessage("fail.send.email",null,null);
+
     }
 }
