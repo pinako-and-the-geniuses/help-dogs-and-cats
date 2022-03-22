@@ -1,0 +1,233 @@
+$main-text: #292929;
+$mid-text: #333333;
+$sub-text: #999999;
+$main-color: #b59d7c;
+$sub-color: #E8E8E8;
+
+.myContainer {
+    margin: 20px 180px;
+    h1 {
+        margin: 20px 0;
+    }
+}
+
+.titleBox{
+    display: grid;
+    grid-template-columns: 70px auto 130px;
+    // display: flex;
+    // justify-content: space-between;
+    border-bottom: 1px solid $main-color;
+    height: 50px;
+
+    .leftdays {
+        padding: 12px;
+        margin: 0;
+        background-color: $main-color;
+        text-align: center;
+        color: white;
+    }    
+
+    .title {
+        // border: 1px solid $sub-color;
+        color: $main-text;
+        margin: 0 20px;
+        font-weight: bold;
+        line-height: 50px;
+    }
+
+    .joinBtn {
+        padding: 0 25px;
+        font-size: 20px;
+        border: none;
+        color: white;
+        background-color: #333333;
+    }
+
+    .joinXBtn {
+        background-color: silver;
+    }
+}
+
+.infoBox {
+    margin: 10px 0;
+    padding: 20px 0;
+    background-color: #f2f2f2;
+    color: $sub-text;
+    
+    li {
+        list-style: none;
+        padding:5px;
+    }
+
+    ul,
+    p {
+        margin: 0;
+    }
+
+    .first {
+        display: inline-flex;
+        p {
+            margin-right: 60px;
+        }
+    }
+
+    .people {
+        display: inline-flex;
+
+        button {
+            font-size: 13px;
+            padding: 0 5px;
+            margin-left: 8px;
+            background-color: $main-color;
+            border-radius: 5px;
+            border: 0;
+            color: white;
+        }
+    }
+
+    .last {
+        padding-bottom: 20px;
+        .contact {
+            float: left;
+        }
+        .writer {
+            float: right;
+            margin-right: 25px;
+        }
+
+    }
+}
+
+.mainBox {
+    background-color: white;
+    box-shadow: 0px 0px 10px $sub-color;
+    padding: 30px;
+}
+
+.editPost {
+    text-align: end;
+    right: 30px;
+    padding: 10px 0;
+
+    p {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        color: $sub-text;
+        &:hover{
+            color: $main-text;
+            cursor: pointer;
+        }
+    }
+}
+
+.commentBox {
+    background-color: white;
+    box-shadow: 0px 0px 10px $sub-color;
+    padding: 30px;
+
+    img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: $sub-color;
+    }
+
+    .comment {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        padding: 10px 0;
+
+        .content {
+            padding: 0 25px;
+
+            .top {
+                border: 1px solid sienna;
+                margin-bottom: 5px;
+                display: grid;
+                grid-template-columns: 3fr 1fr 1fr;
+
+                .writer {
+                    color: $main-text;
+                    font-weight: bold;
+                }
+
+                .date,
+                .delete {
+                    color: $sub-text;
+                }
+                span {
+                    border: 1px solid blue;
+                }
+            }
+        }
+    }
+
+}
+// .commentBox {
+//     display: flex;
+//     flex-direction: column;
+//     background-color: white;
+//     box-shadow: 0px 0px 10px $sub-color;
+//     padding: 30px;
+    
+//     .addComment {
+//         display: grid;
+//         grid-template-columns: 1fr 90px;
+
+//         input {
+//             height: 40px;
+//             border: 0;
+//             border-bottom: 1px solid $sub-text;
+//             padding-left: 5px;
+//             color: $mid-text;
+//             &:focus {
+//                 outline: none;
+//               }
+//         }
+
+//         button {
+//             height: 40px;
+//             padding: 0 10px;
+//             border: 0;
+//             background-color: #b59d7c;
+//             color: white;
+//             font-size: 14px;
+//         }
+
+//     }
+
+//     .comments {
+//         border: 1px solid blue;
+//         // display: flex;
+//         // justify-content: space-evenly;
+//         display: grid;
+//         grid-template-columns: 1fr 4fr 1fr;
+//         color: $mid-text;
+//         margin:10px 0;
+
+//         .commentWriter {
+//             display: flex;
+//             align-items: center;
+//             justify-content: center;
+
+//             img {
+//                 width: 35px;
+//                 height: 35px;
+//                 background-color: $sub-color;
+//                 border-radius: 50%;
+//             }
+//             p {
+//                 margin: 0 0 0 10px;
+//             }
+//         }
+
+//         .content {
+//             display: flex;
+//             p {
+//                 margin: 0;
+//             }
+//         }
+//     }
+
+
+// }
