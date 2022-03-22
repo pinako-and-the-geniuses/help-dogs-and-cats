@@ -80,4 +80,36 @@ class MemberRepositoryTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.INVALID_MEMBER_SEQ);
     }
+
+    @Test
+    @DisplayName("이메일로 회원 엔티티 조회")
+    void findMemberByEmail() {
+        Member savedMember = memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        Member findMember = memberRepository.findMemberByEmail(savedMember.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER_EMAIL));
+
+        /**
+         * 동등성 비교
+         */
+        assertThat(findMember)
+                .usingRecursiveComparison()
+                .ignoringFields("detail.member.createdDate", "detail.member.lastModifiedDate", "createdDate", "lastModifiedDate")
+                .isEqualTo(member1);
+
+        /**
+         * 삭제 처리
+         */
+        findMember.delete();
+
+        /**
+         * 삭제 처리 후에 null이 반환되는지 확인한다.
+         */
+        assertThatThrownBy(() -> memberRepository.findMemberByEmail(savedMember.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.NULL_MEMBER);
+    }
 }
