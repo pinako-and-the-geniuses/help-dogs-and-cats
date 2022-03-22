@@ -126,4 +126,10 @@ public class MemberServiceImpl implements MemberService {
 
         return findMember.toLoginResponseDto();
     }
+
+    @Override
+    public Member getMemberBySeq(Long seq) {
+        return memberRepository.findMemberBySeq(seq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
+    }
 }

@@ -5,7 +5,7 @@ import com.ssafy.a302.domain.member.service.dto.MemberDto;
 
 public interface MemberService {
 
-    Member findMemberByEmail(String email);
+    Member getMemberByEmail(String email);
 
     MemberDto.Response register(MemberDto memberDto);
 
@@ -18,4 +18,6 @@ public interface MemberService {
     MemberDto.LoginResponse getMemberLoginResponseDto(String email);
 
     MemberDto.Response modify(Long memberSeq, MemberDto modifyInfoDto);
+
+    Member getMemberBySeq(Long seq);
 }
