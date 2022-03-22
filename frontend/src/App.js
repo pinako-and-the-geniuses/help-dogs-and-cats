@@ -14,7 +14,7 @@ import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
 import { Community, CommunityDetail } from "./pages/community";
 import NotFound from "./NotFound";
-import Home from "./components/Home";
+import { VolunteerList, VolunteerDetail } from './pages/volunteer'
 
 function App() {
   return (
@@ -44,6 +44,10 @@ function App() {
         <>
           <Route path="/shelter/detail" element={<ShelterDetail />} />
           <Route path="/shelter/list" element={<ShelterList />} />
+        </>
+        <>
+          <Route path="/volunteer/list" element={<VolunteerList />} />
+          <Route path="/volunteer/detail/:id" element={<VolunteerDetail />} />
         </>
         <>
           <Route path="*" element={<NotFound />} />

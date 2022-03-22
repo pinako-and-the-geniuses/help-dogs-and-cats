@@ -417,7 +417,6 @@ class MemberServiceTest {
          */
         MemberDto.Response savedMemberDto = memberService.register(registerInfo1.toServiceDto());
 
-
         /**
          * 회원가입된 정보와 변경할 정보가 다른 것을 확인
          */

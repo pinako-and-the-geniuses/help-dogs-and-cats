@@ -1,0 +1,17 @@
+.findForm {
+  max-width: 600px;
+  .findId {
+    margin-top: 20px;
+  }
+  .findCategory {
+    a {
+      text-decoration: none;
+      font-size: medium;
+      color: black;
+    }
+    hr {
+      height: 5px;
+      background-color: rgb(104, 86, 7);
+    }
+  }
+}

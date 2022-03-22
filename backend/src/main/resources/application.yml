@@ -9,6 +9,11 @@ spring:
   messages:
     basename: messages,errors
 
+#  task:
+#    scheduling:
+#      pool:
+#        size: 3
+
 logging:
   level:
     com.ssafy.bjbj: debug
