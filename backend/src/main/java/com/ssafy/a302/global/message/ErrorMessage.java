@@ -23,6 +23,10 @@ public class ErrorMessage {
 
     public static String NULL_MEMBER_EMAIL;
 
+    public static String INVALID_MEMBER_SEQ;
+
+    public static String FORBIDDEN;
+
     public static String ERROR;
 
     @Autowired
@@ -37,6 +41,10 @@ public class ErrorMessage {
 
         NULL_MEMBER = messageSource.getMessage("null.member", null, null);
         NULL_MEMBER_EMAIL = messageSource.getMessage("null.member.email", null, null);
+
+        INVALID_MEMBER_SEQ = messageSource.getMessage("invalid.member.seq", null, null);
+
+        FORBIDDEN = messageSource.getMessage("forbidden", null, null);
 
         ERROR = messageSource.getMessage("error", null, null);
     }
