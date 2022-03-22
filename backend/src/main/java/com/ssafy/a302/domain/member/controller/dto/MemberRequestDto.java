@@ -2,10 +2,7 @@ package com.ssafy.a302.domain.member.controller.dto;
 
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.Pattern;
 
@@ -82,6 +79,44 @@ public class MemberRequestDto {
             return MemberDto.builder()
                     .email(email)
                     .password(password)
+                    .build();
+        }
+    }
+
+    @Schema(name = "회원정보 수정 DTO 요청 DTO", description = "회원정보 수정 API 호출 시 사용되는 요청 DTO 입니다.")
+    @Getter
+    @NoArgsConstructor
+    @ToString(of = {"password", "nickname", "tel", "activityArea"})
+    public static class ModifyInfo {
+
+        @Schema(name = "password", title = "패스워드", description = "패스워드입니다.", example = "pass12#$", minLength = 8, maxLength = 20, required = true)
+        private String password;
+
+        @Schema(name = "nickname", title = "닉네임", description = "닉네임입니다.", example = "good", minLength = 4, maxLength = 10, required = true)
+        @Pattern(message = "{pattern.member.nickname}", regexp = "^[0-9|a-z|가-힣|\\s]{4,10}$")
+        private String nickname;
+
+        @Schema(name = "tel", title = "핸드폰 번호", description = "핸드폰 번호입니다.", example = "010-1234-5678", required = true)
+        @Pattern(message = "{pattern.member.tel}", regexp = "^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$")
+        private String tel;
+
+        @Schema(name = "activityArea", title = "활동 지역", description = "활동 지역입니다.", example = "서울시 강남구", required = true)
+        private String activityArea;
+
+        @Builder
+        public ModifyInfo(String password, String nickname, String tel, String activityArea) {
+            this.password = password;
+            this.nickname = nickname;
+            this.tel = tel;
+            this.activityArea = activityArea;
+        }
+
+        public MemberDto toServiceDto() {
+            return MemberDto.builder()
+                    .password(password)
+                    .nickname(nickname)
+                    .tel(tel)
+                    .activityArea(activityArea)
                     .build();
         }
     }
