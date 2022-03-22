@@ -41,8 +41,13 @@ $sub-color: #999999;
                 margin-left: 10px;
                 border: 1px solid $sub-color;
                 line-height: 18px;
-
             }
+
+            span{
+                
+                margin-left: 3px;
+            }
+
 
             .endDate {
                 display: flex;
