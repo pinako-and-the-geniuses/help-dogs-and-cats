@@ -366,4 +366,41 @@ class MemberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ErrorMessage.NULL_MEMBER);
     }
+
+    @Test
+    @DisplayName("회원정보 수정 - 성공")
+    void memberInfoModifySuccess() {
+        /**
+         * registerInfo1 회원가입
+         */
+        MemberDto.Response savedMemberDto = memberService.register(registerInfo1.toServiceDto());
+
+
+        /**
+         * 회원가입된 정보와 변경할 정보가 다른 것을 확인
+         */
+        assertThat(passwordEncoder.matches(modifyInfo1.getPassword(), savedMemberDto.getPassword())).isFalse();
+        assertThat(savedMemberDto.getNickname()).isNotEqualTo(modifyInfo1.getNickname());
+        assertThat(savedMemberDto.getTel()).isNotEqualTo(modifyInfo1.getTel());
+        assertThat(savedMemberDto.getActivityArea()).isNotEqualTo(modifyInfo1.getActivityArea());
+
+        /**
+         * 회원정보 수정
+         */
+        memberService.modify(savedMemberDto.getSeq(), modifyInfo1.toServiceDto());
+
+        /**
+         * DB에 저장된 회원 정보를 가져온다.
+         */
+        Member findMember = memberService.getMemberBySeq(savedMemberDto.getSeq());
+        MemberDetail memberDetail = findMember.getDetail();
+
+        /**
+         * 데이터가 잘 변경되었는지 검증
+         */
+        assertThat(passwordEncoder.matches(modifyInfo1.getPassword(), findMember.getPassword())).isTrue();
+        assertThat(memberDetail.getNickname()).isEqualTo(modifyInfo1.getNickname());
+        assertThat(memberDetail.getTel()).isEqualTo(modifyInfo1.getTel());
+        assertThat(memberDetail.getActivityArea()).isEqualTo(modifyInfo1.getActivityArea());
+    }
 }
