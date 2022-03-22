@@ -176,6 +176,13 @@ $sub-color: #E8E8E8;
         grid-template-rows: 1fr auto;
         margin-top: 20px;
         
+        textarea {
+            padding: 10px;
+            border: 1px solid $mid-text;
+            &:focus {
+                outline: none;
+            }
+        }
 
         button {
             height: 40px;
@@ -187,6 +194,31 @@ $sub-color: #E8E8E8;
         }
 
    }
+
+    .addReply {
+        display: grid;
+        grid-template-columns: 50px auto 50px 30px;
+        margin-bottom: 20px;
+
+        textarea {
+            padding: 10px;
+            border: 1px solid $mid-text;
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .replyBtn {
+            border: 0;
+            color: white;
+            background-color: $mid-text;
+        }
+
+        .XBtn {
+            border: 0;
+            background-color: white;;
+        }
+    }  
 }
 
 .replyBox {
