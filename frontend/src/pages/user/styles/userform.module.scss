@@ -8,38 +8,22 @@ body {
     height: 100%;
   }
 }
+.loginForm {
+  max-width: 500px;
+}
+
+.userinfoForm {
+  font-family: "Roboto", sans-serif;
+  overflow: auto;
+  height: 100%;
+  max-width: 600px;
+  margin: 50px auto;
+}
 
 .userformPage {
   overflow: auto;
   height: 100%;
   font-family: "Roboto", sans-serif;
-
-  .loginForm {
-    max-width: 500px;
-  }
-
-  .userinfoForm {
-    max-width: 600px;
-    margin: 50px auto;
-  }
-
-  .findForm {
-    max-width: 600px;
-    .findId {
-      margin-top: 20px;
-    }
-    .findCategory {
-      a {
-        text-decoration: none;
-        font-size: medium;
-        color: black;
-      }
-      hr {
-        height: 5px;
-        background-color: rgb(104, 86, 7);
-      }
-    }
-  }
 }
 
 .form {
@@ -56,21 +40,22 @@ body {
     margin-bottom: 25px;
   }
   label {
+    width: 100%;
+    margin-top: 15px;
     margin-bottom: 10px;
   }
+
   input {
     font-family: "Roboto", sans-serif;
     outline: 0;
     background: #f2f2f2;
     width: 100%;
     border: 0;
-    margin: 0 0 15px;
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
   }
   .longButton {
-    font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
     background: #b59d7c;
@@ -78,11 +63,12 @@ body {
     border: 0;
     padding: 15px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 15px;
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
   }
+
   button:hover,
   button:active,
   button:focus {
@@ -111,26 +97,6 @@ body {
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
-
-  button {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-    outline: 0;
-    border: 0;
-    padding: 15px;
-    font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-    width: auto;
-    background-color: #ffffff;
-    color: #a07947;
-  }
-  button:hover,
-  button:active,
-  button:focus {
-    background: #ffffff;
-  }
 }
 .msg {
   color: #a07947;
