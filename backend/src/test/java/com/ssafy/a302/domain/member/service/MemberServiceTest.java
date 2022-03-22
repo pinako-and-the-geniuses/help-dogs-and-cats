@@ -496,4 +496,31 @@ class MemberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_EMAIL);
     }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외처리 : 패스워드에 닉네임이 포함된 경우")
+    void memberInfoModifyFailWhenPasswordContainNickname() {
+        /**
+         * registerInfo1 데이터로 회원가입
+         */
+        Long savedMemberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 회원정보 수정용 데이터를 만든다. registerInfo1의 이메일을 가져와서 패스워드를 조합한다.
+         */
+        MemberRequestDto.ModifyInfo modifyInfo = MemberRequestDto.ModifyInfo.builder()
+                .password(registerInfo1.getNickname() + "12#$")
+                .nickname(registerInfo1.getNickname())
+                .tel(registerInfo1.getTel())
+                .activityArea(registerInfo1.getActivityArea())
+                .build();
+
+        /**
+         * 패스워드에 이메일이 포함되어 있으므로 예외가 발생해야 한다.
+         * 이 때, 이미 위에서 modifyInfo1의 핸드폰 번호로 가입하였기 때문에 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
+    }
 }
