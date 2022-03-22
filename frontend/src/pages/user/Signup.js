@@ -39,17 +39,28 @@ export default function Signup() {
     }
   };
 
-  const onPolicyHandler = (event) => {
-    console.log(event.currentTarget.value);
-    setPolicy(event.currentTarget.value);
+  const onPolicyHandler = (e) => {
+    if (policy === 0) {
+      setPolicy(1);
+    } else {
+      setPolicy(0);
+    }
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
     if (isEmail && isNickName) {
       alert("중복확인이 필요합니다.");
-    }
-    if (isEmail && isPwd && isPwdConfirm && isNickName && isPhone && policy) {
+    } else if (policy === 0) {
+      alert("약관 동의가 필요합니다.");
+    } else if (
+      isEmail &&
+      isPwd &&
+      isPwdConfirm &&
+      isNickName &&
+      isPhone &&
+      policy
+    ) {
       axios({
         url: `${URL}/members`,
         method: "POST",
@@ -78,7 +89,10 @@ export default function Signup() {
       alert("형식을 다시 확인해 입력해주세요");
     }
   };
-
+  console.log("ismail", isEmail);
+  console.log("ispwd", isPwd);
+  console.log("isNickName", isNickName);
+  console.log("isPhone", isPhone);
   return (
     <div className="userform-page">
       <form className={`${st.userinfoForm} ${st.userform}`}>

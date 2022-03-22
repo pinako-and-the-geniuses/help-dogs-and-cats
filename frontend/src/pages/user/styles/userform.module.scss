@@ -1,13 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-html,
-body {
-  margin: 0;
-  height: 100%;
-  #root {
-    height: 100%;
-  }
-}
 .loginForm {
   max-width: 500px;
 }
@@ -101,4 +93,5 @@ body {
 .msg {
   color: #a07947;
   font-size: small;
+  margin-bottom: 0px;
 }
