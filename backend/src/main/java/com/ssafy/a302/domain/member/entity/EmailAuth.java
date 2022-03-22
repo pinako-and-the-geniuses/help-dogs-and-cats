@@ -9,20 +9,17 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(
-        name = "tb_email_auth",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "authKey"),
-        }
+        name = "tb_email_auth"
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of ={"email", "authKey"})
+@IdClass(EmailAuthSeq.class)
 public class EmailAuth extends BaseCreatedEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
     private String email;
 
-    @Column(nullable = false)
+    @Id
     private String authKey;
 
     @Builder

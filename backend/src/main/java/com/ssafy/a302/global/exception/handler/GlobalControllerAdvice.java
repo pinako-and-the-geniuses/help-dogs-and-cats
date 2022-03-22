@@ -3,8 +3,10 @@ package com.ssafy.a302.global.exception.handler;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.exception.DuplicateException;
 import com.ssafy.a302.global.message.ErrorMessage;
+import com.ssafy.a302.global.message.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -19,6 +21,15 @@ import java.util.Map;
 @Slf4j
 @RestControllerAdvice
 public class GlobalControllerAdvice {
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(MailException.class)
+    public ErrorResponseDto<?> mailExceptionHandler(MailException e){
+        logPrint(e);
+        return ErrorResponseDto.builder()
+                .message(Message.FAIL_SEND_EMAIL)
+                .build();
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)

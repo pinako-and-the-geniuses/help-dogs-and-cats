@@ -23,6 +23,8 @@ public class ErrorMessage {
 
     public static String NULL_MEMBER_EMAIL;
 
+    public static String NULL_EMAIL_AUTH;
+
     public static String ERROR;
 
     @Autowired
@@ -37,6 +39,8 @@ public class ErrorMessage {
 
         NULL_MEMBER = messageSource.getMessage("null.member", null, null);
         NULL_MEMBER_EMAIL = messageSource.getMessage("null.member.email", null, null);
+
+        NULL_EMAIL_AUTH = messageSource.getMessage("null.email.auth",null,null);
 
         ERROR = messageSource.getMessage("error", null, null);
     }

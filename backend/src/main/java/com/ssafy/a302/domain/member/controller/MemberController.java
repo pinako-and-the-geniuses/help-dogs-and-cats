@@ -1,6 +1,8 @@
 package com.ssafy.a302.domain.member.controller;
 
+import com.ssafy.a302.domain.member.controller.dto.EmailAuthVerifyRequestDto;
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
+import com.ssafy.a302.domain.member.service.EmailService;
 import com.ssafy.a302.domain.member.service.MemberService;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.dto.BaseResponseDto;
@@ -35,6 +37,8 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final EmailService emailService;
 
     @Operation(
             summary = "회원가입 API",
@@ -230,5 +234,66 @@ public class MemberController {
                 .message(status == HttpStatus.OK ? Message.SUCCESS_LOGIN : Message.FAIL_LOGIN)
                 .data(data)
                 .build(), status);
+    }
+
+
+    @Operation(
+            summary = "이메일 인증키 메일 전송 API",
+            description = "이메일을 입력받아 해당 이메일로 인증키를 전송합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "해당 이메일로 인증키가 전송되었습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "이메일 형식 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/email-auth/{email}")
+    public BaseResponseDto<?> sendEmailAuthKey(@PathVariable String email) {
+        String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
+        if (!email.matches(emailRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_EMAIL);
+        }
+        emailService.sendEmailAuthKey(email);
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_SEND_EMAIL)
+                .build();
+    }
+
+    @Operation(
+            summary = "이메일 인증키 검증 API",
+            description = "회원이 입력한 인증키와 이메일을 입력받아 검증합니다..",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "이메일 인증에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "인증키가 만료되었거나, 일치하지 않아 이메일 인증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/email-auth")
+    public BaseResponseDto<?> verifyEmailAuthKey(@Validated @RequestBody EmailAuthVerifyRequestDto emailAuthVerifyRequestDto) {
+        emailService.verifyEmail(emailAuthVerifyRequestDto.toEmailAuthVerifyServiceDto());
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_AUTHENTICATE_EMAIL)
+                .build();
     }
 }
