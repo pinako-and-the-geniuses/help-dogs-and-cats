@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Member findMemberByEmail(String email) {
+    public Member getMemberByEmail(String email) {
         return memberRepository.findMemberByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
     }
@@ -53,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberDto.toEntity();
         member.changeRole(Member.Role.MEMBER);
         member.encryptPassword(passwordEncoder);
-        MemberDetail detail = memberDto.toDetailEntity(member);
+        memberDto.toDetailEntity(member);
 
         Member savedMember = memberRepository.save(member);
 
