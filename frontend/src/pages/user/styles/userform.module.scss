@@ -26,7 +26,7 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
-.form {
+.userform {
   position: relative;
   z-index: 1;
   background: #ffffff;
@@ -68,12 +68,12 @@ body {
     transition: all 0.3 ease;
     cursor: pointer;
   }
-
   button:hover,
   button:active,
   button:focus {
     background: #8f6c3b;
   }
+
   .checkemail {
     width: auto;
   }

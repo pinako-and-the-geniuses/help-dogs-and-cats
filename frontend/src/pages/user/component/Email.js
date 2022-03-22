@@ -1,15 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import st from "../styles/userform.module.scss";
 import cn from "classnames";
-export default function Email({
-  URL,
-  email,
-  setEmail,
-  setIsEmail,
-  isEmail,
-  inputClass,
-}) {
+
+export default function Email({ URL, email, setEmail, setIsEmail }) {
   const [emailCheck, setEmailCheck] = useState("");
 
   // 이메일 유효성 검사
@@ -30,25 +23,30 @@ export default function Email({
   const onCheckEmail = (event) => {
     event.preventDefault();
     axios
-      .get(`${URL}/members/email-duplicate-check/`, {
-        params: {
-          email: `${email}`,
-        },
-      })
+      .get(`${URL}/members/email-duplicate-check/${email}`)
       .then((res) => {
         console.log(res);
         setEmailCheck(res.data);
+        isValid();
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  // 중복확인 마친 후 재인증
+  const isValid = () => {
+    if (emailCheck !== 204) {
+      setIsEmail(false);
+    } else {
+      setIsEmail(true);
+    }
+  };
+
   return (
     <>
       <div className="input-group mb-3">
         <label htmlFor="email">아이디 [Email]</label>
-
         <input
           id="email"
           name="email"
@@ -61,7 +59,7 @@ export default function Email({
         <button
           className="btn btn-outline-secondary"
           type="button"
-          id="button-addon2"
+          id="button-addon"
           onClick={onCheckEmail}
         >
           중복확인
@@ -69,7 +67,7 @@ export default function Email({
         {emailCheck === 200 ? <p>사용중인 이메일입니다.</p> : ""}
         {emailCheck === 204 ? <p>사용 가능한 이메일입니다.</p> : ""}
         {emailCheck === 400 ? <p>이메일 형식을 확인하세요.</p> : ""}
-        {emailCheck === 400 ? <p>서버에러.</p> : ""}
+        {emailCheck === 500 ? <p>서버에러.</p> : ""}
       </div>
     </>
   );

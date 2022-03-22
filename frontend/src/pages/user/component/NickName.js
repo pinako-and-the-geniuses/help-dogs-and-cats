@@ -19,22 +19,28 @@ export default function NickName({
       setIsNickName(true);
     }
   };
+
   // 닉네임 중복확인 요청
   const onCheckNickName = (event) => {
     event.preventDefault();
     axios
-      .get(`${URL}/members/nickName-duplicate-check/`, {
-        params: {
-          nickName: `${nickName}`,
-        },
-      })
+      .get(`${URL}/members/nickname-duplicate-check/${nickName}`)
       .then((res) => {
         console.log(res);
         setNickNameCheck(res.data);
+        isValid();
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const isValid = () => {
+    if (nickNameCheck !== 204) {
+      setIsNickName(false);
+    } else {
+      setIsNickName(true);
+    }
   };
 
   return (
@@ -62,7 +68,7 @@ export default function NickName({
         {nickNameCheck === 200 ? <p>사용중인 닉네임입니다.</p> : ""}
         {nickNameCheck === 204 ? <p>사용 가능한 닉네임입니다.</p> : ""}
         {nickNameCheck === 400 ? <p>닉네임 형식을 확인하세요.</p> : ""}
-        {nickNameCheck === 400 ? <p>서버에러.</p> : ""}
+        {nickNameCheck === 500 ? <p>서버에러.</p> : ""}
       </div>
     </>
   );
