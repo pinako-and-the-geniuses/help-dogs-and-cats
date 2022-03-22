@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import style from './styles/VolunteerDetail.module.scss';
+import Reply from './Reply';
 
 function VolunteerDetail(){
     const [join, setJoin] = useState(false);
+    const [reply, setReply] = useState(false);
 
     const joinBtn=()=>{
         setJoin(!join);
     }
 
+    const openReply=()=>{
+        setReply(!reply);
+    }
+
     return(
         <div className={style.myContainer}>
-            <p>하이</p>
-            <p>하이</p>
             <h1>봉사활동</h1>
 
             <div className={style.titleBox}>
@@ -54,50 +58,17 @@ function VolunteerDetail(){
             </div>
             <br/>
 
-            {/* <div className={style.commentBox}>
-                <div className={style.addComment}>
-                    <input type="text" />
-                    <button type="submit">댓글 작성</button>
-                </div>
-                <div className={style.comments}>
-                    <div className={style.commentWriter}>
-                        <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png"/>
-                        <p>작성자</p>
-                    </div>
-
-                    <div className={style.content}>
-                        <p>안녕하세요 채팅 드럈습니다 확인해주세요!</p>
-                        댓글 누르면 답글 작성 가능
-                        <p>2022-03-22</p>
-                    </div>
-
-                    <p>삭제</p>
-                </div>
-            </div> */}
-
             <div className={style.commentBox}>
-                {/* <div className={style.comment}>
-                    <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png" />
-
-                    <div className={style.content}>
-                        <span className={style.writer}>싸피강아지</span>
-                        <span className={style.date}>2022-03-22</span>
-                        <span>삭제</span>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor possimus quae quas temporibus adipisci ad, consequatur ut nesciunt et blanditiis totam harum cupiditate quis aperiam amet molestias deserunt suscipit ipsa. Omnis, perferendis ullam? Numquam molestias unde reiciendis ab voluptate ullam ex amet laborum soluta vitae! Corporis ipsa architecto omnis est?
-                        </p>
-                    </div>
-                </div>
-                <hr /> */}
-                {/* 밑에다 작업함!!!!!! */}
                 <div className={style.comment}>
                     <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png" />
 
                     <div className={style.content}>
                         <div className={style.top}>
-                            <span className={style.writer}>싸피강아지</span>
-                            <span className={style.date}>2022-03-22</span>
-                            <span className={style.delete}>삭제</span>
+                            <div className={style.left}>
+                                <span className={style.writer}>싸피강아지</span>
+                                <span className={style.date}>2022-03-22</span>
+                            </div>
+                            <p className={style.delete}>삭제</p>
                         </div>
                         <p>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor possimus quae quas temporibus adipisci ad, consequatur ut nesciunt et blanditiis totam harum cupiditate quis aperiam amet molestias deserunt suscipit ipsa. Omnis, perferendis ullam? Numquam molestias unde reiciendis ab voluptate ullam ex amet laborum soluta vitae! Corporis ipsa architecto omnis est?
@@ -105,7 +76,13 @@ function VolunteerDetail(){
                     </div>
                 </div>
                 <hr />
-                
+                <Reply/>
+
+                <div className={style.addComment}>
+                    {/* <input type="text" /> */}
+                    <textarea cols="30" rows="6"></textarea>
+                    <button type="submit">댓글 작성</button>
+                </div>
             </div>
 
 
