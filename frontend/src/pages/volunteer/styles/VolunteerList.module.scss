@@ -1,0 +1,104 @@
+$main-text: #292e3d;
+$main-color: #b59d7c;
+$sub-color: #999999;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.myContainer {
+    
+    .title{
+        font-weight: bold;
+        width: 100px;
+        padding: 0 10px;
+        margin: 0;
+        margin-left: 10px;
+        width: 100px;
+    }
+
+    .searchBar {
+        border: 1px solid $sub-color;
+        border-radius: 5px;
+        padding: 20px 20px;
+        margin: 10px 0; 
+
+        
+        .top {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+
+            .volunteer {
+                display: flex;
+                align-items: center;
+                width: 350px;
+            }
+    
+            .vol_time{
+                margin-left: 10px;
+                border: 1px solid $sub-color;
+                line-height: 18px;
+            }
+
+            span{
+                
+                margin-left: 3px;
+            }
+
+
+            .endDate {
+                display: flex;
+
+                input {
+                    padding-left: 8px;
+                }
+            }
+        }
+
+        .bottom {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+    
+            .areaBox {
+                display: flex;
+                width: 350px;
+
+                .area {
+                    margin: 0 5px 0 10px;
+                }
+
+                select { 
+                    height: fit-content;
+                    margin: 0;
+                }
+        
+            }
+
+            .titleBox {
+                display: flex;
+
+                input {
+                    padding-left: 8px;
+                    &:focus {
+                      outline: none;
+                    }
+                }
+            }
+        }
+    }
+    
+    table {
+        margin-top: 30px;
+        border-top: 1px solid lightgrey;        
+    }
+    
+    nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
