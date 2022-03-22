@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import style from './styles/VolunteerDetail.module.scss';
-import Comment from './Comment';
+import Comment from 'components/Comment/Comment';
 
 function VolunteerDetail(){
     const [join, setJoin] = useState(false);

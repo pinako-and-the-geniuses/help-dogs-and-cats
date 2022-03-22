@@ -1,4 +1,4 @@
-import style from './styles/VolunteerDetail.module.scss';
+import style from './style/Comment.module.scss';
 
 function AddComment(){
     return(

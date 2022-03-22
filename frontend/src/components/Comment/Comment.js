@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Reply from './Reply';
 import AddComment from './AddComment';
-import style from './styles/VolunteerDetail.module.scss';
+import style from './style/Comment.module.scss';
 
 function Comment(){
     const [reply, setReply] = useState(false);
