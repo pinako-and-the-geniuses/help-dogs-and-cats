@@ -1,5 +1,5 @@
-export default function Pagenation(){
+export default function Pagination(){
     return(
-
+        <></>
     )
 };
