@@ -144,6 +144,10 @@ public class Member extends BaseLastModifiedEntity {
         this.password = password;
     }
 
+    public void delete() {
+        this.isDeleted = true;
+    }
+
     public MemberDto.Response toResponseDto() {
         return MemberDto.Response.builder()
                 .seq(seq)
