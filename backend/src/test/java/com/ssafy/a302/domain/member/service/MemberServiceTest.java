@@ -403,4 +403,12 @@ class MemberServiceTest {
         assertThat(memberDetail.getTel()).isEqualTo(modifyInfo1.getTel());
         assertThat(memberDetail.getActivityArea()).isEqualTo(modifyInfo1.getActivityArea());
     }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외 처리 : 회원 데이터 없음")
+    void memberInfoModifyFailWhenMemberNull() {
+        assertThatThrownBy(() -> memberService.modify(0L, modifyInfo1.toServiceDto()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ErrorMessage.NULL_MEMBER);
+    }
 }
