@@ -16,4 +16,6 @@ public interface MemberService {
     boolean login(MemberDto memberDto);
 
     MemberDto.LoginResponse getMemberLoginResponseDto(String email);
+
+    MemberDto.Response modify(Long memberSeq, MemberDto modifyInfoDto);
 }
