@@ -159,6 +159,40 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 - 예외 처리 : 핸드폰 번호 중복")
+    void registerFailWhenTelDuplicate() {
+        /**
+         * 테스트용 데이터
+         */
+        String tel = "010-0001-0001";
+        memberService.register(MemberRequestDto.RegisterInfo.builder()
+                .email("test1@test.com")
+                .password("password12#$")
+                .nickname("good1")
+                .tel(tel)
+                .activityArea("서울시 강남구")
+                .build().toServiceDto());
+
+        /**
+         * 중복된 이메일을 가진 데이터를 회원가입시킨다.
+         */
+        MemberRequestDto.RegisterInfo TelDuplicateRegisterInfo = MemberRequestDto.RegisterInfo.builder()
+                .email("test2@tst.com")
+                .password("password12#$")
+                .nickname("good2")
+                .tel(tel)
+                .activityArea("서울시 강남구")
+                .build();
+
+        /**
+         * 이메일이 중복되었으므로 예외가 발생해야 한다.
+         */
+        assertThatThrownBy(() -> memberService.register(TelDuplicateRegisterInfo.toServiceDto()))
+                .isInstanceOf(DuplicateTelException.class)
+                .hasMessage(Message.DUPLICATE_MEMBER_TEL);
+    }
+
+    @Test
     @DisplayName("회원가입 - 예외 처리 : 패스워드에 이메일이 포함된 경우")
     void registerFailWhenPasswordContainEmail() {
         /**
