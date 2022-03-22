@@ -42,6 +42,8 @@ public class MemberServiceImpl implements MemberService {
             throw new DuplicateEmailException(Message.DUPLICATE_MEMBER_EMAIL);
         } else if (memberDetailRepository.existsByNickname(memberDto.getNickname())) {
             throw new DuplicateNicknameException(Message.DUPLICATE_MEMBER_NICKNAME);
+        } else if (memberDetailRepository.existsByTel(memberDto.getTel())) {
+            throw new DuplicateTelException(Message.DUPLICATE_MEMBER_TEL);
         } else if (memberDto.getPassword().contains(memberDto.getEmail().split("@")[0])) {
             throw new IllegalArgumentException(Message.PASSWORD_CONTAIN_MEMBER_EMAIL);
         } else if (memberDto.getPassword().contains(memberDto.getNickname())) {
