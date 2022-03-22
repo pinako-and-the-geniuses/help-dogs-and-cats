@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import st from "../styles/userform.module.scss";
 
 export default function NickName({
   URL,
@@ -12,22 +13,16 @@ export default function NickName({
   const onNickNameHandler = (e) => {
     const nickName = e.currentTarget.value;
     setNickName(nickName);
-
-    if (nickName.length < 2 || nickName.length > 8) {
-      setIsNickName(false);
-    } else {
-      setIsNickName(true);
-    }
   };
 
   // 닉네임 중복확인 요청
   const onCheckNickName = (event) => {
     event.preventDefault();
     axios
-      .get(`${URL}/members/nickname-duplicate-check/${nickName}`)
+      .get(`${URL}/members/nickname-duplicate-check/${nickName}`, {})
       .then((res) => {
         console.log(res);
-        setNickNameCheck(res.data);
+        setNickNameCheck(res.status);
         isValid();
       })
       .catch((err) => {
@@ -42,7 +37,6 @@ export default function NickName({
       setIsNickName(true);
     }
   };
-
   return (
     <>
       <div className="input-group mb-3">
@@ -65,10 +59,12 @@ export default function NickName({
         >
           중복확인
         </button>
-        {nickNameCheck === 200 ? <p>사용중인 닉네임입니다.</p> : ""}
-        {nickNameCheck === 204 ? <p>사용 가능한 닉네임입니다.</p> : ""}
-        {nickNameCheck === 400 ? <p>닉네임 형식을 확인하세요.</p> : ""}
-        {nickNameCheck === 500 ? <p>서버에러.</p> : ""}
+      </div>
+      <div className={st.msg}>
+        {nickNameCheck === 200 ? <span>사용중인 닉네임입니다.</span> : ""}
+        {nickNameCheck === 204 ? <span>사용 가능한 닉네임입니다.</span> : ""}
+        {nickNameCheck === 400 ? <span>닉네임 형식을 확인하세요.</span> : ""}
+        {nickNameCheck === 500 ? <span>서버에러.</span> : ""}
       </div>
     </>
   );

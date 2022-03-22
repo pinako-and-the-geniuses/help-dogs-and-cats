@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import st from "../styles/userform.module.scss";
 import cn from "classnames";
 
 export default function Email({ URL, email, setEmail, setIsEmail }) {
@@ -13,9 +14,9 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
     setEmail(emailCurrent);
 
     if (emailCurrent.match(emailRegex)) {
-      setIsEmail(true);
+      return <span>이메일형식 완료</span>;
     } else {
-      setIsEmail(false);
+      return <span>메일 형식을 지켜주세요!(test@ssafy.com)</span>;
     }
   };
 
@@ -26,7 +27,7 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
       .get(`${URL}/members/email-duplicate-check/${email}`)
       .then((res) => {
         console.log(res);
-        setEmailCheck(res.data);
+        setEmailCheck(res.status);
         isValid();
       })
       .catch((err) => {
@@ -36,6 +37,7 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
 
   // 중복확인 마친 후 재인증
   const isValid = () => {
+    console.log("email체크", emailCheck);
     if (emailCheck !== 204) {
       setIsEmail(false);
     } else {
@@ -56,6 +58,7 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
           required
           className={cn("form-control")}
         />
+        {onEmailHandler}
         <button
           className="btn btn-outline-secondary"
           type="button"
@@ -64,10 +67,12 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
         >
           중복확인
         </button>
-        {emailCheck === 200 ? <p>사용중인 이메일입니다.</p> : ""}
-        {emailCheck === 204 ? <p>사용 가능한 이메일입니다.</p> : ""}
-        {emailCheck === 400 ? <p>이메일 형식을 확인하세요.</p> : ""}
-        {emailCheck === 500 ? <p>서버에러.</p> : ""}
+      </div>
+      <div className={st.msg}>
+        {emailCheck === 200 ? <span>사용중인 이메일입니다.</span> : ""}
+        {emailCheck === 204 ? <span>사용 가능한 이메일입니다.</span> : ""}
+        {emailCheck === 400 ? <span>이메일 형식을 확인하세요.</span> : ""}
+        {emailCheck === 500 ? <span>서버에러.</span> : ""}
       </div>
     </>
   );
