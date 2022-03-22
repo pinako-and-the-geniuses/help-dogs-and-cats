@@ -16,7 +16,7 @@ function VolunteerList(){
                     <div className={style.volunteer}>
                         <p className={style.title}>봉사시간</p>
                         <label htmlFor="radio1">
-                            <input type="radio" name="vol_time" id="radio1" className={style.vol_time}/><span>무관</span>
+                            <input type="radio" name="vol_time" id="radio1" className={style.vol_time} checked/><span>무관</span>
                         </label>
                         <label htmlFor="radio2">
                             <input type="radio" name="vol_time" id="radio2" className={style.vol_time}/><span>인정</span>
