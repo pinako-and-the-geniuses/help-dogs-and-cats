@@ -440,4 +440,33 @@ class MemberServiceTest {
                 .isInstanceOf(DuplicateNicknameException.class)
                 .hasMessage(Message.DUPLICATE_MEMBER_NICKNAME);
     }
+
+    @Test
+    @DisplayName("회원정보 수정 - 예외처리 : 중복된 핸드폰 번호")
+    void memberInfoModifyFailWhenTelDuplicate() {
+        /**
+         * registerInfo1 데이터로 회원가입
+         */
+        Long savedMemberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 새로운 데이터를 회원가입 시키는데, 이 때 modifyInfo1의 핸드폰 번호를 사용한다.
+         * 현재 registerInfo1의 핸드폰 번호는 modifyInfo1의 핸드폰 번호와 다르다.
+         */
+        memberService.register(MemberRequestDto.RegisterInfo.builder()
+                .email("newEmail@test.com")
+                .password("newPassword")
+                .nickname("newNickname")
+                .tel(modifyInfo1.getTel())
+                .activityArea("서울시 강남구")
+                .build().toServiceDto());
+
+        /**
+         * registerInfo1 데이터로 회원가입한 정보를 modifyInfo1 데이터로 수정한다.
+         * 이 때, 이미 위에서 modifyInfo1의 핸드폰 번호로 가입하였기 때문에 예외가 발생한다.
+         */
+        assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo1.toServiceDto()))
+                .isInstanceOf(DuplicateTelException.class)
+                .hasMessage(Message.DUPLICATE_MEMBER_TEL);
+    }
 }
