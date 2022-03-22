@@ -35,6 +35,8 @@ class MemberServiceTest {
 
     private MemberRequestDto.LoginInfo loginInfoByRegisterInfo1;
 
+    private MemberRequestDto.ModifyInfo modifyInfo1;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
@@ -58,6 +60,13 @@ class MemberServiceTest {
         loginInfoByRegisterInfo1 = MemberRequestDto.LoginInfo.builder()
                 .email(registerInfo1.getEmail())
                 .password(registerInfo1.getPassword())
+                .build();
+
+        modifyInfo1 = MemberRequestDto.ModifyInfo.builder()
+                .password("modifyPass12#$")
+                .nickname("modifyNickname1")
+                .tel("010-9999-9999")
+                .activityArea("서울시 도봉구")
                 .build();
     }
 
