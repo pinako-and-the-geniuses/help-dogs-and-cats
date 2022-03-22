@@ -2,6 +2,7 @@ package com.ssafy.a302.domain.member.controller;
 
 import com.ssafy.a302.domain.member.controller.dto.EmailAuthVerifyRequestDto;
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
+import com.ssafy.a302.domain.member.controller.dto.PasswordResetRequestDto;
 import com.ssafy.a302.domain.member.service.EmailService;
 import com.ssafy.a302.domain.member.service.MemberService;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
@@ -124,7 +125,7 @@ public class MemberController {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_EMAIL);
         }
 
-        HttpStatus status = null;
+        HttpStatus status;
         if (memberService.isExistsEmail(email)) {
             status = HttpStatus.OK;
         } else {
@@ -352,4 +353,47 @@ public class MemberController {
                 .message(Message.SUCCESS_AUTHENTICATE_EMAIL)
                 .build();
     }
+
+
+    @Operation(
+            summary = "비밀번호 재설정 메일 전송 API",
+            description = "이메일을 입력받아 해당 이메일로 비밀번호 재설정 링크를 전송합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "해당 이메일로 링크가 전송되었습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "해당 이메일이 존재하지 않습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/password-reset/{email}")
+    public ResponseEntity<BaseResponseDto<?>> sendPasswordResetMail(@PathVariable String email) {
+        String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
+        if (!email.matches(emailRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_EMAIL);
+        }
+        HttpStatus status;
+        boolean isExist = memberService.isExistsEmail(email);
+        if(isExist){
+            status = HttpStatus.OK;
+            emailService.sendPasswordResetMail(email);
+        }else{
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(BaseResponseDto.builder()
+                .message(Message.SUCCESS_SEND_EMAIL)
+                .build(),status);
+    }
+
+
 }
