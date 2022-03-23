@@ -1,3 +1,6 @@
+application-jpa.yml
+application-database.yml
+
 HELP.md
 .gradle
 build/
