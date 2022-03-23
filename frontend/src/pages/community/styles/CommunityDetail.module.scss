@@ -91,10 +91,13 @@ $main-color: #b59d7c;
             width: 60%;
             height: auto;
             margin-top: 50px;
-            margin-left: 120px;
+            margin-left: 50px;
             resize: none;
         }
-    
+        .author_p{
+            display:inline-block;
+            border: 1px solid black; 
+        }
         .button {
             display:inline-block;
             background-color: $main-color;

@@ -11,7 +11,7 @@ export default function Community() {
         <h2>Community</h2>
       </header>
 
-      <div className={style.search_bar}>
+      <div className={style.community_search_bar}>
         <div className={style.search_input}>
           <select name="searchCd">
             <option selected>전체</option>
