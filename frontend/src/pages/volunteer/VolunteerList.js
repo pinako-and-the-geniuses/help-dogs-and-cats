@@ -1,7 +1,20 @@
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import style from './styles/VolunteerList.module.scss';
 import cn from 'classnames';
 
 function VolunteerList(){
+
+    const id = useParams();
+    console.log(id);
+
+    const navigate = useNavigate();
+
+    const getID = () =>{
+        console.log(id);
+        navigate(`/volunteer/detail/:${id}`);
+    }
+
     return(
         <div className={style.myContainer}>
             <div>안녕</div>
@@ -55,7 +68,7 @@ function VolunteerList(){
 
             <table className={cn("table table-hover")}>
                 <tbody>
-                    <tr>
+                    <tr onClick={getID}>
                         <td scope="row">상태[d-day]</td>
                         <td>[지역]제목</td>
                         <td>3/5</td>

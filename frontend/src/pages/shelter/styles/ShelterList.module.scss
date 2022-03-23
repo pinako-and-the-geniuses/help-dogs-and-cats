@@ -2,10 +2,12 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-header {
-  margin: 40px 0;
-  h2 {
-    font-weight: bold;
+.main_container {
+  header {
+    margin: 40px 0;
+    h2 {
+      font-weight: bold;
+    }
   }
 }
 
@@ -92,10 +94,7 @@ header {
   }
 }
 
-table {
-  margin-top: 20px;
-}
-
 .my_table {
   text-align: center;
+  margin-top: 20px;
 }

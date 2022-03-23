@@ -1,3 +1,4 @@
 import VolunteerList from "./VolunteerList";
+import VolunteerDetail from "./VolunteerDetail";
 
-export { VolunteerList }; 
+export { VolunteerList, VolunteerDetail }; 

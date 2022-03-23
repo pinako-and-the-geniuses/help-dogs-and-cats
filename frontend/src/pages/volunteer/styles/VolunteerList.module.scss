@@ -2,11 +2,6 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
 
 .myContainer {
     
@@ -89,6 +84,15 @@ $sub-color: #999999;
                 }
             }
         }
+
+        button {
+            background-color: $main-color;
+            padding: 5px 13px;
+            margin-left: 30px; //끝으로 보낼거면 없애기
+            border-radius: 5px;
+            border: 0;
+            color: white;
+        }
     }
     
     table {
@@ -101,5 +105,18 @@ $sub-color: #999999;
         display: flex;
         justify-content: center;
         align-items: center;
+
+        a {
+            border-radius: 50%;
+            background-color: $main-color;
+            color: white;
+            margin: 7px;
+            border: none;
+
+            &:hover {
+                background-color: $sub-color;
+                color: white;
+            }
+        }
     }
 }
