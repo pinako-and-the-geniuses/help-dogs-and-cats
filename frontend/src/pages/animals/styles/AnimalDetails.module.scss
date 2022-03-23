@@ -1,10 +1,7 @@
+$main-color: #b59d7c;
+$sub-color: #E8E8E8;
 body{
-  margin: 30px;
-}
-
-h2{
-  margin: 0;
-  // border: 1px solid rebeccapurple;
+  margin: 10px;
 }
 
 main{
@@ -13,7 +10,7 @@ main{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 40px 0;
+  margin: auto;
 
   .topContent{
       //border: 1px solid red;
@@ -21,8 +18,9 @@ main{
       justify-content: space-around;
       justify-content: space-between;
       align-items: center;
-      //width: 100%;
-      
+      background-color: white;
+      box-shadow: 0px 0px 10px $sub-color;
+      padding: 30px;
       .mainInfo{
           //border: 1px solid darkblue;
           display: flex;

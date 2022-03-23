@@ -3,7 +3,7 @@ import cn from 'classnames'
 import Box from "../../components/animals/Box";
 export default function Animal() {
   return (
-    <div>
+    <div className={animal.animalcontent}>
       <header>
         <h2>유기동물 조회</h2>
       </header>
