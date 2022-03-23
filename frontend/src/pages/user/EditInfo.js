@@ -29,7 +29,7 @@ export default function Editinfo() {
   const pagename = "회원정보 수정";
   const navi = useNavigate();
 
-  const uID = 1;
+  const uId = 1;
 
   // useEffect(async () => {
   //   await axios
