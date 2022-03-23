@@ -1,13 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .loginForm {
+  @extend .userform;
   max-width: 500px;
 }
 
 .userinfoForm {
-  font-family: "Roboto", sans-serif;
-  overflow: auto;
-  height: 100%;
+  @extend .userformPage;
   max-width: 600px;
   margin: 50px auto;
 }
