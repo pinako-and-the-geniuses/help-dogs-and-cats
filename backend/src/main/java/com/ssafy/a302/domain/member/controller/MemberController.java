@@ -122,7 +122,6 @@ public class MemberController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @GetMapping("/email-duplicate-check/{email}")
     public ResponseEntity<BaseResponseDto<?>> emailDuplicateCheck(@PathVariable(name = "email") String email) {
         String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
@@ -180,7 +179,6 @@ public class MemberController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @GetMapping("/nickname-duplicate-check/{nickname}")
     public ResponseEntity<BaseResponseDto<?>> nicknameDuplicateCheck(@PathVariable(name = "nickname") String nickname) {
         String nicknameRegx = "^[0-9|a-z|가-힣|\\s]{4,10}$";
@@ -197,6 +195,62 @@ public class MemberController {
 
         return new ResponseEntity<>(BaseResponseDto.builder()
                 .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_NICKNAME : Message.USABLE_MEMBER_NICKNAME)
+                .build(), status);
+    }
+
+    @Operation(
+            summary = "핸드폰 번호 중복 확인 API",
+            description = "전달받은 핸드폰 번호가 데이터베이스에 존재하는지 확인하고 결과를 반환합니다.",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.PATH,
+                            name = "tel",
+                            description = "핸드폰 번호",
+                            examples = {
+                                    @ExampleObject(name = "good1", summary = "good1", value = "010-1234-5678", description = "형식 검증 통과"),
+                                    @ExampleObject(name = "good2", summary = "good2", value = "010-123-456", description = "형식 검증 통과"),
+                                    @ExampleObject(name = "bad1", summary = "bad1", value = "01012345678", description = "형식 검증 실패"),
+                                    @ExampleObject(name = "bad2", summary = "bad2", value = "010", description = "형식 검증 실패"),
+                            },
+                            required = true)
+            },
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "사용중인 핸드폰 번호니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "사용할 수 있는 핸드폰 번호입니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "핸드폰 번호 형식 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @GetMapping("/tel-duplicate-check/{tel}")
+    public ResponseEntity<BaseResponseDto<?>> telDuplicateCheck(@PathVariable(name = "tel") String tel) {
+        String telRegx = "^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$";
+        if (!tel.matches(telRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_TEL);
+        }
+
+        HttpStatus status = null;
+        if (memberService.isExistsTel(tel)) {
+            status = HttpStatus.OK;
+        } else {
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(BaseResponseDto.builder()
+                .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_TEL : Message.USABLE_MEMBER_TEL)
                 .build(), status);
     }
 
@@ -446,8 +500,6 @@ public class MemberController {
                 .message(Message.SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE)
                 .build();
     }
-
-
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송 API",

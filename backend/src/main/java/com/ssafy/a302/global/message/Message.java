@@ -31,6 +31,8 @@ public class Message {
 
     public static String USABLE_MEMBER_NICKNAME;
 
+    public static String USABLE_MEMBER_TEL;
+
     public static String PASSWORD_CONTAIN_MEMBER_EMAIL;
 
     public static String PASSWORD_CONTAIN_MEMBER_NICKNAME;
@@ -63,6 +65,7 @@ public class Message {
 
         USABLE_MEMBER_EMAIL = messageSource.getMessage("usable.member.email", null, null);
         USABLE_MEMBER_NICKNAME = messageSource.getMessage("usable.member.nickname", null, null);
+        USABLE_MEMBER_TEL = messageSource.getMessage("usable.member.tel", null, null);
 
         PASSWORD_CONTAIN_MEMBER_EMAIL = messageSource.getMessage("password-contain.member.email", null, null);
         PASSWORD_CONTAIN_MEMBER_NICKNAME = messageSource.getMessage("password-contain.member.nickname", null, null);
