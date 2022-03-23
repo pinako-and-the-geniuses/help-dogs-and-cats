@@ -25,4 +25,6 @@ public interface MemberService {
     Member getMemberBySeq(Long seq);
 
     String modifyProfileImage(Long memberSeq, MultipartFile profileImageFile) throws IOException;
+
+    void removeProfileImage(Long memberSeq) throws IOException;
 }
