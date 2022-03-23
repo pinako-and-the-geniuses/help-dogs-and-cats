@@ -15,6 +15,8 @@ public class Message {
 
     public static String SUCCESS_MODIFY_MEMBER;
 
+    public static String SUCCESS_MODIFY_MEMBER_PROFILE_IMAGE;
+
     public static String FAIL_LOGIN;
 
     public static String DUPLICATE_MEMBER_EMAIL;
@@ -46,6 +48,7 @@ public class Message {
         SUCCESS_LOGIN = messageSource.getMessage("success.login", null, null);
         SUCCESS_MODIFY = messageSource.getMessage("success.modify", null, null);
         SUCCESS_MODIFY_MEMBER = messageSource.getMessage("success.modify.member", null, null);
+        SUCCESS_MODIFY_MEMBER_PROFILE_IMAGE = messageSource.getMessage("success.modify.member.profile-image", null, null);
 
         FAIL_LOGIN = messageSource.getMessage("fail.login", null, null);
 

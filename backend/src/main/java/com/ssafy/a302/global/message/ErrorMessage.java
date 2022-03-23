@@ -25,9 +25,13 @@ public class ErrorMessage {
 
     public static String NULL_EMAIL_AUTH;
 
+    public static String INVALID_FILE_EXT;
+
     public static String INVALID_MEMBER_SEQ;
 
     public static String FORBIDDEN;
+
+    public static String UNAVAILABLE;
 
     public static String ERROR;
 
@@ -45,9 +49,12 @@ public class ErrorMessage {
         NULL_MEMBER_EMAIL = messageSource.getMessage("null.member.email", null, null);
         NULL_EMAIL_AUTH = messageSource.getMessage("null.email.auth",null,null);
 
+        INVALID_FILE_EXT = messageSource.getMessage("invalid.file.ext", null, null);
         INVALID_MEMBER_SEQ = messageSource.getMessage("invalid.member.seq", null, null);
 
         FORBIDDEN = messageSource.getMessage("forbidden", null, null);
+
+        UNAVAILABLE = messageSource.getMessage("unavailable", null, null);
 
         ERROR = messageSource.getMessage("error", null, null);
     }
