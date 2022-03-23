@@ -8,8 +8,18 @@ export default function Password({
   setIsPwd,
   isPwdConfirm,
   setIsPwdConfirm,
-  inputClass,
 }) {
+  const inputClass = (boolean) => {
+    switch (boolean) {
+      case true:
+        return "is-valid";
+      case false:
+        return "is-invalid";
+      default:
+        return "";
+    }
+  };
+
   const onPasswordHandler = (e) => {
     const pwdRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     const pwdCurrent = e.target.value;

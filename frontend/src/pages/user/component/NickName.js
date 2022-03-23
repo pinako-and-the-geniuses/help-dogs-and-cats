@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
+import { isInaccessible } from "@testing-library/react";
 
 export default function NickName({
   URL,
@@ -13,6 +14,8 @@ export default function NickName({
   const onNickNameHandler = (e) => {
     const nickName = e.currentTarget.value;
     setNickName(nickName);
+    setNickNameCheck(false);
+    setIsNickName(false);
   };
 
   // 닉네임 중복확인 요청
@@ -23,15 +26,17 @@ export default function NickName({
       .then((res) => {
         console.log(res);
         setNickNameCheck(res.status);
-        isValid();
+        isValid(res.status);
       })
       .catch((err) => {
         console.log(err);
+        setNickNameCheck(err.response.status);
+        isValid(err.response.status);
       });
   };
 
-  const isValid = () => {
-    if (nickNameCheck !== 204) {
+  const isValid = (res) => {
+    if (res !== 204) {
       setIsNickName(false);
     } else {
       setIsNickName(true);
