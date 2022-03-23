@@ -39,6 +39,8 @@ public class Message {
 
     public static String FAIL_SEND_EMAIL;
 
+    public static String SUCCESS_RESET_PASSWORD;
+
     @Autowired
     public Message(MessageSource messageSource) {
         REGISTER_MEMBER = messageSource.getMessage("register.member", null, null);
@@ -65,5 +67,6 @@ public class Message {
         SUCCESS_SEND_EMAIL = messageSource.getMessage("success.send.email",null,null);
         FAIL_SEND_EMAIL = messageSource.getMessage("fail.send.email",null,null);
 
+        SUCCESS_RESET_PASSWORD = messageSource.getMessage("success.reset.password",null,null);
     }
 }
