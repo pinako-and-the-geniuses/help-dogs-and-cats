@@ -49,10 +49,10 @@ export default function AnimalDetails() {
   //   }, []);
   return (
     <body>
-      <header>
-        <h2>보호 중 동물</h2>
-      </header>
       <main>
+        <header>
+        <h2>보호 중 동물</h2>
+        </header>
         <section className={animaldetails.topContent}>
           <div className={animaldetails.mainInfo}>
             <div
@@ -70,7 +70,7 @@ export default function AnimalDetails() {
                 </span>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>공고번호</p>
-                  <p>0000000000 noticeno</p>
+                  <p>0000000000</p>
                 </div>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>접수일시</p>
@@ -110,33 +110,8 @@ export default function AnimalDetails() {
                       </div>
                       <div className="modal-body">
                         안뇽하세요
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                        <br />
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                       </div>
                       <div className="modal-footer">
                         <button
@@ -154,34 +129,6 @@ export default function AnimalDetails() {
             </div>
 
             <div className="tablebox mx-5">
-              {/* <div className="text-box">
-                <p className="title">품종</p>
-                <p>멀티캠퍼스</p>
-              </div>
-              <div className="text-box">
-                <p className="title">연생</p>
-                <p>02-000-0000</p>
-              </div>
-              <div className="text-box">
-                <p className="title">kg</p>
-                <p>서울특별시 강남구 테헤란로 121</p>
-              </div>
-              <div className="text-box">
-                <p className="title">성별</p>
-                <p>삼성멀티캠퍼스 (법인)</p>
-              </div>
-              <div className="text-box">
-                <p className="title">중성화여부</p>
-                <p>9:00 ~ 18:00</p>
-              </div>
-              <div className="text-box">
-                <p className="title">색상</p>
-                <p>노랑</p>
-              </div>
-              <div className="text-box">
-                <p className="title">특징</p>
-                <p>개+고양이+기타</p>
-              </div> */}
               <table className="table table-hover">
                 <thead>
                   <tr>
@@ -252,7 +199,7 @@ export default function AnimalDetails() {
             </div>
           </div>
         </section>
-        <div className="bottom-content">
+        <div className={animaldetails.bottomContent}>
           <Map></Map>
         </div>
       </main>

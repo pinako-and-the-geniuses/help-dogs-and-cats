@@ -1,20 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
+import { useParams, useNavigate } from 'react-router-dom';
 import style from "./styles/Community.module.scss";
 import cn from "classnames";
 
 export default function Community() {
+  const id = useParams();
+    console.log(id);
+
+    const navigate = useNavigate();
+
+    const getID = () =>{
+        console.log(id);
+        navigate(`/community/communitydetail/:${id}`);
+    }
+
+    const getWrite = () =>{
+      navigate(`/community/communitycreate`);
+  }
   return (
-    <div className={style.main_container}>
+    <div className={style.cummunity_container}>
       <header>
         <h2>Community</h2>
       </header>
 
-      <div className={style.search_bar}>
+      <div className={style.community_search_bar}>
         <div className={style.search_input}>
           <select name="searchCd">
-            <option selected>전체</option>
+            <option selected>태그</option>
             <option value="1">공지</option>
             <option value="2">제보</option>
             <option value="3">잡담</option>
@@ -27,14 +41,15 @@ export default function Community() {
             <option value="1">글 제목</option>
             <option value="2">작성자</option>
           </select>
-          <input type="text" />
+          <div>
+          <input className={style.input} type="text" />
+          <button type="submit">조회</button>
         </div>
-
-        <button type="submit">조회</button>
+        </div>
         
       </div>
       <div className="d-md-flex justify-content-md-end">
-        <button className={style.communitybutton} type="submit">글쓰기</button>
+        <button className={style.communitybutton} type="submit" onClick={getWrite}>글쓰기</button>
       </div>
       
       {/* <table className="table table-bordered table-hover"> */}
@@ -49,7 +64,7 @@ export default function Community() {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr onClick={getID}>
             <td scope="row">제보</td>
             <td>Mark</td>
             <td>Otto</td>

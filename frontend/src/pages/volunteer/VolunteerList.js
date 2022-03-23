@@ -15,13 +15,12 @@ function VolunteerList(){
         navigate(`/volunteer/detail/:${id}`);
     }
 
+    const goToWrite =()=>{
+        navigate('/volunteer/write');
+    }
+    
     return(
         <div className={style.myContainer}>
-            <div>안녕</div>
-            <div>안녕</div>
-            <div>안녕</div>
-            <div>안녕</div>
-            <div>안녕</div>
             <h1>봉사활동</h1>
 
             <div className={style.searchBar}>
@@ -65,6 +64,8 @@ function VolunteerList(){
                     <button>조회</button>
                 </div>
             </div>
+
+            <p className={style.writeBtn} onClick={goToWrite}>🖊 글쓰기</p>
 
             <table className={cn("table table-hover")}>
                 <tbody>

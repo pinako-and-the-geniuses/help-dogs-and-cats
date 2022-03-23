@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,9 +52,14 @@ class MemberServiceTest {
     @Value("${path.images}")
     private String filePath;
 
+    @Autowired
+    private EntityManager em;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
+        em.flush();
+        em.clear();
 
         registerInfo1 = MemberRequestDto.RegisterInfo.builder()
                 .email("test1@test.com")
