@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback, memo } from 'react'
 import ReactQuill from 'react-quill'; 
 import 'react-quill/dist/quill.snow.css'; // react-quill과 css파일 import 하기
-
+import st from "./styles/CommunityCreate.module.scss";
 const QuillEditor = memo(({ quillRef, api, htmlContent, setHtmlContent }) => {
     // 툴바의 사진 아이콘 클릭시 기존에 작동하던 방식 대신에 실행시킬 핸들러를 만들어주자.
     const imageHandler = useCallback(() => {
@@ -70,6 +70,7 @@ const QuillEditor = memo(({ quillRef, api, htmlContent, setHtmlContent }) => {
     return (
         <>
             <ReactQuill
+                className={st.quill}
                 ref={quillRef}
                 value={htmlContent}
                 onChange={setHtmlContent}

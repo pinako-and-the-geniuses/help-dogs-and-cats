@@ -1,13 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .loginForm {
+  @extend .userform;
   max-width: 500px;
 }
 
 .userinfoForm {
-  font-family: "Roboto", sans-serif;
-  overflow: auto;
-  height: 100%;
+  @extend .userformPage;
   max-width: 600px;
   margin: 50px auto;
 }
@@ -86,12 +85,29 @@
   }
 }
 .deleteuser {
+  text-decoration: none;
+  color: #6d5029;
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 }
 .msg {
   color: #a07947;
   font-size: small;
   margin-bottom: 0px;
+}
+.userimg {
+  text-align: center;
+  button {
+    outline: 0;
+    background: #b59d7c;
+    margin-top: 15px;
+    border: 0;
+    padding: 10px;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 16px;
+    font-size: small;
+  }
 }

@@ -6,18 +6,14 @@ import cn from "classnames";
 export default function Email({ URL, email, setEmail, setIsEmail }) {
   const [emailCheck, setEmailCheck] = useState("");
 
-  // 이메일 유효성 검사
+  // 입력값 이메일로 저장
   const onEmailHandler = (e) => {
-    const emailRegex =
-      /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/;
+    // const emailRegex =
+    //   /^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/;
     const emailCurrent = e.target.value;
     setEmail(emailCurrent);
-
-    if (emailCurrent.match(emailRegex)) {
-      return <span>이메일형식 완료</span>;
-    } else {
-      return <span>메일 형식을 지켜주세요!(test@ssafy.com)</span>;
-    }
+    setEmailCheck(false);
+    setIsEmail(false);
   };
 
   // 이메일 중복확인 요청
@@ -26,25 +22,26 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
     axios
       .get(`${URL}/members/email-duplicate-check/${email}`)
       .then((res) => {
-        console.log(res);
+        console.log("이메일 중복 확인 요청결과", res);
         setEmailCheck(res.status);
-        isValid();
+        isValid(res.status);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.status);
+        setEmailCheck(err.response.status);
+        isValid(err.response.status);
       });
   };
 
   // 중복확인 마친 후 재인증
-  const isValid = () => {
-    console.log("email체크", emailCheck);
-    if (emailCheck !== 204) {
+  const isValid = (res) => {
+    if (res !== 204) {
       setIsEmail(false);
     } else {
       setIsEmail(true);
     }
   };
-
+  console.log("이메일번호", emailCheck);
   return (
     <>
       <div className="input-group mb-3">
@@ -58,7 +55,6 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
           required
           className={cn("form-control")}
         />
-        {onEmailHandler}
         <button
           className="btn btn-outline-secondary"
           type="button"

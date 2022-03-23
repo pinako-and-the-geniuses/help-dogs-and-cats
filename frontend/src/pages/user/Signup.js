@@ -28,17 +28,6 @@ export default function Signup() {
   const pagename = "회원가입";
   const navi = useNavigate();
 
-  const inputClass = (boolean) => {
-    switch (boolean) {
-      case true:
-        return "is-valid";
-      case false:
-        return "is-invalid";
-      default:
-        return "";
-    }
-  };
-
   const onPolicyHandler = (e) => {
     if (policy === 0) {
       setPolicy(1);
@@ -49,8 +38,14 @@ export default function Signup() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (isEmail && isNickName) {
-      alert("중복확인이 필요합니다.");
+    if (!isEmail) {
+      alert("이메일 중복확인이 필요합니다.");
+    } else if (!isPwd || !isPwdConfirm) {
+      alert("비밀번호를 확인해주세요");
+    } else if (!isNickName) {
+      alert("닉네임 중복확인이 필요합니다.");
+    } else if (!isPhone) {
+      alert("핸드폰 번호 인증이 필요합니다.");
     } else if (policy === 0) {
       alert("약관 동의가 필요합니다.");
     } else if (
@@ -74,25 +69,23 @@ export default function Signup() {
       })
         .then((res) => {
           console.log(res);
-          if (res.data === 201) {
+          if (res.status === 201) {
             navi("/login", { replace: true });
-          } else {
-            console.log("회원가입 실패이유", res.data);
           }
         })
         .catch((err) => {
           alert("회원가입 실패");
-          console.log(err);
+          console.log(err.response.status);
           // navi("/NotFound")
         });
     } else {
       alert("형식을 다시 확인해 입력해주세요");
     }
   };
-  console.log("ismail", isEmail);
-  console.log("ispwd", isPwd);
-  console.log("isNickName", isNickName);
-  console.log("isPhone", isPhone);
+
+  console.log("mail,pwd,pwdconfirm", isEmail, isPwd, isPwdConfirm);
+  console.log("nickname,phone,policy", isNickName, isPhone, policy);
+
   return (
     <div className="userform-page">
       <form className={`${st.userinfoForm} ${st.userform}`}>
@@ -113,7 +106,6 @@ export default function Signup() {
           setIsPwd={setIsPwd}
           isPwdConfirm={isPwdConfirm}
           setIsPwdConfirm={setIsPwdConfirm}
-          inputClass={inputClass}
         ></Password>
         <NickName
           URL={URL}
@@ -125,9 +117,7 @@ export default function Signup() {
           URL={URL}
           phone={phone}
           setPhone={setPhone}
-          isPhone={isPhone}
           setIsPhone={setIsPhone}
-          inputClass={inputClass}
         />
         <Region URL={URL} region={region} setRegion={setRegion} />
 
