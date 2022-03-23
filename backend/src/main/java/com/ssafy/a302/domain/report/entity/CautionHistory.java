@@ -18,6 +18,7 @@ import static javax.persistence.FetchType.*;
 public class CautionHistory extends BaseCreatedEntity {
 
     @Id
+    @JoinColumn(name = "caution_history_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
     @MapsId

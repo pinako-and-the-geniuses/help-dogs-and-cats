@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.member.entity;
 
+import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ import static javax.persistence.FetchType.*;
 public class MemberDetail {
 
     @Id
+    @JoinColumn(name = "member_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
     @MapsId
@@ -43,14 +45,24 @@ public class MemberDetail {
     private String imageInfo;
 
     @Builder
-    public MemberDetail(Member member, String nickname, String tel, String activityArea, String imageInfo) {
+    public MemberDetail(Member member, String nickname, String tel, String activityArea) {
         this.member = member;
         this.nickname = nickname;
         this.exp = 0;
         this.tel = tel;
         this.activityArea = activityArea;
-        this.imageInfo = imageInfo;
+        this.imageInfo = null;
 
         member.createDetail(this);
+    }
+
+    public void changeImage(String imageInfo) {
+        this.imageInfo = imageInfo;
+    }
+
+    public void modifyInfo(MemberDto memberDto) {
+        this.nickname = memberDto.getNickname();
+        this.tel = memberDto.getTel();
+        this.activityArea = memberDto.getActivityArea();
     }
 }

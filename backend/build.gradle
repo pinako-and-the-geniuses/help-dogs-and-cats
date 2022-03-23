@@ -62,14 +62,22 @@ dependencies {
 	// devtools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// mysql
-	runtimeOnly 'mysql:mysql-connector-java'
+	// mariadb
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
 	// spring test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// swagger
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.3'
+
+	// mail
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.4'
+
+	// greenmail test
+	testImplementation group: 'com.icegreen', name: 'greenmail-junit5', version: '1.6.4'
+
+
 }
 
 tasks.named('test') {

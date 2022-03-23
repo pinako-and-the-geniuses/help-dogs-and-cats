@@ -20,7 +20,7 @@ public class CustomUserDetailService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 			// 이후에 Security 관련 작업하면 Dto로 수정
-    		Member member = memberService.findMemberByEmail(email);
+    		Member member = memberService.getMemberByEmail(email);
     		if(member != null) {
 				return new CustomUserDetails(member);
     		}

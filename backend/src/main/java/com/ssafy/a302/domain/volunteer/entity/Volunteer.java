@@ -65,6 +65,7 @@ public class Volunteer extends BaseLastModifiedEntity {
     @OneToMany(mappedBy = "volunteer", cascade = ALL)
     private List<VolunteerParticipant> volunteerParticipants = new ArrayList<>();
 
+    @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "volunteer", cascade = ALL)
     private VolunteerAuth volunteerAuth;
 

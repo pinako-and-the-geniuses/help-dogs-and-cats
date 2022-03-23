@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: jpa,database,jwt,mail
+    include: jpa,database,jwt,server,springdoc,mail
 
   devtools:
     restart:
@@ -9,19 +9,13 @@ spring:
   messages:
     basename: messages,errors
 
+#  task:
+#    scheduling:
+#      pool:
+#        size: 3
+
 logging:
   level:
     com.ssafy.bjbj: debug
     org.springframework.web: debug
     org.hibernate.SQL: debug
-
-server:
-  port: 8080
-#  ssl:
-#    enabled: true
-#    key-store: classpath:keystore.p12
-#    key-store-type: PKCS12
-#    key-store-password: ehdhkwnrosid
-#    trust:
-#      store: classpath:keystore.p12
-#      store.password: ehdhkwnrosid

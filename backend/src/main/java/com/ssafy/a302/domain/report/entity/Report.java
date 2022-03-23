@@ -43,6 +43,7 @@ public class Report extends BaseCreatedEntity {
     @Column(nullable = false, columnDefinition = "TINYINT")
     private boolean isProcess;
 
+    @PrimaryKeyJoinColumn
     @OneToOne(mappedBy = "report", fetch = EAGER, cascade = ALL)
     private CautionHistory cautionHistory;
 

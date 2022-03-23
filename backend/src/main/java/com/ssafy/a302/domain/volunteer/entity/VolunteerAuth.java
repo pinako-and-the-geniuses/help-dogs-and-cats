@@ -18,6 +18,7 @@ import static javax.persistence.FetchType.*;
 public class VolunteerAuth extends BaseLastModifiedEntity {
 
     @Id
+    @JoinColumn(name = "volunteer_seq", columnDefinition = "BIGINT UNSIGNED")
     private Long seq;
 
     @MapsId
