@@ -584,7 +584,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("프로필 이미지 수정 - 성공")
+    @DisplayName("프로필 이미지 수정 - 성공, 프로필 이미지 삭제 - 성공")
     void profileImageModifySuccess() throws IOException {
         /**
          * 테스트용 데이터
@@ -628,7 +628,8 @@ class MemberServiceTest {
         /**
          * 테스트를 마치면 테스트용 이미지 삭제
          */
+        memberService.removeProfileImage(memberSeq);
         File file = new File(filePath + "profile" + File.separator + storeFilename);
-        assertThat(file.delete()).isTrue();
+        assertThat(file.exists()).isFalse();
     }
 }
