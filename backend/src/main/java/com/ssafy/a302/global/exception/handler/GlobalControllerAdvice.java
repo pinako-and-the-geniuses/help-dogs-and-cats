@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +82,15 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DuplicateException.class)
     public ErrorResponseDto<?> duplicationExceptionHandler(DuplicateException e) {
+        logPrint(e);
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(IOException.class)
+    public ErrorResponseDto<?> iOExceptionHandler(IOException e) {
         logPrint(e);
         return ErrorResponseDto.builder()
                 .message(e.getMessage())
