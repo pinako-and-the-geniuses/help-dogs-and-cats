@@ -2,6 +2,9 @@ package com.ssafy.a302.domain.member.service;
 
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface MemberService {
 
@@ -20,4 +23,6 @@ public interface MemberService {
     MemberDto.Response modify(Long memberSeq, MemberDto modifyInfoDto);
 
     Member getMemberBySeq(Long seq);
+
+    String modifyProfileImage(Long memberSeq, MultipartFile profileImageFile) throws IOException;
 }

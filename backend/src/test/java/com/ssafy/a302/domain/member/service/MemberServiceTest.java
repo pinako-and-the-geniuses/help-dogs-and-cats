@@ -14,9 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -38,6 +47,9 @@ class MemberServiceTest {
     private MemberRequestDto.LoginInfo loginInfoByRegisterInfo1;
 
     private MemberRequestDto.ModifyInfo modifyInfo1;
+
+    @Value("${path.images}")
+    private String filePath;
 
     @BeforeEach
     void setUp() {
@@ -563,5 +575,54 @@ class MemberServiceTest {
         assertThatThrownBy(() -> memberService.modify(savedMemberSeq, modifyInfo.toServiceDto()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(Message.PASSWORD_CONTAIN_MEMBER_NICKNAME);
+    }
+
+    @Test
+    @DisplayName("프로필 이미지 수정 - 성공")
+    void profileImageModifySuccess() throws IOException {
+        /**
+         * 테스트용 데이터
+         */
+        String googleImageUrl = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png";
+        URL url = new URL(googleImageUrl);
+
+        File baseProfileImageFile = new File("test.png");
+        ImageIO.write(ImageIO.read(url), "png", baseProfileImageFile);
+
+        MultipartFile testProfileImageFile = new MockMultipartFile(
+                "profileImageFile",
+                baseProfileImageFile.getName(),
+                "image/png",
+                new FileInputStream(baseProfileImageFile));
+
+        assertThat(baseProfileImageFile.delete()).isTrue();
+
+        /**
+         * 회원가입
+         */
+        Long memberSeq = memberService.register(registerInfo1.toServiceDto()).getSeq();
+
+        /**
+         * 회원가입한 회원의 seq 로 프로필 이미지 변경
+         */
+        String profileImagePath = memberService.modifyProfileImage(memberSeq, testProfileImageFile);
+
+        /**
+         * 반환되는 이미지 경로에서 이미지 이름 추출
+         */
+        int indexOf = profileImagePath.lastIndexOf("/");
+        String storeFilename = profileImagePath.substring(indexOf + 1);
+
+        /**
+         * 데이터베이스에 저장된 프로필 이미지 파일 이름과 반환 받은 이미지 이름이 같은지 검증한다.
+         */
+        String savedProfileImageFilename = memberService.getMemberBySeq(memberSeq).getDetail().getImageInfo();
+        assertThat(savedProfileImageFilename).isEqualTo(storeFilename);
+
+        /**
+         * 테스트를 마치면 테스트용 이미지 삭제
+         */
+        File file = new File(filePath + "profile" + File.separator + storeFilename);
+        assertThat(file.delete()).isTrue();
     }
 }
