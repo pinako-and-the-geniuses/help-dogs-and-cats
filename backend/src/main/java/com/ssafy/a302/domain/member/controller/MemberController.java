@@ -12,6 +12,7 @@ import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.util.AuthenticationUtil;
 import com.ssafy.a302.global.util.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,13 +27,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +48,8 @@ public class MemberController {
     private final MemberService memberService;
 
     private final EmailService emailService;
+
+    private final AuthenticationUtil authenticationUtil;
 
     @Operation(
             summary = "회원가입 API",
@@ -272,10 +276,7 @@ public class MemberController {
                                      @Validated @RequestBody MemberRequestDto.ModifyInfo modifyInfo,
                                      Authentication authentication) {
 
-        Long findSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
-        if (!findSeq.equals(memberSeq)) {
-            throw new AccessDeniedException(ErrorMessage.INVALID_MEMBER_SEQ);
-        }
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
 
         /**
          * 패스워드를 수정하지 않은 경우 null 을 전달한다.
@@ -288,7 +289,7 @@ public class MemberController {
             }
         }
 
-        memberService.modify(findSeq, modifyInfo.toServiceDto());
+        memberService.modify(memberSeq, modifyInfo.toServiceDto());
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_MODIFY)
@@ -355,6 +356,54 @@ public class MemberController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "프로필 이미지 수정 API",
+            description = "회원 기본키, 프로필 이미지 파일을 전달받고 프로필 이미지를 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "프로필 이미지를 수정하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "유효하지 않은 파일 확장자입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{memberSeq}/profile-image")
+    public BaseResponseDto<Map<String, String>> modifyProfileImage(@PathVariable(name = "memberSeq") Long memberSeq,
+                                                                   @RequestPart MultipartFile profileImageFile,
+                                                                   Authentication authentication) throws IOException {
+
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
+
+        String extRegx = "(.*?)\\.(png|jpeg|gif|jpg)$";
+        String originalFilename = profileImageFile.getOriginalFilename();
+        if (!originalFilename.matches(extRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_EXT);
+        }
+
+        String profileImagePath = memberService.modifyProfileImage(memberSeq, profileImageFile);
+
+        Map<String, String> data = new HashMap<>();
+        data.put("profileImagePath", profileImagePath);
+
+        return BaseResponseDto.<Map<String, String>>builder()
+                .message(Message.SUCCESS_MODIFY_MEMBER_PROFILE_IMAGE)
+                .data(data)
+                .build();
+    }
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송 API",
