@@ -29,6 +29,8 @@ public class ErrorMessage {
 
     public static String INVALID_MEMBER_SEQ;
 
+    public static String BAD_REQUEST;
+
     public static String FORBIDDEN;
 
     public static String UNAVAILABLE;
@@ -51,6 +53,8 @@ public class ErrorMessage {
 
         INVALID_FILE_EXT = messageSource.getMessage("invalid.file.ext", null, null);
         INVALID_MEMBER_SEQ = messageSource.getMessage("invalid.member.seq", null, null);
+
+        BAD_REQUEST = messageSource.getMessage("bad-request", null, null);
 
         FORBIDDEN = messageSource.getMessage("forbidden", null, null);
 
