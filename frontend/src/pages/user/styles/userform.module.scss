@@ -86,9 +86,12 @@
   }
 }
 .deleteuser {
+  text-decoration: none;
+  color: #6d5029;
   margin-top: 20px;
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 }
 .msg {
   color: #a07947;
