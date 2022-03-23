@@ -77,6 +77,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public boolean isExistsTel(String tel) {
+        return memberDetailRepository.existsByTel(tel);
+    }
+
+    @Override
     public boolean login(MemberDto memberDto) {
         Member findMember = memberRepository.findMemberByEmail(memberDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
