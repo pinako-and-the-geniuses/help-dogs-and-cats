@@ -65,4 +65,11 @@ public class MemberDetail {
         this.tel = memberDto.getTel();
         this.activityArea = memberDto.getActivityArea();
     }
+
+    public String removeImage() {
+        String removedFilename = this.imageInfo;
+        this.imageInfo = null;
+
+        return removedFilename;
+    }
 }

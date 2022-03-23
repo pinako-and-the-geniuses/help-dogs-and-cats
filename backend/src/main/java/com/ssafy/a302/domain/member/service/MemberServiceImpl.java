@@ -145,7 +145,13 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findMemberBySeq(memberSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_MEMBER_SEQ));
 
-        String storeFilename = null;
+        MemberDetail memberDetail = findMember.getDetail();
+
+        String storeFilename = memberDetail.getImageInfo();
+        if (storeFilename != null) {
+            fileUtil.removeProfileImage(storeFilename);
+        }
+
         try {
             storeFilename = fileUtil.storeFile(profileImageFile);
             if (storeFilename == null) {
@@ -155,8 +161,25 @@ public class MemberServiceImpl implements MemberService {
             throw new IOException(ErrorMessage.UNAVAILABLE);
         }
 
-        findMember.getDetail().changeImage(storeFilename);
+        memberDetail.changeImage(storeFilename);
 
         return "static/images/profile/" + storeFilename;
+    }
+
+    @Transactional
+    @Override
+    public void removeProfileImage(Long memberSeq) throws IOException {
+        Member findMember = memberRepository.findMemberBySeq(memberSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_MEMBER_SEQ));
+
+        MemberDetail memberDetail = findMember.getDetail();
+
+        if (memberDetail.getImageInfo() == null) {
+            throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+        }
+
+        String removedFilename = memberDetail.removeImage();
+
+        fileUtil.removeProfileImage(removedFilename);
     }
 }

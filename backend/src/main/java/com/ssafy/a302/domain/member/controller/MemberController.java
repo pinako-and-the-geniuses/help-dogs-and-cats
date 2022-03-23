@@ -372,6 +372,10 @@ public class MemberController {
                     description = "유효하지 않은 파일 확장자입니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
             @ApiResponse(
+                    responseCode = "403",
+                    description = "접근 권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
                     responseCode = "500",
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
@@ -404,6 +408,46 @@ public class MemberController {
                 .data(data)
                 .build();
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "프로필 이미지 삭제 API",
+            description = "회원 기본키를 전달 받고 프로필 이미지를 삭제합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "프로필 이미지를 삭제하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "접근 권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{memberSeq}/profile-image")
+    public BaseResponseDto<?> removeProfileImage(@PathVariable(name = "memberSeq") Long memberSeq,
+                                                 Authentication authentication) throws IOException {
+
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
+
+        memberService.removeProfileImage(memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE)
+                .build();
+    }
+
+
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송 API",

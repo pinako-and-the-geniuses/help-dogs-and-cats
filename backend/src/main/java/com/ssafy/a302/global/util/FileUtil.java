@@ -1,5 +1,6 @@
 package com.ssafy.a302.global.util;
 
+import com.ssafy.a302.global.message.ErrorMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,17 @@ public class FileUtil {
         file.transferTo(new File(getFullPath(storeFilename)));
 
         return storeFilename;
+    }
+
+    public void removeProfileImage(String storeFilename) throws IOException {
+        try {
+            File file = new File(filePath + "profile" + File.separator + storeFilename);
+            if (!file.delete()) {
+                throw new IOException();
+            }
+        } catch (IOException e) {
+            throw new IOException(ErrorMessage.UNAVAILABLE);
+        }
     }
 
     private String createStoreFilename(String originalFilename) {
