@@ -38,7 +38,7 @@ function App() {
           <Route path="/community/community" element={<Community />} />
           <Route path="/community/communitycreate" element={<CommunityCreate />} />
           <Route
-            path="/community/communitydetail"
+            path="/community/communitydetail/:id"
             element={<CommunityDetail />}
           />
         </>

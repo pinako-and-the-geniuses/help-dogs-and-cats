@@ -53,7 +53,7 @@ export default function Header() {
               </ul>
             </li>
             <li><a className="nav-link scrollto" href="/volunteer/list">봉사활동</a></li>
-            <li><a className="nav-link scrollto" href="#portfolio">커뮤니티</a></li>
+            <li><a className="nav-link scrollto" href="/community/community">커뮤니티</a></li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
         </nav>
