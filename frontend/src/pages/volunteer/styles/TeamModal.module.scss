@@ -1,0 +1,28 @@
+$main-color: #b59d7c;
+
+.person {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    margin: 15px 0;
+
+    p {
+        margin: 0;
+    }
+
+    .btn {
+        // background-color: $main-color;
+        background-color: #FF3636;
+        border-radius: 5px;
+        border: 0;
+        color: white;
+        margin: 0 10px;
+        padding: 5px 0;
+    }
+
+    .btnAprv {
+        background-color: #00C73C;
+    }
+    .btnCancle {
+        background-color: silver;
+    }
+}
