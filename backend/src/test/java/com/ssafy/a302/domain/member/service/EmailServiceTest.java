@@ -6,6 +6,7 @@ import com.icegreen.greenmail.util.ServerSetupTest;
 import com.ssafy.a302.domain.member.repository.EmailAuthRepository;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.persistence.EntityManager;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,10 +40,15 @@ class EmailServiceTest {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private EntityManager em;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
         emailAuthRepository.deleteAll();
+        em.flush();
+        em.clear();
 
         greenMail = new GreenMail(ServerSetupTest.SMTP_IMAP);
 
@@ -55,6 +62,7 @@ class EmailServiceTest {
     }
 
     @Test
+    @DisplayName("메일 전송 - 보낸 값과 보내기 전 값이 같은지 확인")
     void sendEmailAuthKey() throws MessagingException, IOException {
 //        emailAuthRepository.save(new EmailAuth())
 

@@ -27,7 +27,12 @@ export default function CommunityDetail() {
       <div className={st.middle_comment}>댓글</div>
       <section className={st.bottomContent}>
         <div className={st.onecomment}>
-          <img src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" className={st.img_thumbnail} alt="..." ></img>
+          <img
+            src="https://mdbootstrap.com/img/Photos/Others/images/43.webp"
+            className={st.img_thumbnail}
+            alt="..."
+          ></img>
+          <p className={st.author_p}>아이디</p>
           <textarea className={st.content_div}></textarea>
           <button type="button" className={cn(st.button, "btn btn")}>
             작성
