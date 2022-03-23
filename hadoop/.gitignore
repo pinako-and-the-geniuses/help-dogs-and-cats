@@ -1,5 +1,6 @@
 application-jpa.yml
 application-database.yml
+application-api.yml
 
 HELP.md
 .gradle
