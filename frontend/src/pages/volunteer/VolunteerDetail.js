@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import style from './styles/VolunteerDetail.module.scss';
 import Comment from 'components/Comment/Comment';
+import TeamManage from './TeamManage';
 
 function VolunteerDetail(){
     const [join, setJoin] = useState(false);
@@ -34,7 +35,22 @@ function VolunteerDetail(){
                     </li>
                     <li className={style.people}>
                         <p>모집 인원: 3명/5명</p>
-                        <button type="button">인원관리</button>
+                        <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
+                        {/* 모달 */}
+                        <div class="modal fade" id="teamManagement" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">봉사활동 인원 관리</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <TeamManage />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* 모달 */}
                     </li>
                     <li className={style.last}>
                         <p className={style.contact}>연락방법: <a>오픈채팅주소~</a></p>
