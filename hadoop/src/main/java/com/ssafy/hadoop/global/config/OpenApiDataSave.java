@@ -1,6 +1,5 @@
 package com.ssafy.hadoop.global.config;
 
-import org.apache.hadoop.mapred.MapReduceBase;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,13 +25,13 @@ public class OpenApiDataSave {
         // 1. URL을 만들기 위한 StringBuilder.
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic");
 
-        String serviceKey = "Hfks4ebltwJpCCvbUxfPihKu8htL%2B8BhXgRwH6IV8lwmJ%2FluwY0%2FF9BZreIvnu%2Fj%2BysmklrcrD3xQoy90uIaqw%3D%3D";
+
 
         // 2. 오픈 API의요청 규격에 맞는 파라미터 생성, 발급받은 인증키.
-        urlBuilder.append("?" + URLEncoder.encode("bgnde", "UTF-8") + "=" + URLEncoder.encode("20200301", "UTF-8")); //시작 일자
-        urlBuilder.append("&" + URLEncoder.encode("endde", "UTF-8") + "=" + URLEncoder.encode("20200331", "UTF-8")); //종료 일자
+        urlBuilder.append("?" + URLEncoder.encode("bgnde", "UTF-8") + "=" + URLEncoder.encode("20200101", "UTF-8")); //시작 일자
+        urlBuilder.append("&" + URLEncoder.encode("endde", "UTF-8") + "=" + URLEncoder.encode("20201231", "UTF-8")); //종료 일자
         urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //페이지 번호
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("30", "UTF-8")); //줄 수
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("1000", "UTF-8")); //줄 수
         urlBuilder.append("&" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /*XML 또는 JSON*/
 
@@ -94,13 +93,19 @@ public class OpenApiDataSave {
         //https://www.hadoopinrealworld.com/writing-a-file-to-hdfs-java-program/
 //        https://docs.microsoft.com/ko-kr/azure/hdinsight/hadoop/apache-hadoop-develop-deploy-java-mapreduce-linux
         StringBuilder ans = new StringBuilder();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject obj = (JSONObject) jsonArray.get(i);
-            ans.append(obj.get("kindCd").toString().trim()).append(",").append(obj.get("age").toString().trim()).append("\n");
+        for (Object o : jsonArray) {
+            JSONObject obj = (JSONObject) o;
+            ans.append(obj.get("kindCd").toString().trim()).append(",")
+                    .append(obj.get("neuterYn").toString().trim()).append(",")
+                    .append(obj.get("processState").toString().trim()).append(",")
+                    .append(obj.get("age").toString().trim()).append(",")
+                    .append(obj.get("happenDt").toString().trim()).append(",")
+                    .append(obj.get("orgNm").toString().trim())
+                    .append("\n");
         }
 
-        FileOutputStream fos = new FileOutputStream("C:\\SSAFY2\\dockertest\\hadooptest\\breed-age.txt", false);
-        OutputStreamWriter writer = new OutputStreamWriter(fos,StandardCharsets.UTF_8);
+        FileOutputStream fos = new FileOutputStream("C:\\data\\breed-age.txt", false);
+        OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(writer);
 
         out.write(ans.toString());
