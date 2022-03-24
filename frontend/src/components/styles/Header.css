@@ -164,6 +164,6 @@ a {
   }
 }
 
-.logout {
+.logout a {
   cursor: pointer;
 }
