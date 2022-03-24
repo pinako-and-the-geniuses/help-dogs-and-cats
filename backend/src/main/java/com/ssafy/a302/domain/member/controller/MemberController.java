@@ -12,6 +12,7 @@ import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.util.AuthenticationUtil;
 import com.ssafy.a302.global.util.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,13 +27,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +48,8 @@ public class MemberController {
     private final MemberService memberService;
 
     private final EmailService emailService;
+
+    private final AuthenticationUtil authenticationUtil;
 
     @Operation(
             summary = "회원가입 API",
@@ -118,7 +122,6 @@ public class MemberController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @GetMapping("/email-duplicate-check/{email}")
     public ResponseEntity<BaseResponseDto<?>> emailDuplicateCheck(@PathVariable(name = "email") String email) {
         String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
@@ -176,7 +179,6 @@ public class MemberController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @GetMapping("/nickname-duplicate-check/{nickname}")
     public ResponseEntity<BaseResponseDto<?>> nicknameDuplicateCheck(@PathVariable(name = "nickname") String nickname) {
         String nicknameRegx = "^[0-9|a-z|가-힣|\\s]{4,10}$";
@@ -193,6 +195,62 @@ public class MemberController {
 
         return new ResponseEntity<>(BaseResponseDto.builder()
                 .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_NICKNAME : Message.USABLE_MEMBER_NICKNAME)
+                .build(), status);
+    }
+
+    @Operation(
+            summary = "핸드폰 번호 중복 확인 API",
+            description = "전달받은 핸드폰 번호가 데이터베이스에 존재하는지 확인하고 결과를 반환합니다.",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.PATH,
+                            name = "tel",
+                            description = "핸드폰 번호",
+                            examples = {
+                                    @ExampleObject(name = "good1", summary = "good1", value = "010-1234-5678", description = "형식 검증 통과"),
+                                    @ExampleObject(name = "good2", summary = "good2", value = "010-123-456", description = "형식 검증 통과"),
+                                    @ExampleObject(name = "bad1", summary = "bad1", value = "01012345678", description = "형식 검증 실패"),
+                                    @ExampleObject(name = "bad2", summary = "bad2", value = "010", description = "형식 검증 실패"),
+                            },
+                            required = true)
+            },
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "사용중인 핸드폰 번호니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "사용할 수 있는 핸드폰 번호입니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "핸드폰 번호 형식 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @GetMapping("/tel-duplicate-check/{tel}")
+    public ResponseEntity<BaseResponseDto<?>> telDuplicateCheck(@PathVariable(name = "tel") String tel) {
+        String telRegx = "^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$";
+        if (!tel.matches(telRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_TEL);
+        }
+
+        HttpStatus status = null;
+        if (memberService.isExistsTel(tel)) {
+            status = HttpStatus.OK;
+        } else {
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(BaseResponseDto.builder()
+                .message(status == HttpStatus.OK ? Message.DUPLICATE_MEMBER_TEL : Message.USABLE_MEMBER_TEL)
                 .build(), status);
     }
 
@@ -272,10 +330,7 @@ public class MemberController {
                                      @Validated @RequestBody MemberRequestDto.ModifyInfo modifyInfo,
                                      Authentication authentication) {
 
-        Long findSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
-        if (!findSeq.equals(memberSeq)) {
-            throw new AccessDeniedException(ErrorMessage.INVALID_MEMBER_SEQ);
-        }
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
 
         /**
          * 패스워드를 수정하지 않은 경우 null 을 전달한다.
@@ -288,7 +343,7 @@ public class MemberController {
             }
         }
 
-        memberService.modify(findSeq, modifyInfo.toServiceDto());
+        memberService.modify(memberSeq, modifyInfo.toServiceDto());
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_MODIFY)
@@ -355,6 +410,96 @@ public class MemberController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "프로필 이미지 수정 API",
+            description = "회원 기본키, 프로필 이미지 파일을 전달받고 프로필 이미지를 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "프로필 이미지를 수정하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "유효하지 않은 파일 확장자입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "접근 권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{memberSeq}/profile-image")
+    public BaseResponseDto<Map<String, String>> modifyProfileImage(@PathVariable(name = "memberSeq") Long memberSeq,
+                                                                   @RequestPart MultipartFile profileImageFile,
+                                                                   Authentication authentication) throws IOException {
+
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
+
+        String extRegx = "(.*?)\\.(png|jpeg|gif|jpg)$";
+        String originalFilename = profileImageFile.getOriginalFilename();
+        if (!originalFilename.matches(extRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_EXT);
+        }
+
+        String profileImagePath = memberService.modifyProfileImage(memberSeq, profileImageFile);
+
+        Map<String, String> data = new HashMap<>();
+        data.put("profileImagePath", profileImagePath);
+
+        return BaseResponseDto.<Map<String, String>>builder()
+                .message(Message.SUCCESS_MODIFY_MEMBER_PROFILE_IMAGE)
+                .data(data)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "프로필 이미지 삭제 API",
+            description = "회원 기본키를 전달 받고 프로필 이미지를 삭제합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "프로필 이미지를 삭제하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "접근 권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{memberSeq}/profile-image")
+    public BaseResponseDto<?> removeProfileImage(@PathVariable(name = "memberSeq") Long memberSeq,
+                                                 Authentication authentication) throws IOException {
+
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
+
+        memberService.removeProfileImage(memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE)
+                .build();
+    }
 
     @Operation(
             summary = "비밀번호 재설정 메일 전송 API",

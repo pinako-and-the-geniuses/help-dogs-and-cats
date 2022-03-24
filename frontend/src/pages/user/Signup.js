@@ -8,7 +8,7 @@ import st from "./styles/userform.module.scss";
 import cn from "classnames";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../config/index";
+import { URL } from "../../public/config";
 
 export default function Signup() {
   // 입력정보
@@ -38,6 +38,7 @@ export default function Signup() {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    console.log(email, pwd);
     if (!isEmail) {
       alert("이메일 중복확인이 필요합니다.");
     } else if (!isPwd || !isPwdConfirm) {
@@ -70,6 +71,7 @@ export default function Signup() {
         .then((res) => {
           console.log(res);
           if (res.status === 201) {
+            alert("회원가입 성공");
             navi("/login", { replace: true });
           }
         })

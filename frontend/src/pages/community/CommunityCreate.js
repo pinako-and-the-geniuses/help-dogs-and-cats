@@ -9,6 +9,7 @@ export default function CommunityCreate(api) {
   const quillRef = useRef();
 
   return (
+    
     <div className={st.commucreatemain}>
       <header>
         <h2>Community</h2>
@@ -17,7 +18,7 @@ export default function CommunityCreate(api) {
         <div className={st.community_create_search_bar}>
           <div className={st.search_input}>
             <select name="searchCd">
-              <option selected>카테고리 선택</option>
+              <option selected>카테고리</option>
               <option value="1">제보</option>
               <option value="2">잡담</option>
               <option value="3">입양후기</option>
@@ -27,8 +28,7 @@ export default function CommunityCreate(api) {
           <textarea className={st.content_div} rows="1" cols="70"></textarea>
         </div>
       </section>
-      <div className={st.createbottomContent}>
-        <div className={st.quill}>
+        <div>
           <QuillEditor
             quillRef={quillRef}
             htmlContent={htmlContent}
@@ -36,13 +36,12 @@ export default function CommunityCreate(api) {
             api={api}
           />
         </div>
-      </div>
       <div className={st.createbuttonContent}>
         <button type="button" className={st.communitycreatebutton}>
-          취소
+          작성
         </button>
         <button type="button" className={st.communitycreatebutton}>
-          수정
+          취소
         </button>
       </div>
     </div>

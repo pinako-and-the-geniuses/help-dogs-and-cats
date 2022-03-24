@@ -9,7 +9,7 @@ import st from "./styles/userform.module.scss";
 import cn from "classnames";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { URL } from "../config/index";
+import { URL } from "../../public/config/";
 
 export default function Editinfo() {
   // 입력정보

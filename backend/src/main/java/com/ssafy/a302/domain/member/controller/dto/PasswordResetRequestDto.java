@@ -1,6 +1,5 @@
 package com.ssafy.a302.domain.member.controller.dto;
 
-import com.ssafy.a302.domain.member.service.dto.PasswordResetServiceDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;

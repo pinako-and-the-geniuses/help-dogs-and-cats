@@ -41,7 +41,6 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
       setIsEmail(true);
     }
   };
-  console.log("이메일번호", emailCheck);
   return (
     <>
       <div className="input-group mb-3">

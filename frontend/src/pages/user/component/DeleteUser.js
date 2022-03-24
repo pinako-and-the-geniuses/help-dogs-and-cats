@@ -1,6 +1,6 @@
 import axios from "axios";
 import st from "../styles/userform.module.scss";
-import { URL } from "../../config/";
+import { URL } from "../../../public/config";
 import { useNavigate } from "react-router-dom";
 
 export default function DeleteUser() {

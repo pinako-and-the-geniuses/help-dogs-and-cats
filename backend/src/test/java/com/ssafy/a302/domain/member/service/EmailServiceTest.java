@@ -16,6 +16,7 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.persistence.EntityManager;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,10 +40,15 @@ class EmailServiceTest {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private EntityManager em;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
         emailAuthRepository.deleteAll();
+        em.flush();
+        em.clear();
 
         greenMail = new GreenMail(ServerSetupTest.SMTP_IMAP);
 

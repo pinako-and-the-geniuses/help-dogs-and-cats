@@ -1,9 +1,0 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true # query 출력
-        use_sql_comments: true # jpql 출력
-    open-in-view: false # osiv 비활성화
