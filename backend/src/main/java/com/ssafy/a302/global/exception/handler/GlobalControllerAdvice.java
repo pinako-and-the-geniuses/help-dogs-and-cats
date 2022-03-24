@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice
@@ -91,6 +92,15 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(IOException.class)
     public ErrorResponseDto<?> iOExceptionHandler(IOException e) {
+        logPrint(e);
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(NoSuchElementException.class)
+    public ErrorResponseDto<?> noSuchElementExceptionHandler(NoSuchElementException e) {
         logPrint(e);
         return ErrorResponseDto.builder()
                 .message(e.getMessage())
