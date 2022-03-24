@@ -13,11 +13,14 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(
-        name = "tb_badge"
+        name = "tb_badge",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "name"),
+        }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"seq", "name", "imgUrl", "content", "howToGet"})
+@ToString(of = {"seq", "name", "imageFilename", "content", "howToGet"})
 public class Badge extends BaseCreatedEntity {
 
     @Id
@@ -28,23 +31,23 @@ public class Badge extends BaseCreatedEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String imgUrl;
-
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String howToGet;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String imageFilename;
+
     @OneToMany(mappedBy = "badge", cascade = ALL)
     private List<MemberBadge> memberBadges = new ArrayList<>();
 
     @Builder
-    public Badge(String name, String imgUrl, String content, String howToGet) {
+    public Badge(String name, String content, String howToGet, String imageFilename) {
         this.name = name;
-        this.imgUrl = imgUrl;
         this.content = content;
         this.howToGet = howToGet;
+        this.imageFilename = imageFilename;
     }
 }
