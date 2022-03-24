@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import "./styles/Header.css";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -9,8 +9,8 @@ export default function Header() {
   const navi = useNavigate();
 
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
-  const state = useSelector((state) => state.userInfo);
-  console.log("stste", state);
+  const seq = useSelector((state) => state.userInfo.userInfo.seq);
+
   // 로그아웃
   const onlogout = () => {
     if (isLogin) {
@@ -30,30 +30,25 @@ export default function Header() {
     navi("/login");
   };
 
-  // 로그인 상태에 따라 보이기 (회원가입/로그인/로그아웃)
-  const isLogged = (e) => {
-    console.log(e);
+  // 로그인 상태에 따라 보이기 (회원가입/로그인/로그아웃/MY)
+  const isLogged = () => {
     if (isLogin) {
       return (
         <div className="logout">
-          <a className="me-3" href="/user/mypage">
-            MY
-          </a>
-          <a href="#" onClick={onlogout}>
+          <a className="me-4" onClick={onlogout}>
             로그아웃
           </a>
+          <a onClick={() => navi(`/profile/${seq}`)}>MY</a>
         </div>
       );
     } else {
       return (
         <div>
           {/* 로그아웃 눌렀을때 자동으로 밑에 a태그의 href로 이동함 그래서 onClick사용 */}
-          <a href="#" className="me-2" onClick={onSinup}>
+          <a className="me-4" onClick={onSinup}>
             회원가입
           </a>
-          <a href="#" onClick={onLogin}>
-            로그인
-          </a>
+          <a onClick={onLogin}>로그인</a>
         </div>
       );
     }

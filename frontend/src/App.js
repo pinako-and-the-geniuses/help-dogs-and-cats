@@ -9,7 +9,7 @@ import {
   FindPwd,
   ResetPwd,
   EditInfo,
-  Mypage,
+  Profile,
 } from "./pages/user";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
@@ -36,7 +36,9 @@ function App() {
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
-          <Route path="/user/mypage" element={<Mypage />} />
+        </>
+        <>
+          <Route path="/profile/:seq" element={<Profile />} />
         </>
         <>
           <Route path="/animals/animal" element={<Animal />} />
