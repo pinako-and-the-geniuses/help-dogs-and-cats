@@ -40,7 +40,8 @@ a {
   /* height: 100%; */
 }
 
-#header.header-scrolled, #header.header-inner-pages {
+#header.header-scrolled,
+#header.header-inner-pages {
   top: 0;
 }
 #header .logo {
@@ -84,7 +85,8 @@ a {
 .navbar li {
   position: relative;
 }
-.navbar a, .navbar a:focus {
+.navbar a,
+.navbar a:focus {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -96,12 +98,16 @@ a {
   white-space: nowrap;
   transition: 0.3s;
 }
-.navbar a i, .navbar a:focus i {
+.navbar a i,
+.navbar a:focus i {
   font-size: 12px;
   line-height: 0;
   margin-left: 5px;
 }
-.navbar a:hover, .navbar .active, .navbar .active:focus, .navbar li:hover > a {
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover > a {
   color: #b8a07e;
 }
 .navbar .dropdown ul {
@@ -128,7 +134,9 @@ a {
 .navbar .dropdown ul a i {
   font-size: 12px;
 }
-.navbar .dropdown ul a:hover, .navbar .dropdown ul .active:hover, .navbar .dropdown ul li:hover > a {
+.navbar .dropdown ul a:hover,
+.navbar .dropdown ul .active:hover,
+.navbar .dropdown ul li:hover > a {
   color: #b8a07e;
 }
 .navbar .dropdown:hover > ul {
@@ -154,4 +162,8 @@ a {
   .navbar .dropdown .dropdown:hover > ul {
     left: -100%;
   }
+}
+
+.logout {
+  cursor: pointer;
 }
