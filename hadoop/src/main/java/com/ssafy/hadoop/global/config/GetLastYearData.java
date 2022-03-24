@@ -3,7 +3,6 @@ package com.ssafy.hadoop.global.config;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -12,14 +11,14 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class GetLastYearData {
-    @Value("${openapi.serviceKey}")
-    private static String serviceKey;
+
     static int[] day = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    public void getLastYearData(int year, String fileName, boolean append) throws IOException, org.json.simple.parser.ParseException {
+    public void getLastYearData(int year, String fileName, boolean append, String serviceKey) throws IOException, org.json.simple.parser.ParseException {
         //append가 false면 해당 파일 다시 만듬
         //append가 true면 해당 파일에 이어서 만듬
-        FileOutputStream fos = new FileOutputStream("~"+File.separator+ "animal"+ File.separator+ fileName+ ".txt", append);
+//        FileOutputStream fos = new FileOutputStream("~"+File.separator+ "animal"+ File.separator+ fileName+ ".txt", append);
+        FileOutputStream fos = new FileOutputStream("C:\\animal\\"+ fileName+ ".txt", append);
         OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(writer);
 
@@ -38,7 +37,7 @@ public class GetLastYearData {
 
                 GetDayCount gdc = new GetDayCount();
 
-                int dayCount = gdc.DayCount(y, curMon, curDay);
+                int dayCount = gdc.DayCount(y, curMon, curDay, serviceKey);
                 System.out.println(y + "-" + current);
 
                 int rp = dayCount / 1000 + (dayCount % 1000 == 0 ? 0 : 1);
@@ -62,7 +61,7 @@ public class GetLastYearData {
                     // 6. 통신을 위한 Content-type SET.
                     conn.setRequestProperty("Content-type", "application/json");
                     // 7. 통신 응답 코드 확인.
-//                    System.out.println("Response code: " + conn.getResponseCode());
+                    System.out.println("Response code: " + conn.getResponseCode());
                     // 8. 전달받은 데이터를 BufferedReader 객체로 저장.
                     BufferedReader rd;
                     if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
@@ -86,12 +85,12 @@ public class GetLastYearData {
 
                     for (Object o : jsonArray) {
                         JSONObject obj = (JSONObject) o;
-                        record.append((obj.get("kindCd") == null) ? "xxx" : obj.get("kindCd")).append(",")
-                                .append((obj.get("neuterYn") == null) ? "xxx" : obj.get("neuterYn")).append(",")
-                                .append((obj.get("processState") == null) ? "xxx" : obj.get("processState")).append(",")
-                                .append((obj.get("age") == null) ? "xxx" : obj.get("age")).append(",")
-                                .append((obj.get("happenDt") == null) ? "xxx" : obj.get("happenDt")).append(",")
-                                .append((obj.get("orgNm") == null) ? "xxx" : obj.get("orgNm"))
+                        record.append((obj.get("kindCd") == null) ? "xxx" : obj.get("kindCd").toString().trim()).append(",")
+                                .append((obj.get("neuterYn") == null) ? "xxx" : obj.get("neuterYn").toString().trim()).append(",")
+                                .append((obj.get("processState") == null) ? "xxx" : obj.get("processState").toString().trim()).append(",")
+                                .append((obj.get("age") == null) ? "xxx" : obj.get("age").toString().trim()).append(",")
+                                .append((obj.get("happenDt") == null) ? "xxx" : obj.get("happenDt").toString().trim()).append(",")
+                                .append((obj.get("orgNm") == null) ? "xxx" : obj.get("orgNm").toString().trim())
                                 .append("\n");
                     }
 
@@ -101,5 +100,6 @@ public class GetLastYearData {
         }
         out.flush();
         out.close();
+        System.out.println("done");
     }
 }
