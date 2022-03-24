@@ -13,14 +13,16 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 public class GetThisYearData {
-    @Value("${openapi.serviceKey}")
-    private static String serviceKey;
+
+
     static int[] day = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    public void getThisYearData(LocalDate curDate) throws IOException, org.json.simple.parser.ParseException {
+    public void getThisYearData(LocalDate curDate, String serviceKey) throws IOException, org.json.simple.parser.ParseException {
 
         //파일 불러옴
-        FileOutputStream fos = new FileOutputStream("C:\\data\\recent.txt", true); //recent라는 파일에 이어서 씀
+//        FileOutputStream fos = new FileOutputStream("~"+File.separator+ "animal"+ File.separator+ "recent.txt", true);
+        //recent라는 파일에 이어서 씀
+        FileOutputStream fos = new FileOutputStream("C:\\animal\\"+ "recent.txt", true);
         OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(writer);
 
@@ -44,7 +46,7 @@ public class GetThisYearData {
 
                 GetDayCount gdc = new GetDayCount();
 
-                int dayCount = gdc.DayCount(y, curMon, curDay);
+                int dayCount = gdc.DayCount(y, curMon, curDay, serviceKey);
 
                 System.out.println(y + "-" + current);
 
@@ -96,12 +98,12 @@ public class GetThisYearData {
 
                     for (Object o : jsonArray) {
                         JSONObject obj = (JSONObject) o;
-                        record.append(obj.get("kindCd").toString().trim()).append(",")
-                                .append(obj.get("neuterYn").toString().trim()).append(",")
-                                .append(obj.get("processState").toString().trim()).append(",")
-                                .append(obj.get("age").toString().trim()).append(",")
-                                .append(obj.get("happenDt").toString().trim()).append(",")
-                                .append(obj.get("orgNm").toString().trim())
+                        record.append((obj.get("kindCd") == null) ? "xxx" : obj.get("kindCd").toString().trim()).append(",")
+                                .append((obj.get("neuterYn") == null) ? "xxx" : obj.get("neuterYn").toString().trim()).append(",")
+                                .append((obj.get("processState") == null) ? "xxx" : obj.get("processState").toString().trim()).append(",")
+                                .append((obj.get("age") == null) ? "xxx" : obj.get("age").toString().trim()).append(",")
+                                .append((obj.get("happenDt") == null) ? "xxx" : obj.get("happenDt").toString().trim()).append(",")
+                                .append((obj.get("orgNm") == null) ? "xxx" : obj.get("orgNm").toString().trim())
                                 .append("\n");
                     }
                 }
@@ -110,5 +112,7 @@ public class GetThisYearData {
         }
         out.flush();
         out.close();
+
+        System.out.println("done");
     }
 }

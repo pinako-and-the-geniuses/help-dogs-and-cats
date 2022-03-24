@@ -1,6 +1,12 @@
+spring:
+  profiles:
+    include: jpa,database,openapi
+  task:
+    scheduling:
+      pool:
+        size: 3
+
 server:
   port: 8080
 
-spring:
-  profiles:
-    include: jpa,database,api
+
