@@ -9,6 +9,7 @@ export default function CommunityCreate(api) {
   const quillRef = useRef();
 
   return (
+    
     <div className={st.commucreatemain}>
       <header>
         <h2>Community</h2>
@@ -27,7 +28,7 @@ export default function CommunityCreate(api) {
           <textarea className={st.content_div} rows="1" cols="70"></textarea>
         </div>
       </section>
-        <div className={st.quill}>
+        <div>
           <QuillEditor
             quillRef={quillRef}
             htmlContent={htmlContent}
@@ -37,10 +38,10 @@ export default function CommunityCreate(api) {
         </div>
       <div className={st.createbuttonContent}>
         <button type="button" className={st.communitycreatebutton}>
-          취소
+          작성
         </button>
         <button type="button" className={st.communitycreatebutton}>
-          작성
+          취소
         </button>
       </div>
     </div>

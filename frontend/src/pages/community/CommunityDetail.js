@@ -3,8 +3,7 @@ import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityDetail.module.scss";
 import cn from "classnames";
-import Comment from 'components/Comment/Comment';
-
+import Comment from "components/Comment/Comment";
 
 export default function CommunityDetail() {
   return (
@@ -19,10 +18,10 @@ export default function CommunityDetail() {
           <p className={st.read_p}>조회수</p>
           <p className={st.date_p}>2022.03.03</p>
           <p className={st.author_p}>김싸피</p>
-        </div >
-        
-          <div className={st.content_div}>이거 정말 맛있습니다.</div>
-          {/* <textarea className={st.content_div}>
+        </div>
+
+        <div className={st.content_div}>이거 정말 맛있습니다.</div>
+        {/* <textarea className={st.content_div}>
               이거 정말 맛있습니다.
             </textarea> */}
         <div className={st.content}>
@@ -31,7 +30,7 @@ export default function CommunityDetail() {
           </button>
         </div>
       </section>
-      <Comment/>
+      <Comment />
     </div>
   );
 }

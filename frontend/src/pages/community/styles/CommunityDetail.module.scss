@@ -1,87 +1,87 @@
 $main-color: #b59d7c;
-$sub-color: #E8E8E8;
+$sub-color: #e8e8e8;
 .community_commentBox {
+  background-color: white;
+  box-shadow: 0px 0px 10px $sub-color;
+  padding: 30px;
+  margin: 100px;
+  .topContent {
     background-color: white;
     box-shadow: 0px 0px 10px $sub-color;
     padding: 30px;
-    margin: 100px;
-    .topContent{
-        background-color: white;
-        box-shadow: 0px 0px 10px $sub-color;
-        padding: 30px;
-        //@at-root: 1px solid red;
-        height: 400px;
-        margin: auto;
-        background: #ffffff;
-        margin-bottom: 100px;
-        //grid-template-columns: 200px 200px 500px;
-        .title{
-            display:block;
-            margin: auto;
-            //border: 1px solid blue;
-            .tag_p{
-                display:inline-block;
-                margin: 20px;
-                margin-right: 30px;
-                margin-left: 30px;
-                //border: 1px solid blue; 
-            }
-            .title_p{
-                display:inline-block;
-                //border: 1px solid black; 
-            }
-            .author_p{
-                display:inline-block;
-                margin: 20px;
-                margin-right: 30px;
-                margin-left: 30px;
-                float: right;
-                //border: 1px solid black; 
-            }
-            .date_p{
-                display:inline-block;
-                margin: 20px;
-                margin-right: 30px;
-                margin-left: 30px;
-                float: right;
-                //border: 1px solid black; 
-            }
-            .read_p{
-                display:inline-block;
-                margin: 20px;
-                margin-right: 30px;
-                margin-left: 30px;
-                float: right;
-                //border: 1px solid black; 
-            }
-        }
-        
-            .content_div{
-                display:block;
-                width: 90%;
-                height: 200px;
-                //height: auto;
-                margin: auto;
-                margin-top: 20px;
-                border: 1px solid black;
-            }
-        .content{
-            width: 90%;
-            //border: 1px solid black;
-            margin: auto;
-            .button {
-                background-color: $main-color;
-                padding: 5px 13px;
-                margin-top: 30px;
-                border-radius: 5px;
-                border: 0;
-                color: white;
-                float: right;
-            }
-        }
-        
+    //@at-root: 1px solid red;
+    height: 400px;
+    margin: auto;
+    background: #ffffff;
+    margin-bottom: 100px;
+    //grid-template-columns: 200px 200px 500px;
+    .title {
+      display: block;
+      margin: auto;
+      //border: 1px solid blue;
+      .tag_p {
+        display: inline-block;
+        margin: 20px;
+        margin-right: 30px;
+        margin-left: 30px;
+        //border: 1px solid blue;
+      }
+      .title_p {
+        display: inline-block;
+        //border: 1px solid black;
+      }
+      .author_p {
+        display: inline-block;
+        margin: 20px;
+        margin-right: 30px;
+        margin-left: 30px;
+        float: right;
+        //border: 1px solid black;
+      }
+      .date_p {
+        display: inline-block;
+        margin: 20px;
+        margin-right: 30px;
+        margin-left: 30px;
+        float: right;
+        //border: 1px solid black;
+      }
+      .read_p {
+        display: inline-block;
+        margin: 20px;
+        margin-right: 30px;
+        margin-left: 30px;
+        float: right;
+        //border: 1px solid black;
+      }
     }
+
+    .content_div {
+      display: block;
+      width: 90%;
+      height: 200px;
+      //height: auto;
+      margin: auto;
+      margin-top: 20px;
+      border: 1px solid black;
+    }
+    .content {
+      width: 90%;
+      //border: 1px solid black;
+      margin: auto;
+      .button {
+        background-color: $main-color;
+        padding: 5px 13px;
+        margin-top: 30px;
+        border-radius: 5px;
+        border: 0;
+        color: white;
+        float: right;
+      }
+    }
+  }
 }
+
 // .middle_comment{
 //     margin-left: 70px;
 // }
@@ -104,7 +104,7 @@ $sub-color: #E8E8E8;
 //         }
 //         .author_p{
 //             display:inline-block;
-//             border: 1px solid black; 
+//             border: 1px solid black;
 //         }
 //         .button {
 //             display:inline-block;
@@ -116,7 +116,7 @@ $sub-color: #E8E8E8;
 //             border: 0;
 //             color: white;
 //         }
-        
+
 //         .img_thumbnail{
 //             display:inline-block;
 //             //border: 1px solid black;
@@ -126,5 +126,5 @@ $sub-color: #E8E8E8;
 //             margin-bottom: 46px;
 //             border-radius: 70%;
 //         }
-//     } 
+//     }
 // }
