@@ -15,7 +15,9 @@ export default function Header() {
   const onlogout = () => {
     if (isLogin) {
       dispatch(logoutAction());
+      sessionStorage.removeItem("jwt");
       navi("/");
+      alert("로그아웃 성공!");
     } else {
       alert("로그인 정보가 없습니다.");
     }
@@ -23,6 +25,9 @@ export default function Header() {
 
   const onSinup = () => {
     navi("/signup");
+  };
+  const onLogin = () => {
+    navi("/login");
   };
 
   // 로그인 상태에 따라 보이기 (회원가입/로그인/로그아웃)
@@ -46,7 +51,9 @@ export default function Header() {
           <a href="#" className="me-2" onClick={onSinup}>
             회원가입
           </a>
-          <a href="/login">로그인</a>
+          <a href="#" onClick={onLogin}>
+            로그인
+          </a>
         </div>
       );
     }
