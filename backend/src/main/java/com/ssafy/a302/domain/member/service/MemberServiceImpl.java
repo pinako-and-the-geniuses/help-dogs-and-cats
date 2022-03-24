@@ -10,12 +10,16 @@ import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -28,6 +32,8 @@ public class MemberServiceImpl implements MemberService {
     private final MemberDetailRepository memberDetailRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final FileUtil fileUtil;
 
     @Override
     public Member getMemberByEmail(String email) {
@@ -68,6 +74,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public boolean isExistsNickname(String nickname) {
         return memberDetailRepository.existsByNickname(nickname);
+    }
+
+    @Override
+    public boolean isExistsTel(String tel) {
+        return memberDetailRepository.existsByTel(tel);
     }
 
     @Override
@@ -131,5 +142,49 @@ public class MemberServiceImpl implements MemberService {
     public Member getMemberBySeq(Long seq) {
         return memberRepository.findMemberBySeq(seq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
+    }
+
+    @Transactional
+    @Override
+    public String modifyProfileImage(Long memberSeq, MultipartFile profileImageFile) throws IOException {
+        Member findMember = memberRepository.findMemberBySeq(memberSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_MEMBER_SEQ));
+
+        MemberDetail memberDetail = findMember.getDetail();
+
+        String storeFilename = memberDetail.getImageInfo();
+        if (storeFilename != null) {
+            fileUtil.removeProfileImage(storeFilename);
+        }
+
+        try {
+            storeFilename = fileUtil.storeFile(profileImageFile);
+            if (storeFilename == null) {
+                throw new IOException();
+            }
+        } catch (IOException e) {
+            throw new IOException(ErrorMessage.UNAVAILABLE);
+        }
+
+        memberDetail.changeImage(storeFilename);
+
+        return "static/images/profile/" + storeFilename;
+    }
+
+    @Transactional
+    @Override
+    public void removeProfileImage(Long memberSeq) throws IOException {
+        Member findMember = memberRepository.findMemberBySeq(memberSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_MEMBER_SEQ));
+
+        MemberDetail memberDetail = findMember.getDetail();
+
+        if (memberDetail.getImageInfo() == null) {
+            throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+        }
+
+        String removedFilename = memberDetail.removeImage();
+
+        fileUtil.removeProfileImage(removedFilename);
     }
 }

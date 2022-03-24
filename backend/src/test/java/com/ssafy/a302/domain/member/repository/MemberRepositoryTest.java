@@ -2,6 +2,7 @@ package com.ssafy.a302.domain.member.repository;
 
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
+import com.ssafy.a302.domain.member.service.MemberService;
 import com.ssafy.a302.global.message.ErrorMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,9 @@ import static org.assertj.core.api.Assertions.*;
 class MemberRepositoryTest {
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
@@ -31,6 +35,8 @@ class MemberRepositoryTest {
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
+        em.flush();
+        em.clear();
 
         member1 = Member.builder()
                 .email("test1@test.com")

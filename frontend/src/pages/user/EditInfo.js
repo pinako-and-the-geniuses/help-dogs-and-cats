@@ -1,65 +1,87 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeleteUser from "./component/DeleteUser";
+import UserImage from "./component/UserImage";
+import Password from "./component/Password";
 import NickName from "./component/NickName";
 import Phone from "./component/Phone";
 import Region from "./component/Region";
 import st from "./styles/userform.module.scss";
 import cn from "classnames";
-
-const URL = "http/";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { URL } from "../../public/config/";
 
 export default function Editinfo() {
   // 입력정보
   const [img, setImg] = useState("");
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [pwdConfirm, setPwdConfirm] = useState("");
+
   const [nickName, setNickName] = useState("");
   const [phone, setPhone] = useState("");
   const [region, setRegion] = useState("전체");
-  const [policy, setPolicy] = useState(0);
   // 유효성 검사
   const [isPwd, setIsPwd] = useState(false);
+  const [isPwdConfirm, setIsPwdConfirm] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
-
   const pagename = "회원정보 수정";
-  const inputClass = (boolean) => {
-    switch (boolean) {
-      case true:
-        return "is-valid";
-      case false:
-        return "is-invalid";
-      default:
-        return "";
-    }
-  };
+  const navi = useNavigate();
 
-  const onPasswordHandler = (e) => {
-    const pwdRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-    const pwdCurrent = e.target.value;
-    setPwd(pwdCurrent);
-    if (!pwdRegex.test(pwdCurrent)) {
-      setIsPwd(false);
-    } else {
-      setIsPwd(true);
-    }
-  };
-  const isEnteredPwdValid = () => {
-    if (pwd) return isPwd;
-  };
+  const uId = 1;
 
-  const onPolicyHandler = (event) => {
-    console.log(event.currentTarget.value);
-    setPolicy(event.currentTarget.value);
-  };
+  // useEffect(async () => {
+  //   await axios
+  //     .get(`URL/members/${uID}`)
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
+    if (!isPwd || !isPwdConfirm) {
+      alert("비밀번호를 확인해주세요");
+    } else if (!isNickName) {
+      alert("닉네임 중복확인이 필요합니다.");
+    } else if (!isPhone) {
+      alert("핸드폰 번호 인증이 필요합니다.");
+    } else if (isPwd && isPwdConfirm && isNickName && isPhone) {
+      axios({
+        url: `${URL}/members`,
+        method: "POST",
+        data: {
+          email: email,
+          password: pwd,
+          nickname: nickName,
+          tel: phone,
+          activityArea: region,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 201) {
+            navi("/", { replace: true });
+          }
+        })
+        .catch((err) => {
+          alert("수정 실패");
+          console.log(err.response.status);
+          // navi("/NotFound")
+        });
+    } else {
+      alert("형식을 다시 확인해 입력해주세요");
+    }
   };
 
   return (
-    <form className={`${st.userinfoForm} ${st.form}`}>
+    <form className={`${st.userinfoForm} ${st.userform}`}>
       <h2>{pagename}</h2>
+      <UserImage uId={uId} />
       <div>
         <p>
           <label htmlFor="email">아이디 [Email]</label>
@@ -73,25 +95,23 @@ export default function Editinfo() {
           readOnly
         />
       </div>
-      <div>
-        <label htmlFor="pwd">비밀번호</label>
-        <input
-          id="pwd"
-          name="pwd"
-          type="password"
-          placeholder="비밀번호(영문자,특수문자,숫자 조합으로 8자리 이상)"
-          onChange={onPasswordHandler}
-          className={cn(`form-control, ${inputClass(isEnteredPwdValid())}`)}
-          required
-        />
-      </div>
+      <Password
+        URL={URL}
+        pwd={pwd}
+        setPwd={setPwd}
+        pwdConfirm={pwdConfirm}
+        setPwdConfirm={setPwdConfirm}
+        isPwd={isPwd}
+        setIsPwd={setIsPwd}
+        isPwdConfirm={isPwdConfirm}
+        setIsPwdConfirm={setIsPwdConfirm}
+      ></Password>
       <NickName
         URL={URL}
         nickName={nickName}
         setNickName={setNickName}
         isNickName={isNickName}
         setIsNickName={setIsNickName}
-        inputClass={inputClass}
       />
       <Phone
         URL={URL}
@@ -99,7 +119,6 @@ export default function Editinfo() {
         setPhone={setPhone}
         isPhone={isPhone}
         setIsPhone={setIsPhone}
-        inputClass={inputClass}
       />
       <Region URL={URL} region={region} setRegion={setRegion} />
       <button

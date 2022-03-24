@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import style from './styles/VolunteerDetail.module.scss';
+import Comment from 'components/Comment/Comment';
+import TeamManage from './TeamManage';
 
 function VolunteerDetail(){
     const [join, setJoin] = useState(false);
@@ -10,8 +12,6 @@ function VolunteerDetail(){
 
     return(
         <div className={style.myContainer}>
-            <p>하이</p>
-            <p>하이</p>
             <h1>봉사활동</h1>
 
             <div className={style.titleBox}>
@@ -35,7 +35,22 @@ function VolunteerDetail(){
                     </li>
                     <li className={style.people}>
                         <p>모집 인원: 3명/5명</p>
-                        <button type="button">인원관리</button>
+                        <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
+                        {/* 모달 */}
+                        <div class="modal fade" id="teamManagement" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">봉사활동 인원 관리</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <TeamManage />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* 모달 */}
                     </li>
                     <li className={style.last}>
                         <p className={style.contact}>연락방법: <a>오픈채팅주소~</a></p>
@@ -54,61 +69,7 @@ function VolunteerDetail(){
             </div>
             <br/>
 
-            {/* <div className={style.commentBox}>
-                <div className={style.addComment}>
-                    <input type="text" />
-                    <button type="submit">댓글 작성</button>
-                </div>
-                <div className={style.comments}>
-                    <div className={style.commentWriter}>
-                        <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png"/>
-                        <p>작성자</p>
-                    </div>
-
-                    <div className={style.content}>
-                        <p>안녕하세요 채팅 드럈습니다 확인해주세요!</p>
-                        댓글 누르면 답글 작성 가능
-                        <p>2022-03-22</p>
-                    </div>
-
-                    <p>삭제</p>
-                </div>
-            </div> */}
-
-            <div className={style.commentBox}>
-                {/* <div className={style.comment}>
-                    <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png" />
-
-                    <div className={style.content}>
-                        <span className={style.writer}>싸피강아지</span>
-                        <span className={style.date}>2022-03-22</span>
-                        <span>삭제</span>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor possimus quae quas temporibus adipisci ad, consequatur ut nesciunt et blanditiis totam harum cupiditate quis aperiam amet molestias deserunt suscipit ipsa. Omnis, perferendis ullam? Numquam molestias unde reiciendis ab voluptate ullam ex amet laborum soluta vitae! Corporis ipsa architecto omnis est?
-                        </p>
-                    </div>
-                </div>
-                <hr /> */}
-                {/* 밑에다 작업함!!!!!! */}
-                <div className={style.comment}>
-                    <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png" />
-
-                    <div className={style.content}>
-                        <div className={style.top}>
-                            <span className={style.writer}>싸피강아지</span>
-                            <span className={style.date}>2022-03-22</span>
-                            <span className={style.delete}>삭제</span>
-                        </div>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor possimus quae quas temporibus adipisci ad, consequatur ut nesciunt et blanditiis totam harum cupiditate quis aperiam amet molestias deserunt suscipit ipsa. Omnis, perferendis ullam? Numquam molestias unde reiciendis ab voluptate ullam ex amet laborum soluta vitae! Corporis ipsa architecto omnis est?
-                        </p>
-                    </div>
-                </div>
-                <hr />
-                
-            </div>
-
-
+            <Comment/>
         </div>
     )
 }
