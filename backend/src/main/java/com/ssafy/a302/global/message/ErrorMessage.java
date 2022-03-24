@@ -31,6 +31,14 @@ public class ErrorMessage {
 
     public static String ERROR;
 
+    public static String INVALID_VOLUNTEER;
+
+    public static String INVALID_VOLUNTEER_PARTICIPANT;
+
+    public static String INVALID_VOLUNTEER_CANCEL_PARTICIPANT;
+
+    public static String INVALID_VOLUNTEER_CREATOR_PARTICIPANT;
+
     @Autowired
     public ErrorMessage(MessageSource messageSource) {
         AUTHENTICATION_MEMBER = messageSource.getMessage("authentication.member", null, null);
@@ -50,5 +58,13 @@ public class ErrorMessage {
         FORBIDDEN = messageSource.getMessage("forbidden", null, null);
 
         ERROR = messageSource.getMessage("error", null, null);
+
+        INVALID_VOLUNTEER = messageSource.getMessage("invalid.volunteer", null, null);
+
+        INVALID_VOLUNTEER_PARTICIPANT = messageSource.getMessage("invalid.volunteer.participant", null, null);
+        INVALID_VOLUNTEER_CANCEL_PARTICIPANT = messageSource.getMessage("invalid.volunteer.cancel.participant", null, null);
+        INVALID_VOLUNTEER_CREATOR_PARTICIPANT = messageSource.getMessage("invalid.volunteer.creator.participant", null, null);
+
+
     }
 }
