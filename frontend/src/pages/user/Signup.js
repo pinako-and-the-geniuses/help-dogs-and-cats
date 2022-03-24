@@ -38,6 +38,7 @@ export default function Signup() {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    console.log(email, pwd);
     if (!isEmail) {
       alert("이메일 중복확인이 필요합니다.");
     } else if (!isPwd || !isPwdConfirm) {
@@ -70,6 +71,7 @@ export default function Signup() {
         .then((res) => {
           console.log(res);
           if (res.status === 201) {
+            alert("회원가입 성공");
             navi("/login", { replace: true });
           }
         })
