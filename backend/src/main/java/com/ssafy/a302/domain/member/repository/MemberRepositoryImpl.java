@@ -35,4 +35,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(member.seq.eq(memberSeq).and(member.isDeleted.isFalse()))
                 .fetchOne());
     }
+
+    @Override
+    public Optional<String> findEmailByTel(String tel) {
+        return Optional.ofNullable(queryFactory
+                .select(member.email)
+                .from(member)
+                .where(member.detail.tel.eq(tel).and(member.isDeleted.isFalse()))
+                .fetchOne());
+    }
 }

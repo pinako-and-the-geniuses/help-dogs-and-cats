@@ -35,6 +35,7 @@ class BadgeInit {
     @Rollback(false)
     void badgeRegister() {
         String[][] badgeInfos = {
+                {"가입 환영 뱃지", "welcome-badge", "png", "도와주개냥에 가입하신 모든분께 드리는 뱃지에요! 앞으로 좋은 활동 부탁드린다냥~", "최초 가입 시 뱃지 제공"},
                 {"소통하는 활동가", "communication-activist", "png", "사람들과 봉사 이야기로 자주 소통하는 회원이 받는 뱃지에요!", "커뮤니티 글 10개 이상 작성 시 뱃지 획득"},
                 {"행복의 시작", "start-of-happiness", "png", "유기동물을 입양한 당신! 이제 정말 행복이 가득할거에요!", "유기동물 입양 시 뱃지 획득"},
                 {"행복은 제곱", "happiness-is-square", "png", "입양이 벌써 두번째시라구요?! 행복은 제곱이 될거에요!!", "유기동물 입양 2회시 뱃지 획득"},

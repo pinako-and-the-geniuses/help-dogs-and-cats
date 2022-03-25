@@ -11,6 +11,7 @@ import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
 import com.ssafy.a302.global.util.FileUtil;
+import com.ssafy.a302.global.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,8 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
 
     private final FileUtil fileUtil;
+
+    private final StringUtil stringUtil;
 
     @Override
     public Member getMemberByEmail(String email) {
@@ -186,5 +189,18 @@ public class MemberServiceImpl implements MemberService {
         String removedFilename = memberDetail.clearProfileImageFilename();
 
         fileUtil.removeProfileImage(removedFilename);
+    }
+
+    @Override
+    public String findMaskedEmail(String tel) {
+        String email = memberRepository.findEmailByTel(tel)
+                .orElse(null);
+
+        if (email == null) {
+            return null;
+        }
+
+        String[] emailInfo = email.split("@");
+        return stringUtil.mask(emailInfo[0]) + "@" + emailInfo[1];
     }
 }

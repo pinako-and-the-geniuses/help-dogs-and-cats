@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface MemberRepositoryCustom {
 
     Optional<MemberDto> findMemberDtoBySeq(Long memberSeq);
+
+    Optional<String> findEmailByTel(String tel);
 }
