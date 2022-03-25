@@ -8,7 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -24,9 +23,6 @@ class MemberRepositoryCustomTest {
 
     @Autowired
     private EntityManager em;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     private Member member1;
 
@@ -81,4 +77,26 @@ class MemberRepositoryCustomTest {
         assertThat(findMemberDto.getProfileImageFilename()).isNull();
     }
 
+    @Test
+    @DisplayName("핸드폰 번호로 이메일 조회 - 성공")
+    void findEmailByTelSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 이메일 조회
+         */
+        String email = memberRepository.findEmailByTel(member1.getDetail().getTel())
+                .orElse(null);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(email).isNotNull();
+        assertThat(email).isEqualTo(member1.getEmail());
+    }
 }
