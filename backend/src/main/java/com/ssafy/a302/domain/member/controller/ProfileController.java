@@ -4,7 +4,7 @@ import com.ssafy.a302.domain.member.service.ProfileService;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
-import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.constant.Message;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

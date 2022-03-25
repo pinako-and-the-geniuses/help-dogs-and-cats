@@ -6,7 +6,7 @@ import com.ssafy.a302.domain.badge.repository.MemberBadgeRepository;
 import com.ssafy.a302.domain.badge.service.dto.BadgeDto;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
-import com.ssafy.a302.global.message.ErrorMessage;
+import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -8,8 +8,8 @@ import com.ssafy.a302.domain.member.exception.DuplicateNicknameException;
 import com.ssafy.a302.domain.member.exception.DuplicateTelException;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
-import com.ssafy.a302.global.message.ErrorMessage;
-import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.constant.ErrorMessage;
+import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.util.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,8 +53,8 @@ class MemberServiceTest {
 
     private MemberRequestDto.ModifyInfo modifyInfo1;
 
-    @Value("${path.images}")
-    private String filePath;
+    @Value("${path.saved.files.images.profile}")
+    private String profileImageSavePath;
 
     @Autowired
     private EntityManager em;
@@ -633,7 +633,7 @@ class MemberServiceTest {
          * 테스트를 마치면 테스트용 이미지 삭제
          */
         memberService.removeProfileImage(memberSeq);
-        File file = new File(filePath + "profile" + File.separator + storeFilename);
+        File file = new File(profileImageSavePath + File.separator + storeFilename);
         assertThat(file.exists()).isFalse();
     }
 
