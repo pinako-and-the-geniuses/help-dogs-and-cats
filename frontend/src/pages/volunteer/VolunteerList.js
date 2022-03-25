@@ -12,7 +12,7 @@ function VolunteerList(){
 
     const getID = () =>{
         console.log(id);
-        navigate(`/volunteer/detail/:${id}`);
+        navigate(`/volunteer/detail/${id}`);
     }
 
     const goToWrite =()=>{

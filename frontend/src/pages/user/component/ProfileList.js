@@ -10,7 +10,7 @@ export default function ProfileList() {
   };
 
   return (
-    <>
+    <div>
       <div>
         <ul className={st.category}>
           <li value="0" className={page == "0" ? st.now : ""} onClick={onPage}>
@@ -31,6 +31,6 @@ export default function ProfileList() {
           <h4 className={st.comment}>작성한 글이 없습니다.</h4>
         )}
       </div>
-    </>
+    </div>
   );
 }

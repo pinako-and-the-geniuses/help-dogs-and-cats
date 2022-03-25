@@ -1,0 +1,108 @@
+$main-text: #292929;
+$mid-text: #333333;
+$sub-text: #999999;
+$main-color: #b59d7c;
+$sub-color: #E8E8E8;
+
+.myContainer {
+    margin: 40px 180px;
+    color: $main-text;
+
+    h1 {
+        margin: 30px 0;
+        span {
+            color: $main-color;
+        }
+    }
+
+    .thisTitle {
+        font-size: 20px;
+        color: $main-text;
+        
+        input {
+            border: 1px solid $main-text;
+            padding: 10px 10px;
+            width: 100%;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+    
+    .infoBox {
+        margin: 10px 0;
+        padding: 20px 0;
+        background-color: #f2f2f2;
+        color: $sub-text;
+
+        ul {
+            list-style: none;
+        }
+
+        span {
+            font-weight: bold;
+            // color: $main-text;
+            margin-right: 10px;
+        }
+
+        input {
+            padding-left: 5px;
+            color: $mid-text;
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .region {
+            display: flex;
+            padding: 10px 0;
+
+            p {
+                margin: 0 5px 0 10px;
+            }
+        }
+
+        .vol_time {
+            padding: 10px 0;
+            p {
+                font-size: 12px;
+                margin: 0;
+            }
+            input {
+                width: 80px;
+            }
+        }
+
+        .party {
+            padding: 10px 0;        
+            p {
+                font-size: 12px;
+                margin: 0;
+            }    
+        }
+
+        .contact {
+            padding: 10px 0;
+            input {
+                width: 300px;
+            }
+        }
+
+        .endDate {
+            padding: 10px 0;
+        }
+    }
+
+    .addBtn {
+        display: inline;
+        float: right;
+        color: white;
+        cursor: pointer;
+        background-color: $main-text;
+        border: 0;
+        border-radius: 5px;
+        padding: 7px 20px;
+        margin: 50px 0 30px 0;
+    }
+}
