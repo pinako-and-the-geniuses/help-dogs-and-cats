@@ -10,6 +10,7 @@ import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.global.message.ErrorMessage;
 import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.util.StringUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +43,9 @@ class MemberServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private StringUtil stringUtil;
 
     private MemberRequestDto.RegisterInfo registerInfo1, registerInfo2;
 
@@ -622,7 +626,7 @@ class MemberServiceTest {
         /**
          * 데이터베이스에 저장된 프로필 이미지 파일 이름과 반환 받은 이미지 이름이 같은지 검증한다.
          */
-        String savedProfileImageFilename = memberService.getMemberBySeq(memberSeq).getDetail().getImageInfo();
+        String savedProfileImageFilename = memberService.getMemberBySeq(memberSeq).getDetail().getProfileImageFilename();
         assertThat(savedProfileImageFilename).isEqualTo(storeFilename);
 
         /**
@@ -631,5 +635,28 @@ class MemberServiceTest {
         memberService.removeProfileImage(memberSeq);
         File file = new File(filePath + "profile" + File.separator + storeFilename);
         assertThat(file.exists()).isFalse();
+    }
+
+    @Test
+    @DisplayName("핸드폰 번호로 마스킹된 이메일 조회 - 성공")
+    void findMaskedEmailByTelSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        memberService.register(registerInfo1.toServiceDto());
+
+        /**
+         * 마스킹된 이메일 조회
+         */
+        String maskedEmail = memberService.findMaskedEmail(registerInfo1.getTel());
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(maskedEmail).isNotNull();
+
+        String[] emailInfo = registerInfo1.getEmail().split("@");
+        String originMaskedEmail = stringUtil.mask(emailInfo[0]) + "@" + emailInfo[1];
+        assertThat(maskedEmail).isEqualTo(originMaskedEmail);
     }
 }

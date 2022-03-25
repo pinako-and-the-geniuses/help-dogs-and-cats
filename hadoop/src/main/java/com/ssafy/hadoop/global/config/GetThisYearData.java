@@ -98,12 +98,37 @@ public class GetThisYearData {
 
                     for (Object o : jsonArray) {
                         JSONObject obj = (JSONObject) o;
-                        record.append((obj.get("kindCd") == null) ? "xxx" : obj.get("kindCd").toString().trim()).append(",")
-                                .append((obj.get("neuterYn") == null) ? "xxx" : obj.get("neuterYn").toString().trim()).append(",")
-                                .append((obj.get("processState") == null) ? "xxx" : obj.get("processState").toString().trim()).append(",")
-                                .append((obj.get("age") == null) ? "xxx" : obj.get("age").toString().trim()).append(",")
-                                .append((obj.get("happenDt") == null) ? "xxx" : obj.get("happenDt").toString().trim()).append(",")
-                                .append((obj.get("orgNm") == null) ? "xxx" : obj.get("orgNm").toString().trim())
+                        record.append((obj.get("kindCd") == null) ? "xxx" : obj.get("kindCd").toString().trim()
+                                        .replace(",", "")
+                                        .replace("페르시안-페르시안", "페르시안")
+                                        .replace("-", " ")
+                                ).append(",")
+
+                                .append((obj.get("neuterYn") == null) ? "xxx" : obj.get("neuterYn").toString().trim()
+                                        .replace(",", "")
+                                        .replace("-", " ")
+                                ).append(",")
+
+                                .append((obj.get("processState") == null) ? "xxx" : obj.get("processState").toString().trim().replace(",", "")).append(",")
+                                .append((obj.get("age") == null) ? "xxx" : obj.get("age").toString().trim()
+                                        .split("\\(")[0]
+                                        .replace(",", "")
+                                        .replace("~", " ")
+                                        .replace("-", " ")
+                                        .replace("추정", "")
+                                        .replace("월령", "월")
+                                        .replace("주령", "주")
+                                        .replace("세령", "년")
+                                        .replace("년령", "년")
+                                        .replace("약", "")
+                                        .replace("생후", "")
+                                        .replace("Y","년")
+                                        .replace("M","개월")
+                                        .replace("y","년")
+                                        .replace("m","개월")
+                                ).append(" ,")
+                                .append((obj.get("happenDt") == null) ? "xxx" : obj.get("happenDt").toString().trim().substring(0, 4).replace(",", "")).append(",")
+                                .append((obj.get("orgNm") == null) ? "xxx" : obj.get("orgNm").toString().trim().replace(",", ""))
                                 .append("\n");
                     }
                 }

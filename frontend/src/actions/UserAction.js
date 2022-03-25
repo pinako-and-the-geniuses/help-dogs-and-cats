@@ -3,11 +3,18 @@ const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
 
 // Action creators
-function login(userInfo) {
+function loginAction(userInfo) {
   return {
     type: LOGIN,
-    payload: userInfo,
+    userInfo: userInfo,
   };
 }
 
-export { login, LOGIN, LOGOUT };
+function logoutAction() {
+  return {
+    type: LOGOUT,
+    userInfo: {},
+  };
+}
+
+export { loginAction, logoutAction, LOGIN, LOGOUT };

@@ -66,7 +66,7 @@ export default function Phone({ URL, phone, setPhone, setIsPhone }) {
         <button
           className="btn btn-outline-secondary"
           type="button"
-          id="button-addon"
+          id="button-addon-phone"
           onClick={onCheckPhone}
         >
           중복확인

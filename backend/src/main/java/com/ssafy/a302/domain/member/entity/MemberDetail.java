@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.*;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"seq", "nickname", "exp", "tel", "activityArea", "imageInfo"})
+@ToString(of = {"seq", "nickname", "exp", "tel", "activityArea", "profileImageFilename"})
 public class MemberDetail {
 
     @Id
@@ -42,7 +42,7 @@ public class MemberDetail {
     private String activityArea;
 
     @Column(columnDefinition = "TEXT")
-    private String imageInfo;
+    private String profileImageFilename;
 
     @Builder
     public MemberDetail(Member member, String nickname, String tel, String activityArea) {
@@ -51,13 +51,13 @@ public class MemberDetail {
         this.exp = 0;
         this.tel = tel;
         this.activityArea = activityArea;
-        this.imageInfo = null;
+        this.profileImageFilename = null;
 
         member.createDetail(this);
     }
 
-    public void changeImage(String imageInfo) {
-        this.imageInfo = imageInfo;
+    public void changeProfileImageFilename(String profileImageFilename) {
+        this.profileImageFilename = profileImageFilename;
     }
 
     public void modifyInfo(MemberDto memberDto) {
@@ -66,9 +66,9 @@ public class MemberDetail {
         this.activityArea = memberDto.getActivityArea();
     }
 
-    public String removeImage() {
-        String removedFilename = this.imageInfo;
-        this.imageInfo = null;
+    public String clearProfileImageFilename() {
+        String removedFilename = this.profileImageFilename;
+        this.profileImageFilename = null;
 
         return removedFilename;
     }

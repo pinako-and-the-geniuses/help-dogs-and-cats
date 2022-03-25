@@ -1,10 +1,10 @@
 $main-color: #b59d7c;
-$sub-color: #E8E8E8;
-body{
+$sub-color: #e8e8e8;
+.animaldetailbody {
   margin: 10px;
 }
 
-main{
+.animaldetailmain {
   //border: 1px solid violet;
   display: flex;
   flex-direction: column;
@@ -12,69 +12,68 @@ main{
   align-items: center;
   margin: auto;
 
-  .topContent{
-      //border: 1px solid red;
+  .topContent {
+    //border: 1px solid red;
+    display: flex;
+    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 0px 10px $sub-color;
+    padding: 30px;
+    .mainInfo {
+      //border: 1px solid darkblue;
       display: flex;
-      justify-content: space-around;
-      justify-content: space-between;
-      align-items: center;
-      background-color: white;
-      box-shadow: 0px 0px 10px $sub-color;
-      padding: 30px;
-      .mainInfo{
-          //border: 1px solid darkblue;
-          display: flex;
-          .detailscard{
-            margin-top: 20px;
-            border: 1px solid darkblue;
-          }
+      .detailscard {
+        margin-top: 20px;
+        border: 1px solid darkblue;
       }
-      // .box{
-      //   border: 1px solid black;
-      //   display: flex;
-      //   flex-direction: column;
-      // }
-      .textBox{
-          display: flex;
-          flex-direction: row;
-          //border: 1px solid blue;
-          margin: 10px 0;
-          p{
-              //border: 1px solid salmon;
-              padding: 0;
-              margin: 0;
-              font-size: 18px;
-              justify-content: space-evenly;
-          }
-
-          .title{
-              font-weight:600;
-              width: 130px;
-          }
-      }
-      .cardText{
-        margin: 20px 0;
-        p{
-          //border: 1px solid salmon;
-          display: inline-block;
-          padding: 0;
-          margin: 0;
-          font-size: 18px;
-          justify-content: space-evenly;
-        }
-        .title{
-          font-weight:600;
-          width: 120px;
-        }
+    }
+    // .box{
+    //   border: 1px solid black;
+    //   display: flex;
+    //   flex-direction: column;
+    // }
+    .textBox {
+      display: flex;
+      flex-direction: row;
+      //border: 1px solid blue;
+      margin: 10px 0;
+      p {
+        //border: 1px solid salmon;
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+        justify-content: space-evenly;
       }
 
-      .head{
-        text-align: center;
+      .title {
+        font-weight: 600;
+        width: 130px;
       }
+    }
+    .cardText {
+      margin: 20px 0;
+      p {
+        //border: 1px solid salmon;
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+        justify-content: space-evenly;
+      }
+      .title {
+        font-weight: 600;
+        width: 120px;
+      }
+    }
+
+    .head {
+      text-align: center;
+    }
   }
 
-  .bottomContent{
+  .bottomContent {
     //border: 1px solid salmon;
   }
-
 }

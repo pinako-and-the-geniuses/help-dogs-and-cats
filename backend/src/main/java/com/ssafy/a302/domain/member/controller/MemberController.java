@@ -577,4 +577,64 @@ public class MemberController {
                 .message(Message.SUCCESS_RESET_PASSWORD)
                 .build();
     }
+
+    @Operation(
+            summary = "이메일 찾기",
+            description = "핸드폰 번호를 전달받고 이메일을 반환합니다. 반환할 때 일부 값을 마스킹 처리합니다.",
+            parameters = {
+                    @Parameter(
+                            in = ParameterIn.PATH,
+                            name = "tel",
+                            description = "핸드폰 번호",
+                            examples = {
+                                    @ExampleObject(name = "good1", summary = "good1", value = "010-1234-5678", description = "형식 검증 통과"),
+                                    @ExampleObject(name = "good2", summary = "good2", value = "010-123-456", description = "형식 검증 통과"),
+                                    @ExampleObject(name = "bad1", summary = "bad1", value = "01012345678", description = "형식 검증 실패"),
+                                    @ExampleObject(name = "bad2", summary = "bad2", value = "010", description = "형식 검증 실패"),
+                            },
+                            required = true)
+            },
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "이메일이 존재하고 반환합니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "이메일이 존재하지 않습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "핸드폰 번호 형식에 맞지 않습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @GetMapping("/find-email-by/{tel}")
+    public ResponseEntity<BaseResponseDto<Map<String, String>>> findEmailByTel(@PathVariable(name = "tel") String tel) {
+        String telRegx = "^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$";
+        if (!tel.matches(telRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_TEL);
+        }
+
+        HttpStatus status = null;
+        Map<String, String> data = null;
+        String maskedEmail = memberService.findMaskedEmail(tel);
+        if (maskedEmail == null) {
+            status = HttpStatus.NO_CONTENT;
+        } else {
+            data = new HashMap<>();
+            data.put("email", maskedEmail);
+            status = HttpStatus.OK;
+        }
+
+        return new ResponseEntity<>(BaseResponseDto.<Map<String, String>>builder()
+                .message(status == HttpStatus.OK ? Message.SUCCESS_FIND_EMAIL : null)
+                .data(data)
+                .build(), status);
+    }
 }
