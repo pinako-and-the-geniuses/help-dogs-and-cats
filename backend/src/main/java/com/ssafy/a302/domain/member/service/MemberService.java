@@ -29,4 +29,6 @@ public interface MemberService {
     String modifyProfileImage(Long memberSeq, MultipartFile profileImageFile) throws IOException;
 
     void removeProfileImage(Long memberSeq) throws IOException;
+
+    String findMaskedEmail(String tel);
 }
