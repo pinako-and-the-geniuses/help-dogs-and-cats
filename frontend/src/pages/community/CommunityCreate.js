@@ -25,10 +25,10 @@ export default function CommunityCreate(api) {
               <option value="4">봉사후기</option>
             </select>
           </div>
-          <textarea className={st.content_div} rows="1" cols="70"></textarea>
+          <textarea className={st.content_div} rows="1" cols="88"></textarea>
         </div>
       </section>
-        <div>
+        <div className={st.quill}>
           <QuillEditor
             quillRef={quillRef}
             htmlContent={htmlContent}

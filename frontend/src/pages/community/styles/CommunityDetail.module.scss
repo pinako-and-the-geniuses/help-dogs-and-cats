@@ -78,6 +78,16 @@ $sub-color: #e8e8e8;
         color: white;
         float: right;
       }
+      .deletebutton {
+        background-color: $main-color;
+        padding: 5px 13px;
+        margin-top: 30px;
+        margin-left: 10px;
+        border-radius: 5px;
+        border: 0;
+        color: white;
+        float: right;
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import Header from './components/Header';
 import Home from './components/Home';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useState } from "react-router-dom";
 import {
   Signup,
   Login,
@@ -17,6 +17,7 @@ import NotFound from "./NotFound";
 import { VolunteerList, VolunteerDetail } from './pages/volunteer'
 
 function App() {
+
   return (
     <BrowserRouter>
       <Header></Header>
@@ -38,7 +39,7 @@ function App() {
           <Route path="/community/community" element={<Community />} />
           <Route path="/community/communitycreate" element={<CommunityCreate />} />
           <Route
-            path="/community/communitydetail/:id"
+            path="/community/communitydetail/:seq"
             element={<CommunityDetail />}
           />
         </>

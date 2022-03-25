@@ -48,8 +48,8 @@ export default function AnimalDetails() {
   //     getAPI();
   //   }, []);
   return (
-    <body>
-      <main>
+    <body className={animaldetails.animaldetailbody}>
+      <main className={animaldetails.animaldetailmain}>
         <header>
         <h2>보호 중 동물</h2>
         </header>

@@ -4,21 +4,66 @@ import XMLParser from "react-xml-parser";
 import { useParams, useNavigate } from 'react-router-dom';
 import style from "./styles/Community.module.scss";
 import cn from "classnames";
+import Pagination from "./Pagination";
+import moment from 'moment';
 
 export default function Community() {
-  const id = useParams();
-    console.log(id);
+  const [communitys, setCommunity] = useState([]);
+  const [page, setPage] = useState([]);
+  //const [size, setSize] = useState([]);
+  const size = 10;
+  const [search, setSearch] = useState([]);
+  const [tag, setTag] = useState([]);
+  const [keyword, setKeyword] = useState([]);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [communitysPerPage] = useState(10);
+
+  // const indexOfLastPost = currentPage * communitysPerPage;
+  // const indexOfFirstPost = indexOfLastPost - communitysPerPage;
+  // const currentCommunitys = communitys.slice(indexOfFirstPost, indexOfLastPost);
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  useEffect(() => { //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
+    axios.get(`${URL}/communities?page=${page}&size=${size}&tag=${tag}&search=${search}&keyword=${keyword}`)
+    .then(response => setCommunity(response.data))
+    .catch(err => console.log(err))
+  }, []); //한번만 해줄때 []넣는다
+
+  const getRead = (e) => {
+    console.log("read",e.target.value);
+    axios.get(`${URL}/communities?page=${page}&size=${size}&tag=${tag}&search=${search}&keyword=${keyword}`)
+    .then(response => setCommunity(response.data))
+    .catch(err => console.log(err))
+  }
+
+  const seq = useParams();
+    console.log(seq);
 
     const navigate = useNavigate();
 
-    const getID = () =>{
-        console.log(id);
-        navigate(`/community/communitydetail/:${id}`);
+    const getSeq = () =>{
+        console.log(seq);
+        navigate(`/community/communitydetail/:${seq}`);
     }
 
     const getWrite = () =>{
       navigate(`/community/communitycreate`);
   }
+    const getTag = (e) => {
+      console.log("tag",e.target.value);
+      setTag(e.target.value);
+    }
+
+    const getSearch = (e) => {
+      console.log("search",e.target.value);
+      setSearch("search",e.target.value);
+    }
+
+    const getKeyword = (e) => {
+      console.log("keyword",e.target.value);
+      setKeyword("keyword",e.target.value);
+    }
+
+    
   return (
     <div className={style.cummunity_container}>
       <header>
@@ -27,23 +72,24 @@ export default function Community() {
 
       <div className={style.community_search_bar}>
         <div className={style.search_input}>
-          <select name="searchCd">
-            <option selected>태그</option>
-            <option value="1">공지</option>
-            <option value="2">제보</option>
-            <option value="3">잡담</option>
-            <option value="4">입양후기</option>
-            <option value="5">봉사후기</option>
+          <select name="searchCd" onChange={getTag}>
+            <option defaultValue>태그</option>
+            <option value="공지">공지</option>
+            <option value="제보">제보</option>
+            <option value="잡담">잡담</option>
+            <option value="입양후기">입양후기</option>
+            <option value="봉사후기">봉사후기</option>
           </select>
 
-          <select name="searchCgg">
-            <option selected>전체</option>
-            <option value="1">글 제목</option>
-            <option value="2">작성자</option>
+          <select name="searchCgg" onChange={getSearch}>
+            <option defaultValue>검색</option>
+            <option value="">전체</option>
+            <option value="title">글 제목</option>
+            <option value="writer">작성자</option>
           </select>
           <div>
-          <input className={style.input} type="text" />
-          <button type="submit">조회</button>
+          <input className={style.input} type="text" onChange={getKeyword}/>
+          <button onClick={getRead}>조회</button>
         </div>
         </div>
         
@@ -64,6 +110,25 @@ export default function Community() {
           </tr>
         </thead>
         <tbody>
+          <tr onClick={getSeq}>
+              <td>제보</td>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+            </tr>
+          {communitys.map(community => (
+            <tr key={community.seq} onClick={getSeq}>
+              <td>{community.tag}</td>
+              <td>{community.title}</td>
+              <td>{community.writer}</td>
+              <td>{moment(community.date).format('YYYY-MM-DD')}</td>
+              <td>{community.readCount}</td>
+            </tr>
+          ))}   
+        </tbody>
+        {/* <tbody>
+          
           <tr onClick={getID}>
             <td scope="row">제보</td>
             <td>Mark</td>
@@ -85,7 +150,7 @@ export default function Community() {
             <td>@twitter</td>
             <td>@mdo</td>
           </tr>
-        </tbody>
+        </tbody> */}
       </table>
       <nav aria-label="Page navigation example">
         <ul className="pagination justify-content-center">
@@ -116,6 +181,8 @@ export default function Community() {
           </li>
         </ul>
       </nav>
+      {/* <Pagination communitysPerPage={communitysPerPage} totalCommunitys={communitys.length} 
+      currentPage={currentPage} paginate={paginate}></Pagination> */}
     </div>
   );
 }
