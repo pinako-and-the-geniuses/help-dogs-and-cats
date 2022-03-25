@@ -35,20 +35,24 @@ export default function Header() {
     if (isLogin) {
       return (
         <div className="logout">
-          <a className="me-4" onClick={onlogout}>
+          <a className="user me-4" onClick={onlogout}>
             로그아웃
           </a>
-          <a onClick={() => navi(`/profile/${seq}`)}>MY</a>
+          <a className="user" onClick={() => navi(`/profile/${seq}`)}>
+            MY
+          </a>
         </div>
       );
     } else {
       return (
         <div>
           {/* 로그아웃 눌렀을때 자동으로 밑에 a태그의 href로 이동함 그래서 onClick사용 */}
-          <a className="me-4" onClick={onSinup}>
+          <a className="user me-4" onClick={onSinup}>
             회원가입
           </a>
-          <a onClick={onLogin}>로그인</a>
+          <a className="user" onClick={onLogin}>
+            로그인
+          </a>
         </div>
       );
     }
