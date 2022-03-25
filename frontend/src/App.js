@@ -63,6 +63,7 @@ function App() {
           <Route path="/volunteer/list" element={<VolunteerList />} />
           <Route path="/volunteer/detail/:id" element={<VolunteerDetail />} />
           <Route path="/volunteer/write" element={<VolunteerWrite />}></Route>
+          <Route path="/volunteer/write/:id" element={<VolunteerWrite />}></Route>
         </>
         <>
           <Route path="*" element={<NotFound />} />
