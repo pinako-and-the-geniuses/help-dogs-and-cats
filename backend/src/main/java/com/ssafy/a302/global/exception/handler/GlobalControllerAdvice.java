@@ -2,8 +2,8 @@ package com.ssafy.a302.global.exception.handler;
 
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.exception.DuplicateException;
-import com.ssafy.a302.global.message.ErrorMessage;
-import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.constant.ErrorMessage;
+import com.ssafy.a302.global.constant.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

@@ -1,4 +1,4 @@
-package com.ssafy.a302.global.message;
+package com.ssafy.a302.global.constant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -20,6 +20,8 @@ public class Message {
     public static String SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE;
 
     public static String SUCCESS_FIND_EMAIL;
+
+    public static String SUCCESS_SAVE_FILE;
 
     public static String FAIL_LOGIN;
 
@@ -61,6 +63,7 @@ public class Message {
         SUCCESS_MODIFY_MEMBER_PROFILE_IMAGE = messageSource.getMessage("success.modify.member.profile-image", null, null);
         SUCCESS_RESET_PASSWORD = messageSource.getMessage("success.reset.password",null,null);
         SUCCESS_FIND_EMAIL = messageSource.getMessage("success.find.email", null, null);
+        SUCCESS_SAVE_FILE = messageSource.getMessage("success.save.file", null, null);
 
         FAIL_LOGIN = messageSource.getMessage("fail.login", null, null);
 

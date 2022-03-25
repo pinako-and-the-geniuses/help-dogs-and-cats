@@ -8,12 +8,13 @@ import com.ssafy.a302.domain.member.exception.DuplicateTelException;
 import com.ssafy.a302.domain.member.repository.MemberDetailRepository;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
-import com.ssafy.a302.global.message.ErrorMessage;
-import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.constant.ErrorMessage;
+import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.util.FileUtil;
 import com.ssafy.a302.global.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,12 @@ public class MemberServiceImpl implements MemberService {
     private final FileUtil fileUtil;
 
     private final StringUtil stringUtil;
+
+    @Value("${path.saved.files.images.profile}")
+    private String profileImageSavePath;
+
+    @Value("${path.access.files.images.profile}")
+    private String profileImageAccessPath;
 
     @Override
     public Member getMemberByEmail(String email) {
@@ -157,11 +164,11 @@ public class MemberServiceImpl implements MemberService {
 
         String storeFilename = memberDetail.getProfileImageFilename();
         if (storeFilename != null) {
-            fileUtil.removeProfileImage(storeFilename);
+            fileUtil.removeFile(storeFilename, profileImageSavePath);
         }
 
         try {
-            storeFilename = fileUtil.storeFile(profileImageFile);
+            storeFilename = fileUtil.storeFile(profileImageFile, profileImageSavePath);
             if (storeFilename == null) {
                 throw new IOException();
             }
@@ -171,7 +178,7 @@ public class MemberServiceImpl implements MemberService {
 
         memberDetail.changeProfileImageFilename(storeFilename);
 
-        return "static/images/profile/" + storeFilename;
+        return profileImageAccessPath + "/" + storeFilename;
     }
 
     @Transactional
@@ -188,7 +195,7 @@ public class MemberServiceImpl implements MemberService {
 
         String removedFilename = memberDetail.clearProfileImageFilename();
 
-        fileUtil.removeProfileImage(removedFilename);
+        fileUtil.removeFile(removedFilename, profileImageSavePath);
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.ssafy.a302.domain.badge.entity.Badge;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +19,6 @@ class BadgeInit {
 
     @Autowired
     private EntityManager em;
-
-    @Value("${path.images}")
-    String imagePath;
 
     @BeforeEach
     void setUp() {
@@ -42,7 +38,7 @@ class BadgeInit {
                 {"세심한 관찰꾼", "a-careful-observer", "png", "주위를 세심하게 관찰해 유기동물을 발견한 당신에게 드리는 상이에요!", "유기동물발견 신고 5회 이상 시 뱃지 획득 "},
                 {"용기있는 발 딛음", "brave-step", "png", "첫 봉사활동을 완료한 당신! 유기동물을 위해 힘내줘서 고마워요!", "봉사활동 1회 참여 시(인증) 뱃지 획득"},
                 {"나는 봉사 모집왕", "volunteer-recruitment-king", "png", "봉사 모집왕에게 드리는 뱃지에요!", "봉사 모집 5회 달성"},
-                {"나는 봉사 모집왕2", "volunteer-recruiting-king2", "png", "봉사 모집왕에게 드리는 뱃지에요! ", "봉사 모집 15회 달성"},
+                {"나는 봉사 모집왕2", "volunteer-recruitment-king2", "png", "봉사 모집왕에게 드리는 뱃지에요! ", "봉사 모집 15회 달성"},
                 {"나는 봉사 참여왕", "volunteer-participation-king", "png", "봉사 참여왕에게 드리는 뱃지에요!", "봉사 참여 5회 달성"},
                 {"나는 봉사 참여왕2", "volunteer-participation-king2", "png", "봉사 참여왕에게 드리는 뱃지에요!", "봉사 참여 15회 달성"},
         };
@@ -52,9 +48,6 @@ class BadgeInit {
         final int EXT = 2;
         final int CONTENT = 3;
         final int HOW_TO_GET = 4;
-
-        String badgePath = imagePath + "badge";
-        String ext = ".png";
 
         for (String[] badgeInfo : badgeInfos) {
             badgeRepository.save(Badge.builder()

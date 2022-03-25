@@ -2,7 +2,7 @@ package com.ssafy.a302.domain.member.repository;
 
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
-import com.ssafy.a302.global.message.ErrorMessage;
+import com.ssafy.a302.global.constant.ErrorMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
