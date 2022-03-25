@@ -17,11 +17,6 @@ function MoveTab(props){
             <div>입양 관리</div>
         )
     }
-    if( props.tab === 3 ){
-        return (
-            <div>로그 아웃</div>
-        )
-    }
 }
 
 function ManageHome() {
@@ -31,17 +26,14 @@ function ManageHome() {
         <div className={style.manageHome}>
             <ul className={style.menus}>
                 <li
-                    className={style.menu}
+                    className={tab === 0 ? style.on : ""}
                     onClick={()=>{setTab(0)}}>HOME</li>
                 <li
-                    className={style.menu}
+                    className={tab == 1 ? style.on : ""}
                     onClick={()=>{setTab(1)}}>봉사 관리</li>
                 <li
-                    className={style.menu}
+                    className={tab === 2 ? style.on : ""}
                     onClick={()=>{setTab(2)}}>입양 관리</li>
-                <li
-                    className={style.menu}
-                    onClick={()=>{setTab(3)}}>로그아웃</li>
             </ul>
 
             <MoveTab tab={tab} className={style.content}/>

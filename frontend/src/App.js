@@ -73,8 +73,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </>
         <>
-          <Route path='/manage' element={<ManageLogin />}></Route>
-          <Route path='/manage/home' element={<ManageHome />}></Route>
+          <Route path='/manage' element={<ManageHome />}></Route>
         </>
       </Routes>
     </BrowserRouter>
