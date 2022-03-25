@@ -26,8 +26,12 @@ public class FileUtil {
     public void removeFile(String storeFilename, String path) throws IOException {
         try {
             File file = new File(path + File.separator + storeFilename);
-            if (!file.delete()) {
-                throw new IOException();
+            if (file.exists()) {
+                if (!file.delete()) {
+                    throw new IOException();
+                }
+            } else {
+                throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
             }
         } catch (IOException e) {
             throw new IOException(ErrorMessage.UNAVAILABLE);
