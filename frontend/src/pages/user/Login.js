@@ -12,8 +12,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false); // 로그인성공하고 useEffetct에 안걸리기 위한 값
-  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
-
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn); //로그인상태 불러오기
+  // const jwt = sessionStorage.getItem('jwt') - 로그인안되어있으면 null/undfinded
   const dispatch = useDispatch();
   const navi = useNavigate();
 
@@ -44,11 +44,14 @@ export default function Login() {
       .post(`${URL}/members/login`, user)
       .then((res) => {
         if (res.status == 200) {
-          alert("로그인 성공");
           setSubmitLoading(true);
           dispatch(loginAction(res.data.data.memberInfo));
           sessionStorage.setItem("jwt", res.data.data.jwtToken);
-          navi("/");
+          if (true) {
+            navi("/profile");
+          } else {
+            navi("/");
+          }
         } else if (res.status == 204) {
           alert("이메일 또는 패스워드가 잘못 입력되었습니다.");
         }
