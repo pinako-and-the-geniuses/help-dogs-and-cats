@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
-import style from './styles/VolunteerDetail.module.scss';
+import { 
+    useNavigate, 
+    useParams,
+} from 'react-router-dom';
+import axios from 'axios';
 import Comment from 'components/Comment/Comment';
 import TeamManage from './TeamManage';
+import style from './styles/VolunteerDetail.module.scss';
 
 function VolunteerDetail(){
     const [join, setJoin] = useState(false);
-
+    const navigate = useNavigate();
+    const { id } = useParams();
+    
     const joinBtn=()=>{
         setJoin(!join);
+    }
+
+    const goToEdit=()=>{
+        navigate(`/volunteer/write/${id}`)
+    }
+
+    const deletePost=()=>{
+        console.log('삭제');
     }
 
     return(
@@ -37,14 +52,14 @@ function VolunteerDetail(){
                         <p>모집 인원: 3명/5명</p>
                         <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
                         {/* 모달 */}
-                        <div class="modal fade" id="teamManagement" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">봉사활동 인원 관리</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+                            <div className="modal-dialog">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="exampleModalLabel">봉사활동 인원 관리</h5>
+                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div className="modal-body">
                                         <TeamManage />
                                     </div>
                                 </div>
@@ -64,12 +79,16 @@ function VolunteerDetail(){
             </div>
             
             <div className={style.editPost}>
-                <p>수정</p>
-                <p>삭제</p>
+                <p onClick={goToEdit}>수정</p>
+                <p onClick={deletePost}>삭제</p>
             </div>
             <br/>
 
             <Comment/>
+
+            <button 
+                className={style.listBtn}
+                onClick={()=>{navigate(-1)}}>목록</button>
         </div>
     )
 }

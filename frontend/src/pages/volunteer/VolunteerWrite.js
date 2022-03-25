@@ -1,11 +1,17 @@
 import style from './styles/VolunteerWrite.module.scss';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// import ReactQuill from 'react-quill';
+// import 'react-quill/dist/quill.snow.css';
 import Editor from 'components/Editor';
 
 function VolunteerWrite(){
+    const placeholder=[
+        "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
+    ];
+
     return(
         <div className={style.myContainer}>
+            <h1>봉사활동<span> 글 작성</span></h1>
+
             <div className={style.thisTitle}>
                 <input type="text" placeholder='제목'/>
             </div>
@@ -45,7 +51,10 @@ function VolunteerWrite(){
                 </ul>
             </div>
 
-            <ReactQuill theme="snow"/>
+            {/* <ReactQuill theme="snow"/> */}
+            <Editor
+                placeholder={placeholder}>
+            </Editor>
 
             <button className={style.addBtn}>등록</button>
         </div>

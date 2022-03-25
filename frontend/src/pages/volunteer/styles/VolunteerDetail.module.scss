@@ -9,6 +9,17 @@ $sub-color: #E8E8E8;
     h1 {
         margin: 30px 0;
     }
+
+    .listBtn {
+        display: inline;
+        float: right;
+        color: white;
+        background-color: $main-color;
+        border: 0;
+        border-radius: 5px;
+        padding: 7px 20px;
+        margin: 20px 0;
+    }
 }
 
 .titleBox{
