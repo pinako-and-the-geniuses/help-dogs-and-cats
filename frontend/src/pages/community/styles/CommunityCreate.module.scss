@@ -30,7 +30,7 @@ header {
         //align-items: center;
         height: auto;
         //height: 500px; 높이 자동으로 하고 싶으면 사용
-        // width: 100%;
+        width: 100%;
         margin: auto;
         background: #ffffff;
         margin-bottom: 20px;
@@ -42,7 +42,6 @@ header {
             //justify-content: space-between;
             padding: 20px 20px;
             margin-top: 10px;
-    
             div {
                 display: flex;
                 input {
@@ -58,9 +57,7 @@ header {
             }
             .content_div{
                 display:inline-block;
-                height: auto;
-                // width: 78%;
-
+                //height: auto;
                 margin-left: 10px;
                 resize: none;
                 font-size: 16px;
@@ -72,7 +69,6 @@ header {
             // box-shadow: 0px 0px 10px $sub-color;
             // padding: 30px;
             //border: 1px solid red;
-            width: 40%;
             display:block;
             margin:auto;
             //height: 300px;
@@ -86,7 +82,7 @@ header {
         .communitycreatebutton{
             background-color: $main-color;
               padding: 5px 13px;
-              margin-top: 60px;
+              margin-top: 15px;
               margin-left: 10px; //끝으로 보낼거면 없애기
               border-radius: 5px;
               border: 0;

@@ -13,6 +13,7 @@
     "http-proxy-middleware": "^2.0.4",
     "i": "^0.3.7",
     "middleware": "^1.0.0",
+    "moment": "^2.29.1",
     "node-sass": "^7.0.1",
     "quill-image-upload": "^0.1.3",
     "react": "^16.5.0",
