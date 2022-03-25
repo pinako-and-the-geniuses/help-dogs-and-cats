@@ -1,7 +1,6 @@
 package com.ssafy.a302.global.util;
 
-import com.ssafy.a302.global.message.ErrorMessage;
-import org.springframework.beans.factory.annotation.Value;
+import com.ssafy.a302.global.constant.ErrorMessage;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,26 +11,27 @@ import java.util.UUID;
 @Component
 public class FileUtil {
 
-    @Value("${path.images}")
-    private String filePath;
-
-    public String storeFile(MultipartFile file) throws IOException {
+    public String storeFile(MultipartFile file, String path) throws IOException {
         if (file.isEmpty()) {
             return null;
         }
 
         String originalFilename = file.getOriginalFilename();
         String storeFilename = createStoreFilename(originalFilename);
-        file.transferTo(new File(getFullPath(storeFilename)));
+        file.transferTo(new File(getFullPath(storeFilename, path)));
 
         return storeFilename;
     }
 
-    public void removeProfileImage(String storeFilename) throws IOException {
+    public void removeFile(String storeFilename, String path) throws IOException {
         try {
-            File file = new File(filePath + "profile" + File.separator + storeFilename);
-            if (!file.delete()) {
-                throw new IOException();
+            File file = new File(path + File.separator + storeFilename);
+            if (file.exists()) {
+                if (!file.delete()) {
+                    throw new IOException();
+                }
+            } else {
+                throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
             }
         } catch (IOException e) {
             throw new IOException(ErrorMessage.UNAVAILABLE);
@@ -49,7 +49,7 @@ public class FileUtil {
         return originalFilename.substring(pos + 1);
     }
 
-    public String getFullPath(String filename) {
-        return filePath + "profile" + File.separator + filename;
+    public String getFullPath(String filename, String path) {
+        return path + File.separator + filename;
     }
 }

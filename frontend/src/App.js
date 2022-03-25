@@ -20,6 +20,10 @@ import {
   VolunteerDetail,
   VolunteerWrite,
 } from "./pages/volunteer";
+import { 
+  ManageLogin,
+  ManageHome,
+} from './pages/manager'
 
 function App() {
   return (
@@ -67,6 +71,10 @@ function App() {
         </>
         <>
           <Route path="*" element={<NotFound />} />
+        </>
+        <>
+          <Route path='/manage' element={<ManageLogin />}></Route>
+          <Route path='/manage/home' element={<ManageHome />}></Route>
         </>
       </Routes>
     </BrowserRouter>

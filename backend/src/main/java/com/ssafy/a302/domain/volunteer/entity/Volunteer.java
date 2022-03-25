@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
@@ -70,7 +72,7 @@ public class Volunteer extends BaseLastModifiedEntity {
     private VolunteerAuth volunteerAuth;
 
     @Builder
-    public Volunteer(String title, String content, Category category, String activityArea, Integer minParticipantCount, Integer maxParticipantCount, Member member) {
+    public Volunteer(String title, String content, String activityArea, Category category, Integer minParticipantCount, Integer maxParticipantCount, Member member) {
         this.title = title;
         this.content = content;
         this.viewCount = 0L;
@@ -81,6 +83,24 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.maxParticipantCount = maxParticipantCount;
         this.isDeleted = false;
         this.member = member;
+    }
+
+
+    // 봉사활동 신청
+    public void apply(Member member){
+        this.member = member;
+    }
+
+    public void changeVolunteerStatus(Status status){
+        this.status = status;
+    }
+
+    public void setCreator(Member member){
+        this.member = member;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 
     public void createAuth(VolunteerAuth volunteerAuth) {
@@ -118,4 +138,18 @@ public class Volunteer extends BaseLastModifiedEntity {
             return description;
         }
     }
+
+    public VolunteerDto.Response toResponseDto() {
+        return VolunteerDto.Response.builder()
+                .seq(seq)
+                .title(title)
+                .content(content)
+                .category(category)
+                .activityArea(activityArea)
+                .minParticipantCount(minParticipantCount)
+                .maxParticipantCount(maxParticipantCount)
+                .build();
+    }
+
+
 }

@@ -1,7 +1,7 @@
 package com.ssafy.a302.global.util;
 
 import com.ssafy.a302.global.auth.CustomUserDetails;
-import com.ssafy.a302.global.message.ErrorMessage;
+import com.ssafy.a302.global.constant.ErrorMessage;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
