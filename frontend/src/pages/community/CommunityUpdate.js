@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
-import st from "./styles/CommunityCreate.module.scss";
+import st from "./styles/CommunityUpdate.module.scss";
 import cn from "classnames";
 import QuillEditor from "./QuillEditor";
 export default function CommunityCreate(api) {
@@ -10,7 +10,7 @@ export default function CommunityCreate(api) {
 
   return (
     
-    <div className={st.commucreatemain}>
+    <div className={st.commuupdatemain}>
       <header className={st.commuhead}>
         <h2>Community</h2>
       </header>
