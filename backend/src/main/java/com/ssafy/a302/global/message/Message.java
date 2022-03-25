@@ -47,6 +47,8 @@ public class Message {
 
     public static String SUCCESS_RESET_PASSWORD;
 
+    public static String SUCCESS;
+
     @Autowired
     public Message(MessageSource messageSource) {
         REGISTER_MEMBER = messageSource.getMessage("register.member", null, null);
@@ -77,5 +79,7 @@ public class Message {
         FAIL_SEND_EMAIL = messageSource.getMessage("fail.send.email",null,null);
 
         SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE = messageSource.getMessage("success.remove.member.profile-image", null, null);
+
+        SUCCESS = messageSource.getMessage("success", null, null);
     }
 }

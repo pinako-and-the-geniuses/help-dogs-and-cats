@@ -152,7 +152,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberDetail memberDetail = findMember.getDetail();
 
-        String storeFilename = memberDetail.getImageInfo();
+        String storeFilename = memberDetail.getProfileImageFilename();
         if (storeFilename != null) {
             fileUtil.removeProfileImage(storeFilename);
         }
@@ -166,7 +166,7 @@ public class MemberServiceImpl implements MemberService {
             throw new IOException(ErrorMessage.UNAVAILABLE);
         }
 
-        memberDetail.changeImage(storeFilename);
+        memberDetail.changeProfileImageFilename(storeFilename);
 
         return "static/images/profile/" + storeFilename;
     }
@@ -179,11 +179,11 @@ public class MemberServiceImpl implements MemberService {
 
         MemberDetail memberDetail = findMember.getDetail();
 
-        if (memberDetail.getImageInfo() == null) {
+        if (memberDetail.getProfileImageFilename() == null) {
             throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
         }
 
-        String removedFilename = memberDetail.removeImage();
+        String removedFilename = memberDetail.clearProfileImageFilename();
 
         fileUtil.removeProfileImage(removedFilename);
     }

@@ -622,7 +622,7 @@ class MemberServiceTest {
         /**
          * 데이터베이스에 저장된 프로필 이미지 파일 이름과 반환 받은 이미지 이름이 같은지 검증한다.
          */
-        String savedProfileImageFilename = memberService.getMemberBySeq(memberSeq).getDetail().getImageInfo();
+        String savedProfileImageFilename = memberService.getMemberBySeq(memberSeq).getDetail().getProfileImageFilename();
         assertThat(savedProfileImageFilename).isEqualTo(storeFilename);
 
         /**
