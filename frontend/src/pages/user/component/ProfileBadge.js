@@ -1,34 +1,91 @@
+import { useEffect, useState } from "react";
 import st from "../styles/profile.module.scss";
-import { URL } from "../../../public/config/index";
-export default function ProfileBadge({ badgesForProfile }) {
-  console.log(badgesForProfile);
-  const getBadge = badgesForProfile.filter((badge) => badge.achieve);
-  const notBadge = badgesForProfile.filter((badge) => !badge.achieve);
-  const Badges = getBadge.concat(notBadge);
+const IMGURL = "http://j6a302.p.ssafy.io:8080/";
 
-  // console.log(Badges[0].imageFilePath);
+export default function ProfileBadge(badgesForProfile) {
+  const [badges, setBadges] = useState([]);
+  console.log("badgesForProfile", badgesForProfile);
+  useEffect(() => {
+    if (badgesForProfile) {
+      setBadges(badgesForProfile.badgesForProfile);
+      console.log(badges);
+      console.log(badges[7]);
+    } else {
+      console.log("실패");
+    }
+  }, [badgesForProfile]);
 
-  return (
-    <div className={st.btns}>
-      <div>
-        <button>뱃지</button>
+  if (badges.length === 10) {
+    return (
+      <div className={st.btns}>
+        <div className="d-flex">
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[0].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[1].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[2].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[3].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[4].imageFilePath}`}
+            />
+          </div>
+        </div>
 
-        <button>뱃지</button>
-        <button>뱃지</button>
-        <button>뱃지</button>
-        <button>뱃지</button>
+        <div className="d-flex mt-2">
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[5].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[6].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[7].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[8].imageFilePath}`}
+            />
+          </div>
+          <div className={st.badgeBox}>
+            <img
+              className={st.badge}
+              src={`${IMGURL}${badges[9].imageFilePath}`}
+            />
+          </div>
+        </div>
       </div>
-      <div>
-        <button>뱃지</button>
-        <button>뱃지</button>
-        <button>뱃지</button>
-        <button>뱃지</button>
-        <button>뱃지</button>
-      </div>
-
-      <div className={st.box} stle="background: #BDBDBD;">
-        {/* <img className={st.profile} src={`${URL}/${Badges[0].imageFilePath}`} /> */}
-      </div>
-    </div>
-  );
+    );
+  } else {
+    return "";
+  }
 }

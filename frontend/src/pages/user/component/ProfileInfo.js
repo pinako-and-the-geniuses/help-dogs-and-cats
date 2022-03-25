@@ -45,6 +45,7 @@ export default function ProfileInfo({ isLogin, seq }) {
               profileImageFilePath,
             } = res.data.data;
             const exp = res.data.data.exp % 100;
+
             setInputs({
               ...inputs,
               nickname,
@@ -56,12 +57,12 @@ export default function ProfileInfo({ isLogin, seq }) {
             });
           }
         })
+
         .catch((err) => {
           console.log(err);
         });
     }
   }, []);
-  console.log(inputs);
   return (
     <>
       <ProfileImage profileImageFilePath={profileImageFilePath} />
@@ -81,9 +82,7 @@ export default function ProfileInfo({ isLogin, seq }) {
               aria-valuenow="50"
               aria-valuemin="0"
               aria-valuemax="100"
-            >
-              {exp}%
-            </div>
+            ></div>
           </div>
         </div>
         <ProfileBadge badgesForProfile={badgesForProfile} />
