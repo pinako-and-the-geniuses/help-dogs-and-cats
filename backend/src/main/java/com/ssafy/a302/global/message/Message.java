@@ -19,6 +19,8 @@ public class Message {
 
     public static String SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE;
 
+    public static String SUCCESS_FIND_EMAIL;
+
     public static String FAIL_LOGIN;
 
     public static String DUPLICATE_MEMBER_EMAIL;
@@ -58,6 +60,7 @@ public class Message {
         SUCCESS_MODIFY_MEMBER = messageSource.getMessage("success.modify.member", null, null);
         SUCCESS_MODIFY_MEMBER_PROFILE_IMAGE = messageSource.getMessage("success.modify.member.profile-image", null, null);
         SUCCESS_RESET_PASSWORD = messageSource.getMessage("success.reset.password",null,null);
+        SUCCESS_FIND_EMAIL = messageSource.getMessage("success.find.email", null, null);
 
         FAIL_LOGIN = messageSource.getMessage("fail.login", null, null);
 
