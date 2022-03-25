@@ -1,12 +1,14 @@
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
+
 const initialUserInfo = {
-  userSeq: "",
+  seq: "",
   email: "",
-  nickName: "",
-  auth: "",
+  nickname: "",
+  role: "",
 };
-export const initialState = { isLoggedIn: false, userInfo: initialUserInfo };
+
+const initialState = { isLoggedIn: false, userInfo: initialUserInfo };
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -20,7 +22,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: false,
-        userInfo: {},
+        userInfo: initialState,
       };
     default:
       return state;

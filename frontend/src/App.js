@@ -1,7 +1,7 @@
 import React from "react";
-import Header from './components/Header';
-import Home from './components/Home';
-import { BrowserRouter, Route, Routes, useState } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   Signup,
   Login,
@@ -9,21 +9,25 @@ import {
   FindPwd,
   ResetPwd,
   EditInfo,
+  Profile,
 } from "./pages/user";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
 import { Community, CommunityDetail, CommunityCreate } from "./pages/community";
 import NotFound from "./NotFound";
-import { VolunteerList, VolunteerDetail, VolunteerWrite } from './pages/volunteer'
+import {
+  VolunteerList,
+  VolunteerDetail,
+  VolunteerWrite,
+} from "./pages/volunteer";
 
 function App() {
-
   return (
     <BrowserRouter>
       <Header></Header>
       <Routes>
         <>
-          <Route path="/" element={<Home />} />
+          <Route path="" element={<Home />} />
         </>
         <>
           <Route path="signup" element={<Signup />} />
@@ -32,12 +36,20 @@ function App() {
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
+        </>
+        <>
+          <Route path="/profile/:seq" element={<Profile />} />
+        </>
+        <>
           <Route path="/animals/animal" element={<Animal />} />
           <Route path="/animals/animaldetails" element={<AnimalDetails />} />
         </>
         <>
           <Route path="/community/community" element={<Community />} />
-          <Route path="/community/communitycreate" element={<CommunityCreate />} />
+          <Route
+            path="/community/communitycreate"
+            element={<CommunityCreate />}
+          />
           <Route
             path="/community/communitydetail/:seq"
             element={<CommunityDetail />}

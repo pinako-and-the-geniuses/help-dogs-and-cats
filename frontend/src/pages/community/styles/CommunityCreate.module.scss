@@ -2,93 +2,99 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-header {
-  margin: 40px 0;
-  h2 {
-    font-weight: bold;
-  }
-}
-.commucreatemain{
-    
+.commucreatemain {
+  //border: 1px solid red;
+  margin: 20px 200px;
+  .createtopContent {
+    // background-color: white;
+    // box-shadow: 0px 0px 10px $sub-color;
+    // padding: 30px;
     //border: 1px solid red;
     margin: 20px 200px;
-    .createtopContent{
-        // background-color: white;
-        // box-shadow: 0px 0px 10px $sub-color;
-        // padding: 30px;
-        //border: 1px solid red;
-        display:flex;
-        justify-content: space-around;
-        //justify-content: center;
+    .createtopContent {
+      // background-color: white;
+      // box-shadow: 0px 0px 10px $sub-color;
+      // padding: 30px;
+      //border: 1px solid red;
+      display: flex;
+      justify-content: space-around;
+      //justify-content: center;
+      //justify-content: space-between;
+      //align-items: center;
+      height: auto;
+      //height: 500px; 높이 자동으로 하고 싶으면 사용
+      width: 100%;
+      margin: auto;
+      background: #ffffff;
+      margin-bottom: 20px;
+      .community_create_search_bar {
+        //border: 1px solid $sub-color;
+        border-radius: 5px;
+        display: flex;
+        //justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
         //justify-content: space-between;
-        //align-items: center;
-        height: auto;
-        //height: 500px; 높이 자동으로 하고 싶으면 사용
-        width: 100%;
-        margin: auto;
-        background: #ffffff;
-        margin-bottom: 20px;
-        .community_create_search_bar {
+        padding: 20px 20px;
+        margin-top: 10px;
+        div {
+          display: flex;
+          input {
             //border: 1px solid $sub-color;
+            // margin-left: 0px;
             border-radius: 5px;
-            display: flex;
-            //justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
-            //justify-content: space-between;
-            padding: 20px 20px;
-            margin-top: 10px;
-            div {
-                display: flex;
-                input {
-                    //border: 1px solid $sub-color;
-                    // margin-left: 0px;
-                    border-radius: 5px;
-                }
-            }
-    
-            .search_input {
-                // width: 15%;
-                //margin-left: 15px;
-            }
-            .content_div{
-                display:inline-block;
-                //height: auto;
-                margin-left: 10px;
-                resize: none;
-                font-size: 16px;
-            }
-        }
-    }
-        .quill{
-            // background-color: white;
-            // box-shadow: 0px 0px 10px $sub-color;
-            // padding: 30px;
-            //border: 1px solid red;
-            display:block;
-            margin:auto;
-            //height: 300px;
+          }
         }
 
-    .createbuttonContent{
-        //border: 1px solid red;
-        display:flex;
-        justify-content: end;
-        // width: 70%;
-        .communitycreatebutton{
-            background-color: $main-color;
-              padding: 5px 13px;
-              margin-top: 15px;
-              margin-left: 10px; //끝으로 보낼거면 없애기
-              border-radius: 5px;
-              border: 0;
-              color: white;
-        } 
+        .search_input {
+          // width: 15%;
+          //margin-left: 15px;
+        }
+        .content_div {
+          display: inline-block;
+          //height: auto;
+          margin-left: 10px;
+          resize: none;
+          font-size: 16px;
+        }
+      }
     }
-    
+
+    .search_input {
+      // width: 15%;
+      //margin-left: 15px;
+    }
+    .content_div {
+      display: inline-block;
+      height: auto;
+      // width: 78%;
+
+      margin-left: 10px;
+      resize: none;
+      font-size: 16px;
+    }
+  }
+  .quill {
+    // background-color: white;
+    // box-shadow: 0px 0px 10px $sub-color;
+    // padding: 30px;
+    //border: 1px solid red;
+    display: block;
+    margin: auto;
+    //height: 300px;
+  }
+
+  .createbuttonContent {
+    //border: 1px solid red;
+    display: flex;
+    justify-content: end;
+    // width: 70%;
+    .communitycreatebutton {
+      background-color: $main-color;
+      padding: 5px 13px;
+      margin-top: 15px;
+      margin-left: 10px; //끝으로 보낼거면 없애기
+      border-radius: 5px;
+      border: 0;
+      color: white;
+    }
+  }
 }
-

@@ -2,19 +2,7 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-header {
-  margin: 40px 0;
-  h2 {
-    font-weight: bold;
-  }
-}
-.cummunity_container{
+.cummunity_container {
   //border: 1px solid red;
   margin: 100px;
   .community_search_bar {
@@ -25,22 +13,22 @@ header {
     // justify-content: space-between;
     padding: 20px 20px;
     margin: 10px 0;
-  
+
     div {
       display: flex;
       margin-right: 30px;
-  
+
       p {
         margin: auto;
       }
-  
+
       select,
       input {
         border: 1px solid $sub-color;
         margin-left: 10px;
         border-radius: 5px;
       }
-  
+
       input {
         padding-left: 8px;
         &:focus {
@@ -48,7 +36,7 @@ header {
         }
       }
     }
-  
+
     .search_input {
       p {
         font-weight: bold;
@@ -56,15 +44,13 @@ header {
       select {
         margin-right: 5px;
       }
-      
     }
     .input {
       padding-left: 8px;
-  
+
       &:focus {
         outline: none;
-    }
-    
+      }
     }
     button {
       background-color: $main-color;
@@ -75,25 +61,24 @@ header {
       color: white;
     }
   }
-  
-  .communitybutton{
+
+  .communitybutton {
     margin-top: 30px;
     display: flex;
     border: 1px solid $sub-color;
     background-color: $main-color;
-      padding: 5px 13px;
-      margin-left: 30px; //끝으로 보낼거면 없애기
-      border-radius: 5px;
-      border: 0;
-      color: white;
-  }  
-  
+    padding: 5px 13px;
+    margin-left: 30px; //끝으로 보낼거면 없애기
+    border-radius: 5px;
+    border: 0;
+    color: white;
+  }
+
   table {
     margin-top: 5px;
   }
-  
+
   .my_table {
     text-align: center;
   }
 }
-
