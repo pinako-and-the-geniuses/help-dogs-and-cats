@@ -64,4 +64,48 @@ class ImageServiceTest {
         assertThat(file.delete()).isTrue();
         assertThat(file.exists()).isFalse();
     }
+
+    @Test
+    @DisplayName("이미지 파일 삭제 - 성공")
+    void removeImageFileSuccess() throws IOException {
+        /**
+         * 테스트 데이터 세팅
+         */
+        String googleImageUrl = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png";
+        URL url = new URL(googleImageUrl);
+
+        File baseProfileImageFile = new File("test.png");
+        ImageIO.write(ImageIO.read(url), "png", baseProfileImageFile);
+
+        MultipartFile testImageFile = new MockMultipartFile(
+                "imageFile",
+                baseProfileImageFile.getName(),
+                "image/png",
+                new FileInputStream(baseProfileImageFile));
+
+        assertThat(baseProfileImageFile.delete()).isTrue();
+
+        /**
+         * 이미지 파일 저장
+         */
+        String savedImageFilePath = imageService.saveImageFile(testImageFile);
+        int indexOf = savedImageFilePath.lastIndexOf("/");
+        String storeFilename = savedImageFilePath.substring(indexOf + 1);
+
+        /**
+         * 이미지 파일 존재 확인
+         */
+        File findImageFile = new File(imageFileSavePath + File.separator + storeFilename);
+        assertThat(findImageFile.exists()).isTrue();
+
+        /**
+         * 이미지 파일 삭제
+         */
+        imageService.removeImageFile(storeFilename);
+
+        /**
+         * 이미지 파일 삭제 확인
+         */
+        assertThat(findImageFile.exists()).isFalse();
+    }
 }

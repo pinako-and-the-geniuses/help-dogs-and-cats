@@ -39,4 +39,9 @@ public class ImageServiceImpl implements ImageService {
 
         return boardImageAccessPath + "/" + storeFilename;
     }
+
+    @Override
+    public void removeImageFile(String imageFilename) throws IOException {
+        fileUtil.removeFile(imageFilename, boardImageSavePath);
+    }
 }
