@@ -1,4 +1,4 @@
-package com.ssafy.a302.global.message;
+package com.ssafy.a302.global.constant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
