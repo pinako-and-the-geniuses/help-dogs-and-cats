@@ -1,3 +1,4 @@
+
 package com.ssafy.a302.global.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,25 @@ public class Message {
 
     public static String SUCCESS_RESET_PASSWORD;
 
+    public static String REGISTER_VOLUNTEER;
+
+    public static String SUCCESS_DELETE_VOLUNTEER;
+
+    public static String SUCCESS_APPLY_VOLUNTEER;
+
+    public static String SUCCESS_CANCEL_VOLUNTEER;
+
+    public static String SUCCESS_CHANGE_STATUS_VOLUNTEER;
+
+    public static String SUCCESS_VOLUNTEER_PARTICIPANT_LIST;
+
+    public static String SUCCESS_CHANGE_PARTICIPANT_APPROVE;
+
+    public static String SUCCESS_DELETE_VOLUNTEER_PARTICIPANT;
+    public static String SUCCESS_FIND_EMAIL;
+
+    public static String SUCCESS;
+
     @Autowired
     public Message(MessageSource messageSource) {
         REGISTER_MEMBER = messageSource.getMessage("register.member", null, null);
@@ -77,5 +97,20 @@ public class Message {
         FAIL_SEND_EMAIL = messageSource.getMessage("fail.send.email",null,null);
 
         SUCCESS_REMOVE_MEMBER_PROFILE_IMAGE = messageSource.getMessage("success.remove.member.profile-image", null, null);
+
+        REGISTER_VOLUNTEER = messageSource.getMessage("register.volunteer", null, null);
+
+        SUCCESS_DELETE_VOLUNTEER = messageSource.getMessage("success.delete.volunteer", null, null);
+        SUCCESS_CHANGE_STATUS_VOLUNTEER = messageSource.getMessage("success.change-status.volunteer", null, null);
+
+        SUCCESS_APPLY_VOLUNTEER = messageSource.getMessage("success.apply.volunteer", null, null);
+        SUCCESS_CANCEL_VOLUNTEER = messageSource.getMessage("success.cancel.volunteer", null, null);
+
+        SUCCESS_VOLUNTEER_PARTICIPANT_LIST = messageSource.getMessage("success.volunteer.participant.list", null, null);
+        SUCCESS_CHANGE_PARTICIPANT_APPROVE = messageSource.getMessage("success.change.participant.approve", null, null);
+        SUCCESS_DELETE_VOLUNTEER_PARTICIPANT = messageSource.getMessage("success.delete.volunteer.participant", null, null);
+        SUCCESS = messageSource.getMessage("success", null, null);
+
+        SUCCESS_FIND_EMAIL = messageSource.getMessage("success.find.email", null, null);
     }
 }
