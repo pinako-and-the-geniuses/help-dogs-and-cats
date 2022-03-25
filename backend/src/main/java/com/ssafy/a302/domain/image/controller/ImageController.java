@@ -71,4 +71,35 @@ public class ImageController {
                 .data(data)
                 .build();
     }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "이미지 삭제 API",
+            description = "이미지 파일이름을 전달받고 이미지를 저장합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "이미지를 삭제하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{imageFilename}")
+    public BaseResponseDto<?> removeImageFile(@PathVariable(name = "imageFilename") String imageFilename) throws IOException {
+
+        imageService.removeImageFile(imageFilename);
+
+        return BaseResponseDto.builder()
+                .message(Message.REMOVE)
+                .build();
+    }
 }
