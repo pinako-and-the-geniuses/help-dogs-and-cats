@@ -45,6 +45,8 @@ public class Message {
 
     public static String FAIL_AUTHENTICATE_EMAIL;
 
+    public static String REGISTER_COMMUNITY_ARTICLE;
+
     public static String SUCCESS_SEND_EMAIL;
 
     public static String FAIL_SEND_EMAIL;
@@ -111,6 +113,8 @@ public class Message {
 
         SUCCESS_APPLY_VOLUNTEER = messageSource.getMessage("success.apply.volunteer", null, null);
         SUCCESS_CANCEL_VOLUNTEER = messageSource.getMessage("success.cancel.volunteer", null, null);
+
+        REGISTER_COMMUNITY_ARTICLE = messageSource.getMessage("register.community.article", null, null);
 
         SUCCESS_VOLUNTEER_PARTICIPANT_LIST = messageSource.getMessage("success.volunteer.participant.list", null, null);
         SUCCESS_CHANGE_PARTICIPANT_APPROVE = messageSource.getMessage("success.change.participant.approve", null, null);
