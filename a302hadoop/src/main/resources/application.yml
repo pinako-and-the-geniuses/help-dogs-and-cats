@@ -12,3 +12,7 @@ logging:
     com.ssafy.bjbj: debug
     org.springframework.web: debug
     org.hibernate.SQL: debug
+
+#
+#server:
+#  port: 8081

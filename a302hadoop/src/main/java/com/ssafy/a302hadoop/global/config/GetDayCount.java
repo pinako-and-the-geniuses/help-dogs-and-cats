@@ -1,4 +1,4 @@
-package com.ssafy.a302hadoop.global.scheduler;
+package com.ssafy.a302hadoop.global.config;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
