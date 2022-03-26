@@ -10,6 +10,7 @@ import cn from "classnames";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../../public/config/";
+import { useSelector } from "react-redux";
 
 export default function Editinfo() {
   // 입력정보
@@ -17,7 +18,6 @@ export default function Editinfo() {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [pwdConfirm, setPwdConfirm] = useState("");
-
   const [nickName, setNickName] = useState("");
   const [phone, setPhone] = useState("");
   const [region, setRegion] = useState("전체");
@@ -26,22 +26,36 @@ export default function Editinfo() {
   const [isPwdConfirm, setIsPwdConfirm] = useState(false);
   const [isNickName, setIsNickName] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
+
+  // 저장 정보 가져오기
+  const seq = useSelector((state) => state.userInfo.userInfo.seq);
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const jwt = sessionStorage.getItem("jwt");
   const pagename = "회원정보 수정";
   const navi = useNavigate();
 
-  const uId = 1;
+  console.log(seq);
 
-  // useEffect(async () => {
-  //   await axios
-  //     .get(`URL/members/${uID}`)
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
+  useEffect(() => {
+    if (!isLogin) {
+      alert("로그인 해주세요.");
+    } else {
+      axios
+        .get(`${URL}/members/${seq}`)
+        .then((res) => {
+          const data = res.data.data;
+          setEmail(data.email);
+          setNickName(data.nickname);
+          setPhone(data.tel);
+          setRegion(data.activityArea);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isLogin]);
+  console.log("url", `${URL}/members/${seq}`);
+  console.log("data", pwd, nickName, phone, region);
   const onSubmit = (event) => {
     event.preventDefault();
     if (!isPwd || !isPwdConfirm) {
@@ -52,10 +66,10 @@ export default function Editinfo() {
       alert("핸드폰 번호 인증이 필요합니다.");
     } else if (isPwd && isPwdConfirm && isNickName && isPhone) {
       axios({
-        url: `${URL}/members`,
-        method: "POST",
+        url: `${URL}/members/${seq}`,
+        method: "PUT",
+        headers: { Authorization: jwt },
         data: {
-          email: email,
           password: pwd,
           nickname: nickName,
           tel: phone,
@@ -65,12 +79,12 @@ export default function Editinfo() {
         .then((res) => {
           console.log(res);
           if (res.status === 201) {
-            navi("/", { replace: true });
+            alert("수정 완료");
+            navi("/");
           }
         })
         .catch((err) => {
           alert("수정 실패");
-          console.log(err.response.status);
           // navi("/NotFound")
         });
     } else {
@@ -81,7 +95,7 @@ export default function Editinfo() {
   return (
     <form className={`${st.userinfoForm} ${st.userform}`}>
       <h2>{pagename}</h2>
-      <UserImage uId={uId} />
+      <UserImage seq={seq} />
       <div>
         <p>
           <label htmlFor="email">아이디 [Email]</label>

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
-import { isInaccessible } from "@testing-library/react";
 
 export default function NickName({
   URL,
@@ -10,12 +9,26 @@ export default function NickName({
   setIsNickName,
 }) {
   const [nickNameCheck, setNickNameCheck] = useState("");
+  const [newNickName, setNewNickName] = useState("");
 
+  useEffect(() => {
+    setNewNickName(nickName);
+  }, []);
   const onNickNameHandler = (e) => {
-    const nickName = e.currentTarget.value;
-    setNickName(nickName);
+    setNickName(e.currentTarget.value);
     setNickNameCheck(false);
     setIsNickName(false);
+  };
+
+  const onNewNickNameHandler = (e) => {
+    setNewNickName(e.currentTarget.value);
+    if (newNickName === nickName) {
+      setNickNameCheck(true);
+      setIsNickName(true);
+    } else {
+      setNickNameCheck(false);
+      setIsNickName(false);
+    }
   };
 
   // 닉네임 중복확인 요청
@@ -23,6 +36,22 @@ export default function NickName({
     event.preventDefault();
     axios
       .get(`${URL}/members/nickname-duplicate-check/${nickName}`, {})
+      .then((res) => {
+        console.log(res);
+        setNickNameCheck(res.status);
+        isValid(res.status);
+      })
+      .catch((err) => {
+        console.log(err);
+        setNickNameCheck(err.response.status);
+        isValid(err.response.status);
+      });
+  };
+  //회원정보 수정일때
+  const onNewCheckNickName = (event) => {
+    event.preventDefault();
+    axios
+      .get(`${URL}/members/nickname-duplicate-check/${newNickName}`, {})
       .then((res) => {
         console.log(res);
         setNickNameCheck(res.status);
@@ -42,28 +71,77 @@ export default function NickName({
       setIsNickName(true);
     }
   };
+
+  console.log("new", newNickName);
   return (
     <>
       <div className="input-group mb-3">
         <label htmlFor="nickname">닉네임</label>
-        <input
-          id="nickname"
-          name="nickname"
-          type="text"
-          placeholder="닉네임"
-          defaultValue={nickName}
-          onChange={onNickNameHandler}
-          required
-          className={"form-control"}
-        />
-        <button
-          className="btn btn-outline-secondary"
-          type="button"
-          id="button-addon2"
-          onClick={onCheckNickName}
-        >
-          중복확인
-        </button>
+        {nickName.lengh < 2 ? (
+          <>
+            <input
+              id="nickname"
+              name="nickname"
+              type="text"
+              placeholder="닉네임"
+              defaultValue={nickName}
+              onChange={onNickNameHandler}
+              required
+              className={"form-control"}
+            />
+            {nickName !== newNickName ? (
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={onCheckNickName}
+              >
+                중복확인
+              </button>
+            ) : (
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={onCheckNickName}
+              >
+                확인완료
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            <input
+              id="nickname"
+              name="nickname"
+              type="text"
+              placeholder="닉네임"
+              defaultValue={nickName}
+              onChange={onNewNickNameHandler}
+              required
+              className={"form-control"}
+            />
+            {nickName !== newNickName ? (
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={onNewCheckNickName}
+              >
+                중복확인
+              </button>
+            ) : (
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                disabled
+              >
+                중복확인
+              </button>
+            )}
+          </>
+        )}
       </div>
       <div className={st.msg}>
         {nickNameCheck === 200 ? <span>사용중인 닉네임입니다.</span> : ""}
