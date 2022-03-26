@@ -3,6 +3,7 @@ package com.ssafy.a302hadoop.global.scheduler;
 import com.ssafy.a302hadoop.global.config.GetLastYearData;
 import com.ssafy.a302hadoop.global.config.GetThisYearData;
 import com.ssafy.a302hadoop.global.config.SaveAnimalDatas;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,10 +14,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @Component
+@RequiredArgsConstructor
 public class OpenApiDataSave {
 
-    @Autowired
-    SaveAnimalDatas saveAnimalDatas;
+    private final SaveAnimalDatas saveAnimalDatas;
 
     @Value("${openapi.serviceKey}")
     private String serviceKey;

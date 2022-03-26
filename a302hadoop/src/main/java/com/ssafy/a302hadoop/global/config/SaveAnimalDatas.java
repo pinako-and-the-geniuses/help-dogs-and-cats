@@ -17,10 +17,10 @@ import java.util.List;
 
 
 @Component
+@RequiredArgsConstructor
 public class SaveAnimalDatas {
 
-    @Autowired
-    HadoopService hadoopService;
+    private final HadoopService hadoopService;
 
 //    public SaveAnimalDatas(HadoopService hadoopService) {
 //        this.hadoopService = hadoopService;

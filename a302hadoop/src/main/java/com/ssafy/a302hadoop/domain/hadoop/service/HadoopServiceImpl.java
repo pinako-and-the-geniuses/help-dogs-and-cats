@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class HadoopServiceImpl implements HadoopService{
 
     private final AnimalDataRepository animalDataRepository;
