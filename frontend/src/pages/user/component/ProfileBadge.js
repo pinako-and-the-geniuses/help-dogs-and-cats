@@ -62,7 +62,39 @@ export default function ProfileBadge(badgesForProfile) {
             </div>
           ) : (
             <div className={st.badgeBox}>
-              <FcLock size={50} />
+              <FcLock
+                size={50}
+                data-bs-toggle="modal"
+                data-bs-target="#badgeModal"
+              />
+              <div
+                className="modal fade"
+                id="badgeModal"
+                tabIndex="-1"
+                aria-labelledby="ModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content">
+                    <div className={st.modalHeader}>
+                      <div className={st.modalBadgeBox}>
+                        <FcLock size={50} />
+                      </div>
+                      <h5 className="modal-title" id="ModalLabel">
+                        {badges[0].name}
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className={st.modalBody}>{badges[0].howToGet}</div>
+                    <div className={st.modalBody}>{badges[0].content}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
           {badges[1].achieve == true ? (
@@ -107,7 +139,39 @@ export default function ProfileBadge(badgesForProfile) {
             </div>
           ) : (
             <div className={st.badgeBox}>
-              <FcLock size={50} />
+              <FcLock
+                size={50}
+                data-bs-toggle="modal"
+                data-bs-target="#badgeModal1"
+              />
+              <div
+                className="modal fade"
+                id="badgeModal1"
+                tabIndex="-1"
+                aria-labelledby="ModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content">
+                    <div className={st.modalHeader}>
+                      <div className={st.modalBadgeBox}>
+                        <FcLock size={50} />
+                      </div>
+                      <h5 className="modal-title" id="ModalLabel">
+                        {badges[1].name}
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className={st.modalBody}>{badges[1].howToGet}</div>
+                    <div className={st.modalBody}>{badges[1].content}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
           {badges[2].achieve == true ? (
@@ -152,7 +216,39 @@ export default function ProfileBadge(badgesForProfile) {
             </div>
           ) : (
             <div className={st.badgeBox}>
-              <FcLock size={50} />
+              <FcLock
+                size={50}
+                data-bs-toggle="modal"
+                data-bs-target="#badgeModal2"
+              />
+              <div
+                className="modal fade"
+                id="badgeModal2"
+                tabIndex="-1"
+                aria-labelledby="ModalLabel"
+                aria-hidden="true"
+              >
+                <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content">
+                    <div className={st.modalHeader}>
+                      <div className={st.modalBadgeBox}>
+                        <FcLock size={50} />
+                      </div>
+                      <h5 className="modal-title" id="ModalLabel">
+                        {badges[2].name}
+                      </h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className={st.modalBody}>{badges[2].howToGet}</div>
+                    <div className={st.modalBody}>{badges[2].content}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
           {badges[3].achieve == true ? (

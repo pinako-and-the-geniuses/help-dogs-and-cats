@@ -10,7 +10,6 @@ export default function ProfileList() {
     setPage(e.target.value);
     getList(e.target.value);
   };
-  console.log(page);
 
   // const getList = async(page) => {
   //   await axios.get()
