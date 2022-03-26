@@ -8,8 +8,8 @@ export default function ProfileBadge(badgesForProfile) {
   useEffect(() => {
     if (badgesForProfile) {
       setBadges(badgesForProfile.badgesForProfile);
-      console.log(badges);
     } else {
+      alert("다시 접속해 주세요.");
       console.log("실패");
     }
   }, [badgesForProfile]);
