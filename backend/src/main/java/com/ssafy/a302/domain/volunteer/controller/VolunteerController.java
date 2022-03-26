@@ -1,7 +1,9 @@
 package com.ssafy.a302.domain.volunteer.controller;
 
+import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerCommentRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerParticipantRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerRequestDto;
+import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
 import com.ssafy.a302.global.auth.CustomUserDetails;
@@ -32,6 +34,8 @@ public class VolunteerController {
     private final VolunteerService volunteerService;
 
     private final VolunteerParticipantService volunteerParticipantService;
+
+    private final VolunteerCommentService volunteerCommentService;
 
     // 봉사활동 생성
     @Operation(
@@ -160,6 +164,35 @@ public class VolunteerController {
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_DELETE_VOLUNTEER_PARTICIPANT)
+                .build();
+    }
+
+
+    // 봉사활동 댓글 작성
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{volunteerSeq}/comments")
+    public BaseResponseDto<?> registerVolunteerComment(@Validated @PathVariable Long volunteerSeq, @RequestBody VolunteerCommentRequestDto.RegisterInfo registerInfo, Authentication authentication) {
+        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+
+        volunteerCommentService.registerVolunteerComment(volunteerSeq, memberSeq, registerInfo.toServiceDto());
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_REGISTER_VOLUNTEER_COMMENT)
+                .build();
+    }
+
+    // 봉사활동 댓글 삭제
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{volunteerSeq}/comments/{commentsSeq}")
+    public BaseResponseDto<?> deleteVolunteerComment(@Validated @PathVariable Long volunteerSeq, @PathVariable Long commentsSeq, Authentication authentication) {
+        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+
+        volunteerCommentService.deleteVolunteerComment(volunteerSeq, commentsSeq, memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_DELETE_VOLUNTEER_COMMENT)
                 .build();
     }
 
