@@ -1,3 +1,5 @@
+@import "userform.module.scss";
+
 .findForm {
   max-width: 600px;
   .findId {
@@ -13,5 +15,13 @@
       height: 5px;
       background-color: rgb(104, 86, 7);
     }
+  }
+}
+
+.emailBox {
+  margin-top: 20px;
+  text-align: center;
+  span {
+    font-weight: bold;
   }
 }
