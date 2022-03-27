@@ -19,6 +19,10 @@ public class ErrorMessage {
 
     public static String PATTERN_MEMBER_TEL;
 
+    public static String PATTERN_BLANK;
+
+    public static String PATTERN_CATEGORY;
+
     public static String NULL_MEMBER;
 
     public static String NULL_MEMBER_EMAIL;
@@ -58,6 +62,8 @@ public class ErrorMessage {
         PATTERN_MEMBER_PASSWORD = messageSource.getMessage("pattern.member.password", null, null);
         PATTERN_MEMBER_NICKNAME = messageSource.getMessage("pattern.member.nickname", null, null);
         PATTERN_MEMBER_TEL = messageSource.getMessage("pattern.member.tel", null, null);
+        PATTERN_BLANK = messageSource.getMessage("pattern.blank", null, null);
+        PATTERN_CATEGORY = messageSource.getMessage("pattern.category", null, null);
 
         NULL_MEMBER = messageSource.getMessage("null.member", null, null);
         NULL_MEMBER_EMAIL = messageSource.getMessage("null.member.email", null, null);
