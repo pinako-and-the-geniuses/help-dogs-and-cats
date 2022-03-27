@@ -35,10 +35,6 @@ export default function FindPwd() {
       });
   };
 
-  // const onBtn = () => {
-  //   navigator("/login");
-  // };
-
   return (
     <div className={st.userformPage}>
       <form onSubmit={onSubmit} className={cn(`${st.userform} ${st.findForm}`)}>
