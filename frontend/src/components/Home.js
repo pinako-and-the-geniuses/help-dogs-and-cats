@@ -1,9 +1,15 @@
 // import style from './styles/Home.module.scss';
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import "./styles/Home.css";
 // import './main.js';
 
 function Home() {
+  const userInfo = useSelector((state) => state.userInfo);
+
+  useEffect(() => {
+    console.log(userInfo);
+  }, []);
   return (
     <>
       <div id="hero" className="home">

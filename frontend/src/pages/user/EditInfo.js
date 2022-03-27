@@ -3,7 +3,7 @@ import DeleteUser from "./component/DeleteUser";
 import UserImage from "./component/UserImage";
 import Password from "./component/Password";
 import NickName from "./component/NickName";
-import Phone from "./component/Phone";
+import EditPhone from "./component/EditPhone";
 import Region from "./component/Region";
 import st from "./styles/userform.module.scss";
 import cn from "classnames";
@@ -20,12 +20,13 @@ export default function Editinfo() {
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [nickName, setNickName] = useState("");
   const [phone, setPhone] = useState("");
+  const [newPhone, setNewPhone] = useState("");
   const [region, setRegion] = useState("전체");
   // 유효성 검사
   const [isPwd, setIsPwd] = useState(false);
   const [isPwdConfirm, setIsPwdConfirm] = useState(false);
-  const [isNickName, setIsNickName] = useState(false);
-  const [isPhone, setIsPhone] = useState(false);
+  const [isNickName, setIsNickName] = useState(true);
+  const [isPhone, setIsPhone] = useState(true);
 
   // 저장 정보 가져오기
   const seq = useSelector((state) => state.userInfo.userInfo.seq);
@@ -33,8 +34,6 @@ export default function Editinfo() {
   const jwt = sessionStorage.getItem("jwt");
   const pagename = "회원정보 수정";
   const navi = useNavigate();
-
-  console.log(seq);
 
   useEffect(() => {
     if (!isLogin) {
@@ -54,10 +53,12 @@ export default function Editinfo() {
         });
     }
   }, [isLogin]);
-  console.log("url", `${URL}/members/${seq}`);
+
   console.log("data", pwd, nickName, phone, region);
+
   const onSubmit = (event) => {
     event.preventDefault();
+    setPhone(newPhone);
     if (!isPwd || !isPwdConfirm) {
       alert("비밀번호를 확인해주세요");
     } else if (!isNickName) {
@@ -72,7 +73,7 @@ export default function Editinfo() {
         data: {
           password: pwd,
           nickname: nickName,
-          tel: phone,
+          tel: newPhone,
           activityArea: region,
         },
       })
@@ -96,7 +97,7 @@ export default function Editinfo() {
     <form className={`${st.userinfoForm} ${st.userform}`}>
       <h2>{pagename}</h2>
       <UserImage seq={seq} />
-      <div>
+      <div name="아이디[이메일]">
         <p>
           <label htmlFor="email">아이디 [Email]</label>
         </p>
@@ -127,9 +128,11 @@ export default function Editinfo() {
         isNickName={isNickName}
         setIsNickName={setIsNickName}
       />
-      <Phone
+      <EditPhone
         URL={URL}
         phone={phone}
+        newPhone={newPhone}
+        setNewPhone={setNewPhone}
         setPhone={setPhone}
         isPhone={isPhone}
         setIsPhone={setIsPhone}

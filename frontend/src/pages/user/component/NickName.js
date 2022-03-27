@@ -72,7 +72,6 @@ export default function NickName({
     }
   };
 
-  console.log("new", newNickName);
   return (
     <>
       <div className="input-group mb-3">
