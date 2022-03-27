@@ -30,6 +30,7 @@ public class CommunityServiceImpl implements CommunityService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional
     @Override
     public Long register(CommunityDto communityDto, Long memberSeq) {
         Member writer = memberRepository.findMemberBySeq(memberSeq)
@@ -37,6 +38,20 @@ public class CommunityServiceImpl implements CommunityService {
 
         Community newCommunity = communityDto.toEntity(writer);
         return communityRepository.save(newCommunity).getSeq();
+    }
+
+    @Transactional
+    @Override
+    public Long modify(Long communitySeq, CommunityDto communityDto, Long memberSeq) {
+        Community findCommunity = communityRepository.findBySeq(communitySeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findCommunity.getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
+        }
+
+        findCommunity.modify(communityDto);
+        return findCommunity.getSeq();
     }
 
     @Override
@@ -91,7 +106,7 @@ public class CommunityServiceImpl implements CommunityService {
         }
 
         if (!findComment.getMember().getSeq().equals(memberSeq)) {
-            throw new AccessDeniedException(ErrorMessage.INVALID_MEMBER_SEQ);
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
 
         findComment.delete();
@@ -104,7 +119,7 @@ public class CommunityServiceImpl implements CommunityService {
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
 
         if (!findCommunity.getMember().getSeq().equals(memberSeq)) {
-            throw new AccessDeniedException(ErrorMessage.BAD_REQUEST);
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
 
         findCommunity.delete();
