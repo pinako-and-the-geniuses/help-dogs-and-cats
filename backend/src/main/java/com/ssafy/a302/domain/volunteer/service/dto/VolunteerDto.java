@@ -1,11 +1,14 @@
 package com.ssafy.a302.domain.volunteer.service.dto;
 
-import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
+import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 public class VolunteerDto {
@@ -82,6 +85,39 @@ public class VolunteerDto {
             this.activityArea = activityArea;
             this.minParticipantCount = minParticipantCount;
             this.maxParticipantCount = maxParticipantCount;
+        }
+    }
+
+    @Getter
+    @ToString(of = {"memberSeq", "nickname", "title", "content", "status", "activityArea", "volunteerComment"})
+    public static class DetailResponse {
+
+        private final Long memberSeq;
+
+        private final String nickname;
+
+        private final String title;
+
+        private final String content;
+
+        private final Volunteer.Status status;
+
+        private final String activityArea;
+
+        private List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment;
+
+        public void setVolunteerComment(List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment){
+            this.volunteerComment = volunteerComment;
+        }
+
+        @Builder
+        public DetailResponse(Long memberSeq, String nickname, String title, String content, Volunteer.Status status, String activityArea, List<VolunteerComment> volunteerComment) {
+            this.memberSeq = memberSeq;
+            this.nickname = nickname;
+            this.title = title;
+            this.content = content;
+            this.status = status;
+            this.activityArea = activityArea;
         }
     }
 
