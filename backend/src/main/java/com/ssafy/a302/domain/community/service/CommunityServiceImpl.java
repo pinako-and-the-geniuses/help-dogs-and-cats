@@ -1,7 +1,10 @@
 package com.ssafy.a302.domain.community.service;
 
 import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.entity.CommunityComment;
+import com.ssafy.a302.domain.community.repository.CommunityCommentRepository;
 import com.ssafy.a302.domain.community.repository.CommunityRepository;
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
 import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
@@ -21,6 +24,8 @@ import java.util.List;
 public class CommunityServiceImpl implements CommunityService {
 
     private final CommunityRepository communityRepository;
+
+    private final CommunityCommentRepository communityCommentRepository;
 
     private final MemberRepository memberRepository;
 
@@ -46,5 +51,31 @@ public class CommunityServiceImpl implements CommunityService {
                 .communitiesForPage(communitiesForPage)
                 .currentPageNumber(pageable.getPageNumber())
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public Long registerComment(Long communitySeq, CommunityCommentDto.RegisterInfo registerInfo, Long memberSeq) {
+        Community findCommunity = communityRepository.findBySeq(communitySeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        Member findMember = memberRepository.findMemberBySeq(memberSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_MEMBER_SEQ));
+
+        CommunityComment newCommunityComment = CommunityComment.builder()
+                .community(findCommunity)
+                .member(findMember)
+                .content(registerInfo.getContent())
+                .build();
+
+        Long parentSeq = registerInfo.getParentSeq();
+        if (parentSeq != null) {
+            CommunityComment parentComment = communityCommentRepository.findBySeq(parentSeq)
+                    .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+            newCommunityComment.createParent(parentComment);
+        }
+
+        return communityCommentRepository.save(newCommunityComment).getSeq();
     }
 }
