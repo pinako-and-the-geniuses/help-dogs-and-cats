@@ -19,9 +19,9 @@ public class GetThisYearData {
     public void getThisYearData(LocalDate curDate, String serviceKey) throws IOException, org.json.simple.parser.ParseException {
 
         //파일 불러옴
-//        FileOutputStream fos = new FileOutputStream("~"+File.separator+ "animal"+ File.separator+ "recent.txt", true);
+        FileOutputStream fos = new FileOutputStream("/home/ubuntu/S06P22A302/a302hadoop/animaldata/recentdata.txt", true);
         //recent라는 파일에 이어서 씀
-        FileOutputStream fos = new FileOutputStream("C:\\animal\\"+ "recent.txt", true);
+//        FileOutputStream fos = new FileOutputStream("C:\\ssafy\\S06P22A302\\a302hadoop\\animaldata\\"+ "recentdata.txt", true);
         OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         BufferedWriter out = new BufferedWriter(writer);
 
@@ -121,10 +121,10 @@ public class GetThisYearData {
                                         .replace("년령", "년")
                                         .replace("약", "")
                                         .replace("생후", "")
-                                        .replace("Y","년")
-                                        .replace("M","개월")
-                                        .replace("y","년")
-                                        .replace("m","개월")
+                                        .replace("Y", "년")
+                                        .replace("M", "개월")
+                                        .replace("y", "년")
+                                        .replace("m", "개월")
                                 ).append(" ,")
                                 .append((obj.get("happenDt") == null) ? "xxx" : obj.get("happenDt").toString().trim().substring(0, 4).replace(",", "")).append(",")
                                 .append((obj.get("orgNm") == null) ? "xxx" : obj.get("orgNm").toString().trim().replace(",", ""))
