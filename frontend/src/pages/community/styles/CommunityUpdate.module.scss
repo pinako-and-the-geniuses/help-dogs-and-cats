@@ -2,7 +2,7 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-.commucreatemain {
+.commuupdatemain {
   //border: 1px solid red;
   margin: 20px 200px;
   margin-top: 100px;
@@ -53,10 +53,10 @@ $sub-color: #999999;
   .quill {
     // background-color: white;
     // box-shadow: 0px 0px 10px $sub-color;
-    // padding: 30px;
-    //border: 1px solid red;
-    display: block;
-    margin: auto;
+    //padding: 30px;
+    border: 1px solid red;
+    // display: block;
+    // margin: auto;
     height: 400px;
   }
 
