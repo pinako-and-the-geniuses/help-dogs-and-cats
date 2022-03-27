@@ -12,6 +12,7 @@ import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,5 +78,22 @@ public class CommunityServiceImpl implements CommunityService {
         }
 
         return communityCommentRepository.save(newCommunityComment).getSeq();
+    }
+
+    @Transactional
+    @Override
+    public void removeComment(Long communitySeq, Long commentSeq, Long memberSeq) {
+        CommunityComment findComment = communityCommentRepository.findBySeq(commentSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findComment.getCommunity().getSeq().equals(communitySeq)) {
+            throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+        }
+
+        if (!findComment.getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.INVALID_MEMBER_SEQ);
+        }
+
+        findComment.delete();
     }
 }

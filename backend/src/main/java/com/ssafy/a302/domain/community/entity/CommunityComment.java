@@ -59,4 +59,8 @@ public class CommunityComment extends BaseLastModifiedEntity {
         this.parent = parent;
         parent.getChildren().add(this);
     }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
 }

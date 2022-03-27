@@ -12,4 +12,6 @@ public interface CommunityService {
     CommunityDto.CommunityListPage getPage(Pageable pageable, Community.Category category, String search, String keyword);
 
     Long registerComment(Long communitySeq, CommunityCommentDto.RegisterInfo registerInfo, Long memberSeq);
+
+    void removeComment(Long communitySeq, Long commentSeq, Long memberSeq);
 }

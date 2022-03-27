@@ -51,6 +51,8 @@ class CommunityServiceTest {
 
     private Community community1, community2;
 
+    private CommunityComment comment1;
+
     @BeforeEach
     void setUp() {
         memberRepository.deleteAll();
@@ -102,6 +104,12 @@ class CommunityServiceTest {
                 .content("<p>유기동물 제보해요</p>")
                 .category(Community.Category.REPORT)
                 .member(member2)
+                .build();
+
+        comment1 = CommunityComment.builder()
+                .member(member1)
+                .community(community1)
+                .content("댓글1")
                 .build();
     }
 
@@ -210,5 +218,34 @@ class CommunityServiceTest {
         assertThat(savedCommunityComment.getContent()).isEqualTo(registerCommentInfo1.getContent());
         assertThat(savedCommunityComment.getParent()).isNull();
         assertThat(savedCommunityComment.getMember().getSeq()).isEqualTo(savedMember2.getSeq());
+    }
+
+    @Test
+    @DisplayName("커뮤니티 게시글 댓글 삭제 - 성공")
+    void removeCommunityCommentSuccess() {
+        /**
+         * 테스트 데이ㅓㅌ 세팅
+         */
+        Member savedMember1 = memberRepository.save(member1);
+        Community savedCommunity1 = communityRepository.save(community1);
+        CommunityComment savedComment1 = communityCommentRepository.save(comment1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 댓글 조회
+         */
+        CommunityComment findComment1 = communityCommentRepository.findBySeq(savedComment1.getSeq())
+                .orElse(null);
+        assertThat(findComment1).isNotNull();
+
+        /**
+         * 뎃글 삭제
+         */
+        communityService.removeComment(savedCommunity1.getSeq(), savedComment1.getSeq(), savedMember1.getSeq());
+
+        CommunityComment findComment2 = communityCommentRepository.findBySeq(savedComment1.getSeq())
+                .orElse(null);
+        assertThat(findComment2).isNull();;
     }
 }
