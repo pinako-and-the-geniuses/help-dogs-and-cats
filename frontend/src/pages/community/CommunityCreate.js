@@ -13,12 +13,14 @@ export default function CommunityCreate(api) {
   const navi = useNavigate();
   const onSubmit = (event) => {
     event.preventDefault();
+    console.log(category);
+    console.log(title);
     const jwt = sessionStorage.getitem("jwt")
     axios({
       url: `${URL}/communities`,
       method: "POST",
       headers: {
-        jwt
+        Authorization : jwt
       },
       data: {
         category : category,
