@@ -14,4 +14,6 @@ public interface CommunityService {
     Long registerComment(Long communitySeq, CommunityCommentDto.RegisterInfo registerInfo, Long memberSeq);
 
     void removeComment(Long communitySeq, Long commentSeq, Long memberSeq);
+
+    void remove(Long communitySeq, Long memberSeq);
 }
