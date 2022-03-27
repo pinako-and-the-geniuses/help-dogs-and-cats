@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.service;
 
+import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
@@ -10,8 +11,11 @@ import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -73,6 +77,21 @@ public class VolunteerServiceImpl implements VolunteerService {
             throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER);
         }
         return findVolunteer;
+    }
+
+    @Override
+    public VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword) {
+        Integer totalCount = volunteerRepository.countAllByKeyword(keyword);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPage(pageable, keyword)
+                .orElse(null);
+
+        return VolunteerDto.VolunteerListPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .volunteersForPage(volunteersForPage)
+                .currentPageNumber(pageable.getPageNumber())
+                .build();
     }
 
 
