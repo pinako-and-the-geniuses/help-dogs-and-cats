@@ -224,4 +224,46 @@ public class CommunityController {
                 .message(Message.SUCCESS)
                 .build();
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "커뮤니티 게시글 수정 API",
+            description = "제목, 본문, 카데고리, 회원 식별키를 전달받고 커뮤니티 게시글을 수정합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "커뮤니티 게시글을 수정하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "제목, 본문, 카테고리 중 한 가지 이상 형식 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{communitySeq}")
+    public BaseResponseDto<?> modify(@PathVariable(name = "communitySeq") Long communitySeq,
+                                     @Validated @RequestBody CommunityRequestDto.ModifyInfo modifyInfo,
+                                     Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        communityService.modify(communitySeq, modifyInfo.toServiceDto(), memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
+    }
 }
