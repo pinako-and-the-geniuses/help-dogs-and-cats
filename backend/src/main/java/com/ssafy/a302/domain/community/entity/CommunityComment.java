@@ -40,7 +40,7 @@ public class CommunityComment extends BaseLastModifiedEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @JoinColumn(name = "parent_seq", nullable = false)
+    @JoinColumn(name = "parent_seq")
     @ManyToOne(fetch = LAZY)
     private CommunityComment parent;
 
