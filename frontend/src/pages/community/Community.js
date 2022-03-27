@@ -13,7 +13,7 @@ export default function Community() {
   //const [size, setSize] = useState([]);
   const size = 10;
   const [search, setSearch] = useState([]);
-  const [tag, setTag] = useState([]);
+  const [category, setCategory] = useState([]);
   const [keyword, setKeyword] = useState([]);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [communitysPerPage] = useState(10);
@@ -23,14 +23,14 @@ export default function Community() {
   // const currentCommunitys = communitys.slice(indexOfFirstPost, indexOfLastPost);
   // const paginate = (pageNumber) => setCurrentPage(pageNumber);
   useEffect(() => { //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
-    axios.get(`${URL}/communities?page=${page}&size=${size}&tag=${tag}&search=${search}&keyword=${keyword}`)
+    axios.get(`${URL}/communities?page=${page}&size=${size}&category=${category}&search=${search}&keyword=${keyword}`)
     .then(response => setCommunity(response.data))
     .catch(err => console.log(err))
   }, []); //한번만 해줄때 []넣는다
 
   const getRead = (e) => {
     console.log("read",e.target.value);
-    axios.get(`${URL}/communities?page=${page}&size=${size}&tag=${tag}&search=${search}&keyword=${keyword}`)
+    axios.get(`${URL}/communities?page=${page}&size=${size}&category=${category}&search=${search}&keyword=${keyword}`)
     .then(response => setCommunity(response.data))
     .catch(err => console.log(err))
   }
@@ -42,7 +42,7 @@ export default function Community() {
 
     const getSeq = () =>{
         console.log(seq);
-        navigate(`/community/communitydetail/:${seq}`);
+        navigate(`/community/communitydetail/${seq}`);
     }
 
     const getWrite = () =>{
@@ -50,7 +50,7 @@ export default function Community() {
   }
     const getTag = (e) => {
       console.log("tag",e.target.value);
-      setTag(e.target.value);
+      setCategory(e.target.value);
     }
 
     const getSearch = (e) => {
@@ -66,14 +66,14 @@ export default function Community() {
     
   return (
     <div className={style.cummunity_container}>
-      <header>
+      <header className={style.communhead}>
         <h2>Community</h2>
       </header>
 
       <div className={style.community_search_bar}>
         <div className={style.search_input}>
           <select name="searchCd" onChange={getTag}>
-            <option defaultValue>태그</option>
+            <option defaultValue>카테고리</option>
             <option value="공지">공지</option>
             <option value="제보">제보</option>
             <option value="잡담">잡담</option>
@@ -83,7 +83,7 @@ export default function Community() {
 
           <select name="searchCgg" onChange={getSearch}>
             <option defaultValue>검색</option>
-            <option value="">전체</option>
+            <option value="all">전체</option>
             <option value="title">글 제목</option>
             <option value="writer">작성자</option>
           </select>
