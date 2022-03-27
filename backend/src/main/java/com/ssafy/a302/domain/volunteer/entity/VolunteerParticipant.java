@@ -1,6 +1,8 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerParticipantDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,9 +31,25 @@ public class VolunteerParticipant {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
+    private Boolean approve;
+
     @Builder
     public VolunteerParticipant(Volunteer volunteer, Member member) {
         this.volunteer = volunteer;
         this.member = member;
+        this.approve = false;
     }
+
+    public VolunteerParticipantDto.Response toResponseDto() {
+        return VolunteerParticipantDto.Response.builder()
+                .volunteer(volunteer)
+                .member(member)
+                .build();
+    }
+
+    public void changeParticipantIsApprove(Boolean approve){
+        this.approve = approve;
+    }
+
+
 }

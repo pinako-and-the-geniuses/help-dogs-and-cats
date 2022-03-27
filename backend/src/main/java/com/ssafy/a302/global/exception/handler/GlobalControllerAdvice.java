@@ -2,10 +2,11 @@ package com.ssafy.a302.global.exception.handler;
 
 import com.ssafy.a302.global.dto.ErrorResponseDto;
 import com.ssafy.a302.global.exception.DuplicateException;
-import com.ssafy.a302.global.message.ErrorMessage;
-import com.ssafy.a302.global.message.Message;
+import com.ssafy.a302.global.constant.ErrorMessage;
+import com.ssafy.a302.global.constant.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.mail.MailException;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @RestControllerAdvice
@@ -43,8 +45,18 @@ public class GlobalControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ErrorResponseDto<?> httpMessageNotReadableExceptionExceptionHandler(HttpMessageNotReadableException e) {
+        logPrint(e);
+
+        return ErrorResponseDto.builder()
+                .message(ErrorMessage.PATTERN)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResponseDto<Map<String, Object>> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ErrorResponseDto<Map<String, Object>> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         logPrint(e);
 
         Map<String, Object> data = new HashMap<>();
@@ -91,6 +103,15 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     @ExceptionHandler(IOException.class)
     public ErrorResponseDto<?> iOExceptionHandler(IOException e) {
+        logPrint(e);
+        return ErrorResponseDto.builder()
+                .message(e.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(NoSuchElementException.class)
+    public ErrorResponseDto<?> noSuchElementExceptionHandler(NoSuchElementException e) {
         logPrint(e);
         return ErrorResponseDto.builder()
                 .message(e.getMessage())

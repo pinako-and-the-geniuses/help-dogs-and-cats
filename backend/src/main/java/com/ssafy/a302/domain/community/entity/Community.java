@@ -67,8 +67,7 @@ public class Community extends BaseLastModifiedEntity {
         NOTICE("공지사항"),
         REPORT("제보"),
         GENERAL("잡담"),
-        VOLUNTEER("봉사활동 후기"),
-        ADOPTION("입양 후기");
+        REVIEW("봉사활동/입양 후기");
 
         private final String description;
 
@@ -79,5 +78,9 @@ public class Community extends BaseLastModifiedEntity {
         public String getDescription() {
             return description;
         }
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 }

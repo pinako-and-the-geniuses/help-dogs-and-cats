@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
 import cn from "classnames";
@@ -8,17 +8,10 @@ export default function Phone({ URL, phone, setPhone, setIsPhone }) {
 
   // 값입력
   const onPhoneHandler = (e) => {
-    // const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
     const phoneCurrent = e.target.value;
     setPhone(phoneCurrent);
     setPhoneCheck(false);
     setIsPhone(false);
-
-    // if (!phoneRegex.test(phoneCurrent)) {
-    //   setIsPhone(false);
-    // } else {
-    //   setIsPhone(true);
-    // }
   };
 
   // 폰번호 중복확인 요청

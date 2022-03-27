@@ -26,7 +26,6 @@ export default function ProfileInfo({ isLogin, seq }) {
   } = inputs; // 비구조화 할당을 통해 값 추출
 
   useEffect(() => {
-    console.log(`해당 프로필은 ${seq} 번호꺼`);
     // 로그인 안한 사람은 누구 프로필도 볼 수 없음.
     if (!isLogin) {
       alert("로그인 해주세요");
