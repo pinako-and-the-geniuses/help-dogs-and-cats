@@ -5,13 +5,14 @@ import com.ssafy.a302hadoop.global.config.GetThisYearData;
 import com.ssafy.a302hadoop.global.config.SaveAnimalDatas;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.zeroturnaround.exec.ProcessExecutor;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.concurrent.TimeoutException;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class OpenApiDataSave {
 
         GetLastYearData glyd = new GetLastYearData();
 
-        glyd.getLastYearData(curDate.getYear() - 1, "recent", false, serviceKey);
+        glyd.getLastYearData(curDate.getYear() - 1, "recentdata", false, serviceKey);
 
         GetThisYearData gtyd = new GetThisYearData();
 
@@ -38,30 +39,38 @@ public class OpenApiDataSave {
 
         //sh코드 실행
         // https://codechacha.com/ko/java-run-shell-script/ 참고하자
+        try {
+            String prepare = new ProcessExecutor()
+                    .command("sh", "/home/hadoop/a302hadoop/prepare_helpdogcat_data_docker.sh")
+                    .readOutput(true)
+                    .execute()
+                    .outputUTF8();
+            // data prepare 메세지
+            System.out.println("prepare = " + prepare);
+
+            String mapreduce = new ProcessExecutor()
+                    .command("sh", "/home/hadoop/a302hadoop/build_run_helpdogcat_docker.sh")
+                    .readOutput(true)
+                    .execute()
+                    .outputUTF8();
+            // build 메세지
+            System.out.println("mapreduce = " + mapreduce);
+
+            String copyToLocal = new ProcessExecutor()
+                    .command("sh", "/home/hadoop/a302hadoop/copy_to_local_helpdogcat_docker.sh")
+                    .readOutput(true)
+                    .execute()
+                    .outputUTF8();
+            // build 메세지
+            System.out.println("copyToLocal = " + copyToLocal);
+        } catch (InterruptedException | TimeoutException e) {
+            e.printStackTrace();
+        }
 
         //db저장
-
-
         saveAnimalDatas.saveData(LocalDate.now().getYear());
 
-
-
     }
-
-//    //매년 초가 되면 2년전의 데이터를 영구 저장해줌
-//    @Scheduled(cron = "0 10 0 1 1 ?")
-//    public void saveLastTwoYearData() throws IOException, ParseException {
-//
-//        LocalDate curDate = LocalDate.now();
-//
-//        GetLastYearData glyd = new GetLastYearData();
-//
-//        glyd.getLastYearData(curDate.getYear() - 2, "lastTwoYearData", false, serviceKey);
-//
-//        //sh코드 실행
-//
-//        //db저장
-//    }
 
 
 }
