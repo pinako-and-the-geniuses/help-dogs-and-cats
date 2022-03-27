@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.community.service.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,6 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Schema(name = "커뮤니티 DTO", description = "커뮤니티 DTO 입니다.")
 @SuperBuilder
@@ -47,5 +52,54 @@ public class CommunityDto {
                 .category(category)
                 .member(writer)
                 .build();
+    }
+
+    @Getter
+    public static class CommunityListPage {
+
+        private Integer totalCount;
+
+        private Integer currentPageNumber;
+
+        private Integer totalPageNumber;
+
+        private List<ForPage> communitiesForPage;
+
+        @Builder
+        public CommunityListPage(Integer totalCount, Integer currentPageNumber, Integer totalPageNumber, List<ForPage> communitiesForPage) {
+            this.totalCount = totalCount;
+            this.currentPageNumber = currentPageNumber;
+            this.totalPageNumber = totalPageNumber;
+            this.communitiesForPage = communitiesForPage;
+        }
+    }
+
+    @Getter
+    public static class ForPage {
+
+        private Long seq;
+
+        private String title;
+
+        private Integer viewCount;
+
+        private Community.Category category;
+
+        private Long memberSeq;
+
+        private String memberNickname;
+
+        private LocalDate createdDate;
+
+        @QueryProjection
+        public ForPage(Long seq, String title, Integer viewCount, Community.Category category, Long memberSeq, String memberNickname, LocalDateTime createdDate) {
+            this.seq = seq;
+            this.title = title;
+            this.viewCount = viewCount;
+            this.category = category;
+            this.memberSeq = memberSeq;
+            this.memberNickname = memberNickname;
+            this.createdDate = createdDate.toLocalDate();
+        }
     }
 }
