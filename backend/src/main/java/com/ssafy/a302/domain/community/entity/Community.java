@@ -79,4 +79,8 @@ public class Community extends BaseLastModifiedEntity {
             return description;
         }
     }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
 }
