@@ -4,36 +4,48 @@ import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityDetail.module.scss";
 import cn from "classnames";
 import Comment from "components/Comment/Comment";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 
-export default function CommunityDetail(props) {
+export default function CommunityDetail() {
   const [communityDetail, setCommunityDetail] = useState([]);
   const communitySeq = useParams();
-  console.log("detail", communitySeq);
+  const navigate = useNavigate();
+  // console.log("detail", communitySeq);
+  const jwt = sessionStorage.getItem("jwt")
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
+    
     axios
-      .get(`${URL}/communities/${communitySeq}`)
-      .then((response) => setCommunityDetail(response.data))
+      .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
+      .then((response) => setCommunityDetail(response.data)) //엑시오스 보낸 결과
       .catch((err) => console.log(err));
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-  if (communityDetail === null) {
-    return <h1>값을 받아오는 중입니다.</h1>;
-  }
 
-  const getDelete = (e) => {
-    axios.delete(`${URL}/communities/${communitySeq}`)
-    .then(response => setCommunityDetail('Delete successful'))
+  // useEffect(() => {
+  //   //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
+  //   axios
+  //     .get(`${URL}/communities/${communitySeq}`)
+  //     .then((response) => setCommunityDetail(response.data)) //엑시오스 보낸 결과
+  //     .catch((err) => console.log(err));
+  // }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
+  // 
+  const getDelete= async () => {
+    axios.delete(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
+    .then((res) => {
+      console.log(res);
+      if (res.status === 204) {
+        alert("게시글 삭제");
+        navigate(`/community/community`)
+      }
+    })
     .catch(err => console.log(err))
   }
 
-  const getUpdate = (e) => {
-    axios.get(`${URL}/communities/${communitySeq}`)
-    .then(response => setCommunityDetail('Delete successful'))
-    .catch(err => console.log(err))
-  }
-
+  const GotoEdit=()=>{
+    navigate(`/community/communityupdate/${communitySeq}`)
+  } 
+  
   return (
     <div className={st.community_commentBox}>
       <header>
@@ -55,12 +67,10 @@ export default function CommunityDetail(props) {
               이거 정말 맛있습니다.
             </textarea> */}
         <div className={st.content}>
-        <Link to="/community/community"> 
           <button onClick={getDelete} className={st.deletebutton}>
             삭제
           </button>
-        </Link>
-          <button onClick={getUpdate} type="button" className={st.button}>
+          <button onClick={GotoEdit} className={st.button}>
             수정
           </button>
         </div>
