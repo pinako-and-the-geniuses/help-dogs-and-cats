@@ -187,4 +187,41 @@ public class CommunityController {
                 .message(Message.SUCCESS)
                 .build();
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "커뮤니티 게시글 삭제 API",
+            description = "커뮤니티 게시글 식별키, 회원 식별키를 전달받고 커뮤니티 게시글을 삭제합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "커뮤니티 게시글을 삭제하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 커뮤니티 게시글입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{communitySeq}")
+    public BaseResponseDto<?> removeCommunity(@PathVariable(name = "communitySeq") Long communitySeq,
+                                              Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        communityService.remove(communitySeq, memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
+    }
 }
