@@ -45,6 +45,8 @@ class CommunityServiceTest {
 
     private CommunityRequestDto.RegisterInfo registerInfo1;
 
+    private CommunityRequestDto.ModifyInfo modifyInfo1;
+
     private Member member1, member2;
 
     private MemberDetail detail1, detail2;
@@ -64,6 +66,12 @@ class CommunityServiceTest {
                 .title("title1")
                 .content("content1")
                 .category("rePort")
+                .build();
+
+        modifyInfo1 = CommunityRequestDto.ModifyInfo.builder()
+                .title("수정된 제목1")
+                .content("<p>수정된 본문1</p>")
+                .category("general")
                 .build();
 
         member1 = Member.builder()
@@ -275,5 +283,36 @@ class CommunityServiceTest {
         Community removedCommunity = communityRepository.findBySeq(savedCommunity1.getSeq())
                 .orElse(null);
         assertThat(removedCommunity).isNull();
+    }
+
+    @Test
+    @DisplayName("커뮤니티 게시글 수정 - 성공")
+    void modifyCommunitySuccess() {
+        /**
+         * 테스트 데이ㅓㅌ 세팅
+         */
+        Member savedMember1 = memberRepository.save(member1);
+        Community savedCommunity1 = communityRepository.save(community1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 커뮤니티 게시글 수정
+         */
+        Long modifiedCommunitySeq = communityService.modify(savedCommunity1.getSeq(), modifyInfo1.toServiceDto(), savedMember1.getSeq());
+
+        /**
+         * 수정된 커뮤니티 게시글 조
+         */
+        Community modifiedCommunity = communityRepository.findBySeq(modifiedCommunitySeq)
+                .orElse(null);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(modifiedCommunity).isNotNull();
+        assertThat(modifiedCommunity.getTitle()).isEqualTo(modifyInfo1.getTitle());
+        assertThat(modifiedCommunity.getContent()).isEqualTo(modifyInfo1.getContent());
+        assertThat(modifiedCommunity.getCategory()).isEqualTo(Community.Category.valueOf(modifyInfo1.getCategory().toUpperCase()));
     }
 }

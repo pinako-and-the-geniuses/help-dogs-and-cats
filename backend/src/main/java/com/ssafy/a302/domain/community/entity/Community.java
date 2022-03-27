@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.community.entity;
 
+import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
@@ -82,5 +83,11 @@ public class Community extends BaseLastModifiedEntity {
 
     public void delete() {
         this.isDeleted = true;
+    }
+
+    public void modify(CommunityDto communityDto) {
+        this.title = communityDto.getTitle();
+        this.content = communityDto.getContent();
+        this.category = communityDto.getCategory();
     }
 }
