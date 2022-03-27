@@ -12,12 +12,12 @@ export default function CommunityDetail() {
   const communitySeq = useParams();
   const navigate = useNavigate();
   // console.log("detail", communitySeq);
-
+  const jwt = sessionStorage.getItem("jwt")
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
-    const jwt = sessionStorage.getitem("jwt")
+    
     axios
-      .get(`${URL}/communities/${communitySeq}`, {headers: {jwt}})
+      .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
       .then((response) => setCommunityDetail(response.data)) //엑시오스 보낸 결과
       .catch((err) => console.log(err));
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
@@ -29,11 +29,16 @@ export default function CommunityDetail() {
   //     .then((response) => setCommunityDetail(response.data)) //엑시오스 보낸 결과
   //     .catch((err) => console.log(err));
   // }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-
+  // 
   const getDelete= async () => {
-    const jwt = sessionStorage.getitem("jwt")
-    axios.delete(`${URL}/communities/${communitySeq}`, {headers: {jwt}})
-    .then(response => setCommunityDetail(response.data), navigate(`/community/community`))
+    axios.delete(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
+    .then((res) => {
+      console.log(res);
+      if (res.status === 204) {
+        alert("게시글 삭제");
+        navigate(`/community/community`)
+      }
+    })
     .catch(err => console.log(err))
   }
 
