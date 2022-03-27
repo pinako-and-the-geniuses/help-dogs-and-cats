@@ -9,7 +9,6 @@ export default function CommunityCreate(api) {
   const quillRef = useRef();
 
   return (
-    
     <div className={st.commucreatemain}>
       <header className={st.commuhead}>
         <h2>Community</h2>
