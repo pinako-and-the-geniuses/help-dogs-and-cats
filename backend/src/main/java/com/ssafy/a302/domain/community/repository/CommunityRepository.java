@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface CommunityRepository extends JpaRepository<Community, Long> {
+public interface CommunityRepository extends JpaRepository<Community, Long>, CommunityRepositoryCustom {
 
     @Query("SELECT c FROM Community c WHERE c.seq = :seq AND c.isDeleted = FALSE")
     Optional<Community> findBySeq(@Param(value = "seq") Long seq);
