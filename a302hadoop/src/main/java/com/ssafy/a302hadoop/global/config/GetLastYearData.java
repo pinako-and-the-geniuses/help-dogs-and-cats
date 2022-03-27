@@ -18,7 +18,7 @@ public class GetLastYearData {
         //append가 false면 해당 파일 다시 만듬
         //append가 true면 해당 파일에 이어서 만듬
 
-        FileOutputStream fos = new FileOutputStream("/home/ubuntu/S06P22A302/a302hadoop/animaldata/"+fileName+".txt", append);
+        FileOutputStream fos = new FileOutputStream("/home/hadoop/a302hadoop/animaldata/"+fileName+".txt", append);
 //        FileOutputStream fos = new FileOutputStream("~"+File.separator+ "animal"+ File.separator+ fileName+ ".txt", append);
 //        FileOutputStream fos = new FileOutputStream("C:\\ssafy\\S06P22A302\\a302hadoop\\animaldata\\"+ fileName+ ".txt", append);
         OutputStreamWriter writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
