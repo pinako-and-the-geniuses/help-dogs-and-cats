@@ -24,7 +24,7 @@ public class OpenApiDataSave {
     private String serviceKey;
 
     //30분 마다 최근 2년치 데이터 받아와서 db에 저장해줘야함
-    @Scheduled(cron = "0 10,40 * * * *")
+    @Scheduled(cron = "0 55,25 * * * *")
     public void getRecentAnimalData() throws IOException, ParseException {
 
         LocalDate curDate = LocalDate.now();
