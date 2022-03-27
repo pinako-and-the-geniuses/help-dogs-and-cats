@@ -96,4 +96,17 @@ public class CommunityServiceImpl implements CommunityService {
 
         findComment.delete();
     }
+
+    @Transactional
+    @Override
+    public void remove(Long communitySeq, Long memberSeq) {
+        Community findCommunity = communityRepository.findBySeq(communitySeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findCommunity.getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.BAD_REQUEST);
+        }
+
+        findCommunity.delete();
+    }
 }
