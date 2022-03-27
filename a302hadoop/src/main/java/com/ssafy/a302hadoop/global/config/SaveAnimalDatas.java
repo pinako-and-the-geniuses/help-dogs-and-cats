@@ -22,23 +22,17 @@ public class SaveAnimalDatas {
 
     private final HadoopService hadoopService;
 
-//    public SaveAnimalDatas(HadoopService hadoopService) {
-//        this.hadoopService = hadoopService;
-//    }
-//
-//    public SaveAnimalDatas() {
-//    }
-
     public void saveData(int year) throws IOException {
+        List<DataFromHadoopDto> animalDataList = new ArrayList<>();
+
 
         for (int i = 0; i < 4; i++) {
-            File file = new File("C:\\dev\\skeleton-hadoop-maven\\outputdata\\part-r-0000" + i);
+            File file = new File("/home/hadoop/a302hadoop/hadoopoutput/part-r-0000" + i);
             FileReader fileReader = new FileReader(file);
             BufferedReader br = new BufferedReader(fileReader);
 
             String line = "";
 
-            List<DataFromHadoopDto> animalDataList = new ArrayList<>();
 
             while ((line = br.readLine()) != null) {
                 //만약에 아무것도 없는 스트링이라면 continue;
@@ -57,16 +51,21 @@ public class SaveAnimalDatas {
                 //첫번째 배열이 "-"으로 split하면 총 6개로 나눠져야함
                 if (animalInfo.length != 7) continue;
 
-                String animalSpecies = animalInfo[0];
+                //동물 종류
+                String animalSpecies = animalInfo[0].trim();
 
-                String animalBreed = (animalInfo[1].equals("") ? "믹스" : animalInfo[1]);
+                //품종
+                String animalBreed = (animalInfo[1].trim().equals("") ? "믹스" : animalInfo[1]);
 
-                AnimalData.Neutral neutral = (animalInfo[2].equals("Y") ? AnimalData.Neutral.YES :
-                        (animalInfo[2].equals("N") ? AnimalData.Neutral.NO : AnimalData.Neutral.UNF));
+                //중성화 여부
+                AnimalData.Neutral neutral = (animalInfo[2].trim().equals("Y") ? AnimalData.Neutral.YES :
+                        (animalInfo[2].trim().equals("N") ? AnimalData.Neutral.NO : AnimalData.Neutral.UNF));
 
+                //현재 상태
                 AnimalData.ProcessState processState = null;
 
-                switch (animalInfo[3]) {
+                //
+                switch (animalInfo[3].trim()) {
                     case "자연사":
                         processState = AnimalData.ProcessState.NATURALDEATH;
                         break;
@@ -89,14 +88,19 @@ public class SaveAnimalDatas {
                         processState = AnimalData.ProcessState.EMISSION;
                         break;
                 }
+                //동물 나이
+                int animalAge = 0;
+                if (animalInfo[4].trim().equals("미상")) animalAge = -1;
+                else animalAge = Integer.parseInt(animalInfo[4].trim());
 
-                int animalAge = Integer.parseInt(animalInfo[4]);
+                //발견 날짜
+                int happenDt = Integer.parseInt(animalInfo[5].trim());
 
-                int happenDt = Integer.parseInt(animalInfo[5]);
+                //시군구
+                String happenArea = animalInfo[6].trim();
 
-                String happenArea = animalInfo[6];
-
-                int animalCount = Integer.parseInt(data[1]);
+                //마릿 수
+                int animalCount = Integer.parseInt(data[1].trim());
 
 //                System.out.println("====================================");
 //                System.out.println("animalSpecies = " + animalSpecies.trim());
@@ -121,8 +125,8 @@ public class SaveAnimalDatas {
                         .build());
             }
 
-            hadoopService.insertAnimalData(animalDataList, year);
         }
+        hadoopService.insertAnimalData(animalDataList, year);
 
     }
 
