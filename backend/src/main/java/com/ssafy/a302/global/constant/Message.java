@@ -69,6 +69,10 @@ public class Message {
 
     public static String SUCCESS_DELETE_VOLUNTEER_PARTICIPANT;
 
+    public static String SUCCESS_REGISTER_VOLUNTEER_COMMENT;
+
+    public static String SUCCESS_DELETE_VOLUNTEER_COMMENT;
+
     public static String REMOVE;
 
     public static String SUCCESS;
@@ -119,6 +123,10 @@ public class Message {
         SUCCESS_VOLUNTEER_PARTICIPANT_LIST = messageSource.getMessage("success.volunteer.participant.list", null, null);
         SUCCESS_CHANGE_PARTICIPANT_APPROVE = messageSource.getMessage("success.change.participant.approve", null, null);
         SUCCESS_DELETE_VOLUNTEER_PARTICIPANT = messageSource.getMessage("success.delete.volunteer.participant", null, null);
+        SUCCESS_REGISTER_VOLUNTEER_COMMENT = messageSource.getMessage("success.register.volunteer.comment", null, null);
+        SUCCESS_DELETE_VOLUNTEER_COMMENT = messageSource.getMessage("success.delete.volunteer.comment", null, null);
+
+
         REMOVE = messageSource.getMessage("remove", null, null);
         SUCCESS = messageSource.getMessage("success", null, null);
     }

@@ -49,6 +49,10 @@ public class ErrorMessage {
 
     public static String INVALID_VOLUNTEER_CREATOR_PARTICIPANT;
 
+    public static String INVALID_VOLUNTEER_COMMENT;
+
+    public static String INVALID_VOLUNTEER_CREATOR_COMMENT;
+
     @Autowired
     public ErrorMessage(MessageSource messageSource) {
         AUTHENTICATION_MEMBER = messageSource.getMessage("authentication.member", null, null);
@@ -81,6 +85,9 @@ public class ErrorMessage {
         INVALID_VOLUNTEER_PARTICIPANT = messageSource.getMessage("invalid.volunteer.participant", null, null);
         INVALID_VOLUNTEER_CANCEL_PARTICIPANT = messageSource.getMessage("invalid.volunteer.cancel.participant", null, null);
         INVALID_VOLUNTEER_CREATOR_PARTICIPANT = messageSource.getMessage("invalid.volunteer.creator.participant", null, null);
+
+        INVALID_VOLUNTEER_COMMENT = messageSource.getMessage("invalid.volunteer.comment", null, null);
+        INVALID_VOLUNTEER_CREATOR_COMMENT = messageSource.getMessage("invalid.volunteer.creator.comment", null, null);
 
 
     }
