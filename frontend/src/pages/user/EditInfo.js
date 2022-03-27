@@ -101,14 +101,7 @@ export default function Editinfo() {
         <p>
           <label htmlFor="email">아이디 [Email]</label>
         </p>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="email@ssafy.com"
-          defaultValue={email}
-          readOnly
-        />
+        <input id="email" type="email" defaultValue={email} readOnly />
       </div>
       <Password
         URL={URL}
