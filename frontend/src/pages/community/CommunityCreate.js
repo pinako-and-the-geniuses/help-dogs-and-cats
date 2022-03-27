@@ -38,7 +38,6 @@ export default function CommunityCreate(api) {
     });
   }
   return (
-    
     <div className={st.commucreatemain}>
       <header className={st.commuhead}>
         <h2>Community</h2>
