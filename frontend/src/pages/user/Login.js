@@ -47,11 +47,6 @@ export default function Login() {
           setSubmitLoading(true);
           dispatch(loginAction(res.data.data.memberInfo));
           sessionStorage.setItem("jwt", res.data.data.jwtToken);
-          if (true) {
-            navi("/profile");
-          } else {
-            navi("/");
-          }
         } else if (res.status == 204) {
           alert("이메일 또는 패스워드가 잘못 입력되었습니다.");
         }

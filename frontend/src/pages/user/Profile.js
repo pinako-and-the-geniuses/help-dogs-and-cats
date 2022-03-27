@@ -11,6 +11,7 @@ import { CgMoreVerticalAlt } from "react-icons/cg";
 
 export default function Profile() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const mySeq = useSelector((state) => state.userInfo.userInfo.seq);
   const { seq } = useParams();
   const navi = useNavigate();
 
@@ -21,10 +22,6 @@ export default function Profile() {
       navi("/login");
     }
   }, []);
-
-  const onEtcBox = () => {
-    console.log("클릭");
-  };
 
   return (
     <>
@@ -37,19 +34,21 @@ export default function Profile() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
               size="30"
-              onClick={onEtcBox}
             />
             <ul className={cn(`${st.dropdown}`, "dropdown-menu")}>
-              <li>
-                <a className="dropdown-item" href="#">
-                  수정
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  신고
-                </a>
-              </li>
+              {seq == mySeq ? (
+                <li>
+                  <a className="dropdown-item" href="/user/editInfo">
+                    수정
+                  </a>
+                </li>
+              ) : (
+                <li>
+                  <a className="dropdown-item" href="#">
+                    신고
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

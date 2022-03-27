@@ -1,13 +1,19 @@
 import st from "../styles/profile.module.scss";
 // import cn from "classnames";
 import { useState } from "react";
+import axios from "axios";
 export default function ProfileList() {
   const [page, setPage] = useState("0");
   const [list, setList] = useState();
 
   const onPage = (e) => {
     setPage(e.target.value);
+    getList(e.target.value);
   };
+
+  // const getList = async(page) => {
+  //   await axios.get()
+  // };
 
   return (
     <div>
