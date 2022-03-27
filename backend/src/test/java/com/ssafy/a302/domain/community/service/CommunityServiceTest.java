@@ -248,4 +248,32 @@ class CommunityServiceTest {
                 .orElse(null);
         assertThat(findComment2).isNull();;
     }
+
+    @Test
+    @DisplayName("커뮤니티 게시글 삭제 - 성공")
+    void removeCommunitySuccess() {
+        /**
+         * 테스트 데이ㅓㅌ 세팅
+         */
+        Member savedMember1 = memberRepository.save(member1);
+        Community savedCommunity1 = communityRepository.save(community1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 삭제 전 데이터 검증
+         */
+        Community findCommunity = communityRepository.findBySeq(savedCommunity1.getSeq())
+                .orElse(null);
+        assertThat(findCommunity).isNotNull();
+        assertThat(findCommunity.getMember().getSeq()).isEqualTo(savedMember1.getSeq());
+
+        /**
+         * 삭제 후 데이터 검증
+         */
+        communityService.remove(savedCommunity1.getSeq(), savedMember1.getSeq());
+        Community removedCommunity = communityRepository.findBySeq(savedCommunity1.getSeq())
+                .orElse(null);
+        assertThat(removedCommunity).isNull();
+    }
 }
