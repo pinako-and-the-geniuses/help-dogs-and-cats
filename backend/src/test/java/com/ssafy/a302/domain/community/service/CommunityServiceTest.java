@@ -1,7 +1,10 @@
 package com.ssafy.a302.domain.community.service;
 
+import com.ssafy.a302.domain.community.controller.dto.CommunityCommentRequestDto;
 import com.ssafy.a302.domain.community.controller.dto.CommunityRequestDto;
 import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.entity.CommunityComment;
+import com.ssafy.a302.domain.community.repository.CommunityCommentRepository;
 import com.ssafy.a302.domain.community.repository.CommunityRepository;
 import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
@@ -33,6 +36,9 @@ class CommunityServiceTest {
 
     @Autowired
     private CommunityRepository communityRepository;
+
+    @Autowired
+    private CommunityCommentRepository communityCommentRepository;
 
     @Autowired
     private CommunityService communityService;
@@ -134,7 +140,8 @@ class CommunityServiceTest {
         assertThat(page0.getTotalCount()).isEqualTo(0);
         assertThat(page0.getCurrentPageNumber()).isEqualTo(1);
         assertThat(page0.getTotalPageNumber()).isEqualTo(0);
-        assertThat(page0.getCommunitiesForPage()).isNull();;
+        assertThat(page0.getCommunitiesForPage()).isNull();
+        ;
 
         /**
          * 테스트 데이터 세팅
@@ -166,5 +173,42 @@ class CommunityServiceTest {
         assertThat(forPage2.getCategory()).isEqualTo(Community.Category.REPORT);
         assertThat(forPage2.getMemberSeq()).isEqualTo(savedMember2.getSeq());
         assertThat(forPage2.getMemberNickname()).isEqualTo(savedMember2.getDetail().getNickname());
+    }
+
+    @Test
+    @DisplayName("커뮤니티 게시글 댓글 등록 - 성공")
+    void registerCommunityCommentSuccess() {
+        /**
+         * 테스트 데이ㅓㅌ 세팅
+         */
+        Member savedMember1 = memberRepository.save(member1);
+        Member savedMember2 = memberRepository.save(member2);
+        Community savedCommunity = communityRepository.save(community1);
+        em.flush();
+        em.clear();
+
+        CommunityCommentRequestDto.RegisterInfo registerCommentInfo1 = CommunityCommentRequestDto.RegisterInfo.builder()
+                .content("댓글 테스트")
+                .parentSeq(null)
+                .build();
+
+        /**
+         * 커뮤니티 게시글 댓글 저장
+         */
+        Long savedCommentSeq = communityService.registerComment(savedCommunity.getSeq(), registerCommentInfo1.toServiceDto(), savedMember2.getSeq());
+
+        /**
+         * 저장된 커뮤니티 게시글 댓글 가져오기
+         */
+        CommunityComment savedCommunityComment = communityCommentRepository.findBySeq(savedCommentSeq)
+                .orElse(null);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(savedCommunityComment).isNotNull();
+        assertThat(savedCommunityComment.getContent()).isEqualTo(registerCommentInfo1.getContent());
+        assertThat(savedCommunityComment.getParent()).isNull();
+        assertThat(savedCommunityComment.getMember().getSeq()).isEqualTo(savedMember2.getSeq());
     }
 }
