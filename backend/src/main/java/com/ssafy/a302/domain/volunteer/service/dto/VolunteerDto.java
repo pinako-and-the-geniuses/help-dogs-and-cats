@@ -28,7 +28,13 @@ public class VolunteerDto {
 
     private String activityArea;
 
-    private Volunteer.Category category;
+//    private Volunteer.Category category;
+
+    private String authTime;
+
+    private String contact;
+
+    private String endDate;
 
     private Volunteer.Status status;
 
@@ -37,11 +43,14 @@ public class VolunteerDto {
     private Integer maxParticipantCount;
 
     @Builder
-    public VolunteerDto(String title, String content, Volunteer.Category category, String activityArea, Volunteer.Status status, Integer minParticipantCount, Integer maxParticipantCount){
+    public VolunteerDto(String title, String content, String activityArea, String authTime, String contact, String endDate, Volunteer.Status status, Integer minParticipantCount, Integer maxParticipantCount){
         this.title = title;
         this.content = content;
-        this.category = category;
+//        this.category = category;
         this.activityArea = activityArea;
+        this.authTime = authTime;
+        this.contact = contact;
+        this.endDate = endDate;
         this.status = status;
         this.minParticipantCount = minParticipantCount;
         this.maxParticipantCount = maxParticipantCount;
@@ -51,8 +60,11 @@ public class VolunteerDto {
         return Volunteer.builder()
                 .title(title)
                 .content(content)
-                .category(category)
+//                .category(category)
                 .activityArea(activityArea)
+                .authTime(authTime)
+                .contact(contact)
+                .endDate(endDate)
                 .minParticipantCount(minParticipantCount)
                 .maxParticipantCount(maxParticipantCount)
                 .build();
@@ -122,11 +134,20 @@ public class VolunteerDto {
         @Schema(name = "content", title = "내용", description = "내용입니다.")
         private final String content;
 
-        @Schema(name = "category", title = "카테고리", description = "봉사활동이 가지고 있는 카테고리입니다.")
-        private final Volunteer.Category category;
+//        @Schema(name = "category", title = "카테고리", description = "봉사활동이 가지고 있는 카테고리입니다.")
+//        private final Volunteer.Category category;
 
         @Schema(name = "activityArea", title = "활동지역", description = "활동지역입니다.")
         private final String activityArea;
+
+        @Schema(name = "authTime", title = "인증시간", description = "인증시간입니다.")
+        private final String authTime;
+
+        @Schema(name = "contact", title = "연락처", description = "연락처입니다.")
+        private final String contact;
+
+        @Schema(name = "endDate", title = "종료일", description = "종료일입니다.")
+        private final String endDate;
 
         @Schema(name = "minParticipantCount", title = "최소인원", description = "최소인원입니다.")
         private final Integer minParticipantCount;
@@ -135,12 +156,15 @@ public class VolunteerDto {
         private final Integer maxParticipantCount;
 
         @Builder
-        public Response(Long seq, String title, String content, Volunteer.Category category, String activityArea, Integer minParticipantCount, Integer maxParticipantCount) {
+        public Response(Long seq, String title, String content, String activityArea, String authTime, String contact, String endDate, Integer minParticipantCount, Integer maxParticipantCount) {
             this.seq = seq;
             this.title = title;
             this.content = content;
-            this.category = category;
+//            this.category = category;
             this.activityArea = activityArea;
+            this.authTime = authTime;
+            this.contact = contact;
+            this.endDate = endDate;
             this.minParticipantCount = minParticipantCount;
             this.maxParticipantCount = maxParticipantCount;
         }

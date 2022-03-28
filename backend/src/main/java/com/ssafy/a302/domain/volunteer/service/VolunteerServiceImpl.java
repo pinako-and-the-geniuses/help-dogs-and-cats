@@ -79,9 +79,9 @@ public class VolunteerServiceImpl implements VolunteerService {
             if (volunteerDto.getContent() != null){
                 findVolunteer.updateContent(volunteerDto.getContent());
             }
-            if (volunteerDto.getCategory() != null){
-                findVolunteer.updateCategory(volunteerDto.getCategory());
-            }
+//            if (volunteerDto.getCategory() != null){
+//                findVolunteer.updateCategory(volunteerDto.getCategory());
+//            }
             if (volunteerDto.getActivityArea() != null){
                 findVolunteer.updateActivityArea(volunteerDto.getActivityArea());
             }

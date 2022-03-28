@@ -51,7 +51,7 @@ public class VolunteerController {
     // 봉사활동 생성
     @Operation(
             summary = "봉사활동 API",
-            description = "이메일, 패스워드, 닉네임, 핸드폰 번호, 활동 지역을 전달받고 봉사활동 진행합니다.",
+            description = "제목, 내용, 활동지역, 봉사인증시간, 멤버(최대인원, 최소인원), 연락처, 종료일을 전달받고 봉사활동 진행합니다.",
             tags = {"member"}
     )
     @ApiResponses(value = {
@@ -59,14 +59,6 @@ public class VolunteerController {
                     responseCode = "201",
                     description = "봉사활동 등록에 성공하였습니다.",
                     content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "이메일, 패스워드, 닉네임, 핸드폰 번호 중 한 가지 이상 형식 검증에 실패하였거나, 패스워드에 이메일 또는 닉네임이 포함됩니다.",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "이메일 또는 닉네임이 중복됩니다.",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
             @ApiResponse(
                     responseCode = "500",
                     description = "서버에 문제가 발생하였습니다.",
@@ -118,20 +110,20 @@ public class VolunteerController {
 
 
     // 봉사활동 상세페이지 수정
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{volunteerSeq}")
-    public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
-                                                    @PathVariable Long volunteerSeq,
-                                                    Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
-        volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
-
-        return BaseResponseDto.builder()
-                .message(Message.SUCCESS_UPDATE_VOLUNTEER)
-                .build();
-
-    }
+//    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+//    @ResponseStatus(HttpStatus.OK)
+//    @PutMapping("/{volunteerSeq}")
+//    public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
+//                                                    @PathVariable Long volunteerSeq,
+//                                                    Authentication authentication) {
+//        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+//        volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
+//
+//        return BaseResponseDto.builder()
+//                .message(Message.SUCCESS_UPDATE_VOLUNTEER)
+//                .build();
+//
+//    }
 
     // 봉사활동 진행상태 수정
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")

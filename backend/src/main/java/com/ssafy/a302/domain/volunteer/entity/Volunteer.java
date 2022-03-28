@@ -38,12 +38,21 @@ public class Volunteer extends BaseLastModifiedEntity {
     @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long viewCount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Category category;
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private Category category;
 
     @Column(nullable = false)
     private String activityArea;
+
+    @Column(nullable = false)
+    private String authTime;
+
+    @Column(nullable = false)
+    private String contact;
+
+    @Column(nullable = false)
+    private String endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -73,12 +82,15 @@ public class Volunteer extends BaseLastModifiedEntity {
     private VolunteerAuth volunteerAuth;
 
     @Builder
-    public Volunteer(String title, String content, String activityArea, Category category, Integer minParticipantCount, Integer maxParticipantCount, Member member) {
+    public Volunteer(String title, String content, String activityArea, String authTime, String contact, String endDate, Integer minParticipantCount, Integer maxParticipantCount, Member member) {
         this.title = title;
         this.content = content;
         this.viewCount = 0L;
-        this.category = category;
+//        this.category = category;
         this.activityArea = activityArea;
+        this.authTime = authTime;
+        this.contact = contact;
+        this.endDate = endDate;
         this.status = Status.RECRUITING;
         this.minParticipantCount = minParticipantCount;
         this.maxParticipantCount = maxParticipantCount;
@@ -99,9 +111,9 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.activityArea = activityArea;
     }
 
-    public void updateCategory(Category category){
-        this.category = category;
-    }
+//    public void updateCategory(Category category){
+//        this.category = category;
+//    }
 
     public void updateMinParticipantCount(Integer minParticipantCount){
         this.minParticipantCount = minParticipantCount;
@@ -173,8 +185,9 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .seq(seq)
                 .title(title)
                 .content(content)
-                .category(category)
+//                .category(category)
                 .activityArea(activityArea)
+
                 .minParticipantCount(minParticipantCount)
                 .maxParticipantCount(maxParticipantCount)
                 .build();
