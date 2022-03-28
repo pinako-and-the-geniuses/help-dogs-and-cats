@@ -36,4 +36,30 @@ public class AdoptAuthRequestDto {
         }
     }
 
+    @Getter
+    @NoArgsConstructor
+    public static class ModifyAdoptAuthInfo {
+
+        @Schema(name = "title", title = "입양 인증 제목", description = "입양 인증 제목입니다.")
+        @NotBlank(message = "${pattern.blank}")
+        private String title;
+
+        @Schema(name = "content", title = "입양 인증 본문", description = "입양 인증 본문입니다.")
+        @NotBlank(message = "${pattern.blank}")
+        private String content;
+
+        @Builder
+        public ModifyAdoptAuthInfo(String title, String content) {
+            this.title = title;
+            this.content = content;
+        }
+
+        public AdoptDto.AdoptAuth toServiceDto() {
+            return AdoptDto.AdoptAuth.builder()
+                    .title(title)
+                    .content(content)
+                    .build();
+        }
+    }
+
 }
