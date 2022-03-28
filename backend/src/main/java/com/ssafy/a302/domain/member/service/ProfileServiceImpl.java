@@ -4,11 +4,14 @@ import com.ssafy.a302.domain.badge.entity.Badge;
 import com.ssafy.a302.domain.badge.repository.BadgeRepository;
 import com.ssafy.a302.domain.badge.repository.MemberBadgeRepository;
 import com.ssafy.a302.domain.badge.service.dto.BadgeDto;
+import com.ssafy.a302.domain.community.repository.CommunityRepository;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.domain.member.service.dto.ProfileDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,8 @@ public class ProfileServiceImpl implements ProfileService {
     private final BadgeRepository badgeRepository;
 
     private final MemberBadgeRepository memberBadgeRepository;
+
+    private final CommunityRepository communityRepository;
 
     @Override
     public MemberDto.Profile getProfile(Long memberSeq) {
@@ -58,5 +63,20 @@ public class ProfileServiceImpl implements ProfileService {
          * 프로필 DTO 반환
          */
         return memberDto.createProfile(badgesForProfile);
+    }
+
+    @Override
+    public ProfileDto.CommunityPage getCommunities(Long memberSeq, Pageable pageable) {
+        Integer totalCount = communityRepository.countAllByMemberSeq(memberSeq);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<ProfileDto.Community> communities = communityRepository.findCommunitiesForProfile(memberSeq, pageable)
+                .orElse(null);
+
+        return ProfileDto.CommunityPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .currentPageNumber(pageable.getPageNumber())
+                .communities(communities)
+                .build();
     }
 }
