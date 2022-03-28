@@ -42,7 +42,6 @@ public class VolunteerController {
 
     private final AuthenticationUtil authenticationUtil;
 
-    // 봉사활동 생성
     @Operation(
             summary = "봉사활동 API",
             description = "제목, 내용, 활동지역, 봉사인증시간, 멤버(최대인원, 최소인원), 연락처, 종료일을 전달받고 봉사활동 진행합니다.",
@@ -62,7 +61,7 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BaseResponseDto<?> register(@Validated @RequestBody VolunteerRequestDto.RegisterInfo registerInfo, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.register(registerInfo.toServiceDto(), memberSeq);
 
         return BaseResponseDto.builder()
@@ -110,9 +109,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}")
-    public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq,
-                                              Authentication authentication) {
-//        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+    public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq){
 
         VolunteerDto.Detail detail = volunteerService.volunteerDetail(volunteerSeq);
 

@@ -145,9 +145,6 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.status = status;
     }
 
-    public void setCreator(Member member){
-        this.member = member;
-    }
 
     public void delete() {
         this.isDeleted = true;
