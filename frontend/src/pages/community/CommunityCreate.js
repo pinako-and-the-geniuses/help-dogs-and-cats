@@ -1,30 +1,60 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { URL } from "public/config";
 import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityCreate.module.scss";
 import cn from "classnames";
 import QuillEditor from "./QuillEditor";
+import Editor from "components/Editor";
 import { useNavigate } from "react-router-dom";
+//import { useSelector } from "react-redux";
+//import UploadFiles from "./UploadFiles";
 export default function CommunityCreate(api) {
-  const [htmlContent, setHtmlContent] = useState("");
+  //const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const quillRef = useRef();
+  
+  // function onEditorChange(value) {   
+  //     // console.log(desc);  
+  //     setDesc(value)
+  // }
+  //   const uploadReferenece = React.createRef();
+
+  //   async function onClickSearch() {
+  //       await uploadReferenece.current.upload().then(function (result) {
+  //           const files = result;
+  //           alert('저장 완료');
+  //       }).catch(function (err) {
+  //       });
+  //   }
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
+  const [htmlcontent, setHtmlContent] = useState("");
+  // const [desc, setDesc] = useState('');
   const navi = useNavigate();
+
+  // useEffect(() => {
+  //   if (!isLogin) {
+  //     alert("로그인 해주세요.");
+  //   } else {
+    
+  //    }
+  // }, [isLogin]);
   const onSubmit = (event) => {
     event.preventDefault();
     console.log(category);
     console.log(title);
-    const jwt = sessionStorage.getitem("jwt")
+    console.log(htmlcontent);
+    // console.log(desc);
+    const jwt = sessionStorage.getItem("jwt")
     axios({
       url: `${URL}/communities`,
       method: "POST",
-      headers: {
-        Authorization : jwt
-      },
+      headers: { Authorization: `Bearer ${jwt}` },
       data: {
         category : category,
-        title : title
+        title : title,
+        // desc : desc
+        content : htmlcontent
       },
     })
     .then((res) => {
@@ -34,10 +64,11 @@ export default function CommunityCreate(api) {
         navi("/community/community");
       }
     })
+
     .catch((err) => {
-      alert("게시글 실패");
-      console.log(err.response.status);
-    });
+          alert("게시글 실패");
+          console.log(err.response.status);
+      });
   }
   return (
     <div className={st.commucreatemain}>
@@ -48,10 +79,9 @@ export default function CommunityCreate(api) {
             <select className="searchCd me-3" onChange={(event) =>
               setCategory(event.target.value)}>
               <option selected>카테고리</option>
-              <option value="information">제보</option>
-              <option value="talk">잡담</option>
-              <option value="adoption">입양후기</option>
-              <option value="volunteer">봉사후기</option>
+              <option value="report">제보</option>
+              <option value="general">잡담</option>
+              <option value="review">후기</option>
             </select>
             <div className={st.Title}>
               <input type="text" placeholder='제목' className={st.Title} onChange={(event) =>
@@ -61,16 +91,24 @@ export default function CommunityCreate(api) {
         <div className={st.quill}>
           <QuillEditor
             quillRef={quillRef}
-            htmlContent={htmlContent}
+            htmlContent={htmlcontent}
             setHtmlContent={setHtmlContent}
+            onChange={(event) => setHtmlContent(event.target.value)}
             api={api}
           />
         </div>
+        {/* <div>
+          <UploadFiles ref={uploadReferenece} />
+          <div className="text-center pd12">
+             <button className="lf-button primary" onClick={onClickSearch}>저장</button>
+          </div>
+      </div> */}
+      {/* <Editor value={desc} onChange={onEditorChange} className={st.quill}/> */}
       <div className={st.createbuttonContent}>
         <button type="button" onClick={onSubmit} className={st.communitycreatebutton}>
           작성
         </button>
-        <button type="button" className={st.communitycreatebutton}>
+        <button type="reset" className={st.communitycreatebutton}>
           취소
         </button>
       </div>
