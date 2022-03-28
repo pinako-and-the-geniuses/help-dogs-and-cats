@@ -166,6 +166,7 @@ public class Member extends BaseLastModifiedEntity {
                 .email(email)
                 .role(role)
                 .nickname(detail.getNickname())
+                .tel(detail.getTel())
                 .build();
     }
 }
