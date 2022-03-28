@@ -2,11 +2,14 @@ package com.ssafy.a302.domain.volunteer.service.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
 import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
+import com.ssafy.a302.global.constant.Path;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -200,6 +203,77 @@ public class VolunteerDto {
             this.content = content;
             this.status = status;
             this.activityArea = activityArea;
+        }
+    }
+
+    @Schema(name = "detail", title = "봉사활동 상세페이지 조회용 DTO", description = "봉사활동 게시글 상세페이지 조회용 DTO 입니다.")
+    @Getter
+    @ToString(of = {"writerSeq", "writerNickname", "writerProfileImagePath", "volunteerSeq", "title", "content", "activityArea", "status", "createdDate", "viewCount", "comments"})
+    public static class Detail {
+
+        @Schema(name = "writerSeq", title = "작성자 식별키", description = "작성자 식별키입니다.")
+        private Long writerSeq;
+
+        @Schema(name = "writerNickname", title = "작성자 닉네임", description = "작성자 닉네임입니다.")
+        private String writerNickname;
+
+        @Schema(name = "writerProfileImagePath", title = "작성자 프로필 이미지 경로", description = "작성자 프로필 이미지 경로입니다.")
+        private String writerProfileImagePath;
+
+        @Schema(name = "volunteerSeq", title = "봉사활동 게시글 식별키", description = "봉사활동 게시글 식별키입니다.")
+        private Long volunteerSeq;
+
+        @Schema(name = "title", title = "봉사활동 게시글 제목", description = "봉사활동 게시글 제목입니다.")
+        private String title;
+
+        @Schema(name = "content", title = "봉사활동 게시글 본문", description = "봉사활동 게시글 본문입니다.")
+        private String content;
+
+        @Schema(name = "activityArea", title = "봉사활동지역", description = "봉사활동 지역입니다.")
+        private String activityArea;
+
+        @Schema(name = "status", title = "봉사활동 모집상태", description = "봉사활동 모집상태입니다.")
+        private Volunteer.Status status;
+
+        @Schema(name = "createdDate", title = "봉사활동 게시글 작성일", description = "봉사활동 게시글 작성일입니다.")
+        private LocalDate createdDate;
+
+        @Schema(name = "viewCount", title = "조회수", description = "조회수입니다.")
+        private Integer viewCount;
+
+        @Schema(name = "comments", title = "댓글 목록", description = "댓글 목록입니다.")
+        private List<VolunteerCommentDto.ForDetail> comments;
+
+        @Builder
+        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, List<VolunteerCommentDto.ForDetail> comments) {
+            this.writerSeq = writerSeq;
+            this.writerNickname = writerNickname;
+            this.writerProfileImagePath = writerProfileImagePath;
+            this.volunteerSeq = volunteerSeq;
+            this.title = title;
+            this.content = content;
+            this.activityArea = activityArea;
+            this.status = status;
+            this.createdDate = createdDate;
+            this.viewCount = viewCount;
+            this.comments = comments;
+        }
+
+        public static VolunteerDto.Detail create(Volunteer volunteer, Member writer, List<VolunteerCommentDto.ForDetail> commentsForDetail) {
+            MemberDetail writerDetail = writer.getDetail();
+            return Detail.builder()
+                    .writerSeq(writer.getSeq())
+                    .writerNickname(writerDetail.getNickname())
+                    .writerProfileImagePath(Path.PROFILE_IMAGE_ACCESS_PATH + "/" + writerDetail.getProfileImageFilename())
+                    .volunteerSeq(volunteer.getSeq())
+                    .title(volunteer.getTitle())
+                    .content(volunteer.getContent())
+                    .activityArea(volunteer.getActivityArea())
+                    .status(volunteer.getStatus())
+                    .createdDate(volunteer.getCreatedDate().toLocalDate())
+                    .viewCount((int) (long) volunteer.getViewCount())
+                    .comments(commentsForDetail)
+                    .build();
         }
     }
 

@@ -1,5 +1,8 @@
 package com.ssafy.a302.domain.volunteer.service;
 
+import com.ssafy.a302.domain.community.entity.CommunityComment;
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
+import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
@@ -8,6 +11,7 @@ import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerCommentRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.Data;
@@ -18,7 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -135,23 +142,39 @@ public class VolunteerServiceImpl implements VolunteerService {
     }
 
     // 봉사활동 상세 조회 페이지
+    @Transactional
     @Override
-    public VolunteerDto.DetailResponse volunteerDetail(Long volunteerSeq, Long memberSeq) {
-        Member findMember = memberRepository.findMemberBySeq(memberSeq)
-                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
-
+    public VolunteerDto.Detail volunteerDetail(Long volunteerSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        List<SimpleVolunteerCommentDto> result = findVolunteer.getVolunteerComments().stream()
-                .map(res -> new SimpleVolunteerCommentDto(res))
-                .collect(toList());
+        findVolunteer.incrementViewCount();
 
-        VolunteerDto.DetailResponse toResponseDetailDto = findVolunteer.toResponseDetailDto();
+        Member writer = findVolunteer.getMember();
+        List<VolunteerComment> volunteerComments = volunteerCommentRepository.findCommentsByVolunteerSeq(volunteerSeq)
+                .orElse(null);
 
-        toResponseDetailDto.setVolunteerComment(result);
 
-        return toResponseDetailDto;
+        List<VolunteerCommentDto.ForDetail> commentsForDetail = convertNestedStructure((volunteerComments));
+
+        return VolunteerDto.Detail.create(findVolunteer, writer, commentsForDetail);
+    }
+
+    private List<VolunteerCommentDto.ForDetail> convertNestedStructure(List<VolunteerComment> comments) {
+        if (comments == null) return null;
+
+        List<VolunteerCommentDto.ForDetail> result = new ArrayList<>();
+        Map<Long, VolunteerCommentDto.ForDetail> map = new HashMap<>();
+        comments.forEach(comment -> {
+            VolunteerCommentDto.ForDetail forDetailDto = comment.toForDetailDto();
+            map.put(forDetailDto.getCommentSeq(), forDetailDto);
+            if (comment.getParent() != null) {
+                map.get(comment.getParent().getSeq()).getChildren().add(forDetailDto);
+            } else {
+                result.add(forDetailDto);
+            }
+        });
+        return result;
     }
     @Data
     public static class SimpleVolunteerCommentDto {
