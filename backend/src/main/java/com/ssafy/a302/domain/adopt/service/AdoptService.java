@@ -7,4 +7,6 @@ public interface AdoptService {
     Long requestAdoptAuth(Long memberSeq, AdoptDto.AdoptAuth adoptAuth);
 
     Long modifyAdoptAuth(Long memberSeq, Long adoptAuthSeq, AdoptDto.AdoptAuth adoptAuth);
+
+    AdoptDto.AdoptAuth getAdoptAuth(Long memberSeq, Long adoptAuthSeq);
 }
