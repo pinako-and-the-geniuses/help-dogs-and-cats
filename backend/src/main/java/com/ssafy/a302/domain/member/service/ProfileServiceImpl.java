@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.member.service;
 
+import com.ssafy.a302.domain.adopt.repository.AdoptAuthRepository;
 import com.ssafy.a302.domain.badge.entity.Badge;
 import com.ssafy.a302.domain.badge.repository.BadgeRepository;
 import com.ssafy.a302.domain.badge.repository.MemberBadgeRepository;
@@ -31,6 +32,8 @@ public class ProfileServiceImpl implements ProfileService {
     private final MemberBadgeRepository memberBadgeRepository;
 
     private final CommunityRepository communityRepository;
+
+    private final AdoptAuthRepository adoptAuthRepository;
 
     @Override
     public MemberDto.Profile getProfile(Long memberSeq) {
@@ -77,6 +80,21 @@ public class ProfileServiceImpl implements ProfileService {
                 .totalPageNumber(totalPageNumber)
                 .currentPageNumber(pageable.getPageNumber())
                 .communities(communities)
+                .build();
+    }
+
+    @Override
+    public ProfileDto.AdoptPage getAdopts(Long memberSeq, Pageable pageable) {
+        Integer totalCount = adoptAuthRepository.countAllByMemberSeq(memberSeq);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<ProfileDto.Adopt> adopts = adoptAuthRepository.findAdoptsForProfile(memberSeq, pageable)
+                .orElse(null);
+
+        return ProfileDto.AdoptPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .currentPageNumber(pageable.getPageNumber())
+                .adopts(adopts)
                 .build();
     }
 }
