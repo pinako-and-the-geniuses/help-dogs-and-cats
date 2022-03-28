@@ -8,6 +8,7 @@ import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +35,20 @@ public class AdoptServiceImpl implements AdoptService {
                 .build());
 
         return savedAdoptAuth.getSeq();
+    }
+
+    @Transactional
+    @Override
+    public Long modifyAdoptAuth(Long memberSeq, Long adoptAuthSeq, AdoptDto.AdoptAuth adoptAuth) {
+        AdoptAuth findAdoptAuth = adoptAuthRepository.findBySeq(adoptAuthSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findAdoptAuth.getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
+        }
+
+        findAdoptAuth.modify(adoptAuth);
+
+        return findAdoptAuth.getSeq();
     }
 }

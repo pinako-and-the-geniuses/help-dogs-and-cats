@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.adopt.entity;
 
+import com.ssafy.a302.domain.adopt.service.dto.AdoptDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import com.ssafy.a302.global.enums.Status;
@@ -43,5 +44,10 @@ public class AdoptAuth extends BaseLastModifiedEntity {
         this.content = content;
         this.status = Status.REQUEST;
         this.member = member;
+    }
+
+    public void modify(AdoptDto.AdoptAuth adoptAuth) {
+        this.title = adoptAuth.getTitle();
+        this.content= adoptAuth.getContent();
     }
 }
