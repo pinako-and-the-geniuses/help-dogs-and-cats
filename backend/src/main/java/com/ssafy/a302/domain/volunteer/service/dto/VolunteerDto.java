@@ -122,7 +122,7 @@ public class VolunteerDto {
 
 
     @Getter
-    @ToString(of = {"seq", "title", "content", "category", "activityArea", "minParticipantCount", "maxParticipantCount"})
+    @ToString(of = {"seq", "title", "content", "authTime", "contact", "endDate", "activityArea", "minParticipantCount", "maxParticipantCount"})
     public static class Response {
 
         @Schema(name = "seq", title = "봉사활동 기본키", description = "봉사활동이 가지고 있는 고유 식별키입니다.")

@@ -110,20 +110,35 @@ public class VolunteerController {
 
 
     // 봉사활동 상세페이지 수정
-//    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-//    @ResponseStatus(HttpStatus.OK)
-//    @PutMapping("/{volunteerSeq}")
-//    public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
-//                                                    @PathVariable Long volunteerSeq,
-//                                                    Authentication authentication) {
-//        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
-//        volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
-//
-//        return BaseResponseDto.builder()
-//                .message(Message.SUCCESS_UPDATE_VOLUNTEER)
-//                .build();
-//
-//    }
+    @Operation(
+            summary = "봉사활동 수정 API",
+            description = "종료일, 제목, 활동지역, 인증시간, 모집인원, 신청여부, 연락처, 작성자 닉네임, 작성자seq, 내용, 첨부파일을 전달받고 봉사활동을 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "봉사활동 수정에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{volunteerSeq}")
+    public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
+                                                    @PathVariable Long volunteerSeq,
+                                                    Authentication authentication) {
+        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_UPDATE_VOLUNTEER)
+                .build();
+
+    }
 
     // 봉사활동 진행상태 수정
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
