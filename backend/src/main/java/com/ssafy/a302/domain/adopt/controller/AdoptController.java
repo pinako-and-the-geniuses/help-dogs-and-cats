@@ -2,6 +2,7 @@ package com.ssafy.a302.domain.adopt.controller;
 
 import com.ssafy.a302.domain.adopt.controller.dto.AdoptAuthRequestDto;
 import com.ssafy.a302.domain.adopt.service.AdoptService;
+import com.ssafy.a302.domain.adopt.service.dto.AdoptDto;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
@@ -95,6 +96,40 @@ public class AdoptController {
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "입양 인증 조회 API",
+            description = "회원 식별키, 입양 인증 식별키를 전달받고 입양 인증 데이터를 반환합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "입양 인증 조회에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/auth/{adoptAuthSeq}")
+    public BaseResponseDto<AdoptDto.AdoptAuth> requestAdoptAuth(@PathVariable(name = "adoptAuthSeq") Long adoptAuthSeq,
+                                               Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        AdoptDto.AdoptAuth adoptAuth = adoptService.getAdoptAuth(memberSeq, adoptAuthSeq);
+
+        return BaseResponseDto.<AdoptDto.AdoptAuth>builder()
+                .message(Message.SUCCESS)
+                .data(adoptAuth)
                 .build();
     }
 }
