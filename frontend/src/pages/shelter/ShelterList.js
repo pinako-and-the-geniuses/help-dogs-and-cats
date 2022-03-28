@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { ANIMAL } from '../../public/config/index';
+import { URL, ANIMAL } from '../../public/config/index';
 import style from './styles/ShelterList.module.scss';
 import cn from 'classnames';
 
@@ -18,7 +18,8 @@ function ShelterList(){
     const [selectCd, setSelectCd] = useState();
     const [cggs, setCggs] = useState([...all]);
     const [selectCgg, setSelectCgg] = useState();
-        
+    const [nameSearch, setNameSearch] = useState();
+
     //시도 가져오기
     const getSido = async() =>{
         await axios({
@@ -73,9 +74,9 @@ function ShelterList(){
     }, [selectCd]);
 
     //지울 부분
-    useEffect(()=>{
-        console.log('시군구', cggs);
-    }, [cggs]);
+    // useEffect(()=>{
+    //     console.log('시군구', cggs);
+    // }, [cggs]);
 
     const handleCd = (e) =>{
         setSelectCd(e.target.value);
@@ -84,6 +85,21 @@ function ShelterList(){
 
     const handleCgg =(e)=>{
         setSelectCgg(e.target.value.orgCd);
+    }
+
+    //보호소 검색시
+    const onSubmit=()=>{
+        // console.log('등록!');
+        axios({
+            url: `${ANIMAL}/abandonmentPublicSrvc/shelter?upr_cd=${selectCd}&org_cd=${selectCgg}&_type=json&serviceKey=${ANIMAL_KEY}`,
+            method: "get",
+        })
+        .then((res)=>{
+            console.log(res.data);
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
     }
 
     return(
@@ -131,13 +147,14 @@ function ShelterList(){
                     </select>
 
                     <p>보호센터명</p>
-                    <input type="text" />
+                    <input 
+                        type="text"
+                        onChange={(e)=>{setNameSearch(e.target.value)}} />
                 </div>
 
-                <button type='submit'>조회</button>
+                <button type='submit' onClick={onSubmit}>조회</button>
             </div>
 
-            {/* <table className="table table-bordered table-hover"> */}
             <table className={cn("table table-bordered table-hover", style.my_table)}>
                 <thead>
                     <tr>
@@ -149,19 +166,19 @@ function ShelterList(){
                 </thead>
                 <tbody>
                     <tr>
-                    <td scope="row">어디</td>
+                    <td>어디</td>
                     <td>Mark</td>
                     <td>Otto</td>
                     <td>@mdo</td>
                     </tr>
                     <tr>
-                    <td scope="row">어디</td>
+                    <td>어디</td>
                     <td>Jacob</td>
                     <td>Thornton</td>
                     <td>@fat</td>
                     </tr>
                     <tr>
-                    <td scope="row">어디</td>
+                    <td>어디</td>
                     <td>어쩌고저쩌고</td>
                     <td>Larry the Bird</td>
                     <td>@twitter</td>
