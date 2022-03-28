@@ -3,7 +3,6 @@ package com.ssafy.a302.domain.volunteer.service.dto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -12,6 +11,23 @@ import java.util.List;
 
 @Getter
 public class VolunteerCommentDto {
+
+    @Getter
+    @ToString(of = {"content", "parentSeq"})
+    public static class RegisterInfo {
+
+        private final String content;
+
+        private final Long parentSeq;
+
+        @Builder
+        public RegisterInfo(String content, Long parentSeq) {
+            this.content = content;
+            this.parentSeq = parentSeq;
+        }
+    }
+
+
     private String content;
 
     private Long parentSeq;

@@ -42,29 +42,24 @@ public class VolunteerComment extends BaseLastModifiedEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @JoinColumn(name = "parent_seq", nullable = false)
+    @JoinColumn(name = "parent_seq")
     @ManyToOne(fetch = LAZY)
     private VolunteerComment parent;
 
-    @OneToMany(mappedBy = "parent", cascade = ALL)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = ALL)
     private List<VolunteerComment> children = new ArrayList<>();
 
     @Builder
-    public VolunteerComment(String content, Volunteer volunteer, Member member, VolunteerComment parent) {
+    public VolunteerComment(String content, Volunteer volunteer, Member member) {
         this.content = content;
         this.isDeleted = false;
         this.volunteer = volunteer;
         this.member = member;
-        this.parent = parent;
     }
 
     public void createParent(VolunteerComment parent) {
         this.parent = parent;
         parent.getChildren().add(this);
-    }
-
-    public void setParent(VolunteerComment parent) {
-        this.parent = parent;
     }
 
     public void setMember(Member member) {
