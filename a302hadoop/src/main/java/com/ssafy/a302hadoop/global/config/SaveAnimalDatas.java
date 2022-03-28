@@ -22,12 +22,11 @@ public class SaveAnimalDatas {
 
     private final HadoopService hadoopService;
 
-    public void saveData(int year) throws IOException {
+    public void saveData(int year, String name) throws IOException {
         List<DataFromHadoopDto> animalDataList = new ArrayList<>();
 
-
         for (int i = 0; i < 4; i++) {
-            File file = new File("/home/hadoop/a302hadoop/hadoopoutput/part-r-0000" + i);
+            File file = new File("/home/hadoop/a302hadoop/hadoopoutput/"+name+"/part-r-0000" + i);
             FileReader fileReader = new FileReader(file);
             BufferedReader br = new BufferedReader(fileReader);
 
@@ -126,8 +125,10 @@ public class SaveAnimalDatas {
             }
 
         }
-        hadoopService.insertAnimalData(animalDataList, year);
+        hadoopService.insertAnimalData(animalDataList, year, name);
 
+
+        System.out.println("Data save done");
     }
 
     public static boolean isInteger(String input) {
