@@ -1,5 +1,9 @@
 package com.ssafy.a302.domain.member.service;
 
+import com.ssafy.a302.domain.badge.entity.Badge;
+import com.ssafy.a302.domain.badge.entity.MemberBadge;
+import com.ssafy.a302.domain.badge.repository.BadgeRepository;
+import com.ssafy.a302.domain.badge.repository.MemberBadgeRepository;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.exception.DuplicateEmailException;
@@ -32,6 +36,10 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     private final MemberDetailRepository memberDetailRepository;
+
+    private final BadgeRepository badgeRepository;
+
+    private final MemberBadgeRepository memberBadgeRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -72,6 +80,16 @@ public class MemberServiceImpl implements MemberService {
         memberDto.toDetailEntity(member);
 
         Member savedMember = memberRepository.save(member);
+
+        /**
+         * 가입 환영 뱃지 추가
+         */
+        Badge findBadge = badgeRepository.findByName("가입 환영 뱃지")
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.ERROR));
+        memberBadgeRepository.save(MemberBadge.builder()
+                .member(savedMember)
+                .badge(findBadge)
+                .build());
 
         return savedMember.toResponseDto();
     }
