@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
@@ -107,6 +108,7 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.volunteerAuth = volunteerAuth;
     }
 
+
     public enum Category {
 
         SHELTER("보호소");
@@ -150,6 +152,20 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .maxParticipantCount(maxParticipantCount)
                 .build();
     }
+
+    public VolunteerDto.DetailResponse toResponseDetailDto() {
+        return VolunteerDto.DetailResponse.builder()
+                .memberSeq(member.getSeq())
+                .nickname(member.getDetail().getNickname())
+                .title(title)
+                .content(content)
+                .status(status)
+                .activityArea(activityArea)
+                .volunteerComment(volunteerComments)
+                .build();
+    }
+
+
 
 
 }

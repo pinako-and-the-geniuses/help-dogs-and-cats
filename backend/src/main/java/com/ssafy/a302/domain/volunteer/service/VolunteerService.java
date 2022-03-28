@@ -14,7 +14,5 @@ public interface VolunteerService {
 
     Volunteer changeVolunteerStatus(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
-
-
-
+    VolunteerDto.DetailResponse volunteerDetail(Long volunteerSeq, Long memberSeq);
 }
