@@ -13,10 +13,13 @@ public interface VolunteerService {
 
     VolunteerDto.Response register(VolunteerDto volunteerDto, Long memberSeq);
 
+    VolunteerDto.Response updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
+
     Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq);
 
     Volunteer changeVolunteerStatus(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
+    VolunteerDto.DetailResponse volunteerDetail(Long volunteerSeq, Long memberSeq);
     VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword);
 
 }

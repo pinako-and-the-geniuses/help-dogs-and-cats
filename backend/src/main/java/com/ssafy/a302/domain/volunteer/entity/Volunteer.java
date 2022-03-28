@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
@@ -85,6 +86,33 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.member = member;
     }
 
+    // 봉사활동 수정
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void updateContent(String content){
+        this.content = content;
+    }
+
+    public void updateActivityArea(String activityArea){
+        this.activityArea = activityArea;
+    }
+
+    public void updateCategory(Category category){
+        this.category = category;
+    }
+
+    public void updateMinParticipantCount(Integer minParticipantCount){
+        this.minParticipantCount = minParticipantCount;
+    }
+
+    public void updateMaxParticipantCount(Integer maxParticipantCount){
+        this.maxParticipantCount = maxParticipantCount;
+    }
+
+
+
 
     // 봉사활동 신청
     public void apply(Member member){
@@ -106,6 +134,7 @@ public class Volunteer extends BaseLastModifiedEntity {
     public void createAuth(VolunteerAuth volunteerAuth) {
         this.volunteerAuth = volunteerAuth;
     }
+
 
     public enum Category {
 
@@ -150,6 +179,20 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .maxParticipantCount(maxParticipantCount)
                 .build();
     }
+
+    public VolunteerDto.DetailResponse toResponseDetailDto() {
+        return VolunteerDto.DetailResponse.builder()
+                .memberSeq(member.getSeq())
+                .nickname(member.getDetail().getNickname())
+                .title(title)
+                .content(content)
+                .status(status)
+                .activityArea(activityArea)
+                .volunteerComment(volunteerComments)
+                .build();
+    }
+
+
 
 
 }
