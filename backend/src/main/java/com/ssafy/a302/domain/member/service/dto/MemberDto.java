@@ -133,12 +133,16 @@ public class MemberDto {
         @Schema(name = "nickname", title = "닉네임", description = "닉네임입니다.")
         private final String nickname;
 
+        @Schema(name = "tel", title = "핸드폰 번호", description = "핸드폰 번호입니다.")
+        private final String tel;
+
         @Builder
-        public LoginResponse(Long seq, String email, String nickname, Member.Role role) {
+        public LoginResponse(Long seq, String email, Member.Role role, String nickname, String tel) {
             this.seq = seq;
             this.email = email;
-            this.nickname = nickname;
             this.role = role;
+            this.nickname = nickname;
+            this.tel = tel;
         }
     }
 

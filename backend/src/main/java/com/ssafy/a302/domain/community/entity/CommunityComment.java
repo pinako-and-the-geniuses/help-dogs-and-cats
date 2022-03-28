@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.community.entity;
 
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
@@ -44,7 +45,7 @@ public class CommunityComment extends BaseLastModifiedEntity {
     @ManyToOne(fetch = LAZY)
     private CommunityComment parent;
 
-    @OneToMany(mappedBy = "parent", cascade = ALL)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = ALL)
     private List<CommunityComment> children = new ArrayList<>();
 
     @Builder
@@ -62,5 +63,18 @@ public class CommunityComment extends BaseLastModifiedEntity {
 
     public void delete() {
         this.isDeleted = true;
+    }
+
+    public CommunityCommentDto.ForDetail toForDetailDto() {
+        return CommunityCommentDto.ForDetail.builder()
+                .commentSeq(seq)
+                .content(content)
+                .createdDate(getCreatedDate().toLocalDate())
+                .writerSeq(member.getSeq())
+                .writerNickname(member.getDetail().getNickname())
+                .writerProfileImageFilename(member.getDetail().getProfileImageFilename())
+                .parentSeq(parent == null ? null : parent.getSeq())
+                .children(new ArrayList<>())
+                .build();
     }
 }

@@ -66,8 +66,11 @@ class VolunteerServiceTest {
         registerInfo = VolunteerRequestDto.RegisterInfo.builder()
                 .title("제목입니다.")
                 .content("내용입니다.")
-                .category("SHELTER")
+//                .category("SHELTER")
                 .activityArea("서울시 강남구")
+                .authTime("12h")
+                .contact("www.dogsandcats.com")
+                .endDate("2022-03-30")
                 .minParticipantCount(2)
                 .maxParticipantCount(6)
                 .build();
@@ -86,8 +89,13 @@ class VolunteerServiceTest {
         assertThat(savedVolunteer.getSeq()).isNotNull();
         assertThat(savedVolunteer.getTitle()).isEqualTo(registerInfo.getTitle());
         assertThat(savedVolunteer.getContent()).isEqualTo(registerInfo.getContent());
-        assertThat(savedVolunteer.getCategory()).isEqualTo(Volunteer.Category.SHELTER);
+//        assertThat(savedVolunteer.getCategory()).isEqualTo(Volunteer.Category.SHELTER);
         assertThat(savedVolunteer.getActivityArea()).isEqualTo(registerInfo.getActivityArea());
+
+        assertThat(savedVolunteer.getAuthTime()).isEqualTo(registerInfo.getAuthTime());
+        assertThat(savedVolunteer.getContact()).isEqualTo(registerInfo.getContact());
+        assertThat(savedVolunteer.getEndDate()).isEqualTo(registerInfo.getEndDate());
+
         assertThat(savedVolunteer.getMinParticipantCount()).isEqualTo(registerInfo.getMinParticipantCount());
         assertThat(savedVolunteer.getMaxParticipantCount()).isEqualTo(registerInfo.getMaxParticipantCount());
 

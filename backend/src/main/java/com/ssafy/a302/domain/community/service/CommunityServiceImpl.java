@@ -16,7 +16,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -123,5 +126,42 @@ public class CommunityServiceImpl implements CommunityService {
         }
 
         findCommunity.delete();
+    }
+
+    @Transactional
+    @Override
+    public CommunityDto.Detail detail(Long communitySeq) {
+        Community findCommunity = communityRepository.findBySeq(communitySeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        findCommunity.incrementViewCount();
+
+        Member writer = findCommunity.getMember();
+        List<CommunityComment> communityComments = communityCommentRepository.findCommentsByCommunitySeq(communitySeq)
+                .orElse(null);
+
+        /**
+         * 대댓글 계층형 구조 생성
+         */
+        List<CommunityCommentDto.ForDetail> commentsForDetail = convertNestedStructure((communityComments));
+
+        return CommunityDto.Detail.create(findCommunity, writer, commentsForDetail);
+    }
+
+    private List<CommunityCommentDto.ForDetail> convertNestedStructure(List<CommunityComment> comments) {
+        if (comments == null) return null;
+
+        List<CommunityCommentDto.ForDetail> result = new ArrayList<>();
+        Map<Long, CommunityCommentDto.ForDetail> map = new HashMap<>();
+        comments.forEach(comment -> {
+            CommunityCommentDto.ForDetail forDetailDto = comment.toForDetailDto();
+            map.put(forDetailDto.getCommentSeq(), forDetailDto);
+            if (comment.getParent() != null) {
+                map.get(comment.getParent().getSeq()).getChildren().add(forDetailDto);
+            } else {
+                result.add(forDetailDto);
+            }
+        });
+        return result;
     }
 }
