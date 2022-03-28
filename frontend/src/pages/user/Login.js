@@ -48,6 +48,7 @@ export default function Login() {
           console.log(res.data.data.memberInfo);
           dispatch(loginAction(res.data.data.memberInfo));
           sessionStorage.setItem("jwt", res.data.data.jwtToken);
+          console.log(res.data.data.jwtToken);
         } else if (res.status === 204) {
           alert("이메일 또는 패스워드가 잘못 입력되었습니다.");
         }

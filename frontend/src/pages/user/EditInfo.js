@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DeleteUser from "./component/DeleteUser";
-import UserImage from "./component/UserImage";
+import EditImage from "./component/EditImage";
 import Password from "./component/Password";
 import EditNickName from "./component/EditNickName";
 import EditPhone from "./component/EditPhone";
@@ -45,6 +45,7 @@ export default function Editinfo() {
         .get(`${URL}/members/${info.seq}`)
         .then((res) => {
           const data = res.data.data;
+          setImg(data.profileImageFilePath);
           setEmail(data.email);
           setNickName(data.nickname);
           setPhone(data.tel);
@@ -56,9 +57,9 @@ export default function Editinfo() {
     }
   }, [isLogin]);
 
-  console.log("data", pwd, nickName, phone, region);
+  console.log("data", pwd, nickName, phone, region, img);
 
-  const onSubmit = (event) => {
+  const onEditSubmit = (event) => {
     event.preventDefault();
     const data = {
       password: pwd,
@@ -91,7 +92,7 @@ export default function Editinfo() {
               nickname: nickName,
             };
             dispatch(loginAction(userInfo));
-            navi("/");
+            navi(`user/profile/${info.seq}`);
           }
         })
         .catch((err) => {
@@ -104,9 +105,12 @@ export default function Editinfo() {
   };
 
   return (
-    <form className={`${st.userinfoForm} ${st.userform}`}>
+    <form
+      onSubmit={onEditSubmit}
+      className={`${st.userinfoForm} ${st.userform}`}
+    >
       <h2>{pagename}</h2>
-      <UserImage seq={info.seq} />
+      <EditImage seq={info.seq} img={img} setImg={setImg} />
       <div name="아이디[이메일]">
         <p>
           <label htmlFor="email">아이디 [Email]</label>
@@ -137,13 +141,9 @@ export default function Editinfo() {
         setIsPhone={setIsPhone}
       />
       <Region URL={URL} region={region} setRegion={setRegion} />
-      <button
-        type="submit"
-        className={cn(`${st.longButton}`)}
-        onClick={onSubmit}
-      >
+      <button type="submit" className={cn(`${st.longButton}`)}>
         {pagename}
-      </button>{" "}
+      </button>
       <DeleteUser />
     </form>
   );
