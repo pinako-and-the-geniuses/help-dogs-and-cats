@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface HadoopService {
 
-    void insertAnimalData(List<DataFromHadoopDto> datasFromHadoopDto, int year);
+    void insertAnimalData(List<DataFromHadoopDto> datasFromHadoopDto, int year, String name);
 }
