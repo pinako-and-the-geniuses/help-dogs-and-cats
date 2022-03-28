@@ -73,11 +73,18 @@ public class Message {
 
     public static String SUCCESS_DELETE_VOLUNTEER_COMMENT;
 
+    public static String SUCCESS_UPDATE_VOLUNTEER;
+
     public static String SUCCESS_VOLUNTEER_DETAIL_LIST;
 
     public static String REMOVE;
 
     public static String SUCCESS;
+
+
+
+
+
 
     @Autowired
     public Message(MessageSource messageSource) {
@@ -128,6 +135,8 @@ public class Message {
         SUCCESS_REGISTER_VOLUNTEER_COMMENT = messageSource.getMessage("success.register.volunteer.comment", null, null);
         SUCCESS_DELETE_VOLUNTEER_COMMENT = messageSource.getMessage("success.delete.volunteer.comment", null, null);
         SUCCESS_VOLUNTEER_DETAIL_LIST = messageSource.getMessage("success.volunteer.detail.list", null, null);
+
+        SUCCESS_UPDATE_VOLUNTEER = messageSource.getMessage("success.update.volunteer", null, null);
 
 
         REMOVE = messageSource.getMessage("remove", null, null);

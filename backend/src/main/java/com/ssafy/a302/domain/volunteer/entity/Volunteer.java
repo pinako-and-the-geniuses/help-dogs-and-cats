@@ -86,6 +86,33 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.member = member;
     }
 
+    // 봉사활동 수정
+    public void updateTitle(String title){
+        this.title = title;
+    }
+
+    public void updateContent(String content){
+        this.content = content;
+    }
+
+    public void updateActivityArea(String activityArea){
+        this.activityArea = activityArea;
+    }
+
+    public void updateCategory(Category category){
+        this.category = category;
+    }
+
+    public void updateMinParticipantCount(Integer minParticipantCount){
+        this.minParticipantCount = minParticipantCount;
+    }
+
+    public void updateMaxParticipantCount(Integer maxParticipantCount){
+        this.maxParticipantCount = maxParticipantCount;
+    }
+
+
+
 
     // 봉사활동 신청
     public void apply(Member member){

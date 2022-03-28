@@ -60,6 +60,45 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Transactional
     @Override
+    public VolunteerDto.Response updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq) {
+        Member findMember = memberRepository.findMemberBySeq(memberSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
+
+        Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
+
+        if (findVolunteer.getMember().getSeq().equals(findMember.getSeq())){
+            // 수정
+            if (volunteerDto.getTitle() != null){
+                findVolunteer.updateTitle(volunteerDto.getTitle());
+            }
+            if (volunteerDto.getContent() != null){
+                findVolunteer.updateContent(volunteerDto.getContent());
+            }
+            if (volunteerDto.getCategory() != null){
+                findVolunteer.updateCategory(volunteerDto.getCategory());
+            }
+            if (volunteerDto.getActivityArea() != null){
+                findVolunteer.updateActivityArea(volunteerDto.getActivityArea());
+            }
+            if (volunteerDto.getMinParticipantCount() != null){
+                findVolunteer.updateMinParticipantCount(volunteerDto.getMinParticipantCount());
+            }
+            if (volunteerDto.getMaxParticipantCount() != null){
+                findVolunteer.updateMaxParticipantCount(volunteerDto.getMaxParticipantCount());
+            }
+            return findVolunteer.toResponseDto();
+
+        }else {
+            // 수정 못함
+            throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER_CREATOR);
+        }
+
+    }
+
+
+    @Transactional
+    @Override
     public Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
