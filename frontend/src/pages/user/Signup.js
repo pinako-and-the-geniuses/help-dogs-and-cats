@@ -77,6 +77,8 @@ export default function Signup() {
         })
         .catch((err) => {
           alert("회원가입 실패");
+          // console.log(email, pwd, nickName, phone, region);
+          console.log("닉네임", nickName);
           console.log(err.response.status);
           // navi("/NotFound")
         });
@@ -110,14 +112,14 @@ export default function Signup() {
           setIsPwdConfirm={setIsPwdConfirm}
         ></Password>
         <NickName
-          URL={URL}
           nickName={nickName}
+          isNickName={isNickName}
           setNickName={setNickName}
           setIsNickName={setIsNickName}
         />
         <Phone
-          URL={URL}
           phone={phone}
+          isPhone={isPhone}
           setPhone={setPhone}
           setIsPhone={setIsPhone}
         />

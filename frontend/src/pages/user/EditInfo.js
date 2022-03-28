@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DeleteUser from "./component/DeleteUser";
 import UserImage from "./component/UserImage";
 import Password from "./component/Password";
-import NickName from "./component/NickName";
+import EditNickName from "./component/EditNickName";
 import EditPhone from "./component/EditPhone";
 import Region from "./component/Region";
 import st from "./styles/userform.module.scss";
@@ -11,6 +11,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { URL } from "../../public/config/";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../../actions/UserAction";
 
 export default function Editinfo() {
   // 입력정보
@@ -20,27 +22,27 @@ export default function Editinfo() {
   const [pwdConfirm, setPwdConfirm] = useState("");
   const [nickName, setNickName] = useState("");
   const [phone, setPhone] = useState("");
-  const [newPhone, setNewPhone] = useState("");
   const [region, setRegion] = useState("전체");
   // 유효성 검사
   const [isPwd, setIsPwd] = useState(false);
   const [isPwdConfirm, setIsPwdConfirm] = useState(false);
   const [isNickName, setIsNickName] = useState(true);
   const [isPhone, setIsPhone] = useState(true);
-
   // 저장 정보 가져오기
-  const seq = useSelector((state) => state.userInfo.userInfo.seq);
+  const info = useSelector((state) => state.userInfo.userInfo);
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const jwt = sessionStorage.getItem("jwt");
   const pagename = "회원정보 수정";
+  // 추가기능
   const navi = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!isLogin) {
       alert("로그인 해주세요.");
     } else {
       axios
-        .get(`${URL}/members/${seq}`)
+        .get(`${URL}/members/${info.seq}`)
         .then((res) => {
           const data = res.data.data;
           setEmail(data.email);
@@ -58,7 +60,12 @@ export default function Editinfo() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    setPhone(newPhone);
+    const data = {
+      password: pwd,
+      nickname: nickName,
+      tel: phone,
+      activityArea: region,
+    };
     if (!isPwd || !isPwdConfirm) {
       alert("비밀번호를 확인해주세요");
     } else if (!isNickName) {
@@ -66,21 +73,24 @@ export default function Editinfo() {
     } else if (!isPhone) {
       alert("핸드폰 번호 인증이 필요합니다.");
     } else if (isPwd && isPwdConfirm && isNickName && isPhone) {
+      console.log(data);
       axios({
-        url: `${URL}/members/${seq}`,
+        url: `${URL}/members/${info.seq}`,
         method: "PUT",
-        headers: { Authorization: jwt },
-        data: {
-          password: pwd,
-          nickname: nickName,
-          tel: newPhone,
-          activityArea: region,
-        },
+        headers: { Authorization: `Bearer ${jwt}` },
+        data: data,
       })
         .then((res) => {
           console.log(res);
-          if (res.status === 201) {
+          if (res.status === 200) {
             alert("수정 완료");
+            const userInfo = {
+              seq: info.seq,
+              email: email,
+              role: info.role,
+              nickname: nickName,
+            };
+            dispatch(loginAction(userInfo));
             navi("/");
           }
         })
@@ -96,7 +106,7 @@ export default function Editinfo() {
   return (
     <form className={`${st.userinfoForm} ${st.userform}`}>
       <h2>{pagename}</h2>
-      <UserImage seq={seq} />
+      <UserImage seq={info.seq} />
       <div name="아이디[이메일]">
         <p>
           <label htmlFor="email">아이디 [Email]</label>
@@ -114,20 +124,16 @@ export default function Editinfo() {
         isPwdConfirm={isPwdConfirm}
         setIsPwdConfirm={setIsPwdConfirm}
       ></Password>
-      <NickName
-        URL={URL}
+      <EditNickName
         nickName={nickName}
-        setNickName={setNickName}
         isNickName={isNickName}
+        setNickName={setNickName}
         setIsNickName={setIsNickName}
       />
       <EditPhone
-        URL={URL}
         phone={phone}
-        newPhone={newPhone}
-        setNewPhone={setNewPhone}
-        setPhone={setPhone}
         isPhone={isPhone}
+        setPhone={setPhone}
         setIsPhone={setIsPhone}
       />
       <Region URL={URL} region={region} setRegion={setRegion} />
