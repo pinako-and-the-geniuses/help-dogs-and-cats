@@ -3,9 +3,12 @@ package com.ssafy.a302.domain.volunteer.controller;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerCommentRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerParticipantRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerRequestDto;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
+import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.auth.CustomUserDetails;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
@@ -16,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +27,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -72,6 +81,25 @@ public class VolunteerController {
                 .message(Message.REGISTER_VOLUNTEER)
                 .build();
     }
+
+    // 봉사활동 상세페이지 조회
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{volunteerSeq}")
+    public BaseResponseDto<?> volunteerDetail(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
+        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+
+        VolunteerDto.DetailResponse findVolunteerDetail = volunteerService.volunteerDetail(volunteerSeq, memberSeq);
+
+//        findVolunteerDetail.setVolunteerComment(result);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_VOLUNTEER_DETAIL_LIST)
+                .data(findVolunteerDetail)
+                .build();
+
+    }
+
 
     // 봉사활동 상세페이지 수정
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
@@ -167,7 +195,7 @@ public class VolunteerController {
                 .build();
     }
 
-    // 봉사활동 참여자 참석여부 수정
+    // 봉사활동 참여자 참석여부 삭제
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/participants/{memberSeq}")
