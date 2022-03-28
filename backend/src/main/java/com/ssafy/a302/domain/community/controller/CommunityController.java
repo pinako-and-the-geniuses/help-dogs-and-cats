@@ -266,4 +266,40 @@ public class CommunityController {
                 .message(Message.SUCCESS)
                 .build();
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "커뮤니티 게시글 조회 API",
+            description = "커뮤니티 식별키, 회원 식별키를 전달받고 커뮤니티 게시글을 조회합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "커뮤니티 게시글을 조회하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 커뮤니티 게시글입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{communitySeq}")
+    public BaseResponseDto<CommunityDto.Detail> view(@PathVariable(name = "communitySeq") Long communitySeq) {
+
+        CommunityDto.Detail detail = communityService.detail(communitySeq);
+
+        return BaseResponseDto.<CommunityDto.Detail>builder()
+                .message(Message.SUCCESS)
+                .data(detail)
+                .build();
+    }
 }

@@ -6,6 +6,7 @@ import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.community.entity.CommunityComment;
 import com.ssafy.a302.domain.community.repository.CommunityCommentRepository;
 import com.ssafy.a302.domain.community.repository.CommunityRepository;
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
 import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
@@ -54,6 +55,8 @@ class CommunityServiceTest {
     private Community community1, community2;
 
     private CommunityComment comment1;
+
+    private CommunityCommentRequestDto.RegisterInfo registerCommentInfo1;
 
     @BeforeEach
     void setUp() {
@@ -118,6 +121,11 @@ class CommunityServiceTest {
                 .member(member1)
                 .community(community1)
                 .content("댓글1")
+                .build();
+
+        registerCommentInfo1 = CommunityCommentRequestDto.RegisterInfo.builder()
+                .content("댓글1")
+                .parentSeq(null)
                 .build();
     }
 
@@ -314,5 +322,67 @@ class CommunityServiceTest {
         assertThat(modifiedCommunity.getTitle()).isEqualTo(modifyInfo1.getTitle());
         assertThat(modifiedCommunity.getContent()).isEqualTo(modifyInfo1.getContent());
         assertThat(modifiedCommunity.getCategory()).isEqualTo(Community.Category.valueOf(modifyInfo1.getCategory().toUpperCase()));
+    }
+
+    @Test
+    @DisplayName("커뮤니티 게시글 상세페이지 조회 - 성공")
+    void detailSuccess() {
+        Member savedMember1 = memberRepository.save(member1);
+        Member savedMember2 = memberRepository.save(member2);
+        Community savedCommunity1 = communityRepository.save(community1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 커뮤니티 게시글 상세페이지 조회
+         */
+        CommunityDto.Detail detail0 = communityService.detail(savedCommunity1.getSeq());
+
+        /**
+         * 커뮤니티 게시글 데이터 검증
+         */
+        assertThat(detail0.getTitle()).isEqualTo(savedCommunity1.getTitle());
+        assertThat(detail0.getContent()).isEqualTo(savedCommunity1.getContent());
+        assertThat(detail0.getCategory()).isEqualTo(savedCommunity1.getCategory());
+        assertThat(detail0.getCommunitySeq()).isEqualTo(savedCommunity1.getSeq());
+        assertThat(detail0.getWriterSeq()).isEqualTo(savedMember1.getSeq());
+        assertThat(detail0.getViewCount()).isEqualTo(1);
+        assertThat(detail0.getComments()).isNull();
+
+        em.flush();
+        em.clear();
+
+        /**
+         * 댓글 등록
+         */
+        Long savedParentCommentSeq = communityService.registerComment(savedCommunity1.getSeq(), registerCommentInfo1.toServiceDto(), savedMember2.getSeq());
+        Long savedChildCommentSeq = communityService.registerComment(savedCommunity1.getSeq(), CommunityCommentRequestDto.RegisterInfo.builder()
+                .content("자식 댓글")
+                .parentSeq(savedParentCommentSeq)
+                .build().toServiceDto(), savedMember1.getSeq());
+
+        /**
+         * 커뮤니티 게시글 상세페이지 조회
+         */
+        CommunityDto.Detail detail1 = communityService.detail(savedCommunity1.getSeq());
+
+        /**
+         * 댓글 데이터 검증
+         */
+        List<CommunityCommentDto.ForDetail> comments = detail1.getComments();
+        assertThat(comments.size()).isEqualTo(1);
+
+        /**
+         * 부모 댓글
+         */
+        CommunityCommentDto.ForDetail findParentComment = comments.get(0);
+        assertThat(findParentComment.getCommentSeq()).isEqualTo(savedParentCommentSeq);
+
+        /**
+         * 대댓글
+         */
+        List<CommunityCommentDto.ForDetail> findChildrenComments = findParentComment.getChildren();
+        CommunityCommentDto.ForDetail findChildComment = findChildrenComments.get(0);
+        assertThat(findChildComment.getCommentSeq()).isEqualTo(savedChildCommentSeq);
     }
 }

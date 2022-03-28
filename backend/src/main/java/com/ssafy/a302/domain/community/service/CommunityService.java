@@ -18,4 +18,6 @@ public interface CommunityService {
     void removeComment(Long communitySeq, Long commentSeq, Long memberSeq);
 
     void remove(Long communitySeq, Long memberSeq);
+
+    CommunityDto.Detail detail(Long communitySeq);
 }

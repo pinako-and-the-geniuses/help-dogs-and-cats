@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface CommunityCommentRepository extends JpaRepository<CommunityComment, Long> {
+public interface CommunityCommentRepository extends JpaRepository<CommunityComment, Long>, CommunityCommentRepositoryCustom {
 
     @Query("SELECT cc FROM CommunityComment cc WHERE cc.seq = :seq AND cc.isDeleted = FALSE")
     Optional<CommunityComment> findBySeq(@Param(value = "seq") Long seq);

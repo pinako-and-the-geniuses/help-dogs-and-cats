@@ -90,4 +90,8 @@ public class Community extends BaseLastModifiedEntity {
         this.content = communityDto.getContent();
         this.category = communityDto.getCategory();
     }
+
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
 }
