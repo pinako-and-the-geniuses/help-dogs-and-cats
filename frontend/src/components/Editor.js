@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
-
+import { URL } from '../public/config';
 
 
 function Editor(props) {
@@ -24,28 +24,49 @@ function Editor(props) {
       //multer에 맞는 형식으로 데이터 생성
       const formData = new FormData();
       formData.append('img', file);
-      try {
-        // const result = await axios.post(`${URL}/images`, formData);
-        const result = await axios({
-          url:`${URL}/images`,
-          method: "POST",
-          data: {
-            imageFile: formData
-          },
-        });
-        console.log('1', formData);
-        console.log('성공시 백엔드가 보내주는 데이터', result.data.url);
-        const IMG_URL = result.data.url;
+
+      await axios({
+        url: `${URL}/images`,
+        method: "post",
+        data: {
+          imageFile: formData
+        }, 
+        headers: {
+          "Content-type": "multipart/form-data",
+        }
+       })
+       .then((res)=>{
+         console.log('ok',res.data);
+       })
+       .catch((err) =>{
+         console.log(err);
+       })
+
+      // try {
+      //   // const result = await axios.post(`${URL}/images`, formData);
+      //   const result = await axios({
+      //     url:`${URL}/images`,
+      //     method: "POST",
+      //     data: {
+      //       imageFile: formData
+      //     },
+      //     headers: {
+      //       "Content-type": "multipart/form-data",
+      //     }
+      //   });
+      //   console.log('1', formData);
+      //   console.log('성공시 백엔드가 보내주는 데이터', result.data.url);
+      //   const IMG_URL = result.data.url;
   
-        const editor = quillRef.current.getEditor();
+      //   const editor = quillRef.current.getEditor();
   
-        const range = editor.getSelection();
-        editor.insertEmbed(range.index, "image", IMG_URL);
+      //   const range = editor.getSelection();
+      //   editor.insertEmbed(range.index, "image", IMG_URL);
   
-      } catch(err){
-        console.log('2', formData);
-        console.log(err);
-      }
+      // } catch(err){
+      //   console.log('2', formData);
+      //   console.log(err);
+      // }
     })
   } 
 
