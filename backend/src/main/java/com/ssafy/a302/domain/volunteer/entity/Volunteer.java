@@ -111,6 +111,16 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.activityArea = activityArea;
     }
 
+    public void updateAuthTime(String authTime){
+        this.authTime = authTime;
+    }
+    public void updateContact(String contact){
+        this.contact = contact;
+    }
+
+    public void updateEndDate(String endDate){
+        this.endDate = endDate;
+    }
 //    public void updateCategory(Category category){
 //        this.category = category;
 //    }
@@ -187,7 +197,6 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .content(content)
 //                .category(category)
                 .activityArea(activityArea)
-
                 .minParticipantCount(minParticipantCount)
                 .maxParticipantCount(maxParticipantCount)
                 .build();
