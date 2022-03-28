@@ -33,3 +33,23 @@ $sub-color: #E8E8E8;
         color: $mid-text;
     }
 }
+
+.home {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+
+    p {
+        color: $main-text;
+        font-size:25px;
+        margin: 0;
+    }
+
+    .box {
+        border: 0;
+        background-color: $sub-color;
+        border-radius: 15px;
+        padding: 20px;
+    }
+}
