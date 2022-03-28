@@ -3,24 +3,21 @@ package com.ssafy.a302.domain.volunteer.controller;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerCommentRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerParticipantRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerRequestDto;
-import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
-import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
-import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.auth.CustomUserDetails;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
+import com.ssafy.a302.global.util.AuthenticationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -29,11 +26,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,6 +39,8 @@ public class VolunteerController {
     private final VolunteerParticipantService volunteerParticipantService;
 
     private final VolunteerCommentService volunteerCommentService;
+
+    private final AuthenticationUtil authenticationUtil;
 
     // 봉사활동 생성
     @Operation(
@@ -234,11 +228,33 @@ public class VolunteerController {
 
 
     // 봉사활동 댓글 작성
+    @Operation(
+            summary = "봉사활동 게시글 댓글 등록 API",
+            description = "봉사활동 게시글 식별키, 댓글 본문, 부모 댓글 식별키를 전달받고 봉사활동 게시글 댓글을 등록합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "봉사활동 게시글 댓글을 등록하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 봉사활동 게시글입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{volunteerSeq}/comments")
-    public BaseResponseDto<?> registerVolunteerComment(@Validated @PathVariable Long volunteerSeq, @RequestBody VolunteerCommentRequestDto.RegisterInfo registerInfo, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+    public BaseResponseDto<?> registerVolunteerComment(@PathVariable Long volunteerSeq,
+                                                       @RequestBody VolunteerCommentRequestDto.RegisterInfo registerInfo,
+                                                       Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
 
         volunteerCommentService.registerVolunteerComment(volunteerSeq, memberSeq, registerInfo.toServiceDto());
 

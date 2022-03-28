@@ -1,9 +1,7 @@
 package com.ssafy.a302.domain.volunteer.service;
 
-import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
-import com.ssafy.a302.domain.volunteer.controller.VolunteerController;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
@@ -19,11 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 

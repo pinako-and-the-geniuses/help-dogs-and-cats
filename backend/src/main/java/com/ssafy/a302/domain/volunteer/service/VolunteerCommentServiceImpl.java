@@ -30,31 +30,27 @@ public class VolunteerCommentServiceImpl implements VolunteerCommentService{
 
     @Transactional
     @Override
-    public VolunteerCommentDto.Response registerVolunteerComment(Long volunteerSeq, Long memberSeq, VolunteerCommentDto volunteerCommentDto) {
+    public Long registerVolunteerComment(Long volunteerSeq, Long memberSeq, VolunteerCommentDto.RegisterInfo registerInfo) {
         Member findMember = memberRepository.findMemberBySeq(memberSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
 
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        VolunteerComment parent = Optional.ofNullable(volunteerCommentDto.getParentSeq())
-                .map(id -> volunteerCommentRepository.findById(id).orElseThrow(RuntimeException::new))
-                .orElse(null);
+        VolunteerComment newVolunteerComment = VolunteerComment.builder()
+                .volunteer(findVolunteer)
+                .member(findMember)
+                .content(registerInfo.getContent())
+                .build();
 
-        VolunteerComment volunteerComment = volunteerCommentDto.toEntity();
-        if (parent == null){
-            volunteerComment.setParent(parent);
-        }else{
-            volunteerComment.createParent(parent);
+        Long parentSeq = registerInfo.getParentSeq();
+        if(parentSeq != null){
+            VolunteerComment parentComment = volunteerCommentRepository.findBySeq(parentSeq)
+                    .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
 
+            newVolunteerComment.createParent(parentComment);
         }
-
-        volunteerComment.setMember(findMember);
-        volunteerComment.setVolunteer(findVolunteer);
-
-        VolunteerComment savedVolunteerComment = volunteerCommentRepository.save(volunteerComment);
-
-        return savedVolunteerComment.toResponseDto();
+        return volunteerCommentRepository.save(newVolunteerComment).getSeq();
     }
 
     @Transactional
