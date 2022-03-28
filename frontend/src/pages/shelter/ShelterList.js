@@ -1,16 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import XMLParser from 'react-xml-parser';
+import { ANIMAL } from '../../public/config/index';
 import style from './styles/ShelterList.module.scss';
 import cn from 'classnames';
 
 function ShelterList(){
+    const SHELTER_KEY = process.env.REACT_APP_SHELTER_API;
+    const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_API;
+    const all = [
+        {
+          orgCd: '0',
+          orgdownNm: "전체",
+        },
+      ];
 
-    const APP_KEY = process.env.REACT_APP_SHELTER_API;
-    const API = 'http://apis.data.go.kr/1543061';
+    const [cds, setCds] = useState();
+    const [selectCd, setSelectCd] = useState();
+    const [cggs, setCggs] = useState([...all]);
+    const [selectCgg, setSelectCgg] = useState();
+        
+    //시도 가져오기
+    const getSido = async() =>{
+        await axios({
+            url:`${ANIMAL}/abandonmentPublicSrvc/sido?numOfRows=20&pageNo=1&_type=json&serviceKey=${ANIMAL_KEY}`,
+            method: "get",
+        })
+        .then((res)=>{
+            // console.log(res.data.response.body.items.item);
+            setCds([...all, ...res.data.response.body.items.item]);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+    
+    //시군구 가져오기
+    const getSigungu = async() =>{
+        await axios({
+            url: `${ANIMAL}/abandonmentPublicSrvc/sigungu?upr_cd=${selectCd}&_type=json&serviceKey=${ANIMAL_KEY}`,
+            method: "get",
+        })
+        .then((res)=>{
+            setCggs([...all, ...res.data.response.body.items.item]);
+            // console.log(res.data.response.body.items.item)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
+    
+    //보호소목록 가져오기
     const shelterList = async() => {
         await axios({
-            url: `${API}/animalShelterSrvc/shelterInfo?numOfRows=3&pageNo=1&serviceKey=${APP_KEY}`,
+            url: `${ANIMAL}/abandonmentPublicSrvc/sigungu?upr_cd=6110000&_type=json&serviceKey=${SHELTER_KEY}`,
             method:"get",
         })
         .then((res) => {
@@ -23,8 +65,26 @@ function ShelterList(){
 
 
     useEffect(() =>{
-        shelterList();
+        getSido();
     }, []);
+
+    useEffect(()=>{
+        getSigungu();
+    }, [selectCd]);
+
+    //지울 부분
+    useEffect(()=>{
+        console.log('시군구', cggs);
+    }, [cggs]);
+
+    const handleCd = (e) =>{
+        setSelectCd(e.target.value);
+        console.log(e.target.value);
+    }
+
+    const handleCgg =(e)=>{
+        setSelectCgg(e.target.value.orgCd);
+    }
 
     return(
         <div className={style.main_container}>
@@ -39,13 +99,35 @@ function ShelterList(){
             <div className={style.search_bar}>
                 <div className={style.search_input}>
                     <p>시도</p>
-                    <select name='searchCd'>
-                        <option value="0">전체</option>
+                    <select
+                        name='searchCd'
+                        value={selectCd}
+                        onChange={handleCd}>
+                        {
+                            cds && cds.map((cd)=>(
+                                <option
+                                    value={cd.orgCd}
+                                    key={cd.orgCd}>
+                                {cd.orgdownNm}
+                                </option>
+                            ))
+                        }
                     </select>
 
                     <p>시군구</p>
-                    <select name='searchCgg'>
-                        <option value="0">전체</option>
+                    <select
+                        name='searchCgg'
+                        value={selectCgg}
+                        onChange={handleCgg}>
+                        {
+                            cggs && cggs.map((cgg)=>(
+                                <option
+                                    value={cgg.uprCd}
+                                    key={cgg.orgdownNm}>
+                                {cgg.orgdownNm}
+                                </option>
+                            ))
+                        }
                     </select>
 
                     <p>보호센터명</p>
