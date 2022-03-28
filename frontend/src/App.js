@@ -20,9 +20,7 @@ import {
   VolunteerDetail,
   VolunteerWrite,
 } from "./pages/volunteer";
-import { 
-  ManageMain,
-} from './pages/manager'
+import { ManageMain } from './pages/manager';
 
 function App() {
   return (
