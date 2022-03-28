@@ -1,17 +1,16 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
-import { URL } from 'public/config';
+import { URL } from '../public/config';
 
 
 function Editor(props) {
-  const jwt = sessionStorage.getItem('jwt');
   const quillRef = useRef();
-  const [value, setValue] = useState("");
-  
+
   const imageHandler = () =>{
     console.log('에디터에서 이미지 버튼 클릭');
+  
     // 이미지를 저장할 input type=file DOM 을 만든다
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -22,42 +21,54 @@ function Editor(props) {
     input.addEventListener('change', async() =>{
       console.log('온체인지');
       const file = input.files[0];
-      console.log('second', file);
       //multer에 맞는 형식으로 데이터 생성
       const formData = new FormData();
-      console.log('before', file)
       formData.append('img', file);
-      
-      //백엔드 multer에 이미지를 보낸다
-      console.log('after', file);
-      console.log('111', formData);
 
-      try {
-        // const result = await axios.post(`${URL}/images`, formData);
-        const result = await axios({
-          url:`${URL}/images`,
-          method: "POST",
-          data: {
-            imageFile: "test"
-          },
-          headers: { Authorization: jwt },
-        });
-        console.log('1', formData);
-        console.log('성공시 백엔드가 보내주는 데이터', result.data.url);
-        const IMG_URL = result.data.url;
+      await axios({
+        url: `${URL}/images`,
+        method: "post",
+        data: {
+          imageFile: formData
+        }, 
+        headers: {
+          "Content-type": "multipart/form-data",
+        }
+       })
+       .then((res)=>{
+         console.log('ok',res.data);
+       })
+       .catch((err) =>{
+         console.log(err);
+       })
+
+      // try {
+      //   // const result = await axios.post(`${URL}/images`, formData);
+      //   const result = await axios({
+      //     url:`${URL}/images`,
+      //     method: "POST",
+      //     data: {
+      //       imageFile: formData
+      //     },
+      //     headers: {
+      //       "Content-type": "multipart/form-data",
+      //     }
+      //   });
+      //   console.log('1', formData);
+      //   console.log('성공시 백엔드가 보내주는 데이터', result.data.url);
+      //   const IMG_URL = result.data.url;
   
-        const editor = quillRef.current.getEditor();
+      //   const editor = quillRef.current.getEditor();
   
-        const range = editor.getSelection();
-        editor.insertEmbed(range.index, "image", IMG_URL);
+      //   const range = editor.getSelection();
+      //   editor.insertEmbed(range.index, "image", IMG_URL);
   
-      } catch(err){
-        console.log('2', formData);
-        console.log(err);
-      }
-  
+      // } catch(err){
+      //   console.log('2', formData);
+      //   console.log(err);
+      // }
     })
-  }
+  } 
 
   const modules = useMemo(() => {
     return {

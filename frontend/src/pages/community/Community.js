@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { URL } from "public/config";
 import XMLParser from "react-xml-parser";
 import { useParams, useNavigate } from 'react-router-dom';
 import style from "./styles/Community.module.scss";

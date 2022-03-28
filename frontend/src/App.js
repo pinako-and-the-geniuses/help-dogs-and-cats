@@ -13,14 +13,19 @@ import {
 } from "./pages/user";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
-import { Community, CommunityDetail, CommunityCreate, CommunityUpdate } from "./pages/community";
+import {
+  Community,
+  CommunityDetail,
+  CommunityCreate,
+  CommunityUpdate,
+} from "./pages/community";
 import NotFound from "./NotFound";
 import {
   VolunteerList,
   VolunteerDetail,
   VolunteerWrite,
 } from "./pages/volunteer";
-import { ManageMain } from './pages/manager';
+import { ManageMain } from "./pages/manager";
 
 function App() {
   return (
@@ -39,7 +44,7 @@ function App() {
           <Route path="/user/editinfo" element={<EditInfo />} />
         </>
         <>
-          <Route path="/profile/:seq" element={<Profile />} />
+          <Route path="user/profile/:seq" element={<Profile />} />
         </>
         <>
           <Route path="/animals/animal" element={<Animal />} />
@@ -68,13 +73,16 @@ function App() {
           <Route path="/volunteer/list" element={<VolunteerList />} />
           <Route path="/volunteer/detail/:id" element={<VolunteerDetail />} />
           <Route path="/volunteer/write" element={<VolunteerWrite />}></Route>
-          <Route path="/volunteer/write/:id" element={<VolunteerWrite />}></Route>
+          <Route
+            path="/volunteer/write/:id"
+            element={<VolunteerWrite />}
+          ></Route>
         </>
         <>
           <Route path="*" element={<NotFound />} />
         </>
         <>
-          <Route path='/manage' element={<ManageMain />}></Route>
+          <Route path="/manage" element={<ManageMain />}></Route>
         </>
       </Routes>
     </BrowserRouter>

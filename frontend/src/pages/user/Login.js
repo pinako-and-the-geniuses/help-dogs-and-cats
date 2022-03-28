@@ -43,17 +43,17 @@ export default function Login() {
     axios
       .post(`${URL}/members/login`, user)
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           setSubmitLoading(true);
           dispatch(loginAction(res.data.data.memberInfo));
           sessionStorage.setItem("jwt", res.data.data.jwtToken);
-        } else if (res.status == 204) {
+        } else if (res.status === 204) {
           alert("이메일 또는 패스워드가 잘못 입력되었습니다.");
         }
       })
       .catch((err) => {
         console.log(err);
-        if (err.response.status == 400) {
+        if (err.response.status === 400) {
           alert("정보를 다시 확인해주세요.");
         } else {
           alert("잘못된 접근입니다.");

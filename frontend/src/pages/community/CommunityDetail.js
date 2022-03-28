@@ -3,6 +3,7 @@ import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityDetail.module.scss";
 import cn from "classnames";
+import { URL } from "public/config";
 import Comment from "components/Comment/Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -18,7 +19,7 @@ export default function CommunityDetail() {
     
     axios
       .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
-      .then((response) => setCommunityDetail(response.data)) //엑시오스 보낸 결과
+      .then((response) => {console.log(response.data); setCommunityDetail(response.data)}) //엑시오스 보낸 결과
       .catch((err) => console.log(err));
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
 
