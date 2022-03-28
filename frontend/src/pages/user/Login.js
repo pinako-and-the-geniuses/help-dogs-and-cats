@@ -45,7 +45,6 @@ export default function Login() {
       .then((res) => {
         if (res.status === 200) {
           setSubmitLoading(true);
-          console.log(res.data.data.memberInfo);
           dispatch(loginAction(res.data.data.memberInfo));
           sessionStorage.setItem("jwt", res.data.data.jwtToken);
         } else if (res.status === 204) {

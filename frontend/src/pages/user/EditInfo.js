@@ -52,12 +52,11 @@ export default function Editinfo() {
           setRegion(data.activityArea);
         })
         .catch((err) => {
+          alert("정보를 가져오는데 실패했습니다.");
           console.log(err);
         });
     }
   }, [isLogin]);
-
-  console.log("data", pwd, nickName, phone, region, img);
 
   const onEditSubmit = (event) => {
     event.preventDefault();
@@ -74,7 +73,6 @@ export default function Editinfo() {
     } else if (!isPhone) {
       alert("핸드폰 번호 인증이 필요합니다.");
     } else if (isPwd && isPwdConfirm && isNickName && isPhone) {
-      console.log(data);
       axios({
         url: `${URL}/members/${info.seq}`,
         method: "PUT",
@@ -82,7 +80,6 @@ export default function Editinfo() {
         data: data,
       })
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             alert("수정 완료");
             const userInfo = {
