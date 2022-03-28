@@ -11,7 +11,7 @@ export default function ProfileInfo({ isLogin, seq }) {
   const [inputs, setInputs] = useState({
     nickname: "",
     level: "",
-    exp: 100,
+    exp: 0,
     activityArea: "",
     profileImageFilePath: "",
     badgesForProfile: [],
