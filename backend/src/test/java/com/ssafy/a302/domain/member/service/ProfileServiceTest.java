@@ -14,6 +14,10 @@ import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.domain.member.service.dto.ProfileDto;
+import com.ssafy.a302.domain.volunteer.entity.Volunteer;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
+import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository;
+import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import com.ssafy.a302.global.constant.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -53,6 +58,12 @@ class ProfileServiceTest {
 
     @Autowired
     private AdoptAuthRepository adoptAuthRepository;
+
+    @Autowired
+    private VolunteerRepository volunteerRepository;
+
+    @Autowired
+    private VolunteerParticipantRepository volunteerParticipantRepository;
 
     private Member member1;
 
@@ -230,5 +241,56 @@ class ProfileServiceTest {
         assertThat(findAdoptForProfile.getSeq()).isEqualTo(savedAdoptAuth.getSeq());
         assertThat(findAdoptForProfile.getTitle()).isEqualTo(savedAdoptAuth.getTitle());
         assertThat(findAdoptForProfile.getStatus()).isEqualTo(savedAdoptAuth.getStatus());
+    }
+
+    @Test
+    @DisplayName("프로필 봉사활동 이력 조회 - 성공")
+    void getVolunteersSuccess() {
+        Member savedMember1 = memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 데이터가 없을 떄
+         */
+        PageRequest pageable = PageRequest.of(1, 10);
+        ProfileDto.VolunteerPage volunteerPage0 = profileService.getVolunteers(savedMember1.getSeq(), pageable);
+        assertThat(volunteerPage0.getTotalCount()).isEqualTo(0);
+        assertThat(volunteerPage0.getVolunteers()).isNull();
+
+        /**
+         * 봉사활동 등록
+         */
+        Volunteer savedVolunteer1 = volunteerRepository.save(Volunteer.builder()
+                .title("봉사활동 제목1")
+                .contact("봉사활동 본문1")
+                .activityArea("봉사활동 활동지역1")
+                .authTime("인증시간1")
+                .member(member1)
+                .endDate(LocalDate.now().toString())
+                .minParticipantCount(2)
+                .maxParticipantCount(6)
+                .content("contact1")
+                .build());
+        volunteerParticipantRepository.save(VolunteerParticipant.builder()
+                .volunteer(savedVolunteer1)
+                .member(savedMember1)
+                .build());
+
+        /**
+         * 봉사활동 이력 조회
+         */
+        ProfileDto.VolunteerPage volunteerPage1 = profileService.getVolunteers(savedMember1.getSeq(), pageable);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(volunteerPage1.getTotalCount()).isEqualTo(1);
+        assertThat(volunteerPage1.getVolunteers()).isNotNull();
+        List<ProfileDto.Volunteer> volunteersForProfile = volunteerPage1.getVolunteers();
+        ProfileDto.Volunteer volunteerForProfile = volunteersForProfile.get(0);
+        assertThat(volunteerForProfile.getVolunteerSeq()).isEqualTo(savedVolunteer1.getSeq());
+        assertThat(volunteerForProfile.getTitle()).isEqualTo(savedVolunteer1.getTitle());
+        assertThat(volunteerForProfile.getMemberSeq()).isEqualTo(savedMember1.getSeq());
     }
 }

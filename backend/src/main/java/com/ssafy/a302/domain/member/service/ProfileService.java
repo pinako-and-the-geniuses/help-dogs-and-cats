@@ -11,4 +11,6 @@ public interface ProfileService {
     ProfileDto.CommunityPage getCommunities(Long memberSeq, Pageable pageable);
 
     ProfileDto.AdoptPage getAdopts(Long memberSeq, Pageable pageable);
+
+    ProfileDto.VolunteerPage getVolunteers(Long memberSeq, Pageable pageable);
 }

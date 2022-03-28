@@ -1,6 +1,5 @@
 package com.ssafy.a302.domain.volunteer.repository;
 
-import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +14,6 @@ public interface VolunteerParticipantRepository extends JpaRepository<VolunteerP
 
     @Query("SELECT v FROM VolunteerParticipant v WHERE v.volunteer.seq = :seq")
     Optional<List<VolunteerParticipant>> findVolunteerParticipantBySeq(@Param(value = "seq") Long seq);
+
+    Integer countAllByMemberSeq(Long memberSeq);
 }

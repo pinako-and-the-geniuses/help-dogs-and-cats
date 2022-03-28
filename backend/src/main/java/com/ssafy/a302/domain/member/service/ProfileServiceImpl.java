@@ -9,6 +9,8 @@ import com.ssafy.a302.domain.community.repository.CommunityRepository;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.domain.member.service.dto.ProfileDto;
+import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository;
+import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,10 @@ public class ProfileServiceImpl implements ProfileService {
     private final CommunityRepository communityRepository;
 
     private final AdoptAuthRepository adoptAuthRepository;
+
+    private final VolunteerRepository volunteerRepository;
+
+    private final VolunteerParticipantRepository volunteerParticipantRepository;
 
     @Override
     public MemberDto.Profile getProfile(Long memberSeq) {
@@ -95,6 +101,21 @@ public class ProfileServiceImpl implements ProfileService {
                 .totalPageNumber(totalPageNumber)
                 .currentPageNumber(pageable.getPageNumber())
                 .adopts(adopts)
+                .build();
+    }
+
+    @Override
+    public ProfileDto.VolunteerPage getVolunteers(Long memberSeq, Pageable pageable) {
+        Integer totalCount = volunteerParticipantRepository.countAllByMemberSeq(memberSeq);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<ProfileDto.Volunteer> volunteers = volunteerRepository.findVolunteersForProfile(memberSeq, pageable)
+                .orElse(null);
+
+        return ProfileDto.VolunteerPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .currentPageNumber(pageable.getPageNumber())
+                .volunteers(volunteers)
                 .build();
     }
 }
