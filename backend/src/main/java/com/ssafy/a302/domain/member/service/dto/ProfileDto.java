@@ -99,4 +99,54 @@ public class ProfileDto {
             this.status = status;
         }
     }
+
+    @Schema(name = "VolunteerPage", title = "봉사활동 이력 페이지 DTO", description = "봉사활동 이력 조회 시 페이지 정보를 가지고 있는 DTO 입니다.")
+    @Getter
+    @ToString(of = {"totalCount", "currentPageNumber", "totalPageNumber", "volunteers"})
+    public static class VolunteerPage {
+
+        private Integer totalCount;
+
+        private Integer currentPageNumber;
+
+        private Integer totalPageNumber;
+
+        List<ProfileDto.Volunteer> volunteers;
+
+        @Builder
+        public VolunteerPage(Integer totalCount, Integer currentPageNumber, Integer totalPageNumber, List<Volunteer> volunteers) {
+            this.totalCount = totalCount;
+            this.currentPageNumber = currentPageNumber;
+            this.totalPageNumber = totalPageNumber;
+            this.volunteers = volunteers;
+        }
+    }
+
+    @Schema(name = "Volunteer", title = "프로필용 봉사활동 DTO", description = "프로필에서 확인할 수 있는 봉사활동 이력 데이터를 가지고 있는 DTO 입니다.")
+    @Getter
+    @ToString(of = {"volunteerSeq", "memberSeq", "title", "volunteerStatus", "authStatus", "createdDate"})
+    public static class Volunteer {
+
+        private Long volunteerSeq;
+
+        private Long memberSeq;
+
+        private String title;
+
+        private com.ssafy.a302.domain.volunteer.entity.Volunteer.Status volunteerStatus;
+
+        private Status authStatus;
+
+        private LocalDate createdDate;
+
+        @QueryProjection
+        public Volunteer(Long volunteerSeq, Long memberSeq, String title, com.ssafy.a302.domain.volunteer.entity.Volunteer.Status volunteerStatus, Status authStatus, LocalDateTime createdDate) {
+            this.volunteerSeq = volunteerSeq;
+            this.memberSeq = memberSeq;
+            this.title = title;
+            this.volunteerStatus = volunteerStatus;
+            this.authStatus = authStatus;
+            this.createdDate = createdDate.toLocalDate();
+        }
+    }
 }
