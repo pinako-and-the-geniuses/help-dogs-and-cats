@@ -3,11 +3,11 @@ import defaultImg from "../../../public/img/default.png";
 import st from "../styles/userform.module.scss";
 import axios from "axios";
 import { IMGURL, URL } from "public/config";
-import ReactLoading from "react-loading";
+// import ReactLoading from "react-loading";
 
 export default function EditImage({ seq, img, setImg }) {
   const [path, setPath] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const jwt = sessionStorage.getItem("jwt");
   const profileImg = useRef();
 
@@ -23,11 +23,9 @@ export default function EditImage({ seq, img, setImg }) {
   };
 
   const onEditImg = async (e) => {
-    console.log("sub보냄");
-
     const formData = new FormData();
     formData.append("profileImageFile", e.target.files[0]);
-    setIsLoading(true);
+    // setIsLoading(true);
     await axios
       .put(`${URL}/members/${seq}/profile-image`, formData, {
         headers: {
@@ -38,7 +36,7 @@ export default function EditImage({ seq, img, setImg }) {
       .then((res) => {
         setPath(res.data.data.profileImagePath);
         setImg(res.data.data.profileImagePath);
-        setIsLoading(false);
+        // setIsLoading(false);
       })
       .catch((err) => console.log(err));
   };
@@ -65,7 +63,6 @@ export default function EditImage({ seq, img, setImg }) {
         }
       });
   };
-  console.log(img, "isLoading", isLoading);
   return (
     <div className={st.userimg}>
       {img ? (
