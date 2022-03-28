@@ -22,7 +22,7 @@ import static javax.persistence.GenerationType.*;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"seq", "title", "content", "viewCount", "category", "activityArea", "status", "minParticipantCount", "maxParticipantCount", "isDeleted"})
+@ToString(of = {"seq", "title", "content", "viewCount", "activityArea", "authTime", "contact", "endDate", "status", "minParticipantCount", "maxParticipantCount", "isDeleted"})
 public class Volunteer extends BaseLastModifiedEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
@@ -197,6 +197,9 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .content(content)
 //                .category(category)
                 .activityArea(activityArea)
+                .authTime(authTime)
+                .contact(contact)
+                .endDate(endDate)
                 .minParticipantCount(minParticipantCount)
                 .maxParticipantCount(maxParticipantCount)
                 .build();

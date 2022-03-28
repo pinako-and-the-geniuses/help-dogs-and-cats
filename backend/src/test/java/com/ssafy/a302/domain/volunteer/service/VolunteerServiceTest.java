@@ -68,61 +68,69 @@ class VolunteerServiceTest {
                 .content("내용입니다.")
 //                .category("SHELTER")
                 .activityArea("서울시 강남구")
+                .authTime("12h")
+                .contact("www.dogsandcats.com")
+                .endDate("2022-03-30")
                 .minParticipantCount(2)
                 .maxParticipantCount(6)
                 .build();
     }
 
 
-//    @Test
-//    @DisplayName("봉사활동 신청 - 성공")
-//    void register() {
-//
-//        memberService.register(registerInfo1.toServiceDto());
-//        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
-//        MemberDetail memberDetail = savedMember.getDetail();
-//
-//        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
-//        assertThat(savedVolunteer.getSeq()).isNotNull();
-//        assertThat(savedVolunteer.getTitle()).isEqualTo(registerInfo.getTitle());
-//        assertThat(savedVolunteer.getContent()).isEqualTo(registerInfo.getContent());
-////        assertThat(savedVolunteer.getCategory()).isEqualTo(Volunteer.Category.SHELTER);
-//        assertThat(savedVolunteer.getActivityArea()).isEqualTo(registerInfo.getActivityArea());
-//        assertThat(savedVolunteer.getMinParticipantCount()).isEqualTo(registerInfo.getMinParticipantCount());
-//        assertThat(savedVolunteer.getMaxParticipantCount()).isEqualTo(registerInfo.getMaxParticipantCount());
-//
-//    }
+    @Test
+    @DisplayName("봉사활동 신청 - 성공")
+    void register() {
 
-//    @Test
-//    @DisplayName("봉사활동 삭제 - 성공")
-//    void deleteVolunteer() {
-//
-//        memberService.register(registerInfo1.toServiceDto());
-//        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
-//        MemberDetail memberDetail = savedMember.getDetail();
-//
-//        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
-//
-//        Volunteer deletedVolunteer = volunteerService.deleteVolunteer(savedVolunteer.getSeq(), savedMember.getSeq());
-//
-//        assertThat(deletedVolunteer.isDeleted()).isTrue();
-//
-//    }
+        memberService.register(registerInfo1.toServiceDto());
+        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
+        MemberDetail memberDetail = savedMember.getDetail();
 
-//    @Test
-//    @DisplayName("봉사활동 진행상태 수정 - 성공")
-//    void changeVolunteerStatus() {
-//
-//        memberService.register(registerInfo1.toServiceDto());
-//        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
-//        MemberDetail memberDetail = savedMember.getDetail();
-//
-//        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
-//
-//        Optional<Volunteer> findVolunteer = volunteerRepository.findBySeq(savedVolunteer.getSeq());
-//        findVolunteer.get().changeVolunteerStatus(Volunteer.Status.valueOf("ONGOING"));
-//
-//        assertThat(findVolunteer.get().getStatus()).isEqualTo(Volunteer.Status.valueOf("ONGOING"));
-//
-//    }
+        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+        assertThat(savedVolunteer.getSeq()).isNotNull();
+        assertThat(savedVolunteer.getTitle()).isEqualTo(registerInfo.getTitle());
+        assertThat(savedVolunteer.getContent()).isEqualTo(registerInfo.getContent());
+//        assertThat(savedVolunteer.getCategory()).isEqualTo(Volunteer.Category.SHELTER);
+        assertThat(savedVolunteer.getActivityArea()).isEqualTo(registerInfo.getActivityArea());
+
+        assertThat(savedVolunteer.getAuthTime()).isEqualTo(registerInfo.getAuthTime());
+        assertThat(savedVolunteer.getContact()).isEqualTo(registerInfo.getContact());
+        assertThat(savedVolunteer.getEndDate()).isEqualTo(registerInfo.getEndDate());
+
+        assertThat(savedVolunteer.getMinParticipantCount()).isEqualTo(registerInfo.getMinParticipantCount());
+        assertThat(savedVolunteer.getMaxParticipantCount()).isEqualTo(registerInfo.getMaxParticipantCount());
+
+    }
+
+    @Test
+    @DisplayName("봉사활동 삭제 - 성공")
+    void deleteVolunteer() {
+
+        memberService.register(registerInfo1.toServiceDto());
+        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
+        MemberDetail memberDetail = savedMember.getDetail();
+
+        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+
+        Volunteer deletedVolunteer = volunteerService.deleteVolunteer(savedVolunteer.getSeq(), savedMember.getSeq());
+
+        assertThat(deletedVolunteer.isDeleted()).isTrue();
+
+    }
+
+    @Test
+    @DisplayName("봉사활동 진행상태 수정 - 성공")
+    void changeVolunteerStatus() {
+
+        memberService.register(registerInfo1.toServiceDto());
+        Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
+        MemberDetail memberDetail = savedMember.getDetail();
+
+        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+
+        Optional<Volunteer> findVolunteer = volunteerRepository.findBySeq(savedVolunteer.getSeq());
+        findVolunteer.get().changeVolunteerStatus(Volunteer.Status.valueOf("ONGOING"));
+
+        assertThat(findVolunteer.get().getStatus()).isEqualTo(Volunteer.Status.valueOf("ONGOING"));
+
+    }
 }
