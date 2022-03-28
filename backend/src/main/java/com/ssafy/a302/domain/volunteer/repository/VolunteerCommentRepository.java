@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface VolunteerCommentRepository extends JpaRepository<VolunteerComment, Long> {
+public interface VolunteerCommentRepository extends JpaRepository<VolunteerComment, Long>, VolunteerCommentRepositoryCustom {
     List<VolunteerComment> findByVolunteerSeq(Long volunteerSeq);
 
     @Query("SELECT vc FROM VolunteerComment vc WHERE vc.seq = :seq AND vc.isDeleted = FALSE")

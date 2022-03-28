@@ -46,7 +46,7 @@ public class VolunteerController {
     @Operation(
             summary = "봉사활동 API",
             description = "제목, 내용, 활동지역, 봉사인증시간, 멤버(최대인원, 최소인원), 연락처, 종료일을 전달받고 봉사활동 진행합니다.",
-            tags = {"member"}
+            tags = {"volunteer"}
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -84,20 +84,41 @@ public class VolunteerController {
 
     }
 
-    // 봉사활동 상세페이지 조회
+    @Operation(
+            summary = "봉사활동 상세페이지 조회 API",
+            description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동 게시글을 조회합니다.",
+            tags = {"volunteer"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "봉사활동 게시글을 조회하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 봉사활동 게시글입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}")
-    public BaseResponseDto<?> volunteerDetail(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+    public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq,
+                                              Authentication authentication) {
+//        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
 
-        VolunteerDto.DetailResponse findVolunteerDetail = volunteerService.volunteerDetail(volunteerSeq, memberSeq);
+        VolunteerDto.Detail detail = volunteerService.volunteerDetail(volunteerSeq);
 
-//        findVolunteerDetail.setVolunteerComment(result);
-
-        return BaseResponseDto.builder()
+        return BaseResponseDto.<VolunteerDto.Detail>builder()
                 .message(Message.SUCCESS_VOLUNTEER_DETAIL_LIST)
-                .data(findVolunteerDetail)
+                .data(detail)
                 .build();
 
     }
@@ -107,7 +128,7 @@ public class VolunteerController {
     @Operation(
             summary = "봉사활동 수정 API",
             description = "종료일, 제목, 활동지역, 인증시간, 모집인원, 신청여부, 연락처, 작성자 닉네임, 작성자seq, 내용, 첨부파일을 전달받고 봉사활동을 수정합니다.",
-            tags = {"member"}
+            tags = {"volunteer"}
     )
     @ApiResponses(value = {
             @ApiResponse(

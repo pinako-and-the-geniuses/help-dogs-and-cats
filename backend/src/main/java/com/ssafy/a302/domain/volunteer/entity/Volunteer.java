@@ -157,6 +157,10 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.volunteerAuth = volunteerAuth;
     }
 
+    public void incrementViewCount() {
+        this.viewCount++;
+    }
+
 
     public enum Category {
 

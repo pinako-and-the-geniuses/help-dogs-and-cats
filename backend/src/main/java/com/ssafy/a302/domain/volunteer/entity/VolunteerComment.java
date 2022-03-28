@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
@@ -74,6 +75,18 @@ public class VolunteerComment extends BaseLastModifiedEntity {
         this.isDeleted = true;
     }
 
+    public VolunteerCommentDto.ForDetail toForDetailDto() {
+        return VolunteerCommentDto.ForDetail.builder()
+                .commentSeq(seq)
+                .content(content)
+                .createdDate(getCreatedDate().toLocalDate())
+                .writerSeq(member.getSeq())
+                .writerNickname(member.getDetail().getNickname())
+                .writerProfileImageFilename(member.getDetail().getProfileImageFilename())
+                .parentSeq(parent == null ? null : parent.getSeq())
+                .children(new ArrayList<>())
+                .build();
+    }
 
     public VolunteerCommentDto.Response toResponseDto() {
         return VolunteerCommentDto.Response.builder()
