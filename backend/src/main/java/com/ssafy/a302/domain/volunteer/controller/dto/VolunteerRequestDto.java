@@ -52,6 +52,46 @@ public class VolunteerRequestDto {
         }
     }
 
+    @Schema(name = "봉사활동 상세페이지 수정 요청 DTO", description = "봉사활동 상세페이지 수정 API 호출 시 사용되는 요청 DTO 입니다.")
+    @Getter
+    @NoArgsConstructor
+    @ToString(of = {"title", "content", "activityArea", "minParticipantCount", "maxParticipantCount"})
+    public static class UpdateInfo{
+        // 봉사활동 사진 추가해야함
+        private String title;
+
+        private String content;
+
+        private String activityArea;
+
+        private String category;
+
+        private Integer minParticipantCount;
+
+        private Integer maxParticipantCount;
+
+        @Builder
+        public UpdateInfo(String title, String content, String category, String activityArea, Integer minParticipantCount, Integer maxParticipantCount){
+            this.title = title;
+            this.content = content;
+            this.category = category;
+            this.activityArea = activityArea;
+            this.minParticipantCount = minParticipantCount;
+            this.maxParticipantCount = maxParticipantCount;
+        }
+
+        public VolunteerDto toServiceDto(){
+            return VolunteerDto.builder()
+                    .title(title)
+                    .content(content)
+                    .category(Volunteer.Category.valueOf(category))
+                    .activityArea(activityArea)
+                    .minParticipantCount(minParticipantCount)
+                    .maxParticipantCount(maxParticipantCount)
+                    .build();
+        }
+    }
+
     @Schema(name = "봉사활동 진행상태 변경 요청 DTO", description = "봉사활동 진행상태 변경 API 호출 시 사용되는 요청 DTO 입니다.")
     @Getter
     @NoArgsConstructor

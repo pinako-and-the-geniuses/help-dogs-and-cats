@@ -9,6 +9,7 @@ import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.global.constant.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,11 +112,7 @@ class ProfileServiceTest {
         assertThat(memberProfileDto.getExp()).isEqualTo(detail.getExp());
         assertThat(memberProfileDto.getLevel()).isEqualTo(detail.getExp() / 100 + 1);
         assertThat(memberProfileDto.getProfileImageFilename()).isNull();
-        assertThat(memberProfileDto.getProfileImageFilePath()).isEqualTo("static/images/profile/" + detail.getProfileImageFilename());
-
-        System.out.println("savedMember.getDetail().getProfileImageFilename() = " + savedMember.getDetail().getProfileImageFilename());
-        System.out.println("memberProfileDto.getProfileImageFilename() = " + memberProfileDto.getProfileImageFilename());
-        System.out.println("memberProfileDto.getProfileImageFilePath() = " + memberProfileDto.getProfileImageFilePath());
+        assertThat(memberProfileDto.getProfileImageFilePath()).isEqualTo(Path.PROFILE_IMAGE_ACCESS_PATH + "/" + detail.getProfileImageFilename());
 
         List<BadgeDto.ForProfile> badgesForProfile = memberProfileDto.getBadgesForProfile();
         for (BadgeDto.ForProfile badgeForProfile : badgesForProfile) {
@@ -125,7 +122,7 @@ class ProfileServiceTest {
                 assertThat(badgeForProfile.getContent()).isEqualTo(savedBadge.getContent());
                 assertThat(badgeForProfile.getHowToGet()).isEqualTo(savedBadge.getHowToGet());
                 assertThat(badgeForProfile.getImageFilename()).isNull();
-                assertThat(badgeForProfile.getImageFilePath()).isEqualTo("static/images/badge/" + savedBadge.getImageFilename());
+                assertThat(badgeForProfile.getImageFilePath()).isEqualTo(Path.BADGE_IMAGE_ACCESS_PATH + "/" + savedBadge.getImageFilename());
             } else {
                 assertThat(badgeForProfile.isAchieve()).isFalse();
             }

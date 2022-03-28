@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.community.entity;
 
+import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
@@ -67,8 +68,7 @@ public class Community extends BaseLastModifiedEntity {
         NOTICE("공지사항"),
         REPORT("제보"),
         GENERAL("잡담"),
-        VOLUNTEER("봉사활동 후기"),
-        ADOPTION("입양 후기");
+        REVIEW("봉사활동/입양 후기");
 
         private final String description;
 
@@ -79,5 +79,15 @@ public class Community extends BaseLastModifiedEntity {
         public String getDescription() {
             return description;
         }
+    }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
+
+    public void modify(CommunityDto communityDto) {
+        this.title = communityDto.getTitle();
+        this.content = communityDto.getContent();
+        this.category = communityDto.getCategory();
     }
 }

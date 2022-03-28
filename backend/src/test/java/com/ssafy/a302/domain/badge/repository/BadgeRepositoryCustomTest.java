@@ -3,6 +3,7 @@ package com.ssafy.a302.domain.badge.repository;
 import com.ssafy.a302.domain.badge.entity.Badge;
 import com.ssafy.a302.domain.badge.service.dto.BadgeDto;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
+import com.ssafy.a302.global.constant.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ class BadgeRepositoryCustomTest {
             assertThat(findBadgeForProfile.getContent()).isEqualTo(badge.getContent());
 
             String imageFilePath = findBadgeForProfile.getImageFilePath();
-            assertThat(imageFilePath).isEqualTo("static/images/badge/" + badge.getImageFilename());
+            assertThat(imageFilePath).isEqualTo(Path.BADGE_IMAGE_ACCESS_PATH + "/" + badge.getImageFilename());
 
             int pos = imageFilePath.lastIndexOf("/");
             assertThat(imageFilePath.substring(pos + 1)).isEqualTo(badge.getImageFilename());

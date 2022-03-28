@@ -1,6 +1,8 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 
@@ -48,15 +50,45 @@ public class VolunteerComment extends BaseLastModifiedEntity {
     private List<VolunteerComment> children = new ArrayList<>();
 
     @Builder
-    public VolunteerComment(String content, Volunteer volunteer, Member member) {
+    public VolunteerComment(String content, Volunteer volunteer, Member member, VolunteerComment parent) {
         this.content = content;
         this.isDeleted = false;
         this.volunteer = volunteer;
         this.member = member;
+        this.parent = parent;
     }
 
     public void createParent(VolunteerComment parent) {
         this.parent = parent;
         parent.getChildren().add(this);
+    }
+
+    public void setParent(VolunteerComment parent) {
+        this.parent = parent;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
+    public void setVolunteer(Volunteer volunteer) {
+        this.volunteer = volunteer;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
+
+
+    public VolunteerCommentDto.Response toResponseDto() {
+        return VolunteerCommentDto.Response.builder()
+                .seq(seq)
+                .content(content)
+                .isDeleted(isDeleted)
+                .volunteer(volunteer)
+                .member(member)
+                .parent(parent)
+                .children(children)
+                .build();
     }
 }

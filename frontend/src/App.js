@@ -13,7 +13,7 @@ import {
 } from "./pages/user";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetails, Animal } from "./pages/animals";
-import { Community, CommunityDetail, CommunityCreate } from "./pages/community";
+import { Community, CommunityDetail, CommunityCreate, CommunityUpdate } from "./pages/community";
 import NotFound from "./NotFound";
 import {
   VolunteerList,
@@ -56,6 +56,10 @@ function App() {
           <Route
             path="/community/communitydetail/:seq"
             element={<CommunityDetail />}
+          />
+          <Route
+            path="/community/communityupdate/:seq"
+            element={<CommunityUpdate />}
           />
         </>
         <>

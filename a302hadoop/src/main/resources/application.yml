@@ -4,7 +4,7 @@ spring:
   task:
     scheduling:
       pool:
-        size: 10
+        size: 5
 
 
 logging:
@@ -12,3 +12,7 @@ logging:
     com.ssafy.bjbj: debug
     org.springframework.web: debug
     org.hibernate.SQL: debug
+
+#
+server:
+  port: 8090

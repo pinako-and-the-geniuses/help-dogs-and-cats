@@ -5,6 +5,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.a302.domain.badge.service.dto.BadgeDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
+import com.ssafy.a302.global.constant.Path;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -172,7 +173,7 @@ public class MemberDto {
                 .activityArea(this.activityArea)
                 .exp(this.exp)
                 .level(this.level)
-                .profileImageFilePath(this.profileImageFilename == null ? null : "static/images/profile/" + this.profileImageFilename)
+                .profileImageFilePath(this.profileImageFilename == null ? null : Path.PROFILE_IMAGE_ACCESS_PATH + "/" + this.profileImageFilename)
                 .badgesForProfile(badgesForProfile)
                 .build();
     }

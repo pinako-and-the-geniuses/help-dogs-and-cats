@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import defaultImg from "../../../public/img/default.png";
 import st from "../styles/userform.module.scss";
 
-export default function UserImage(uID) {
+export default function UserImage() {
   // useEffect(()=> {
   //   await axios
   //   .get('')

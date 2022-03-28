@@ -11,8 +11,8 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${path.images}")
-    private String uploadImagePath;
+    @Value("${path.saved.files}")
+    private String savedFilePath;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -24,8 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/images/**")
-                .addResourceLocations("file://" + uploadImagePath)
+        registry.addResourceHandler("/static/files/**")
+                .addResourceLocations("file://" + savedFilePath + "/")
                 .setCachePeriod(3600)
                 .resourceChain(true)
                 .addResolver(new PathResourceResolver());

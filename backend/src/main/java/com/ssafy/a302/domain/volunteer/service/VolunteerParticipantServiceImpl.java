@@ -7,7 +7,7 @@ import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerParticipantDto;
-import com.ssafy.a302.global.message.ErrorMessage;
+import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
