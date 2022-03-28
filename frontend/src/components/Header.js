@@ -52,7 +52,7 @@ export default function Header() {
           <a className="user me-4" onClick={onlogout}>
             로그아웃
           </a>
-          <a className="user" onClick={() => navi(`/profile/${seq}`)}>
+          <a className="user" onClick={() => navi(`user/profile/${seq}`)}>
             MY
           </a>
         </div>

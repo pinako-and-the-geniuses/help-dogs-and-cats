@@ -62,7 +62,6 @@ export default function Password({
           value={pwd}
           onChange={onPasswordHandler}
           className={`form-control ${inputClass(isEnteredPwdValid())}`}
-          required
         />
       </div>
       <div>
@@ -75,7 +74,6 @@ export default function Password({
           value={pwdConfirm}
           onChange={onPwdConfirmHandler}
           className={`form-control ${inputClass(isEnteredPwdConfirmValid())}`}
-          required
         />
       </div>
     </>
