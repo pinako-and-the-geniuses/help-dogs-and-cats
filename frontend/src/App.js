@@ -21,8 +21,7 @@ import {
   VolunteerWrite,
 } from "./pages/volunteer";
 import { 
-  ManageLogin,
-  ManageHome,
+  ManageMain,
 } from './pages/manager'
 
 function App() {
@@ -77,8 +76,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </>
         <>
-          <Route path='/manage' element={<ManageLogin />}></Route>
-          <Route path='/manage/home' element={<ManageHome />}></Route>
+          <Route path='/manage' element={<ManageMain />}></Route>
         </>
       </Routes>
     </BrowserRouter>
