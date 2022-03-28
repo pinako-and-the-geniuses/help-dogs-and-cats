@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
+hdfs dfs -rm -r helpdogcat/input/alldata
 
-# 도커 하둡 컨테이너 HDFS에 wordcount input 디렉토리 생성
-hdfs dfs -rm -r helpdogcat/input/recentdata
-
-hdfs dfs -mkdir -p helpdogcat/input/recentdata
-
+hdfs dfs -mkdir -p helpdogcat/input/alldata
 
 # HDFS에 데이터 복사
-hdfs dfs -put -f /home/hadoop/a302hadoop/animaldata/recentdata.txt helpdogcat/input/recentdata
+hdfs dfs -put -f /home/hadoop/a302hadoop/animaldata/alldata.txt helpdogcat/input/alldata
 
 
 # input 파일 내용 조회
@@ -27,9 +24,9 @@ sleep 2
 
 #데이터 잘 들어왔는지 확인
 
-hdfs dfs -ls -R helpdogcat/input/recentdata
+hdfs dfs -ls -R helpdogcat/input/alldata
 
-if [ ! $(hdfs dfs -test -z /helpdogcat/input/recentdata/recentdata.txt) ];
+if [ ! $(hdfs dfs -test -z /helpdogcat/input/alldata/alldata.txt) ];
 then
   echo "data size check done"
 else
