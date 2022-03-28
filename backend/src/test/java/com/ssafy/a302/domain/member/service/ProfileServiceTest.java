@@ -5,16 +5,20 @@ import com.ssafy.a302.domain.badge.entity.MemberBadge;
 import com.ssafy.a302.domain.badge.repository.BadgeRepository;
 import com.ssafy.a302.domain.badge.repository.MemberBadgeRepository;
 import com.ssafy.a302.domain.badge.service.dto.BadgeDto;
+import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.repository.CommunityRepository;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
+import com.ssafy.a302.domain.member.service.dto.ProfileDto;
 import com.ssafy.a302.global.constant.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -41,6 +45,9 @@ class ProfileServiceTest {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private CommunityRepository communityRepository;
 
     private Member member1;
 
@@ -127,5 +134,51 @@ class ProfileServiceTest {
                 assertThat(badgeForProfile.isAchieve()).isFalse();
             }
         }
+    }
+
+    @Test
+    @DisplayName("프로필 커뮤니티 이력 조회 - 성공")
+    void findProfileCommunityPageSuccess() {
+        Member savedMember1 = memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        /**
+         * 데이터가 없을 떄
+         */
+        PageRequest pageable = PageRequest.of(1, 10);
+        ProfileDto.CommunityPage communityPage0 = profileService.getCommunities(savedMember1.getSeq(), pageable);
+        assertThat(communityPage0.getTotalCount()).isEqualTo(0);
+        assertThat(communityPage0.getCommunities()).isNull();
+
+        /**
+         * 데이터 추가
+         */
+        Community savedCommunity1 = communityRepository.save(Community.builder()
+                .member(savedMember1)
+                .title("커뮤니티 글1")
+                .content("커뮤니티 본문1")
+                .category(Community.Category.REVIEW)
+                .build());
+        em.flush();
+        em.clear();
+
+        /**
+         * 커뮤니티 페이지 데이터 조회
+         */
+        ProfileDto.CommunityPage communityPage1 = profileService.getCommunities(savedMember1.getSeq(), pageable);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(communityPage1.getTotalCount()).isEqualTo(1);
+        assertThat(communityPage1.getTotalPageNumber()).isEqualTo(1);
+
+        List<ProfileDto.Community> communities = communityPage1.getCommunities();
+        ProfileDto.Community findCommunityForProfile = communities.get(0);
+        assertThat(communities.size()).isEqualTo(1);
+        assertThat(findCommunityForProfile.getSeq()).isEqualTo(savedCommunity1.getSeq());
+        assertThat(findCommunityForProfile.getTitle()).isEqualTo(savedCommunity1.getTitle());
+        assertThat(findCommunityForProfile.getCategory()).isEqualTo(savedCommunity1.getCategory());
     }
 }
