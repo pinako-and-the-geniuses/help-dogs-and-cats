@@ -87,4 +87,37 @@ public class ProfileController {
                 .data(communityPage)
                 .build();
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "프로필 입양 이력 조회 API",
+            description = "회원 식별키, 페이지 번호, 입양 이력 게시글 개수를 전달받고 입양 이력을 반환합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "프로필 입양 이력 조회에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{memberSeq}/adopts")
+    public BaseResponseDto<ProfileDto.AdoptPage> adopts(@PathVariable(name = "memberSeq") Long memberSeq,
+                                                                 Pageable pageable) {
+
+        ProfileDto.AdoptPage adoptPage = profileService.getAdopts(memberSeq, pageable);
+
+        return BaseResponseDto.<ProfileDto.AdoptPage>builder()
+                .message(Message.SUCCESS)
+                .data(adoptPage)
+                .build();
+    }
 }
