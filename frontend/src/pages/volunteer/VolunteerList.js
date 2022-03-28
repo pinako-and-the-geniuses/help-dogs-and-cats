@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import style from './styles/VolunteerList.module.scss';
 import cn from 'classnames';
+import axios from 'axios';
 
 function VolunteerList(){
-
-    const id = useParams();
-    console.log(id);
+    const [id, setId] = useState();
+    // const { id } = useParams();
 
     const navigate = useNavigate();
 
@@ -18,6 +18,7 @@ function VolunteerList(){
     const goToWrite =()=>{
         navigate('/volunteer/write');
     }
+
     
     return(
         <div className={style.myContainer}>
