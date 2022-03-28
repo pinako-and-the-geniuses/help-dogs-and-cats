@@ -120,4 +120,37 @@ public class ProfileController {
                 .data(adoptPage)
                 .build();
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "프로필 봉사활동 조회 API",
+            description = "회원 식별키, 페이지 번호, 봉사활동 게시글 개수를 전달받고 봉사활동 이력을 반환합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "프로필 봉사활동 이력 조회에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{memberSeq}/volunteers")
+    public BaseResponseDto<ProfileDto.VolunteerPage> volunteers(@PathVariable(name = "memberSeq") Long memberSeq,
+                                                                 Pageable pageable) {
+
+        ProfileDto.VolunteerPage volunteerPage = profileService.getVolunteers(memberSeq, pageable);
+
+        return BaseResponseDto.<ProfileDto.VolunteerPage>builder()
+                .message(Message.SUCCESS)
+                .data(volunteerPage)
+                .build();
+    }
 }
