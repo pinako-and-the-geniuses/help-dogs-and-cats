@@ -50,4 +50,11 @@ public class AdoptAuth extends BaseLastModifiedEntity {
         this.title = adoptAuth.getTitle();
         this.content= adoptAuth.getContent();
     }
+
+    public AdoptDto.AdoptAuth toDto() {
+        return AdoptDto.AdoptAuth.builder()
+                .title(title)
+                .content(content)
+                .build();
+    }
 }

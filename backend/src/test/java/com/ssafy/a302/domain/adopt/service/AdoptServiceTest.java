@@ -3,6 +3,7 @@ package com.ssafy.a302.domain.adopt.service;
 import com.ssafy.a302.domain.adopt.controller.dto.AdoptAuthRequestDto;
 import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
 import com.ssafy.a302.domain.adopt.repository.AdoptAuthRepository;
+import com.ssafy.a302.domain.adopt.service.dto.AdoptDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
@@ -138,5 +139,23 @@ class AdoptServiceTest {
         assertThat(savedAdoptAuth2).isNotNull();
         assertThat(savedAdoptAuth1.getTitle()).isEqualTo(modifyAdoptAuthInfo1.getTitle());
         assertThat(savedAdoptAuth1.getContent()).isEqualTo(modifyAdoptAuthInfo1.getContent());
+    }
+
+    @Test
+    @DisplayName("입양 인증 조회 - 성공")
+    void getAdoptAuthSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        Member savedMember1 = memberRepository.save(member1);
+
+        /**
+         * 인증 요청 서비스 메서드 호출
+         */
+        Long savedAdoptAuthSeq = adoptService.requestAdoptAuth(savedMember1.getSeq(), requestAdoptAuthInfo1.toServiceDto());
+
+        AdoptDto.AdoptAuth adoptAuth = adoptService.getAdoptAuth(savedMember1.getSeq(), savedAdoptAuthSeq);
+        assertThat(adoptAuth.getTitle()).isEqualTo(requestAdoptAuthInfo1.getTitle());
+        assertThat(adoptAuth.getContent()).isEqualTo(requestAdoptAuthInfo1.getContent());
     }
 }

@@ -51,4 +51,16 @@ public class AdoptServiceImpl implements AdoptService {
 
         return findAdoptAuth.getSeq();
     }
+
+    @Override
+    public AdoptDto.AdoptAuth getAdoptAuth(Long memberSeq, Long adoptAuthSeq) {
+        AdoptAuth findAdoptAuth = adoptAuthRepository.findBySeq(adoptAuthSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findAdoptAuth.getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
+        }
+
+        return findAdoptAuth.toDto();
+    }
 }
