@@ -73,6 +73,8 @@ public class Message {
 
     public static String SUCCESS_DELETE_VOLUNTEER_COMMENT;
 
+    public static String SUCCESS_VIEWPAGE_VOLUNTEER;
+
     public static String SUCCESS_UPDATE_VOLUNTEER;
 
     public static String SUCCESS_VOLUNTEER_DETAIL_LIST;
@@ -137,6 +139,7 @@ public class Message {
         SUCCESS_VOLUNTEER_DETAIL_LIST = messageSource.getMessage("success.volunteer.detail.list", null, null);
 
         SUCCESS_UPDATE_VOLUNTEER = messageSource.getMessage("success.update.volunteer", null, null);
+        SUCCESS_VIEWPAGE_VOLUNTEER = messageSource.getMessage("success.viewpage.volunteer", null, null);
 
 
         REMOVE = messageSource.getMessage("remove", null, null);

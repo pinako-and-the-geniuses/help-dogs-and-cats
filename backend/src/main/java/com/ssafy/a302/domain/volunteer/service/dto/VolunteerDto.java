@@ -1,5 +1,9 @@
 package com.ssafy.a302.domain.volunteer.service.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
+import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.service.dto.CommunityDto;
+import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
@@ -8,6 +12,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -49,6 +57,56 @@ public class VolunteerDto {
                 .maxParticipantCount(maxParticipantCount)
                 .build();
     }
+
+    @Getter
+    public static class VolunteerListPage {
+
+        private Integer totalCount;
+
+        private Integer currentPageNumber;
+
+        private Integer totalPageNumber;
+
+        private List<VolunteerDto.ForPage> volunteersForPage;
+
+        @Builder
+        public VolunteerListPage(Integer totalCount, Integer currentPageNumber, Integer totalPageNumber, List<VolunteerDto.ForPage> volunteersForPage) {
+            this.totalCount = totalCount;
+            this.currentPageNumber = currentPageNumber;
+            this.totalPageNumber = totalPageNumber;
+            this.volunteersForPage = volunteersForPage;
+        }
+    }
+
+    @Getter
+    public static class ForPage {
+
+        private Long seq;
+
+        private Volunteer.Status status;
+
+        private String title;
+
+//        private Integer applyCount;
+
+        private Integer maxParticipantCount;
+
+        private String nickname;
+
+        private Long memberSeq;
+
+        @QueryProjection
+        public ForPage(Long seq, Volunteer.Status status, String title, Integer maxParticipantCount, String nickname, Long memberSeq) {
+            this.seq = seq;
+            this.status = status;
+            this.title = title;
+//            this.applyCount = applyCount;
+            this.maxParticipantCount = maxParticipantCount;
+            this.nickname = nickname;
+            this.memberSeq = memberSeq;
+        }
+    }
+
 
 
     @Getter

@@ -7,6 +7,7 @@ import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.auth.CustomUserDetails;
@@ -22,6 +23,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -80,6 +82,20 @@ public class VolunteerController {
         return BaseResponseDto.builder()
                 .message(Message.REGISTER_VOLUNTEER)
                 .build();
+    }
+
+    // 봉사활동 목록 조회
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable,
+                                                  @RequestParam String keyword) {
+
+        VolunteerDto.VolunteerListPage volunteerListPage = volunteerService.getPage(pageable, keyword);
+        return BaseResponseDto.<VolunteerDto.VolunteerListPage>builder()
+                .message(Message.SUCCESS_VIEWPAGE_VOLUNTEER)
+                .data(volunteerListPage)
+                .build();
+
     }
 
     // 봉사활동 상세페이지 조회
