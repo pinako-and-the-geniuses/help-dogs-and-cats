@@ -38,10 +38,6 @@ public class Volunteer extends BaseLastModifiedEntity {
     @Column(nullable = false, columnDefinition = "BIGINT UNSIGNED")
     private Long viewCount;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private Category category;
-
     @Column(nullable = false)
     private String activityArea;
 
@@ -98,43 +94,6 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.member = member;
     }
 
-    // 봉사활동 수정
-    public void updateTitle(String title){
-        this.title = title;
-    }
-
-    public void updateContent(String content){
-        this.content = content;
-    }
-
-    public void updateActivityArea(String activityArea){
-        this.activityArea = activityArea;
-    }
-
-    public void updateAuthTime(String authTime){
-        this.authTime = authTime;
-    }
-    public void updateContact(String contact){
-        this.contact = contact;
-    }
-
-    public void updateEndDate(String endDate){
-        this.endDate = endDate;
-    }
-//    public void updateCategory(Category category){
-//        this.category = category;
-//    }
-
-    public void updateMinParticipantCount(Integer minParticipantCount){
-        this.minParticipantCount = minParticipantCount;
-    }
-
-    public void updateMaxParticipantCount(Integer maxParticipantCount){
-        this.maxParticipantCount = maxParticipantCount;
-    }
-
-
-
 
     // 봉사활동 신청
     public void apply(Member member){
@@ -156,6 +115,17 @@ public class Volunteer extends BaseLastModifiedEntity {
 
     public void incrementViewCount() {
         this.viewCount++;
+    }
+
+    public void modify(VolunteerDto volunteerDto) {
+        this.title = volunteerDto.getTitle();
+        this.content = volunteerDto.getContent();
+        this.endDate = volunteerDto.getEndDate();
+        this.activityArea = volunteerDto.getActivityArea();
+        this.authTime = volunteerDto.getAuthTime();
+        this.contact = volunteerDto.getContact();
+        this.minParticipantCount = volunteerDto.getMinParticipantCount();
+        this.maxParticipantCount = volunteerDto.getMaxParticipantCount();
     }
 
 

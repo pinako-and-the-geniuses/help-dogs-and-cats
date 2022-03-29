@@ -50,10 +50,11 @@ public class VolunteerServiceImpl implements VolunteerService {
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
 
         Volunteer volunteer = volunteerDto.toEntity(findMember);
-
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
 
         VolunteerParticipant volunteerParticipant = new VolunteerParticipant(savedVolunteer, findMember);
+        volunteerParticipant.changeParticipantIsApprove(true);
+
         volunteerParticipantRepository.save(volunteerParticipant);
 
         return savedVolunteer.getSeq();
@@ -61,49 +62,15 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Transactional
     @Override
-    public VolunteerDto.Response updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq) {
-        Member findMember = memberRepository.findMemberBySeq(memberSeq)
-                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
-
+    public Long updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if (findVolunteer.getMember().getSeq().equals(findMember.getSeq())){
-            // 수정
-            if (volunteerDto.getTitle() != null){
-                findVolunteer.updateTitle(volunteerDto.getTitle());
-            }
-            if (volunteerDto.getContent() != null){
-                findVolunteer.updateContent(volunteerDto.getContent());
-            }
-//            if (volunteerDto.getCategory() != null){
-//                findVolunteer.updateCategory(volunteerDto.getCategory());
-//            }
-            if (volunteerDto.getActivityArea() != null){
-                findVolunteer.updateActivityArea(volunteerDto.getActivityArea());
-            }
-            if (volunteerDto.getAuthTime() != null){
-                findVolunteer.updateAuthTime(volunteerDto.getAuthTime());
-            }
-            if (volunteerDto.getContact() != null){
-                findVolunteer.updateContact(volunteerDto.getContact());
-            }
-            if (volunteerDto.getEndDate() != null){
-                findVolunteer.updateEndDate(volunteerDto.getEndDate());
-            }
-            if (volunteerDto.getMinParticipantCount() != null){
-                findVolunteer.updateMinParticipantCount(volunteerDto.getMinParticipantCount());
-            }
-            if (volunteerDto.getMaxParticipantCount() != null){
-                findVolunteer.updateMaxParticipantCount(volunteerDto.getMaxParticipantCount());
-            }
-            return findVolunteer.toResponseDto();
-
-        }else {
-            // 수정 못함
-            throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER_CREATOR);
+        if (!findVolunteer.getMember().getSeq().equals(memberSeq)){
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
-
+            findVolunteer.modify(volunteerDto);
+            return findVolunteer.getSeq();
     }
 
 
