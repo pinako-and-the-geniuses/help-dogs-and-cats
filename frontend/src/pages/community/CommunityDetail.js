@@ -7,67 +7,79 @@ import { URL } from "public/config";
 import Comment from "components/Comment/Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
-
+import { useSelector } from "react-redux";
 export default function CommunityDetail() {
-  const [communityDetail, setCommunityDetail] = useState([]);
-  const communitySeq = useParams();
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const [communityDetail, setCommunityDetail] = useState("");
+  const { seq } = useParams();
   const navigate = useNavigate();
-  // console.log("detail", communitySeq);
-  const jwt = sessionStorage.getItem("jwt")
+  const jwt = sessionStorage.getItem("jwt");
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
-    
+    // axios
+    //   .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : `Bearer ${jwt}`}})
+    if (!isLogin) {
+      alert("로그인 해주세요.");
+      navigate("/login", { replace: true });
+    } else {
+      axios({
+        url: `${URL}/communities/${seq}`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+        .then((response) => {
+          console.log(response);
+          setCommunityDetail(response.data);
+        }) //엑시오스 보낸 결과
+        .catch((err) => console.log(err));
+    }
+  }, [isLogin]); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
+
+  console.log("detail", communityDetail);
+  const getDelete = async () => {
     axios
-      .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
-      .then((response) => {console.log(response.data); setCommunityDetail(response.data)}) //엑시오스 보낸 결과
+      .delete(`${URL}/communities/${seq}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 204) {
+          alert("게시글 삭제");
+          navigate(`/community/community`);
+        }
+      })
       .catch((err) => console.log(err));
-  }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
+  };
 
-  // useEffect(() => {
-  //   //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
-  //   axios
-  //     .get(`${URL}/communities/${communitySeq}`)
-  //     .then((response) => setCommunityDetail(response.data)) //엑시오스 보낸 결과
-  //     .catch((err) => console.log(err));
-  // }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-  // 
-  const getDelete= async () => {
-    axios.delete(`${URL}/communities/${communitySeq}`, {headers: {Authorization : jwt}})
-    .then((res) => {
-      console.log(res);
-      if (res.status === 204) {
-        alert("게시글 삭제");
-        navigate(`/community/community`)
-      }
-    })
-    .catch(err => console.log(err))
-  }
+  const GotoEdit = () => {
+    navigate(`/community/communityupdate/${seq}`);
+  };
 
-  const GotoEdit=()=>{
-    navigate(`/community/communityupdate/${communitySeq}`)
-  } 
-  
   return (
     <div className={st.community_commentBox}>
       <header>
         <h2>Community</h2>
       </header>
       <section className={st.topContent}>
-        <div className={st.title}>
-          <p className={st.tag_p}>{communityDetail.tag}</p>
-          <p className={st.title_p}>{communityDetail.title}</p>
-          <p className={st.read_p}>{communityDetail.number}</p>
-          <p className={st.date_p}>
-            {moment(communityDetail.date).format("YYYY-MM-DD")}
-          </p>
-          <p className={st.author_p}>{communityDetail.name}</p>
-        </div>
-
-        <div className={st.content_div}>{communityDetail.description}</div>
-        {/* <textarea className={st.content_div}>
-              이거 정말 맛있습니다.
-            </textarea> */}
-        <div className={st.content}>
+        {communityDetail ? (
+          <>
+            <div className={st.alltitle}>
+              <p className={st.tag_p}>{communityDetail.data.category}</p>
+              <p className={st.title_p}>{communityDetail.data.title}</p>
+              <p className={st.read_p}>
+                조회수 : {communityDetail.data.viewCount}
+              </p>
+              <p className={st.date_p}>{communityDetail.data.createdDate}</p>
+              <p className={st.author_p}>
+                {communityDetail.data.writerNickname}
+              </p>
+            </div>
+            <div className={st.content_div}>{communityDetail.data.content}</div>
+          </>
+        ) : (
+          "로딩중"
+        )}
+        <div className={st.contentbtn}>
           <button onClick={getDelete} className={st.deletebutton}>
             삭제
           </button>
