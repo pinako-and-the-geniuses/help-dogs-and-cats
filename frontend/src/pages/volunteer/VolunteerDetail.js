@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     useNavigate, 
     useParams,
@@ -7,12 +7,13 @@ import axios from 'axios';
 import Comment from 'components/Comment/Comment';
 import TeamManage from './TeamManage';
 import style from './styles/VolunteerDetail.module.scss';
+import { URL } from '../../public/config';
 
 function VolunteerDetail(){
+    const { id } = useParams();
+    const jwt = sessionStorage.getItem('jwt');
     const [join, setJoin] = useState(false);
     const navigate = useNavigate();
-    const { id } = useParams();
-    
     const joinBtn=()=>{
         setJoin(!join);
     }
@@ -24,6 +25,28 @@ function VolunteerDetail(){
     const deletePost=()=>{
         console.log('삭제');
     }
+
+    const getPost=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}`,
+            method: "get",
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log(res.data.data);
+            if(res.statue === 402) console.log('에러');
+
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+
+    useEffect(()=>{
+        getPost();
+    }, []);
 
     return(
         <div className={style.myContainer}>

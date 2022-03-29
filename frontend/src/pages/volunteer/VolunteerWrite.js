@@ -1,7 +1,5 @@
 import React, { useState, useRef } from 'react';
 import style from './styles/VolunteerWrite.module.scss';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import Editor from 'components/Editor';
 import axios from 'axios';
 import { URL } from '../../public/config';

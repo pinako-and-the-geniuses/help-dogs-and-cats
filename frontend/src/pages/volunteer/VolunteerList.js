@@ -40,8 +40,14 @@ function VolunteerList(){
     }, [page]);
 
     const goToVolunteer=(seq)=>{
-        setSeq(seq);
-        if(seq !== 0) navigate(`/volunteer/detail/${seq}`);
+        if(isLogin){
+            setSeq(seq);
+            if(seq !== 0) navigate(`/volunteer/detail/${seq}`);
+        }
+        else{
+            //회원만 글을 읽을 수 있음
+            alert('권한이 없습니다');
+        }
 
     }
 
