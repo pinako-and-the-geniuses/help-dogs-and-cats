@@ -99,10 +99,13 @@ function Editor(props) {
     console.log(value);
   }
 
+
   return(
       <>
         <ReactQuill 
           theme="snow"
+          ref={quillRef}
+          // value={value}
           style={{height:"450px"}}
           modules={modules}
           formats={formats}
