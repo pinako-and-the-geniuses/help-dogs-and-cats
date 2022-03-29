@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.controller;
 
+import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerAuthRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerCommentRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerParticipantRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerRequestDto;
@@ -283,6 +284,11 @@ public class VolunteerController {
 
     // 봉사활동 댓글 삭제
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 게시글 댓글 삭제 API",
+            description = "봉사활동 게시글 식별키, 댓글 식별키를 전달받고 봉사활동 게시글 댓글을 삭제합니다.",
+            tags = {"community"}
+    )
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/comments/{commentsSeq}")
     public BaseResponseDto<?> deleteVolunteerComment(@Validated @PathVariable Long volunteerSeq, @PathVariable Long commentsSeq, Authentication authentication) {
@@ -295,4 +301,39 @@ public class VolunteerController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 인증 요청 API",
+            description = "봉사활동 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수행합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "봉사활동 인증 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/{volunteerSeq}/auth")
+    public BaseResponseDto<?> requestVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
+                                                   @Validated @RequestBody VolunteerAuthRequestDto.RequestInfo requestInfo,
+                                                   Authentication authentication) {
+
+        System.out.println("requestInfo = " + requestInfo);
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        volunteerService.requestVolunteerAuth(memberSeq, volunteerSeq, requestInfo.toServiceDto());
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
+    }
 }

@@ -278,4 +278,18 @@ public class VolunteerDto {
         }
     }
 
+    @Getter
+    @ToString(of = {"content", "authenticatedParticipantSequences"})
+    public static class VolunteerAuth {
+
+        private String content;
+
+        private List<Long> authenticatedParticipantSequences;
+
+        @Builder
+        public VolunteerAuth(String content, List<Long> authenticatedParticipantSequences) {
+            this.content = content;
+            this.authenticatedParticipantSequences = authenticatedParticipantSequences;
+        }
+    }
 }
