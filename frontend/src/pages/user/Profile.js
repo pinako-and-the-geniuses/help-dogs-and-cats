@@ -1,5 +1,5 @@
 import ProfileInfo from "./component/ProfileInfo";
-import ProfileCommunity from "./component/ProfileCommunity";
+import ProfileList from "./component/ProfileList";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -55,7 +55,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <ProfileCommunity seq={seq} isLogin={isLogin} mySeq={mySeq} />
+      <ProfileList seq={seq} isLogin={isLogin} mySeq={mySeq} />
     </>
   );
 }
