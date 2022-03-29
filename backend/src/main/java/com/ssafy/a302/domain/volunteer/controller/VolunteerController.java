@@ -84,6 +84,7 @@ public class VolunteerController {
 
     }
 
+
     @Operation(
             summary = "봉사활동 상세페이지 조회 API",
             description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동 게시글을 조회합니다.",
