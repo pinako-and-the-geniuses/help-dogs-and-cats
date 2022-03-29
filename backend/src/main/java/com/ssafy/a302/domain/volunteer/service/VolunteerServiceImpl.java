@@ -1,8 +1,5 @@
 package com.ssafy.a302.domain.volunteer.service;
 
-import com.ssafy.a302.domain.community.entity.CommunityComment;
-import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
-import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
@@ -27,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
-
 
 @Service
 @Slf4j
@@ -46,22 +41,19 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Transactional
     @Override
-    public VolunteerDto.Response register(VolunteerDto volunteerDto, Long memberSeq) {
-        // exception 조건들 추가
-
-        Volunteer volunteer = volunteerDto.toEntity();
+    public Long register(VolunteerDto volunteerDto, Long memberSeq) {
 
         Member findMember = memberRepository.findMemberBySeq(memberSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
 
-        volunteer.setCreator(findMember);
+        Volunteer volunteer = volunteerDto.toEntity(findMember);
 
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
 
         VolunteerParticipant volunteerParticipant = new VolunteerParticipant(savedVolunteer, findMember);
         volunteerParticipantRepository.save(volunteerParticipant);
 
-        return savedVolunteer.toResponseDto();
+        return savedVolunteer.getSeq();
     }
 
     @Transactional

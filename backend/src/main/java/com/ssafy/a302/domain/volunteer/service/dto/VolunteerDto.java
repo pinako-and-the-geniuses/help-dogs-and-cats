@@ -59,7 +59,7 @@ public class VolunteerDto {
         this.maxParticipantCount = maxParticipantCount;
     }
 
-    public Volunteer toEntity(){
+    public Volunteer toEntity(Member member){
         return Volunteer.builder()
                 .title(title)
                 .content(content)
@@ -70,6 +70,7 @@ public class VolunteerDto {
                 .endDate(endDate)
                 .minParticipantCount(minParticipantCount)
                 .maxParticipantCount(maxParticipantCount)
+                .member(member)
                 .build();
     }
 
