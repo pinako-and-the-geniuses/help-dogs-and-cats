@@ -56,7 +56,10 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
                         volunteer.title,
                         volunteer.maxParticipantCount.intValue(),
                         volunteer.member.detail.nickname,
-                        volunteer.member.seq
+                        volunteer.member.seq,
+                        volunteer.endDate,
+                        volunteer.createdDate
+
                 ))
                 .from(volunteer)
                 .where(
@@ -83,7 +86,9 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
                         volunteer.title,
                         volunteer.maxParticipantCount.intValue(),
                         volunteer.member.detail.nickname,
-                        volunteer.member.seq
+                        volunteer.member.seq,
+                        volunteer.endDate,
+                        volunteer.createdDate
                 ))
                 .from(volunteer)
                 .where(
