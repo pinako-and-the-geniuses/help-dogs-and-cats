@@ -85,19 +85,20 @@ class VolunteerServiceTest {
         Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
         MemberDetail memberDetail = savedMember.getDetail();
 
-        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
-        assertThat(savedVolunteer.getSeq()).isNotNull();
-        assertThat(savedVolunteer.getTitle()).isEqualTo(registerInfo.getTitle());
-        assertThat(savedVolunteer.getContent()).isEqualTo(registerInfo.getContent());
+        Long savedVolunteerSeq = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+        Optional<Volunteer> savedVolunteer = volunteerRepository.findBySeq(savedVolunteerSeq);
+        assertThat(savedVolunteer.get().getSeq()).isNotNull();
+        assertThat(savedVolunteer.get().getTitle()).isEqualTo(registerInfo.getTitle());
+        assertThat(savedVolunteer.get().getContent()).isEqualTo(registerInfo.getContent());
 //        assertThat(savedVolunteer.getCategory()).isEqualTo(Volunteer.Category.SHELTER);
-        assertThat(savedVolunteer.getActivityArea()).isEqualTo(registerInfo.getActivityArea());
+        assertThat(savedVolunteer.get().getActivityArea()).isEqualTo(registerInfo.getActivityArea());
 
-        assertThat(savedVolunteer.getAuthTime()).isEqualTo(registerInfo.getAuthTime());
-        assertThat(savedVolunteer.getContact()).isEqualTo(registerInfo.getContact());
-        assertThat(savedVolunteer.getEndDate()).isEqualTo(registerInfo.getEndDate());
+        assertThat(savedVolunteer.get().getAuthTime()).isEqualTo(registerInfo.getAuthTime());
+        assertThat(savedVolunteer.get().getContact()).isEqualTo(registerInfo.getContact());
+        assertThat(savedVolunteer.get().getEndDate()).isEqualTo(registerInfo.getEndDate());
 
-        assertThat(savedVolunteer.getMinParticipantCount()).isEqualTo(registerInfo.getMinParticipantCount());
-        assertThat(savedVolunteer.getMaxParticipantCount()).isEqualTo(registerInfo.getMaxParticipantCount());
+        assertThat(savedVolunteer.get().getMinParticipantCount()).isEqualTo(registerInfo.getMinParticipantCount());
+        assertThat(savedVolunteer.get().getMaxParticipantCount()).isEqualTo(registerInfo.getMaxParticipantCount());
 
     }
 
@@ -109,9 +110,9 @@ class VolunteerServiceTest {
         Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
         MemberDetail memberDetail = savedMember.getDetail();
 
-        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
-
-        Volunteer deletedVolunteer = volunteerService.deleteVolunteer(savedVolunteer.getSeq(), savedMember.getSeq());
+        Long savedVolunteerSeq = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+        Optional<Volunteer> savedVolunteer = volunteerRepository.findBySeq(savedVolunteerSeq);
+        Volunteer deletedVolunteer = volunteerService.deleteVolunteer(savedVolunteer.get().getSeq(), savedMember.getSeq());
 
         assertThat(deletedVolunteer.isDeleted()).isTrue();
 
@@ -125,9 +126,10 @@ class VolunteerServiceTest {
         Member savedMember = memberService.getMemberByEmail(registerInfo1.getEmail());
         MemberDetail memberDetail = savedMember.getDetail();
 
-        VolunteerDto.Response savedVolunteer = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+        Long savedVolunteerSeq = volunteerService.register(registerInfo.toServiceDto(), savedMember.getSeq());
+        Optional<Volunteer> savedVolunteer = volunteerRepository.findBySeq(savedVolunteerSeq);
 
-        Optional<Volunteer> findVolunteer = volunteerRepository.findBySeq(savedVolunteer.getSeq());
+        Optional<Volunteer> findVolunteer = volunteerRepository.findBySeq(savedVolunteer.get().getSeq());
         findVolunteer.get().changeVolunteerStatus(Volunteer.Status.valueOf("ONGOING"));
 
         assertThat(findVolunteer.get().getStatus()).isEqualTo(Volunteer.Status.valueOf("ONGOING"));
