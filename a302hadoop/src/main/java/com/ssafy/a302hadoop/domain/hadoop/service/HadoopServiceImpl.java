@@ -19,9 +19,18 @@ public class HadoopServiceImpl implements HadoopService{
     private final AnimalDataRepository animalDataRepository;
 
     @Override
-    public void insertAnimalData(List<DataFromHadoopDto> datasFromHadoopDto, int year) {
-        animalDataRepository.deleteAllByHappenDt(year);
-        animalDataRepository.deleteAllByHappenDt(year-1);
+    public void insertAnimalData(List<DataFromHadoopDto> datasFromHadoopDto, int year, String name) {
+        int startYear = 0;
+
+        if(name.equals("recentdata")){
+            startYear = year - 1;
+        }else if(name.equals("alldata")){
+            startYear = 2017;
+        }
+
+        for(int i = startYear ; i <= year ; i++){
+            animalDataRepository.deleteAllByHappenDt(year);
+        }
 
         for (DataFromHadoopDto data : datasFromHadoopDto){
             animalDataRepository.save(data.toAnimalDataEntity());
