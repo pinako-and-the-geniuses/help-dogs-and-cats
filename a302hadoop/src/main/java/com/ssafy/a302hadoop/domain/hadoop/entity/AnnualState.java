@@ -1,5 +1,6 @@
 package com.ssafy.a302hadoop.domain.hadoop.entity;
 
+import com.ssafy.a302hadoop.domain.hadoop.controller.dto.AnimalDataResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,5 +41,12 @@ public class AnnualState {
         this.state = state;
         this.year = year;
         this.count = count;
+    }
+
+    public AnimalDataResponseDto.AnnualStateInfo toAnnualStateInfo(){
+        return AnimalDataResponseDto.AnnualStateInfo.builder()
+                .state(state)
+                .count(count)
+                .build();
     }
 }
