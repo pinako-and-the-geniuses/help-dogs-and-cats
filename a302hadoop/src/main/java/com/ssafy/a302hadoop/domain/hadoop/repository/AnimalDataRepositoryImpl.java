@@ -1,8 +1,6 @@
 package com.ssafy.a302hadoop.domain.hadoop.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.a302hadoop.domain.hadoop.entity.AgeState;
-import com.ssafy.a302hadoop.domain.hadoop.entity.SpeciesNeutral;
 import com.ssafy.a302hadoop.domain.hadoop.service.dto.*;
 
 import javax.persistence.EntityManager;
@@ -148,5 +146,15 @@ public class AnimalDataRepositoryImpl implements AnimalDataRepositoryCustom {
                     .fetch());
         }
         return speciesNeutralDtoList;
+    }
+
+    @Override
+    public int getAnimalCountInfo(int year, String species) {
+        return queryFactory
+                .select(
+                    animalData.animalCount.sum()
+                ).from(animalData)
+                .where(animalData.happenDt.eq(year).and(animalData.animalSpecies.eq(species)))
+                .fetch().get(0);
     }
 }

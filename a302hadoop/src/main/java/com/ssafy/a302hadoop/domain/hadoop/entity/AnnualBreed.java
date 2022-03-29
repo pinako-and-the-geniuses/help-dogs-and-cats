@@ -1,6 +1,7 @@
 package com.ssafy.a302hadoop.domain.hadoop.entity;
 
 
+import com.ssafy.a302hadoop.domain.hadoop.controller.dto.AnimalDataResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,4 +40,12 @@ public class AnnualBreed {
         this.year = year;
         this.count = count;
     }
+
+    public AnimalDataResponseDto.AnnualBreedInfo toAnnualBreedInfo(){
+        return AnimalDataResponseDto.AnnualBreedInfo.builder()
+                .breed(breed)
+                .count(count)
+                .build();
+    }
+
 }

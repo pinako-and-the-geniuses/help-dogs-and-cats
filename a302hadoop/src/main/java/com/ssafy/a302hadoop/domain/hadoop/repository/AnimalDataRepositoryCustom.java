@@ -18,6 +18,7 @@ public interface AnimalDataRepositoryCustom{
 
     List<SpeciesNeutralDto> setSpeciesNeutral(int curYear);
 
+    int getAnimalCountInfo(int year, String species);
 }
 
 
