@@ -219,7 +219,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/apply")
-    public BaseResponseDto<?> cancelVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
+    public BaseResponseDto<?> cancelVolunteer(@PathVariable Long volunteerSeq, Authentication authentication) {
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
         volunteerParticipantService.cancelVolunteer(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
