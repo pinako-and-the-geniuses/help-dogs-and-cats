@@ -19,8 +19,8 @@ pipeline {
         stage('React Build') {
             steps {
                 sh 'npm install -g yarn'
-                sh 'yarn --cwd ./client install --network-timeout 100000'
-                sh 'yarn --cwd ./client build'
+                sh 'yarn --cwd ./frontend install --network-timeout 100000'
+                sh 'yarn --cwd ./frontend build'
             }
         }
         
