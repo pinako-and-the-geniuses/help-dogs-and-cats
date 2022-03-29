@@ -78,7 +78,7 @@ export default function CommunityCreate(api) {
       <div className={st.createtopContent}>
             <select className="searchCd me-3" onChange={(event) =>
               setCategory(event.target.value)}>
-              <option selected>카테고리</option>
+              <option defaultValue>카테고리</option>
               <option value="report">제보</option>
               <option value="general">잡담</option>
               <option value="review">후기</option>
