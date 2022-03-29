@@ -8,18 +8,12 @@ import { URL } from '../../public/config';
 
 function VolunteerList(){
     const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
-    const [id, setId] = useState("");
     const [volunteers, setVolunteers] = useState("");
     const [seq, setSeq] = useState(0);
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
 
     const navigate = useNavigate();
-
-    const getID = () =>{
-        console.log(id);
-        navigate(`/volunteer/detail/${id}`);
-    }
 
     const goToWrite =()=>{
         navigate('/volunteer/write');
@@ -34,7 +28,6 @@ function VolunteerList(){
         })
         .then((res)=>{
             // console.log(res.data.data.volunteersForPage);
-            console.log(res.data.data.volunteersForPage);
             setVolunteers(res.data.data.volunteersForPage);
         })
         .catch((err) => {
@@ -44,17 +37,18 @@ function VolunteerList(){
 
     useEffect(()=>{
         getList();
-    }, []);
+    }, [page]);
 
     const goToVolunteer=(seq)=>{
         setSeq(seq);
         if(seq !== 0) navigate(`/volunteer/detail/${seq}`);
 
     }
-    
+
     const enterKey=()=>{
         if(window.event.keyCode === 13) getList();
     }
+
 
     return(
         <div className={style.myContainer}>
@@ -144,6 +138,15 @@ function VolunteerList(){
                 </tbody>
             </table>
 
+            {/* 전체 페이지의 수를 가져오는 방법? */}
+            {/* 밑에는 test입니다 */}
+            <nav>
+                <ul>
+                    <li onClick={()=>{setPage(page-1)}}>🌛</li>
+                    <li>{page}</li>
+                    <li onClick={()=>{setPage(page+1)}}>🌜</li>
+                </ul>
+            </nav>
             <nav aria-label="Page navigation example">
                 <ul className="pagination">
                     <li className="page-item">
