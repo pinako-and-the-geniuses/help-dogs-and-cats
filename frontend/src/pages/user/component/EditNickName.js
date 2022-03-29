@@ -2,23 +2,33 @@ import React, { useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
 import { URL } from "public/config";
+import { useSelector } from "react-redux";
 
-export default function NickName({
+export default function EditNickName({
   nickName,
   isNickName,
   setNickName,
   setIsNickName,
 }) {
   const [nickNameCheck, setNickNameCheck] = useState("");
+  const defaultNickName = useSelector(
+    (state) => state.userInfo.userInfo.nickname
+  );
 
-  const onNickNameHandler = (e) => {
+  function onNickNameHandler(e) {
     const nickNameCurrent = e.target.value;
     setNickName(nickNameCurrent);
-    setNickNameCheck(false);
-    setIsNickName(false);
-  };
+    if (defaultNickName === nickNameCurrent) {
+      console.log("같음");
+      setNickNameCheck(true);
+      setIsNickName(true);
+    } else {
+      setNickNameCheck(false);
+      setIsNickName(false);
+    }
+  }
 
-  //회원가입일 때 닉네임 중복확인 요청
+  //회원수정일 때 닉네임 중복확인 요청
   const onCheckNickName = (event) => {
     event.preventDefault();
     axios

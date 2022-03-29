@@ -1,52 +1,24 @@
-import React, { useState } from 'react';
 import style from './manager.module.scss';
 
-function MoveTab(props){
-    if( props.tab === 0 ){
-        return (
-            <div>홈</div>
-        )
-    }
-    if( props.tab === 1 ){
-        return (
-            <div>봉사 관리</div>
-        )
-    }
-    if( props.tab === 2 ){
-        return (
-            <div>입양 관리</div>
-        )
-    }
-    if( props.tab === 3 ){
-        return (
-            <div>로그 아웃</div>
-        )
-    }
-}
-
-function ManageHome() {
-    const [tab, setTab] = useState(0);
+function ManageHome(){
 
     return(
-        <div className={style.manageHome}>
-            <ul className={style.menus}>
-                <li
-                    className={style.menu}
-                    onClick={()=>{setTab(0)}}>HOME</li>
-                <li
-                    className={style.menu}
-                    onClick={()=>{setTab(1)}}>봉사 관리</li>
-                <li
-                    className={style.menu}
-                    onClick={()=>{setTab(2)}}>입양 관리</li>
-                <li
-                    className={style.menu}
-                    onClick={()=>{setTab(3)}}>로그아웃</li>
-            </ul>
+        <div className={style.home}>
+            <div className={`${style.volCondition} ${style.condition}`}>
+                <p>봉사 현황</p>
+                <div className={style.box}>
+                    dd
+                </div>
+            </div>
 
-            <MoveTab tab={tab} className={style.content}/>
+            <div className={`${style.adoptCondition} ${style.condition}`}>
+                <p>입양 현황</p>
+                <div className={style.box}>
+                    ddd
+                </div>
+            </div>
         </div>
-    ) 
+    )
 }
 
 export default ManageHome;

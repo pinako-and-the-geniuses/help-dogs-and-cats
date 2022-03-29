@@ -1,53 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
-import cn from "classnames";
+import { URL } from "public/config";
 
-export default function EditPhone({
-  URL,
-  phone,
-  newPhone,
-  setNewPhone,
-  setPhone,
-  isPhone,
-  setIsPhone,
-}) {
+export default function EditPhone({ phone, isPhone, setPhone, setIsPhone }) {
   const [phoneCheck, setPhoneCheck] = useState("");
+  // const defaultPhone = useSelector(
+  //   (state) => state.userInfo.userInfo.phone
+  // );
 
-  useEffect(() => {
-    if (phone == newPhone) {
-      setIsPhone(true);
-    }
-  }, []);
+  const defaultPhone = "00"; ///// api 바뀌면 수정해야됌~!!!
 
   // 값입력
   const onPhoneHandler = (e) => {
     const phoneCurrent = e.target.value;
-    setNewPhone(phoneCurrent);
-    setPhoneCheck(false);
-    setIsPhone(false);
+    setPhone(phoneCurrent);
+    if (defaultPhone === phone) {
+      setPhoneCheck(true);
+      setIsPhone(true);
+    } else {
+      setPhoneCheck(false);
+      setIsPhone(false);
+    }
   };
 
-  // 폰번호 중복확인 요청
+  // 회원가입일때 폰번호 중복확인 요청
   const onCheckPhone = (event) => {
     event.preventDefault();
-    if (newPhone == phone) {
-      setPhoneCheck(206);
-      isValid(204);
-    } else {
-      axios
-        .get(`${URL}/members/tel-duplicate-check/${newPhone}`)
-        .then((res) => {
-          console.log("핸드폰 중복 확인 요청결과", res);
-          setPhoneCheck(res.status);
-          isValid(res.status);
-        })
-        .catch((err) => {
-          console.log("핸드폰 중복 확인 요청결과", err.response.status);
-          setPhoneCheck(err.response.status);
-          isValid(err.response.status);
-        });
-    }
+    axios
+      .get(`${URL}/members/tel-duplicate-check/${phone}`)
+
+      .then((res) => {
+        console.log("핸드폰 중복 확인 요청결과", res);
+        setPhoneCheck(res.status);
+        isValid(res.status);
+      })
+      .catch((err) => {
+        console.log("핸드폰 중복 확인 요청결과", err.response.status);
+        setPhoneCheck(err.response.status);
+        isValid(err.response.status);
+      });
   };
 
   // 중복확인 마친 후 재인증
@@ -58,7 +50,7 @@ export default function EditPhone({
       setIsPhone(true);
     }
   };
-  console.log("new", newPhone);
+
   return (
     <>
       <div className="input-group mb-3">
@@ -72,7 +64,7 @@ export default function EditPhone({
           placeholder="( - 포함 입력)"
           onChange={onPhoneHandler}
           required
-          className={cn("form-control")}
+          className={"form-control"}
         />
         {isPhone ? (
           <button
@@ -81,7 +73,7 @@ export default function EditPhone({
             id="button-addon-phone"
             disabled
           >
-            중복확인
+            확인완료
           </button>
         ) : (
           <button
@@ -97,8 +89,11 @@ export default function EditPhone({
       <div className={st.msg}>
         {phoneCheck === 200 ? <span>사용중인 핸드폰 번호입니다.</span> : ""}
         {phoneCheck === 204 ? <span>사용 가능한 핸드폰 번호입니다.</span> : ""}
-        {phoneCheck === 206 ? <span>기존 번호 입니다.</span> : ""}
-        {phoneCheck === 400 ? <span>핸드폰 번호 형식을 확인하세요.</span> : ""}
+        {phoneCheck === 400 ? (
+          <span>번호 형식(010-0000-0000)을 확인하세요.</span>
+        ) : (
+          ""
+        )}
         {phoneCheck === 404 ? <span>서버에러.</span> : ""}
         {phoneCheck === 500 ? <span>서버에러.</span> : ""}
       </div>

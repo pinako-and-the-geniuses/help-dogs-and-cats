@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./styles/Header.css";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -10,6 +10,7 @@ export default function Header() {
 
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const seq = useSelector((state) => state.userInfo.userInfo.seq);
+  const role = useSelector((state) => state.userInfo.userInfo.role);
 
   // 로그아웃
   const onlogout = () => {
@@ -31,14 +32,27 @@ export default function Header() {
   };
 
   // 로그인 상태에 따라 보이기 (회원가입/로그인/로그아웃/MY)
+  // 관리자일때 관리자페이지 보이기
   const isLogged = () => {
+    if(role === "ADMIN") {
+      return (
+        <div className="logout">
+          <a className="user me-4" onClick={onlogout}>
+            로그아웃
+          </a>
+          <a className="user" onClick={() => navi(`/manage`)}>
+            관리자
+          </a>
+        </div>
+      )
+    }
     if (isLogin) {
       return (
         <div className="logout">
           <a className="user me-4" onClick={onlogout}>
             로그아웃
           </a>
-          <a className="user" onClick={() => navi(`/profile/${seq}`)}>
+          <a className="user" onClick={() => navi(`user/profile/${seq}`)}>
             MY
           </a>
         </div>
@@ -59,31 +73,6 @@ export default function Header() {
   };
 
   return (
-    // <div className={style.header}>
-    //   {/* <h1>header부분!!!!</h1> */}
-    //   <div
-    //     className={style.logo}
-    //     onClick={()=>{navigate("/")}}>로고</div>
-
-    //   <div className={style.menus}>
-    //     <p
-    //       className={style.menu_item}
-    //       onClick={()=>{}}>유기동물현황</p>
-    //     <ul
-    //       className={cn(style.menu_item, 'dropdown')}
-    //       onClick={()=>{}}>동물 프로필</ul>
-    //     <p
-    //       className={style.menu_item}
-    //       onClick={()=>{}}>봉사활동</p>
-    //     <p
-    //       className={style.menu_item}
-    //       onClick={()=>{}}>커뮤니티</p>
-    //     <p
-    //       className={style.menu_item}
-    //       onClick={()=>{}}>후원하기</p>
-    //   </div>
-
-    // </div>
     <div id="header" className="fixed-top header-inner-pages">
       <div className="container d-flex align-items-center justify-content-between">
         <a href="/" className="logo">

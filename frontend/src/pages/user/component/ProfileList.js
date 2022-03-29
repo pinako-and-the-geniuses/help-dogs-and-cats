@@ -8,7 +8,6 @@ export default function ProfileList() {
 
   const onPage = (e) => {
     setPage(e.target.value);
-    getList(e.target.value);
   };
 
   // const getList = async(page) => {

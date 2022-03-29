@@ -58,11 +58,10 @@ export default function Password({
           id="pwd"
           name="pwd"
           type="password"
-          placeholder="비밀번호(영문자,특수문자,숫자 조합으로 8자리 이상)"
+          placeholder="비밀번호(영문자,특수문자,숫자 조합으로 8자리 이상) / 이메일 포함 x"
           value={pwd}
           onChange={onPasswordHandler}
           className={`form-control ${inputClass(isEnteredPwdValid())}`}
-          required
         />
       </div>
       <div>
@@ -75,7 +74,6 @@ export default function Password({
           value={pwdConfirm}
           onChange={onPwdConfirmHandler}
           className={`form-control ${inputClass(isEnteredPwdConfirmValid())}`}
-          required
         />
       </div>
     </>

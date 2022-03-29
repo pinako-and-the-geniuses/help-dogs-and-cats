@@ -1,4 +1,3 @@
-import ManageLogin from "./ManageLogin";
-import ManageHome from "./ManageHome";
+import ManageMain from "./ManageMain";
 
-export { ManageLogin, ManageHome };
+export { ManageMain };

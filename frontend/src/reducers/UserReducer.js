@@ -24,6 +24,7 @@ export default (state = initialState, action) => {
         isLoggedIn: false,
         userInfo: initialState,
       };
+
     default:
       return state;
   }
