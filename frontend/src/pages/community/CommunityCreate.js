@@ -7,10 +7,10 @@ import cn from "classnames";
 import QuillEditor from "./QuillEditor";
 import Editor from "components/Editor";
 import { useNavigate } from "react-router-dom";
-//import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 //import UploadFiles from "./UploadFiles";
 export default function CommunityCreate(api) {
-  //const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const quillRef = useRef();
   
   // function onEditorChange(value) {   
@@ -105,12 +105,15 @@ export default function CommunityCreate(api) {
       </div> */}
       {/* <Editor value={desc} onChange={onEditorChange} className={st.quill}/> */}
       <div className={st.createbuttonContent}>
+        {isLogin?
         <button type="button" onClick={onSubmit} className={st.communitycreatebutton}>
           작성
         </button>
+        : null}
         <button type="reset" className={st.communitycreatebutton}>
           취소
         </button>
+        
       </div>
     </div>
   );
