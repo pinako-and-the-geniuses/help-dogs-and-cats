@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
 .profile {
   background-color: #eed3af6b;
   min-height: 400px;
@@ -64,7 +66,10 @@
   padding: 1rem;
 }
 .category {
-  background-color: #d0c6b85e;
+  font-family: "Roboto", sans-serif;
+
+  margin: 0;
+  background-color: #80808070;
   min-height: 70px;
   display: flex;
   justify-content: center;
@@ -86,6 +91,16 @@
   color: rgb(97, 77, 39);
   font-weight: 600;
 }
+.notnow {
+  color: aliceblue;
+}
+li:hover,
+li:active,
+li:focus {
+  color: rgb(97, 77, 39);
+  font-weight: 600;
+}
+
 .comment {
   text-align: center;
   margin: 50px;
@@ -107,4 +122,68 @@
 }
 .dropdown {
   min-width: auto;
+}
+.listBox {
+  background-color: #f8eddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+.listItem {
+  width: 800px;
+  background-color: #f9fafb9e;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  margin-bottom: 20px;
+  border-radius: 1rem;
+  display: flex;
+}
+.listItem:hover {
+  background-color: rgb(197, 177, 140);
+}
+.itemCategory {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  div {
+    width: 70px;
+    padding: 8px;
+    background-color: #d0a96c;
+    border-radius: 2em;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+  }
+}
+.cardTitle {
+  text-align: center;
+}
+.cardEnd {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
+  padding: 10px;
+}
+.pager {
+  list-style: none;
+  width: 800px;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+  margin: 20px 0;
+  text-align: center;
+  li {
+    list-style: none;
+    float: left;
+  }
+}
+.pager li > button,
+.pager li > span {
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
 }

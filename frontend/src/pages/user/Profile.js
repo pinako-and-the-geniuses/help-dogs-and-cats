@@ -1,5 +1,5 @@
 import ProfileInfo from "./component/ProfileInfo";
-import ProfileList from "./component/ProfileList";
+import ProfileCommunity from "./component/ProfileCommunity";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -21,7 +21,7 @@ export default function Profile() {
       alert("로그인 해주세요");
       navi("/login");
     }
-  }, []);
+  }, [isLogin]);
 
   return (
     <>
@@ -30,13 +30,14 @@ export default function Profile() {
           <ProfileInfo seq={seq} isLogin={isLogin} />
           <div className="btn-group dropend">
             <CgMoreVerticalAlt
+              name="기타버튼"
               className={cn(`${st.etcBtn}`, "dropdown-toggle")}
               data-bs-toggle="dropdown"
               aria-expanded="false"
               size="30"
             />
             <ul className={cn(`${st.dropdown}`, "dropdown-menu")}>
-              {seq == mySeq ? (
+              {seq === mySeq ? (
                 <li>
                   <a className="dropdown-item" href="/user/editInfo">
                     수정
@@ -44,9 +45,9 @@ export default function Profile() {
                 </li>
               ) : (
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <button className="dropdown-item" href="#">
                     신고
-                  </a>
+                  </button>
                 </li>
               )}
             </ul>
@@ -54,7 +55,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <ProfileList />
+      <ProfileCommunity seq={seq} isLogin={isLogin} mySeq={mySeq} />
     </>
   );
 }
