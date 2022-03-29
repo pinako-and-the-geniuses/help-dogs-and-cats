@@ -4,26 +4,29 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
+
 export default function ProfileList(props) {
   const [category, setCategory] = useState("community");
   const [list, setList] = useState();
   const [page, setPage] = useState(1);
+  const [total, setTotal] = useState([]);
   const size = 5;
   const jwt = sessionStorage.getItem("jwt");
   const navigator = useNavigate();
 
   useEffect(() => {
-    console.log(page);
     if (props.isLogin) {
       axios
         .get(
           `${URL}/members/${props.seq}/communities?page=${page}&size=${size}`,
-          { headers: { Authorization: `Bearer ${jwt}` } }
+          {
+            headers: { Authorization: `Bearer ${jwt}` },
+          }
         )
         .then((res) => {
-          const data = res.data.data.communities;
-          console.log(data);
-          setList(data);
+          const data = res.data.data;
+          setList(data.communities);
+          setTotal([data.totalCount, data.totalPageNumber]);
         })
         .catch((err) => console.log(err));
     }
@@ -64,6 +67,7 @@ export default function ProfileList(props) {
             list.map((item) => {
               return (
                 <div
+                  key={item.seq}
                   className={st.listItem}
                   onClick={() => onGoToDetail(item.seq)}
                 >
@@ -87,7 +91,7 @@ export default function ProfileList(props) {
             <h4 className={st.comment}>작성한 글이 없습니다.</h4>
           )}
 
-          <div name="페이저" className={st.pager}>
+          {/* <div name="페이저" className={st.pager}>
             <li>
               {page === 1 ? (
                 <button href="#" disabled>
@@ -110,7 +114,7 @@ export default function ProfileList(props) {
                 </button>
               )}
             </li>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
