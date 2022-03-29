@@ -3,8 +3,10 @@ package com.ssafy.a302.domain.volunteer.service;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerAuth;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
+import com.ssafy.a302.domain.volunteer.repository.VolunteerAuthRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerCommentRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
@@ -15,14 +17,12 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -38,6 +38,8 @@ public class VolunteerServiceImpl implements VolunteerService {
     private final VolunteerParticipantRepository volunteerParticipantRepository;
 
     private final VolunteerCommentRepository volunteerCommentRepository;
+
+    private final VolunteerAuthRepository volunteerAuthRepository;
 
     @Transactional
     @Override
@@ -184,9 +186,6 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
     }
 
-
-
-
     @Override
     public VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword) {
         Integer totalCount = volunteerRepository.countAllByKeyword(keyword);
@@ -202,5 +201,57 @@ public class VolunteerServiceImpl implements VolunteerService {
                 .build();
     }
 
+    @Transactional
+    @Override
+    public Long requestVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth) {
+        Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
 
+        /**
+         * 모집한 사람이 아닐 경우
+         */
+        if (!findVolunteer.getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
+        }
+
+        /**
+         * 이미 인증 요청한 경우
+         */
+        if (volunteerAuthRepository.existsByVolunteerSeq(volunteerSeq)) {
+            throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+        }
+
+        /**
+         * 봉사활동 인증 데이터 저장
+         */
+        VolunteerAuth savedVolunteerAuth = volunteerAuthRepository.save(VolunteerAuth.builder()
+                .volunteer(findVolunteer)
+                .content(volunteerAuth.getContent())
+                .build());
+
+        /**
+         * 봉사활동 seq 로 봉사활동 참여자 엔티티 리스트 조회
+         */
+        List<VolunteerParticipant> volunteerParticipants = volunteerParticipantRepository.findVolunteerParticipantBySeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        /**
+         * 전달 받은 인증할 회원의 seq 리스트
+         */
+        List<Long> authenticatedParticipantSequences = volunteerAuth.getAuthenticatedParticipantSequences();
+
+        /**
+         * 전달 받은 회원 seq 를 제외하고 모두 false 처리
+         */
+        for (VolunteerParticipant volunteerParticipant : volunteerParticipants) {
+            volunteerParticipant.changeParticipantIsApprove(false);
+            for (Long authenticatedParticipantSequence : authenticatedParticipantSequences) {
+                if (volunteerParticipant.getMember().getSeq().equals(authenticatedParticipantSequence)) {
+                    volunteerParticipant.changeParticipantIsApprove(true);
+                }
+            }
+        }
+
+        return savedVolunteerAuth.getSeq();
+    }
 }
