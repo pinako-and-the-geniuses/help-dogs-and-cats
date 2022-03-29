@@ -1,5 +1,6 @@
 package com.ssafy.a302hadoop.domain.hadoop.entity;
 
+import com.ssafy.a302hadoop.domain.hadoop.controller.dto.AnimalDataResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,5 +46,12 @@ public class AgeState {
         this.species = species;
         this.state = state;
         this.count = count;
+    }
+
+    public AnimalDataResponseDto.AgeStateInfo toAgeStateInfo(){
+        return AnimalDataResponseDto.AgeStateInfo.builder()
+                .state(state)
+                .count(count)
+                .build();
     }
 }
