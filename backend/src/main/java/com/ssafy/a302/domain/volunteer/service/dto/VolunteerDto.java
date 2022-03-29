@@ -1,9 +1,6 @@
 package com.ssafy.a302.domain.volunteer.service.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.a302.domain.community.entity.Community;
-import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
-import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
@@ -18,8 +15,6 @@ import lombok.ToString;
 import java.util.List;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 public class VolunteerDto {
@@ -30,8 +25,6 @@ public class VolunteerDto {
     private String content;
 
     private String activityArea;
-
-//    private Volunteer.Category category;
 
     private String authTime;
 
@@ -49,7 +42,6 @@ public class VolunteerDto {
     public VolunteerDto(String title, String content, String activityArea, String authTime, String contact, String endDate, Volunteer.Status status, Integer minParticipantCount, Integer maxParticipantCount){
         this.title = title;
         this.content = content;
-//        this.category = category;
         this.activityArea = activityArea;
         this.authTime = authTime;
         this.contact = contact;
@@ -174,38 +166,38 @@ public class VolunteerDto {
         }
     }
 
-    @Getter
-    @ToString(of = {"memberSeq", "nickname", "title", "content", "status", "activityArea", "volunteerComment"})
-    public static class DetailResponse {
-
-        private final Long memberSeq;
-
-        private final String nickname;
-
-        private final String title;
-
-        private final String content;
-
-        private final Volunteer.Status status;
-
-        private final String activityArea;
-
-        private List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment;
-
-        public void setVolunteerComment(List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment){
-            this.volunteerComment = volunteerComment;
-        }
-
-        @Builder
-        public DetailResponse(Long memberSeq, String nickname, String title, String content, Volunteer.Status status, String activityArea, List<VolunteerComment> volunteerComment) {
-            this.memberSeq = memberSeq;
-            this.nickname = nickname;
-            this.title = title;
-            this.content = content;
-            this.status = status;
-            this.activityArea = activityArea;
-        }
-    }
+//    @Getter
+//    @ToString(of = {"memberSeq", "nickname", "title", "content", "status", "activityArea", "volunteerComment"})
+//    public static class DetailResponse {
+//
+//        private final Long memberSeq;
+//
+//        private final String nickname;
+//
+//        private final String title;
+//
+//        private final String content;
+//
+//        private final Volunteer.Status status;
+//
+//        private final String activityArea;
+//
+//        private List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment;
+//
+//        public void setVolunteerComment(List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment){
+//            this.volunteerComment = volunteerComment;
+//        }
+//
+//        @Builder
+//        public DetailResponse(Long memberSeq, String nickname, String title, String content, Volunteer.Status status, String activityArea, List<VolunteerComment> volunteerComment) {
+//            this.memberSeq = memberSeq;
+//            this.nickname = nickname;
+//            this.title = title;
+//            this.content = content;
+//            this.status = status;
+//            this.activityArea = activityArea;
+//        }
+//    }
 
     @Schema(name = "detail", title = "봉사활동 상세페이지 조회용 DTO", description = "봉사활동 게시글 상세페이지 조회용 DTO 입니다.")
     @Getter
@@ -290,6 +282,42 @@ public class VolunteerDto {
         public VolunteerAuth(String content, List<Long> authenticatedParticipantSequences) {
             this.content = content;
             this.authenticatedParticipantSequences = authenticatedParticipantSequences;
+        }
+    }
+
+    @Getter
+    @ToString(of = {"volunteerSeq", "content", "participants"})
+    public static class VolunteerAuthDetail {
+
+        private Long volunteerSeq;
+
+        private String content;
+
+        private List<Participant> participants;
+
+        @Builder
+        public VolunteerAuthDetail(Long volunteerSeq, String content, List<Participant> participants) {
+            this.volunteerSeq = volunteerSeq;
+            this.content = content;
+            this.participants = participants;
+        }
+
+        @Getter
+        @ToString(of = {"memberSeq", "nickname", "isApprove"})
+        public static class Participant {
+
+            private Long memberSeq;
+
+            private String nickname;
+
+            private boolean isApprove;
+
+            @QueryProjection
+            public Participant(Long memberSeq, String nickname, boolean isApprove) {
+                this.memberSeq = memberSeq;
+                this.nickname = nickname;
+                this.isApprove = isApprove;
+            }
         }
     }
 }

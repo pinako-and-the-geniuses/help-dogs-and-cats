@@ -79,6 +79,8 @@ public class Message {
 
     public static String SUCCESS_VOLUNTEER_DETAIL_LIST;
 
+    public static String SUCCESS_ADMIN_VOLUNTEER_AUTH_LIST;
+
     public static String REMOVE;
 
     public static String SUCCESS;
@@ -140,6 +142,9 @@ public class Message {
 
         SUCCESS_UPDATE_VOLUNTEER = messageSource.getMessage("success.update.volunteer", null, null);
         SUCCESS_VIEWPAGE_VOLUNTEER = messageSource.getMessage("success.viewpage.volunteer", null, null);
+
+
+        SUCCESS_ADMIN_VOLUNTEER_AUTH_LIST = messageSource.getMessage("success.admin.volunteer.auth.list", null, null);
 
 
         REMOVE = messageSource.getMessage("remove", null, null);

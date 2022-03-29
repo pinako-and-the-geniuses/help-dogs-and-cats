@@ -13,7 +13,7 @@ import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
-import lombok.Data;
+import com.ssafy.a302.global.enums.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +21,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -49,10 +51,11 @@ public class VolunteerServiceImpl implements VolunteerService {
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
 
         Volunteer volunteer = volunteerDto.toEntity(findMember);
-
         Volunteer savedVolunteer = volunteerRepository.save(volunteer);
 
         VolunteerParticipant volunteerParticipant = new VolunteerParticipant(savedVolunteer, findMember);
+        volunteerParticipant.changeParticipantIsApprove(true);
+
         volunteerParticipantRepository.save(volunteerParticipant);
 
         return savedVolunteer.getSeq();
@@ -60,65 +63,29 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Transactional
     @Override
-    public VolunteerDto.Response updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq) {
-        Member findMember = memberRepository.findMemberBySeq(memberSeq)
-                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NULL_MEMBER));
-
+    public Long updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if (findVolunteer.getMember().getSeq().equals(findMember.getSeq())){
-            // 수정
-            if (volunteerDto.getTitle() != null){
-                findVolunteer.updateTitle(volunteerDto.getTitle());
-            }
-            if (volunteerDto.getContent() != null){
-                findVolunteer.updateContent(volunteerDto.getContent());
-            }
-//            if (volunteerDto.getCategory() != null){
-//                findVolunteer.updateCategory(volunteerDto.getCategory());
-//            }
-            if (volunteerDto.getActivityArea() != null){
-                findVolunteer.updateActivityArea(volunteerDto.getActivityArea());
-            }
-            if (volunteerDto.getAuthTime() != null){
-                findVolunteer.updateAuthTime(volunteerDto.getAuthTime());
-            }
-            if (volunteerDto.getContact() != null){
-                findVolunteer.updateContact(volunteerDto.getContact());
-            }
-            if (volunteerDto.getEndDate() != null){
-                findVolunteer.updateEndDate(volunteerDto.getEndDate());
-            }
-            if (volunteerDto.getMinParticipantCount() != null){
-                findVolunteer.updateMinParticipantCount(volunteerDto.getMinParticipantCount());
-            }
-            if (volunteerDto.getMaxParticipantCount() != null){
-                findVolunteer.updateMaxParticipantCount(volunteerDto.getMaxParticipantCount());
-            }
-            return findVolunteer.toResponseDto();
-
-        }else {
-            // 수정 못함
-            throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER_CREATOR);
+        if (!findVolunteer.getMember().getSeq().equals(memberSeq)){
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
-
+            findVolunteer.modify(volunteerDto);
+            return findVolunteer.getSeq();
     }
 
 
     @Transactional
     @Override
-    public Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq) {
+    public void remove(Long volunteerSeq, Long memberSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if(findVolunteer.getMember().getSeq().equals(memberSeq)){
-            findVolunteer.delete();
-        }else{
-            throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER);
+        if(!findVolunteer.getMember().getSeq().equals(memberSeq)){
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
 
-        return findVolunteer;
+        findVolunteer.delete();
     }
 
     @Transactional
@@ -169,21 +136,6 @@ public class VolunteerServiceImpl implements VolunteerService {
             }
         });
         return result;
-    }
-    @Data
-    public static class SimpleVolunteerCommentDto {
-        private Long seq;
-        private String content;
-        private LocalDateTime createdDate;
-        private String nickname;
-        private Long memberSeq;
-        public SimpleVolunteerCommentDto(VolunteerComment volunteerComment) {
-            seq = volunteerComment.getSeq();
-            content = volunteerComment.getContent();
-            createdDate = volunteerComment.getCreatedDate();
-            nickname = volunteerComment.getMember().getDetail().getNickname();
-            memberSeq = volunteerComment.getMember().getSeq();
-        }
     }
 
     @Override
@@ -253,5 +205,67 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
 
         return savedVolunteerAuth.getSeq();
+    }
+
+    @Transactional
+    @Override
+    public Long modifyVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth) {
+        VolunteerAuth findVolunteerAuth = volunteerAuthRepository.findByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findVolunteerAuth.getVolunteer().getMember().getSeq().equals(memberSeq)) {
+            throw new IllegalArgumentException(ErrorMessage.FORBIDDEN);
+        }
+
+        if (!findVolunteerAuth.getStatus().equals(Status.REJECT)) {
+            throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+        }
+
+        findVolunteerAuth.modify(volunteerAuth);
+
+        /**
+         * 봉사활동 seq 로 봉사활동 참여자 엔티티 리스트 조회
+         */
+        List<VolunteerParticipant> volunteerParticipants = volunteerParticipantRepository.findVolunteerParticipantBySeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        /**
+         * 전달 받은 인증할 회원의 seq 리스트
+         */
+        List<Long> authenticatedParticipantSequences = volunteerAuth.getAuthenticatedParticipantSequences();
+
+        /**
+         * 전달 받은 회원 seq 를 제외하고 모두 false 처리
+         */
+        for (VolunteerParticipant volunteerParticipant : volunteerParticipants) {
+            volunteerParticipant.changeParticipantIsApprove(false);
+            for (Long authenticatedParticipantSequence : authenticatedParticipantSequences) {
+                if (volunteerParticipant.getMember().getSeq().equals(authenticatedParticipantSequence)) {
+                    volunteerParticipant.changeParticipantIsApprove(true);
+                }
+            }
+        }
+
+        return findVolunteerAuth.getSeq();
+    }
+
+    @Override
+    public VolunteerDto.VolunteerAuthDetail getVolunteerAuth(Long memberSeq, Long volunteerSeq) {
+        VolunteerAuth findVolunteerAuth = volunteerAuthRepository.findByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findVolunteerAuth.getVolunteer().getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
+        }
+
+        List<VolunteerDto.VolunteerAuthDetail.Participant> participants =
+                volunteerAuthRepository.findVolunteerParticipantsDtoByVolunteerSeq(volunteerSeq)
+                        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        return VolunteerDto.VolunteerAuthDetail.builder()
+                .volunteerSeq(findVolunteerAuth.getSeq())
+                .content(findVolunteerAuth.getContent())
+                .participants(participants)
+                .build();
     }
 }

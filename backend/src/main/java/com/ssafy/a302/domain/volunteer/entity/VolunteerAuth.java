@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import com.ssafy.a302.global.enums.Status;
 import lombok.*;
@@ -40,5 +41,22 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
         this.status = Status.REQUEST;
 
         volunteer.createAuth(this);
+    }
+
+    public void modify(VolunteerDto.VolunteerAuth volunteerAuth) {
+        this.content = volunteerAuth.getContent();
+        modifyStatusToRequest();
+    }
+
+    public void modifyStatusToRequest() {
+        this.status = Status.REQUEST;
+    }
+
+    public void modifyStatusToReject() {
+        this.status = Status.REJECT;
+    }
+
+    public void modifyStatusToDone() {
+        this.status = Status.DONE;
     }
 }

@@ -74,7 +74,7 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable,
-                                                  @RequestParam String keyword) {
+                                                                    @RequestParam String keyword) {
 
         VolunteerDto.VolunteerListPage volunteerListPage = volunteerService.getPage(pageable, keyword);
         return BaseResponseDto.<VolunteerDto.VolunteerListPage>builder()
@@ -110,7 +110,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}")
-    public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq){
+    public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq) {
 
         VolunteerDto.Detail detail = volunteerService.volunteerDetail(volunteerSeq);
 
@@ -144,7 +144,7 @@ public class VolunteerController {
     public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
                                                     @PathVariable Long volunteerSeq,
                                                     Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
 
         return BaseResponseDto.builder()
@@ -167,13 +167,36 @@ public class VolunteerController {
     }
 
 
-    // 봉사활동 삭제
+    @Operation(
+            summary = "봉사활동 삭제 API",
+            description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동을 삭제합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "봉사활동을 삭제하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 봉사활동입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{volunteerSeq}")
-    public BaseResponseDto<?> deleteVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
-        volunteerService.deleteVolunteer(volunteerSeq, memberSeq);
+    public BaseResponseDto<?> deleteVolunteer(@PathVariable Long volunteerSeq,
+                                              Authentication authentication) {
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        volunteerService.remove(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_DELETE_VOLUNTEER)
                 .build();
@@ -184,7 +207,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{volunteerSeq}/apply")
-    public BaseResponseDto<?> applyVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication){
+    public BaseResponseDto<?> applyVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
         volunteerParticipantService.applyVolunteer(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
@@ -327,13 +350,79 @@ public class VolunteerController {
                                                    @Validated @RequestBody VolunteerAuthRequestDto.RequestInfo requestInfo,
                                                    Authentication authentication) {
 
-        System.out.println("requestInfo = " + requestInfo);
-
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.requestVolunteerAuth(memberSeq, volunteerSeq, requestInfo.toServiceDto());
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 인증 수정 API",
+            description = "봉사활동 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "봉사활동 인증 수정 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/{volunteerSeq}/auth")
+    public BaseResponseDto<?> modifyVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
+                                                  @Validated @RequestBody VolunteerAuthRequestDto.ModifyInfo modifyInfo,
+                                                  Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        volunteerService.modifyVolunteerAuth(memberSeq, volunteerSeq, modifyInfo.toServiceDto());
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 인증 조회 API",
+            description = "봉사활동 식별키를 전달받고 입양 인증 조회를 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "봉사활동 인증 조회 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @GetMapping("/{volunteerSeq}/auth")
+    public BaseResponseDto<VolunteerDto.VolunteerAuthDetail> modifyVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
+                                                                                 Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        VolunteerDto.VolunteerAuthDetail volunteerAuthDetail = volunteerService.getVolunteerAuth(memberSeq, volunteerSeq);
+
+        return BaseResponseDto.<VolunteerDto.VolunteerAuthDetail>builder()
+                .message(Message.SUCCESS)
+                .data(volunteerAuthDetail)
                 .build();
     }
 }

@@ -8,9 +8,9 @@ public interface VolunteerService {
 
     Long register(VolunteerDto volunteerDto, Long memberSeq);
 
-    VolunteerDto.Response updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
+    Long updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
-    Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq);
+    void remove(Long volunteerSeq, Long memberSeq);
 
     Volunteer changeVolunteerStatus(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
@@ -19,4 +19,8 @@ public interface VolunteerService {
     VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword);
 
     Long requestVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth);
+
+    Long modifyVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth);
+
+    VolunteerDto.VolunteerAuthDetail getVolunteerAuth(Long memberSeq, Long volunteerSeq);
 }
