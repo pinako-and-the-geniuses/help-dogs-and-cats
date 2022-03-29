@@ -60,6 +60,10 @@ public class AdoptAuth extends BaseLastModifiedEntity {
                 .build();
     }
 
+    public void changeAdoptAuthStatus(Status status){
+        this.status = status;
+    }
+
     public AdoptAuthDto.Response toResponseDto() {
         return AdoptAuthDto.Response.builder()
                 .seq(seq)
