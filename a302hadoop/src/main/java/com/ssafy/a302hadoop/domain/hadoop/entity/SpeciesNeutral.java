@@ -1,6 +1,7 @@
 package com.ssafy.a302hadoop.domain.hadoop.entity;
 
 
+import com.ssafy.a302hadoop.domain.hadoop.controller.dto.AnimalDataResponseDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,5 +40,12 @@ public class SpeciesNeutral {
         this.neutral = neutral;
         this.count = count;
         this.species = species;
+    }
+
+    public AnimalDataResponseDto.SpeciesNeutralInfo toSpeciesNeutralInfo(){
+        return AnimalDataResponseDto.SpeciesNeutralInfo.builder()
+                .neutral(neutral)
+                .count(count)
+                .build();
     }
 }
