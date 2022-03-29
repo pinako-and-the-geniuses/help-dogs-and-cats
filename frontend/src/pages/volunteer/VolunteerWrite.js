@@ -71,7 +71,7 @@ function VolunteerWrite(){
                 contact: contact,
                 endDate: endDate,
                 minParticipantCount: 3,
-                maxParticipantCount: 100
+                maxParticipantCount: party
             },
             headers: {
                 Authorization: `Bearer ${jwt}`,
