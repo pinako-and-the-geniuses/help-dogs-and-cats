@@ -123,6 +123,7 @@ li:focus {
 .dropdown {
   min-width: auto;
 }
+// 활동 목록 관련
 .listBox {
   background-color: #f8eddd;
   display: flex;
@@ -141,6 +142,8 @@ li:focus {
 .listItem:hover {
   background-color: rgb(197, 177, 140);
 }
+
+// 커뮤니티 활동 목록 관련
 .itemCategory {
   display: flex;
   justify-content: center;
@@ -166,6 +169,15 @@ li:focus {
   text-align: center;
   padding: 10px;
 }
+// 입양 활동 관련
+.adopts {
+  .btn {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+  }
+}
+// 페이저 관련
 .pager {
   list-style: none;
   width: 800px;
