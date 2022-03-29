@@ -1,6 +1,5 @@
 package com.ssafy.a302.domain.admin.service.dto;
 
-import com.fasterxml.jackson.core.Base64Variants;
 import com.ssafy.a302.global.enums.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

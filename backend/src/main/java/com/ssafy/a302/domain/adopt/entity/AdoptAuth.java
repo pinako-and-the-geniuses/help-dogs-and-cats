@@ -1,5 +1,7 @@
 package com.ssafy.a302.domain.adopt.entity;
 
+import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
+import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
@@ -55,6 +57,15 @@ public class AdoptAuth extends BaseLastModifiedEntity {
         return AdoptDto.AdoptAuth.builder()
                 .title(title)
                 .content(content)
+                .build();
+    }
+
+    public AdoptAuthDto.Response toResponseDto() {
+        return AdoptAuthDto.Response.builder()
+                .seq(seq)
+                .title(title)
+                .content(content)
+                .memberSeq(member.getSeq())
                 .build();
     }
 }

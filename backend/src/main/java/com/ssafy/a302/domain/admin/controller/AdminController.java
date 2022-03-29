@@ -4,6 +4,7 @@ package com.ssafy.a302.domain.admin.controller;
 import com.ssafy.a302.domain.admin.controller.dto.VolunteerAuthRequestDto;
 import com.ssafy.a302.domain.admin.service.AdminService;
 import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
+import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
 import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
 import com.ssafy.a302.global.constant.Message;
@@ -52,6 +53,20 @@ public class AdminController {
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_ADMIN_CHANGE_VOLUNTEER_AUTH_STATUS)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/adopts/auth/{adoptSeq}")
+    public BaseResponseDto<?> adoptAuthDetail(@PathVariable Long adoptSeq) {
+
+        AdoptAuthDto.Response findAdoptAuth = adminService.adoptAuthDetail(adoptSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_ADMIN_ADOPT_AUTH)
+                .data(findAdoptAuth)
                 .build();
     }
 
