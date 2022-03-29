@@ -13,15 +13,18 @@ public class AdoptAuthDto {
 
     private Long seq;
 
+    private Status status;
+
     private String title;
 
     private String content;
 
     @Builder
-    public  AdoptAuthDto(Long seq, String title, String content){
+    public  AdoptAuthDto(Long seq, String title, String content, Status status){
         this.seq = seq;
         this.title = title;
         this.content = content;
+        this.status = status;
     }
     @Getter
     @ToString(of = {"seq", "content", "lastModifiedDate"})

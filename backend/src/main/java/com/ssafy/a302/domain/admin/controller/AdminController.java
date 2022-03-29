@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.admin.controller;
 
 
+import com.ssafy.a302.domain.admin.controller.dto.AdoptAuthRequestDto;
 import com.ssafy.a302.domain.admin.controller.dto.VolunteerAuthRequestDto;
 import com.ssafy.a302.domain.admin.service.AdminService;
 import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
@@ -30,6 +31,7 @@ public class AdminController {
     private final AdminService adminService;
 
 
+    // 봉사활동 인증 상세 페이지 조회
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -43,11 +45,13 @@ public class AdminController {
                 .build();
     }
 
+    // 봉사활동 인증 조치
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/volunteerAuth/{volunteerSeq}")
-    public BaseResponseDto<?> changeVolunteerAuthStatus(@RequestBody VolunteerAuthRequestDto.StatusInfo statusInfo, @PathVariable Long volunteerSeq) {
+    public BaseResponseDto<?> changeVolunteerAuthStatus(@RequestBody VolunteerAuthRequestDto.StatusInfo statusInfo,
+                                                        @PathVariable Long volunteerSeq) {
 
         adminService.changeVolunteerAuthStatus(statusInfo.toServiceDto(), volunteerSeq);
 
@@ -56,6 +60,7 @@ public class AdminController {
                 .build();
     }
 
+    // 입양 인증 상세 페이지 조회
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
@@ -70,7 +75,19 @@ public class AdminController {
                 .build();
     }
 
+    // 입양 인증 조치
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/adopts/auth/{adoptSeq}")
+    public BaseResponseDto<?> changeAdoptAuthStatus(@RequestBody AdoptAuthRequestDto.StatusInfo statusInfo,
+                                                    @PathVariable Long adoptSeq) {
 
+        adminService.changeAdoptAuthStatus(statusInfo.toServiceDto(), adoptSeq);
 
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_ADMIN_CHANGE_ADOPT_AUTH_STATUS)
+                .build();
+    }
 
 }

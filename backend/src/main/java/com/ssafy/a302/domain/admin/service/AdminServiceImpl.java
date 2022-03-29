@@ -48,4 +48,13 @@ public class AdminServiceImpl implements AdminService{
 
         return findAdoptAuth.toResponseDto();
     }
+
+    @Transactional
+    @Override
+    public void changeAdoptAuthStatus(AdoptAuthDto adoptAuthDto, Long adoptSeq) {
+        AdoptAuth findAdoptAuth = adoptAuthRepository.findBySeq(adoptSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_ADOPT_AUTH));
+
+        findAdoptAuth.changeAdoptAuthStatus(adoptAuthDto.getStatus());
+    }
 }

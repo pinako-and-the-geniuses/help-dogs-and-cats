@@ -10,4 +10,6 @@ public interface AdminService {
     void changeVolunteerAuthStatus(VolunteerAuthDto volunteerAuthDto, Long volunteerSeq);
 
     AdoptAuthDto.Response adoptAuthDetail(Long adoptSeq);
+
+    void changeAdoptAuthStatus(AdoptAuthDto adoptAuthDto, Long adoptSeq);
 }
