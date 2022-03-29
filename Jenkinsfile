@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Frontend Build') {
             steps {
-                sh 'docker build -t frontend ./frontend/'
+                sh 'docker build -t frontend:latest ./frontend/'
             }
         }
 
