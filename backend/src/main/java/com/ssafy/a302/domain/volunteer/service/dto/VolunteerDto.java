@@ -31,8 +31,6 @@ public class VolunteerDto {
 
     private String activityArea;
 
-//    private Volunteer.Category category;
-
     private String authTime;
 
     private String contact;
@@ -49,7 +47,6 @@ public class VolunteerDto {
     public VolunteerDto(String title, String content, String activityArea, String authTime, String contact, String endDate, Volunteer.Status status, Integer minParticipantCount, Integer maxParticipantCount){
         this.title = title;
         this.content = content;
-//        this.category = category;
         this.activityArea = activityArea;
         this.authTime = authTime;
         this.contact = contact;
