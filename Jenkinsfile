@@ -34,7 +34,7 @@ pipeline {
         stage('Backend Deploy') {
             steps {
                 sh 'docker ps -q --filter name=backend | grep -q . && docker stop backend && docker rm backend'
-                sh 'docker run -d --name backend -p 8080:8080 backend'
+                sh 'docker run -v /var/tmp/springboot/files:/var/tmp/springboot/files -d -it -p 8080:8080 --name backend backend'
             }
         }
 
