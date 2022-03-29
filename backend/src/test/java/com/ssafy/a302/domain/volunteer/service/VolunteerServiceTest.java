@@ -60,6 +60,8 @@ class VolunteerServiceTest {
 
     private VolunteerAuthRequestDto.RequestInfo volunteerAuthRequestInfo1;
 
+    private VolunteerAuthRequestDto.ModifyInfo volunteerAuthModifyInfo1;
+
     @BeforeEach
     void setUp() {
         volunteerRepository.deleteAll();
@@ -185,6 +187,65 @@ class VolunteerServiceTest {
          */
         assertThat(findVolunteerAuth).isNotNull();
         assertThat(findVolunteerAuth.getContent()).isEqualTo(volunteerAuthRequestInfo1.getContent());
+
+        List<VolunteerParticipant> volunteerParticipants = volunteerParticipantRepository.findVolunteerParticipantBySeq(savedVolunteerSeq)
+                .orElse(null);
+        assertThat(volunteerParticipants).isNotNull();
+        assertThat(volunteerParticipants.size()).isEqualTo(1);
+        VolunteerParticipant volunteerParticipant = volunteerParticipants.get(0);
+        assertThat(volunteerParticipant.getApprove()).isTrue();
+    }
+
+    @Test
+    @DisplayName("봉사활동 인증 수정 요청 - 성공")
+    void modifyVolunteerAuthSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        Long savedMemberSeq1 = memberService.register(MemberRegisterInfo1.toServiceDto()).getSeq();
+        Member findMember1 = memberService.getMemberBySeq(savedMemberSeq1);
+        Long savedVolunteerSeq = volunteerService.register(VolunteerRegisterInfo1.toServiceDto(), findMember1.getSeq());
+        volunteerAuthRequestInfo1 = VolunteerAuthRequestDto.RequestInfo.builder()
+                .content("봉사 인증 신청")
+                .authenticatedParticipantSequences(List.of(findMember1.getSeq()))
+                .build();
+
+        /**
+         * 봉사활동 인증 요청
+         */
+        Long savedVolunteerAuthSeq = volunteerService.requestVolunteerAuth(findMember1.getSeq(), savedVolunteerSeq, volunteerAuthRequestInfo1.toServiceDto());
+
+        /**
+         * 봉사활동 인증 엔티티 조회
+         */
+        VolunteerAuth findVolunteerAuth = volunteerAuthRepository.findByVolunteerSeq(savedVolunteerAuthSeq)
+                .orElse(null);
+
+        /**
+         * 반려 처리
+         */
+        findVolunteerAuth.modifyStatusToReject();
+
+        /**
+         * 봉사 인증 재요청
+         */
+        volunteerAuthModifyInfo1 = VolunteerAuthRequestDto.ModifyInfo.builder()
+                .content("봉사 인증 재신청합니다.")
+                .authenticatedParticipantSequences(List.of(findMember1.getSeq()))
+                .build();
+        Long savedModifiedVolunteerAuthSeq = volunteerService.modifyVolunteerAuth(savedMemberSeq1, savedVolunteerSeq, volunteerAuthModifyInfo1.toServiceDto());
+
+        /**
+         * 봉사 인증 엔티티 조회
+         */
+        VolunteerAuth findModifiedVolunteerAuth = volunteerAuthRepository.findByVolunteerSeq(savedModifiedVolunteerAuthSeq)
+                .orElse(null);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(findModifiedVolunteerAuth).isNotNull();
+        assertThat(findModifiedVolunteerAuth.getContent()).isEqualTo(volunteerAuthModifyInfo1.getContent());
 
         List<VolunteerParticipant> volunteerParticipants = volunteerParticipantRepository.findVolunteerParticipantBySeq(savedVolunteerSeq)
                 .orElse(null);
