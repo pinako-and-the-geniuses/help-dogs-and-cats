@@ -1,10 +1,15 @@
 import React, { useState, useRef } from 'react';
 import style from './styles/VolunteerWrite.module.scss';
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
-import Editor from 'components/Editor';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+// import Editor from 'components/Editor';
+import axios from 'axios';
+import { URL } from '../../public/config';
+import { useNavigate } from 'react-router-dom';
 
 function VolunteerWrite(){
+    const navigate = useNavigate();
+    const jwt = sessionStorage.getItem('jwt');
     const placeholder=[
         "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
     ];
@@ -17,9 +22,11 @@ function VolunteerWrite(){
     const [party, setParty] = useState(0);
     const [contact, setContact] = useState("");
     const [endDate, setEndDate] = useState();
+    const [content, setContent] = useState();
 
     const onTitleHandelr=(e)=>{
         setTitle(e.target.value);
+        console.log('title', title);
     }
 
     const onCdHadler=(e)=>{
@@ -32,26 +39,56 @@ function VolunteerWrite(){
 
     const onTimeHandler=(e)=>{
         setTime(e.target.value);
-        console.log(time);
+        console.log('봉사시간', time);
     }
 
     const onPartyHandler=(e)=>{
         setParty(e.target.value);
+        console.log('파티원', party);
     }
 
     const onContactHandler=(e)=>{
         setContact(e.target.value);
+        console.log('contact', contact);
     }
 
     const onEndDateHandler=(e)=>{
         setEndDate(e.target.value);
+        console.log('date', endDate);
+    }
+
+    ///일단 만들어만 놨음... htmlContent 받아와서 넣어줘야 함
+    //하위 컴포넌트에서 상위 컴포넌트로 데이터 보내기 가능?
+    const post = async()=>{
+        await axios({
+            url: `${URL}/volunteers`,
+            method: "post",
+            data: {
+                title: title,
+                content: content,
+                activityArea: "",
+                authTime: time,
+                contact: contact,
+                endDate: endDate,
+                minParticipantCount: 3,
+                maxParticipantCount: 100
+            },
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('전송 성공!', res.data);
+            navigate('/volunteer/list');
+        })
+        .catch((err) =>{
+            console.log(err);
+        }) 
     }
 
     const onSubmit=(e)=>{
         e.preventDefault();
-        const post ={
-
-        }
+        post();
     }
 
     return(
@@ -114,11 +151,16 @@ function VolunteerWrite(){
                 </ul>
             </div>
 
-            {/* <ReactQuill theme="snow"/> */}
-            <Editor
+            <ReactQuill 
+                theme="snow"
+                htmlContent={content}
+                onChange={(value)=>{setContent(value)}}
+            />
+            {/* <Editor
                 placeholder={placeholder}
-                >
-            </Editor>
+                htmlContent={content}
+                onChange={(e)=>{console.log('111',e.target.value)}}>
+            </Editor> */}
 
             <button 
                 className={style.addBtn}

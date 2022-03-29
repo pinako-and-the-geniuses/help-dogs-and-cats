@@ -105,7 +105,7 @@ function Editor(props) {
         <ReactQuill 
           theme="snow"
           ref={quillRef}
-          value={value}
+          // value={value}
           style={{height:"450px"}}
           modules={modules}
           formats={formats}
