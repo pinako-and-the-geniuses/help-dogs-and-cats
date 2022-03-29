@@ -61,6 +61,10 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
         this.status = Status.DONE;
     }
 
+    public void changeVolunteerAuthStatus(Status status){
+        this.status = status;
+    }
+
     public VolunteerAuthDto.Response toResponseDto() {
         return VolunteerAuthDto.Response.builder()
                 .seq(seq)
