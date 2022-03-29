@@ -5,7 +5,6 @@ import XMLParser from "react-xml-parser";
 import { useParams, useNavigate } from "react-router-dom";
 import style from "./styles/Community.module.scss";
 import cn from "classnames";
-import "./styles/Paging.css";
 import Pagination from "react-js-pagination";
 export default function Community() {
   const [communitys, setCommunity] = useState([]);
