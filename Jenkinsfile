@@ -16,13 +16,13 @@ pipeline {
         //     }
         // }
         
-        stage('React Build') {
-            steps {
-                sh 'npm install -g yarn'
-                sh 'yarn --cwd ./frontend install --network-timeout 100000'
-                sh 'yarn --cwd ./frontend build'
-            }
-        }
+        // stage('React Build') {
+        //     steps {
+        //         sh 'npm install -g yarn'
+        //         sh 'yarn --cwd ./frontend install --network-timeout 100000'
+        //         sh 'yarn --cwd ./frontend build'
+        //     }
+        // }
         
         stage('Build') {
             steps {
