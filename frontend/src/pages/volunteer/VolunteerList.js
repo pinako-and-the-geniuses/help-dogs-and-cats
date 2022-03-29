@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './styles/VolunteerList.module.scss';
 import cn from 'classnames';
@@ -8,14 +8,12 @@ import { URL } from '../../public/config';
 
 function VolunteerList(){
     const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
-    const [id, setId] = useState();
+    const [volunteers, setVolunteers] = useState("");
+    const [seq, setSeq] = useState(0);
+    const [page, setPage] = useState(1);
+    const [keyword, setKeyword] = useState("");
 
     const navigate = useNavigate();
-
-    const getID = () =>{
-        console.log(id);
-        navigate(`/volunteer/detail/${id}`);
-    }
 
     const goToWrite =()=>{
         navigate('/volunteer/write');
@@ -25,16 +23,39 @@ function VolunteerList(){
     //봉사활동 목록 받아오기
     const getList=async()=>{
         await axios({
-            url: `${URL}/volunteers`,
-            method: "get"
+            url: `${URL}/volunteers?page=${page}&size=10&keyword=${keyword}`,
+            method: "get",
         })
         .then((res)=>{
-            console.log(res.data);
+            // console.log(res.data.data.volunteersForPage);
+            setVolunteers(res.data.data.volunteersForPage);
         })
         .catch((err) => {
             console.log(err);
         })
     }
+
+    useEffect(()=>{
+        getList();
+    }, [page]);
+
+    const goToVolunteer=(seq)=>{
+        if(isLogin){
+            setSeq(seq);
+            if(seq !== 0) navigate(`/volunteer/detail/${seq}`);
+        }
+        else{
+            //회원만 글을 읽을 수 있음
+            alert('권한이 없습니다');
+        }
+
+    }
+
+    const enterKey=()=>{
+        if(window.event.keyCode === 13) getList();
+    }
+
+
     return(
         <div className={style.myContainer}>
             <h1>봉사활동</h1>
@@ -74,10 +95,13 @@ function VolunteerList(){
 
                     <div className={style.titleBox}>
                         <p className={style.title}>제목</p>
-                        <input type="text" />
+                        <input 
+                            type="text"
+                            onKeyUp={enterKey}
+                            onChange={(e)=>setKeyword(e.target.value)} />
                     </div>
 
-                    <button>조회</button>
+                    <button onClick={getList}>조회</button>
                 </div>
             </div>
 
@@ -88,31 +112,47 @@ function VolunteerList(){
             }
 
             <table className={cn("table table-hover")}>
+                <thead>
+                    <tr>
+                        <th scope="col">상태</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">모집인원</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">작성일</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr onClick={getID}>
-                        <td scope="row">상태[d-day]</td>
-                        <td>[지역]제목</td>
-                        <td>3/5</td>
-                        <td>작성자</td>
-                        <td>2022.03.21</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">상태[d-day]</td>
-                        <td>[지역]제목</td>
-                        <td>3/5</td>
-                        <td>작성자</td>
-                        <td>2022.03.21</td>
-                    </tr>
-                    <tr>
-                        <td scope="row">상태[d-day]</td>
-                        <td>[지역]제목</td>
-                        <td>3/5</td>
-                        <td>작성자</td>
-                        <td>2022.03.21</td>
-                    </tr>
+                {
+                    volunteers && volunteers.map((volunteer)=>{
+                        return(
+                            <tr 
+                                key={volunteer.seq} 
+                                onClick={()=>{goToVolunteer(volunteer.seq)}}>
+                                <td>{volunteer.status}</td>
+                                <td>{volunteer.title}</td>
+                                <td>{volunteer.maxParticipantCount}</td>
+                                <td>{volunteer.nickname}</td>
+                                <td>날짜</td>
+                                {/* 게시글 작성 날짜, 마감 날짜, 현재인원 필요 */}
+                                {/* 현재 인원 말고..그..뭐야.. 인증시간 써도 될듯? 암튼 필요 */}
+                                {/* 상태에 대한 정의 필요, RECRUITING 말고 나머지 두개 잘 모르겠음 */}
+                                {/* 조회수도? */}
+                            </tr>
+                        )
+                    })
+                }
                 </tbody>
             </table>
 
+            {/* 전체 페이지의 수를 가져오는 방법? */}
+            {/* 밑에는 test입니다 */}
+            <nav>
+                <ul>
+                    <li onClick={()=>{setPage(page-1)}}>🌛</li>
+                    <li>{page}</li>
+                    <li onClick={()=>{setPage(page+1)}}>🌜</li>
+                </ul>
+            </nav>
             <nav aria-label="Page navigation example">
                 <ul className="pagination">
                     <li className="page-item">
