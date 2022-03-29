@@ -40,7 +40,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="/user/findid" element={<FindId />} />
           <Route path="/user/findpwd" element={<FindPwd />} />
-          <Route path="/user/resetpwd" element={<ResetPwd />} />
+          <Route path="/user/resetpwd/:jwt" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
         </>
         <>

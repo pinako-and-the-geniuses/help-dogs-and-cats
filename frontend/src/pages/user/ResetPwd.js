@@ -3,12 +3,13 @@ import cn from "classnames";
 import { useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ResetPwd() {
   const [newPwd, setNewPwd] = useState("");
   const [newPwdConfirm, setNewPwdConfirm] = useState("");
   const navigator = useNavigate();
+  const { jwt } = useParams();
 
   const onPasswordHandler = (e) => {
     const currentInput = e.target.value;
@@ -19,45 +20,40 @@ export default function ResetPwd() {
     const currentInput = e.target.value;
     setNewPwdConfirm(currentInput);
   };
-  console.log(newPwd, newPwdConfirm);
 
   const onSubmit = (e) => {
     e.preventDefault();
     const jwt = sessionStorage.getItem("jwt");
-    axios({
-      url: `${URL}/members/password-reset`,
-      method: "patch",
-      headers: { Authorization: jwt },
-      data: {
-        newPassword: newPwd,
-      },
-    })
-      .then((res) => {
-        // console.log(res);
-
-        const status = res.status;
-        if (status === 200) {
-          alert("링크 전송 완료!");
-          navigator("/");
-        } else {
-          alert("이메일이 존재하지 않습니다.");
-          setNewPwd("");
-        }
+    if (newPwd !== newPwdConfirm) {
+      alert("비밀번호가 서로 다릅니다!");
+    } else {
+      axios({
+        url: `${URL}/members/password-reset`,
+        method: "put",
+        headers: { Authorization: jwt },
+        data: {
+          newPassword: newPwd,
+        },
       })
-      .catch((err) => {
-        alert("서버에러");
-      });
+        .then((res) => {
+          console.log(res);
+          const status = res.status;
+          if (status === 200) {
+            alert("비밀번호가 재설정 되었습니다. 로그인 화면으로 이동합니다.");
+            navigator("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("에러가 발생했습니다.");
+        });
+    }
   };
-
-  // const onBtn = () => {
-  //   navigator("/login");
-  // };
 
   return (
     <div className={st.userformPage}>
       <form onSubmit={onSubmit} className={cn(`${st.userform} ${st.findForm}`)}>
         <h2>비밀번호 재설정</h2>
-
         <>
           <div>
             <label htmlFor="pwd">비밀번호</label>
@@ -68,7 +64,6 @@ export default function ResetPwd() {
               placeholder="비밀번호(영문자,특수문자,숫자 조합으로 8자리 이상) / 이메일 포함 x"
               value={newPwd}
               onChange={onPasswordHandler}
-              // className={`form-control ${inputClass(isEnteredPwdValid())}`}
               required
             />
           </div>
