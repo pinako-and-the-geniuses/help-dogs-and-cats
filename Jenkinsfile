@@ -19,7 +19,8 @@ pipeline {
         stage('Backend Build') {
             steps {
                 sh 'chmod u+x ./backend/gradlew'
-                sh './backend/gradlew build'
+                sh 'cd ./backend'
+                sh './gradlew build'
                 sh 'docker build -t backend ./backend/'
             }
         }
