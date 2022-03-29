@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import style from './styles/VolunteerList.module.scss';
 import cn from 'classnames';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { URL } from '../../public/config';
 
 function VolunteerList(){
+    const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
     const [id, setId] = useState();
-    // const { id } = useParams();
 
     const navigate = useNavigate();
 
@@ -19,7 +21,20 @@ function VolunteerList(){
         navigate('/volunteer/write');
     }
 
-    
+
+    //봉사활동 목록 받아오기
+    const getList=async()=>{
+        await axios({
+            url: `${URL}/volunteers`,
+            method: "get"
+        })
+        .then((res)=>{
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
     return(
         <div className={style.myContainer}>
             <h1>봉사활동</h1>
@@ -66,7 +81,11 @@ function VolunteerList(){
                 </div>
             </div>
 
-            <p className={style.writeBtn} onClick={goToWrite}>🖊 글쓰기</p>
+            {
+                isLogin
+                ? <p className={style.writeBtn} onClick={goToWrite}>🖊 글쓰기</p>                
+                : null
+            }
 
             <table className={cn("table table-hover")}>
                 <tbody>
