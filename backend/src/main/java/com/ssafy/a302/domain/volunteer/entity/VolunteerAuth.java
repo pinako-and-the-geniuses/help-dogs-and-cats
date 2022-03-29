@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
+import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import com.ssafy.a302.global.enums.Status;
@@ -58,5 +59,13 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
 
     public void modifyStatusToDone() {
         this.status = Status.DONE;
+    }
+
+    public VolunteerAuthDto.Response toResponseDto() {
+        return VolunteerAuthDto.Response.builder()
+                .seq(seq)
+                .content(content)
+                .lastModifiedDate(getLastModifiedDate())
+                .build();
     }
 }
