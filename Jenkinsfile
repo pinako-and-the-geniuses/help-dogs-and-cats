@@ -10,20 +10,6 @@ pipeline {
     }
 
     stages {
-        // stage('Pull') {
-        //     steps {
-        //         git url: "${GIT_URL}", branch: "develop", poll: true, changelog: true
-        //     }
-        // }
-        
-        // stage('React Build') {
-        //     steps {
-        //         sh 'npm install -g yarn'
-        //         sh 'yarn --cwd ./frontend install --network-timeout 100000'
-        //         sh 'yarn --cwd ./frontend build'
-        //     }
-        // }
-        
         stage('Build') {
             steps {
                 sh 'docker build -t frontend ./frontend/'
@@ -37,7 +23,7 @@ pipeline {
             }
         }
 
-       stage('Finish') {
+        stage('Finish') {
             steps{
                 sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
             }
