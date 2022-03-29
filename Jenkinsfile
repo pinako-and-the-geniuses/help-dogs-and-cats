@@ -10,16 +10,31 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Frontend Build') {
             steps {
                 sh 'docker build -t frontend ./frontend/'
             }
         }
+
+        stage('Backend Build') {
+            steps {
+                sh 'chmod u+x ./backend/gradlew'
+                sh './backend/gradlew build'
+                sh 'docker build -t backend ./backend/'
+            }
+        }
         
-        stage('Deploy') {
-            steps{
+        stage('Frontend Deploy') {
+            steps {
                 sh 'docker ps -q --filter name=frontend | grep -q . && docker stop frontend && docker rm frontend'
                 sh 'docker run -d --name frontend -p 80:80 -p 443:443 frontend'
+            }
+        }
+
+        stage('Backend Deploy') {
+            steps {
+                sh 'docker ps -q --filter name=backend | grep -q . && docker stop backend && docker rm backend'
+                sh 'docker run -d --name backend -p 8080:8080 backend'
             }
         }
 
