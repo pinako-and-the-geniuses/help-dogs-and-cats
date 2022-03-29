@@ -67,7 +67,6 @@
 }
 .category {
   font-family: "Roboto", sans-serif;
-
   margin: 0;
   background-color: #80808070;
   min-height: 70px;
@@ -86,6 +85,12 @@
   .clear {
     clear: both;
   }
+  li:hover,
+  li:active,
+  li:focus {
+    color: rgb(97, 77, 39);
+    font-weight: 600;
+  }
 }
 .now {
   color: rgb(97, 77, 39);
@@ -93,12 +98,6 @@
 }
 .notnow {
   color: aliceblue;
-}
-li:hover,
-li:active,
-li:focus {
-  color: rgb(97, 77, 39);
-  font-weight: 600;
 }
 
 .comment {
@@ -132,7 +131,7 @@ li:focus {
   padding: 20px;
 }
 .listItem {
-  width: 800px;
+  width: 80%;
   background-color: #f9fafb9e;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   margin-bottom: 20px;
@@ -148,9 +147,9 @@ li:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
+  width: 10%;
   div {
-    width: 70px;
+    width: 80%;
     padding: 8px;
     background-color: #d0a96c;
     border-radius: 2em;
@@ -171,12 +170,67 @@ li:focus {
 }
 // 입양 활동 관련
 .adopts {
+  width: 80%; //리스트 양쪽 폭 줄일 때
+
   .btn {
+    width: 80%;
     display: flex;
     justify-content: flex-end;
-    margin: 10px 0;
+    margin: 10px auto;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .body {
+    padding: 0;
+    .name {
+      display: flex;
+
+      border-bottom: 1px solid #dee2e6;
+      .input {
+        padding: 10px;
+        width: 80%;
+        input {
+          width: 100%;
+        }
+      }
+    }
+    .content {
+      display: flex;
+      height: 400px;
+    }
+    .editor {
+      padding: 10px;
+      width: 80%;
+    }
+    .label {
+      width: 20%;
+      padding: 10px;
+      border-right: 1px solid #dee2e6;
+    }
+  }
+  .listItem {
+    box-sizing: content-box;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    margin: 10px auto;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .htmlDiv {
+    overflow: scroll;
+    width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+  }
+  .listItemDiv {
+    width: 100%;
+    display: flex;
   }
 }
+
 // 페이저 관련
 .pager {
   list-style: none;

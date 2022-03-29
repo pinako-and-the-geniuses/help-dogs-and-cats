@@ -6,7 +6,8 @@ import { URL, IMGURL } from "../public/config";
 
 export default function Editor(props) {
   const quillRef = useRef();
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
+
   const jwt = sessionStorage.getItem("jwt");
 
   const imageHandler = () => {
@@ -43,7 +44,7 @@ export default function Editor(props) {
       }
     });
   };
-  console.log(value);
+
   const modules = useMemo(() => {
     return {
       toolbar: {
@@ -71,17 +72,15 @@ export default function Editor(props) {
   ];
 
   return (
-    <div>
-      <ReactQuill
-        style={{ height: `${props.height}`, width: "100%" }}
-        ref={quillRef}
-        theme="snow"
-        placeholder="플레이스 홀더"
-        value={value}
-        onChange={setValue}
-        modules={modules}
-        formats={formats}
-      />
-    </div>
+    <ReactQuill
+      style={{ height: `${props.height}`, width: "100%" }}
+      ref={quillRef}
+      theme="snow"
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={props.setValue}
+      modules={modules}
+      formats={formats}
+    />
   );
 }
