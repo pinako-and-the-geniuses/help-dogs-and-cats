@@ -5,7 +5,7 @@ import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
 
-export default function ProfileCommunity({ category, seq, isLogin }) {
+export default function ProfileVolunteer({ category, seq, isLogin }) {
   const [list, setList] = useState();
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState([]);
@@ -21,7 +21,6 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
         })
         .then((res) => {
           const data = res.data.data;
-          setList(data.communities);
           setTotal([data.totalCount, data.totalPageNumber]);
         })
         .catch((err) => console.log(err));
