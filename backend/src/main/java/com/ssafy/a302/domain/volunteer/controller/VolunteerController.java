@@ -144,7 +144,7 @@ public class VolunteerController {
     public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
                                                     @PathVariable Long volunteerSeq,
                                                     Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
 
         return BaseResponseDto.builder()

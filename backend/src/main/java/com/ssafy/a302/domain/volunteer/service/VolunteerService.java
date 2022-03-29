@@ -8,7 +8,7 @@ public interface VolunteerService {
 
     Long register(VolunteerDto volunteerDto, Long memberSeq);
 
-    VolunteerDto.Response updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
+    Long updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
     Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq);
 
