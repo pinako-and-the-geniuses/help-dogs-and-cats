@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import style from './styles/VolunteerWrite.module.scss';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-// import Editor from 'components/Editor';
+import Editor from 'components/Editor';
 import axios from 'axios';
 import { URL } from '../../public/config';
 import { useNavigate } from 'react-router-dom';
@@ -16,13 +16,13 @@ function VolunteerWrite(){
     // const [value, setValue] = useState("");
     // const quillRef = useRef();\
     const [title, setTitle] = useState("");
-    const [cd, setCd] = useState();
+    const [cd, setCd] = useState("");
     // const [cgg, setCgg] = useState();
     const [time, setTime] = useState(0);
     const [party, setParty] = useState(0);
     const [contact, setContact] = useState("");
-    const [endDate, setEndDate] = useState();
-    const [content, setContent] = useState();
+    const [endDate, setEndDate] = useState("");
+    const [content, setContent] = useState("");
 
     const onTitleHandelr=(e)=>{
         setTitle(e.target.value);
@@ -55,6 +55,12 @@ function VolunteerWrite(){
     const onEndDateHandler=(e)=>{
         setEndDate(e.target.value);
         console.log('date', endDate);
+    }
+
+    const editContent=(text)=>{
+        // setContent(e.target.value);
+        // console.log('gg', content);
+        console.log(text);
     }
 
     ///일단 만들어만 놨음... htmlContent 받아와서 넣어줘야 함
@@ -151,16 +157,18 @@ function VolunteerWrite(){
                 </ul>
             </div>
 
-            <ReactQuill 
+            {/* <ReactQuill 
                 theme="snow"
                 htmlContent={content}
                 onChange={(value)=>{setContent(value)}}
-            />
-            {/* <Editor
+            /> */}
+            <Editor
+                height={"60vh"}
                 placeholder={placeholder}
-                htmlContent={content}
-                onChange={(e)=>{console.log('111',e.target.value)}}>
-            </Editor> */}
+                value={content}
+                setValue={setContent}
+                >
+            </Editor>
 
             <button 
                 className={style.addBtn}
