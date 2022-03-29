@@ -13,6 +13,7 @@ import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerAuthRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -253,5 +254,48 @@ class VolunteerServiceTest {
         assertThat(volunteerParticipants.size()).isEqualTo(1);
         VolunteerParticipant volunteerParticipant = volunteerParticipants.get(0);
         assertThat(volunteerParticipant.getApprove()).isTrue();
+    }
+
+    @Test
+    @DisplayName("봉사활동 인증 조회 - 성공")
+    void getVolunteerAuthSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        Long savedMemberSeq1 = memberService.register(MemberRegisterInfo1.toServiceDto()).getSeq();
+        Member findMember1 = memberService.getMemberBySeq(savedMemberSeq1);
+        Long savedVolunteerSeq = volunteerService.register(VolunteerRegisterInfo1.toServiceDto(), findMember1.getSeq());
+        volunteerAuthRequestInfo1 = VolunteerAuthRequestDto.RequestInfo.builder()
+                .content("봉사 인증 신청")
+                .authenticatedParticipantSequences(List.of(findMember1.getSeq()))
+                .build();
+
+        /**
+         * 봉사활동 인증 요청
+         */
+        Long savedVolunteerAuthSeq = volunteerService.requestVolunteerAuth(findMember1.getSeq(), savedVolunteerSeq, volunteerAuthRequestInfo1.toServiceDto());
+
+        /**
+         * 봉사활동 인증 조회
+         */
+        VolunteerDto.VolunteerAuthDetail volunteerAuthDetailDto = volunteerService.getVolunteerAuth(findMember1.getSeq(), savedVolunteerSeq);
+
+        /**
+         * 데이터 검증
+         */
+        assertThat(volunteerAuthDetailDto.getContent()).isEqualTo(volunteerAuthRequestInfo1.getContent());
+        assertThat(volunteerAuthDetailDto.getVolunteerSeq()).isEqualTo(savedVolunteerSeq);
+
+        List<VolunteerDto.VolunteerAuthDetail.Participant> participants = volunteerAuthDetailDto.getParticipants();
+        assertThat(participants).isNotNull();
+        assertThat(participants.size()).isEqualTo(1);
+
+        VolunteerDto.VolunteerAuthDetail.Participant participant = participants.get(0);
+        assertThat(participant.getMemberSeq()).isEqualTo(findMember1.getSeq());
+        assertThat(participant.getNickname()).isEqualTo(findMember1.getDetail().getNickname());
+        /**
+         * 서비스 메서드로 등록할 경우 모집한 사람은 승인되어 있다.
+         */
+        assertThat(participant.isApprove()).isTrue();
     }
 }

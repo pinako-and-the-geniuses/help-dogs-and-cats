@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface VolunteerAuthRepository extends JpaRepository<VolunteerAuth, Long> {
+public interface VolunteerAuthRepository extends JpaRepository<VolunteerAuth, Long>, VolunteerAuthRepositoryCustom {
 
     boolean existsByVolunteerSeq(Long volunteerSeq);
 
