@@ -10,7 +10,7 @@ public interface VolunteerService {
 
     Long updateVolunteerDetail(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
-    Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq);
+    void remove(Long volunteerSeq, Long memberSeq);
 
     Volunteer changeVolunteerStatus(VolunteerDto volunteerDto, Long volunteerSeq, Long memberSeq);
 
