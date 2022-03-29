@@ -11,7 +11,7 @@ import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileList(props) {
-  const [category, setCategory] = useState("community");
+  const [category, setCategory] = useState("communities");
   const navigator = useNavigate();
 
   const onNowCategory = () => {

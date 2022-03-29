@@ -29,7 +29,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
 
   const onGoToDetail = (itemSeq) => {
     console.log(itemSeq);
-    navigator(`/community/communitydetail/${itemSeq}`);
+    navigator(`/volunteer/detail/${itemSeq}`);
   };
 
   return (
@@ -45,11 +45,11 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                   onClick={() => onGoToDetail(item.seq)}
                 >
                   <div className={st.itemCategory}>
-                    <div>
+                    {/* <div>
                       {item.category === "GENERAL" ? "제너럴" : ""}
                       {item.category === "REVIEW" ? "후기" : ""}
                       {item.category === "REPORT" ? "제보?" : ""}
-                    </div>
+                    </div> */}
                   </div>
                   <div className="card-body">
                     <h5 className={cn(st.cardTitle, "card-title")}>

@@ -3,7 +3,7 @@ import cn from "classnames";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function ProfileVolunteer({ category, seq, isLogin }) {
   const [list, setList] = useState();
@@ -11,7 +11,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const [total, setTotal] = useState([]);
   const size = 5;
   const jwt = sessionStorage.getItem("jwt");
-  const navigator = useNavigate();
+  // const navigator = useNavigate();
 
   useEffect(() => {
     if (isLogin) {
@@ -29,7 +29,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
 
   const onGoToDetail = (itemSeq) => {
     console.log(itemSeq);
-    navigator(`/community/communitydetail/${itemSeq}`);
   };
 
   return (
