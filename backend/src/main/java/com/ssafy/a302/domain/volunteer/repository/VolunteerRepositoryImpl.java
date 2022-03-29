@@ -38,6 +38,16 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
     }
 
     @Override
+    public Integer countAll() {
+        return queryFactory
+                .select(volunteer.count().intValue())
+                .from(volunteer)
+                .where(
+                        volunteer.isDeleted.isFalse())
+                .fetchOne();
+    }
+
+    @Override
     public Optional<List<VolunteerDto.ForPage>> findVolunteersForPage(Pageable pageable, String keyword) {
         List<VolunteerDto.ForPage> list = queryFactory
                 .select(new QVolunteerDto_ForPage(
@@ -52,6 +62,32 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
                 .where(
                         volunteer.isDeleted.isFalse(),
                         searchEq(keyword))
+                .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
+                .limit(pageable.getPageSize())
+                .orderBy(volunteer.createdDate.desc())
+                .fetch();
+
+        if (list.size() == 0) {
+            list = null;
+        }
+
+        return Optional.ofNullable(list);
+    }
+
+    @Override
+    public Optional<List<VolunteerDto.ForPage>> findVolunteersForPageAll(Pageable pageable) {
+        List<VolunteerDto.ForPage> list = queryFactory
+                .select(new QVolunteerDto_ForPage(
+                        volunteer.seq,
+                        volunteer.status,
+                        volunteer.title,
+                        volunteer.maxParticipantCount.intValue(),
+                        volunteer.member.detail.nickname,
+                        volunteer.member.seq
+                ))
+                .from(volunteer)
+                .where(
+                        volunteer.isDeleted.isFalse())
                 .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
                 .limit(pageable.getPageSize())
                 .orderBy(volunteer.createdDate.desc())
