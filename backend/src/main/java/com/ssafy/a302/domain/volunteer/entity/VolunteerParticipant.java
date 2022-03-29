@@ -1,7 +1,6 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
-import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerParticipantDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,9 +46,7 @@ public class VolunteerParticipant {
                 .build();
     }
 
-    public void changeParticipantIsApprove(Boolean approve){
+    public void changeParticipantIsApprove(Boolean approve) {
         this.approve = approve;
     }
-
-
 }

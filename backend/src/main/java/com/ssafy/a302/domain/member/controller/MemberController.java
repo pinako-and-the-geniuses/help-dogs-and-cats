@@ -562,7 +562,7 @@ public class MemberController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/password-reset")
+    @PutMapping("/password-reset")
     public BaseResponseDto<?> resetPassword(@Validated @RequestBody PasswordResetRequestDto passwordResetRequestDto
             , Authentication authentication) {
         String passwordRegx = "^((?=.*[a-z])(?=.*\\d)((?=.*\\W)|(?=.*[A-Z]))|(?=.*\\W)(?=.*[A-Z])((?=.*\\d)|(?=.*[a-z]))).{8,20}$";

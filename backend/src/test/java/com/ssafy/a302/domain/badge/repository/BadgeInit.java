@@ -27,7 +27,7 @@ class BadgeInit {
     /**
      * 사용할 때만 @Test 애노테이션을 활성화시켜주세요.
      */
-//    @Test
+    //@Test
     @Rollback(false)
     void badgeRegister() {
         String[][] badgeInfos = {

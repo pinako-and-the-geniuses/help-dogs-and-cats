@@ -1,15 +1,18 @@
 package com.ssafy.a302.domain.volunteer.controller;
 
+import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerAuthRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerCommentRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerParticipantRequestDto;
 import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerRequestDto;
 import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
+import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.auth.CustomUserDetails;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
+import com.ssafy.a302.global.util.AuthenticationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -37,25 +41,18 @@ public class VolunteerController {
 
     private final VolunteerCommentService volunteerCommentService;
 
-    // 봉사활동 생성
+    private final AuthenticationUtil authenticationUtil;
+
     @Operation(
             summary = "봉사활동 API",
-            description = "이메일, 패스워드, 닉네임, 핸드폰 번호, 활동 지역을 전달받고 봉사활동 진행합니다.",
-            tags = {"member"}
+            description = "제목, 내용, 활동지역, 봉사인증시간, 멤버(최대인원, 최소인원), 연락처, 종료일을 전달받고 봉사활동 진행합니다.",
+            tags = {"volunteer"}
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
                     description = "봉사활동 등록에 성공하였습니다.",
                     content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "이메일, 패스워드, 닉네임, 핸드폰 번호 중 한 가지 이상 형식 검증에 실패하였거나, 패스워드에 이메일 또는 닉네임이 포함됩니다.",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "이메일 또는 닉네임이 중복됩니다.",
-                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
             @ApiResponse(
                     responseCode = "500",
                     description = "서버에 문제가 발생하였습니다.",
@@ -65,7 +62,7 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BaseResponseDto<?> register(@Validated @RequestBody VolunteerRequestDto.RegisterInfo registerInfo, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.register(registerInfo.toServiceDto(), memberSeq);
 
         return BaseResponseDto.builder()
@@ -73,7 +70,88 @@ public class VolunteerController {
                 .build();
     }
 
+    // 봉사활동 목록 조회
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable,
+                                                  @RequestParam String keyword) {
 
+        VolunteerDto.VolunteerListPage volunteerListPage = volunteerService.getPage(pageable, keyword);
+        return BaseResponseDto.<VolunteerDto.VolunteerListPage>builder()
+                .message(Message.SUCCESS_VIEWPAGE_VOLUNTEER)
+                .data(volunteerListPage)
+                .build();
+
+    }
+
+    @Operation(
+            summary = "봉사활동 상세페이지 조회 API",
+            description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동 게시글을 조회합니다.",
+            tags = {"volunteer"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "봉사활동 게시글을 조회하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 봉사활동 게시글입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{volunteerSeq}")
+    public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq){
+
+        VolunteerDto.Detail detail = volunteerService.volunteerDetail(volunteerSeq);
+
+        return BaseResponseDto.<VolunteerDto.Detail>builder()
+                .message(Message.SUCCESS_VOLUNTEER_DETAIL_LIST)
+                .data(detail)
+                .build();
+
+    }
+
+
+    // 봉사활동 상세페이지 수정
+    @Operation(
+            summary = "봉사활동 수정 API",
+            description = "종료일, 제목, 활동지역, 인증시간, 모집인원, 신청여부, 연락처, 작성자 닉네임, 작성자seq, 내용, 첨부파일을 전달받고 봉사활동을 수정합니다.",
+            tags = {"volunteer"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "봉사활동 수정에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{volunteerSeq}")
+    public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
+                                                    @PathVariable Long volunteerSeq,
+                                                    Authentication authentication) {
+        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+        volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS_UPDATE_VOLUNTEER)
+                .build();
+
+    }
 
     // 봉사활동 진행상태 수정
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
@@ -153,7 +231,7 @@ public class VolunteerController {
                 .build();
     }
 
-    // 봉사활동 참여자 참석여부 수정
+    // 봉사활동 참여자 참석여부 삭제
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/participants/{memberSeq}")
@@ -169,11 +247,33 @@ public class VolunteerController {
 
 
     // 봉사활동 댓글 작성
+    @Operation(
+            summary = "봉사활동 게시글 댓글 등록 API",
+            description = "봉사활동 게시글 식별키, 댓글 본문, 부모 댓글 식별키를 전달받고 봉사활동 게시글 댓글을 등록합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "봉사활동 게시글 댓글을 등록하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 봉사활동 게시글입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{volunteerSeq}/comments")
-    public BaseResponseDto<?> registerVolunteerComment(@Validated @PathVariable Long volunteerSeq, @RequestBody VolunteerCommentRequestDto.RegisterInfo registerInfo, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
+    public BaseResponseDto<?> registerVolunteerComment(@PathVariable Long volunteerSeq,
+                                                       @RequestBody VolunteerCommentRequestDto.RegisterInfo registerInfo,
+                                                       Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
 
         volunteerCommentService.registerVolunteerComment(volunteerSeq, memberSeq, registerInfo.toServiceDto());
 
@@ -184,6 +284,11 @@ public class VolunteerController {
 
     // 봉사활동 댓글 삭제
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 게시글 댓글 삭제 API",
+            description = "봉사활동 게시글 식별키, 댓글 식별키를 전달받고 봉사활동 게시글 댓글을 삭제합니다.",
+            tags = {"community"}
+    )
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/comments/{commentsSeq}")
     public BaseResponseDto<?> deleteVolunteerComment(@Validated @PathVariable Long volunteerSeq, @PathVariable Long commentsSeq, Authentication authentication) {
@@ -196,4 +301,39 @@ public class VolunteerController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 인증 요청 API",
+            description = "봉사활동 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수행합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "봉사활동 인증 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/{volunteerSeq}/auth")
+    public BaseResponseDto<?> requestVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
+                                                   @Validated @RequestBody VolunteerAuthRequestDto.RequestInfo requestInfo,
+                                                   Authentication authentication) {
+
+        System.out.println("requestInfo = " + requestInfo);
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        volunteerService.requestVolunteerAuth(memberSeq, volunteerSeq, requestInfo.toServiceDto());
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
+    }
 }

@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.*;
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"seq", "title", "content", "status"})
+@ToString(of = {"seq", "content", "status"})
 public class VolunteerAuth extends BaseLastModifiedEntity {
 
     @Id
@@ -26,9 +26,6 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
     @OneToOne(fetch = EAGER)
     private Volunteer volunteer;
 
-    @Column(nullable = false)
-    private String title;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
@@ -37,9 +34,8 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
     private Status status;
 
     @Builder
-    public VolunteerAuth(Volunteer volunteer, String title, String content) {
+    public VolunteerAuth(Volunteer volunteer, String content) {
         this.volunteer = volunteer;
-        this.title = title;
         this.content = content;
         this.status = Status.REQUEST;
 

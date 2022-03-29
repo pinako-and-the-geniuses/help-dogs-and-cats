@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
+import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
@@ -42,29 +43,24 @@ public class VolunteerComment extends BaseLastModifiedEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @JoinColumn(name = "parent_seq", nullable = false)
+    @JoinColumn(name = "parent_seq")
     @ManyToOne(fetch = LAZY)
     private VolunteerComment parent;
 
-    @OneToMany(mappedBy = "parent", cascade = ALL)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = ALL)
     private List<VolunteerComment> children = new ArrayList<>();
 
     @Builder
-    public VolunteerComment(String content, Volunteer volunteer, Member member, VolunteerComment parent) {
+    public VolunteerComment(String content, Volunteer volunteer, Member member) {
         this.content = content;
         this.isDeleted = false;
         this.volunteer = volunteer;
         this.member = member;
-        this.parent = parent;
     }
 
     public void createParent(VolunteerComment parent) {
         this.parent = parent;
         parent.getChildren().add(this);
-    }
-
-    public void setParent(VolunteerComment parent) {
-        this.parent = parent;
     }
 
     public void setMember(Member member) {
@@ -79,6 +75,18 @@ public class VolunteerComment extends BaseLastModifiedEntity {
         this.isDeleted = true;
     }
 
+    public VolunteerCommentDto.ForDetail toForDetailDto() {
+        return VolunteerCommentDto.ForDetail.builder()
+                .commentSeq(seq)
+                .content(content)
+                .createdDate(getCreatedDate().toLocalDate())
+                .writerSeq(member.getSeq())
+                .writerNickname(member.getDetail().getNickname())
+                .writerProfileImageFilename(member.getDetail().getProfileImageFilename())
+                .parentSeq(parent == null ? null : parent.getSeq())
+                .children(new ArrayList<>())
+                .build();
+    }
 
     public VolunteerCommentDto.Response toResponseDto() {
         return VolunteerCommentDto.Response.builder()

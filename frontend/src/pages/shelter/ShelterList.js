@@ -18,6 +18,7 @@ function ShelterList(){
     const [selectCd, setSelectCd] = useState();
     const [cggs, setCggs] = useState([...all]);
     const [selectCgg, setSelectCgg] = useState();
+    const [areaSearch, setAreaSearch] = useState();
     const [nameSearch, setNameSearch] = useState();
 
     //시도 가져오기
@@ -42,6 +43,7 @@ function ShelterList(){
             method: "get",
         })
         .then((res)=>{
+            // console.log(...res.data.response.body.items.item);
             setCggs([...all, ...res.data.response.body.items.item]);
             // console.log(res.data.response.body.items.item)
         })
@@ -80,26 +82,42 @@ function ShelterList(){
 
     const handleCd = (e) =>{
         setSelectCd(e.target.value);
-        console.log(e.target.value);
+        // console.log(e.target.value);
     }
 
     const handleCgg =(e)=>{
-        setSelectCgg(e.target.value.orgCd);
+        setSelectCgg(e.target.value);
+        // console.log(selectCgg);
     }
 
-    //보호소 검색시
+    //지역 검색 필터
+    let cdQuery = "";
+    let cggQuery = "";
+
+    ///아...생각이 좀 필요하다
+    //그리고...어떻게..........정보를 가져올지? 그것도 고민~
     const onSubmit=()=>{
         // console.log('등록!');
-        axios({
-            url: `${ANIMAL}/abandonmentPublicSrvc/shelter?upr_cd=${selectCd}&org_cd=${selectCgg}&_type=json&serviceKey=${ANIMAL_KEY}`,
-            method: "get",
-        })
-        .then((res)=>{
-            console.log(res.data);
-        })
-        .catch((err) =>{
-            console.log(err);
-        })
+        //1. 시도 전체일 때
+        if(selectCd !== '0') cdQuery =`&upr_cd=${selectCd}`;
+        else cdQuery="";
+        //2. 시군구 전체일 때
+        if(selectCgg !== '0') cggQuery = `&org_cd=${selectCgg}`;
+        else cggQuery="";
+        //3. 둘다 검색일 때
+        if(selectCd !== '0' && selectCgg !== '0'){
+            axios({
+                url: `${ANIMAL}/abandonmentPublicSrvc/shelter?upr_cd=${selectCd}&org_cd=${selectCgg}&_type=json&serviceKey=${ANIMAL_KEY}`,
+                method: "get",
+            })
+            .then((res)=>{
+                setAreaSearch([...res.data.response.body.items.item]);
+                console.log(areaSearch);
+            })
+            .catch((err) =>{
+                console.log(err);
+            })
+        }
     }
 
     return(
@@ -138,8 +156,8 @@ function ShelterList(){
                         {
                             cggs && cggs.map((cgg)=>(
                                 <option
-                                    value={cgg.uprCd}
-                                    key={cgg.orgdownNm}>
+                                    value={cgg.orgCd}
+                                    key={cgg.orgCd}>
                                 {cgg.orgdownNm}
                                 </option>
                             ))
@@ -164,7 +182,21 @@ function ShelterList(){
                     <th scope="col">보호센터 주소</th>
                     </tr>
                 </thead>
-                <tbody>
+                {
+                    areaSearch && areaSearch.map((i)=>{
+                        return(
+                            <tbody>
+                                <tr>
+                                <td>f</td>
+                                <td>f</td>
+                                <td>f</td>
+                                <td>{i.careNm}</td>
+                                </tr>
+                            </tbody>
+                        )
+                    })
+                }
+                {/* <tbody>
                     <tr>
                     <td>어디</td>
                     <td>Mark</td>
@@ -183,7 +215,7 @@ function ShelterList(){
                     <td>Larry the Bird</td>
                     <td>@twitter</td>
                     </tr>
-                </tbody>
+                </tbody> */}
             </table>
         </div>
     )

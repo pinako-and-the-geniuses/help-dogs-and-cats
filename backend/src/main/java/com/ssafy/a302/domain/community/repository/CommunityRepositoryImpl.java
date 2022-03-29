@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.community.service.dto.QCommunityDto_ForPage;
+import com.ssafy.a302.domain.member.service.dto.ProfileDto;
+import com.ssafy.a302.domain.member.service.dto.QProfileDto_Community;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
@@ -35,6 +37,17 @@ public class CommunityRepositoryImpl implements CommunityRepositoryCustom {
     }
 
     @Override
+    public Integer countAllByMemberSeq(Long memberSeq) {
+        return queryFactory
+                .select(community.count().intValue())
+                .from(community)
+                .where(
+                        community.isDeleted.isFalse(),
+                        community.member.seq.eq(memberSeq))
+                .fetchOne();
+    }
+
+    @Override
     public Optional<List<CommunityDto.ForPage>> findCommunitiesForPage(Pageable pageable, Community.Category category, String search, String keyword) {
         List<CommunityDto.ForPage> list = queryFactory
                 .select(new QCommunityDto_ForPage(
@@ -50,6 +63,28 @@ public class CommunityRepositoryImpl implements CommunityRepositoryCustom {
                         community.isDeleted.isFalse(),
                         categoryEq(category),
                         searchEq(search, keyword))
+                .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
+                .limit(pageable.getPageSize())
+                .orderBy(community.createdDate.desc())
+                .fetch();
+
+        if (list.size() == 0) {
+            list = null;
+        }
+
+        return Optional.ofNullable(list);
+    }
+
+    @Override
+    public Optional<List<ProfileDto.Community>> findCommunitiesForProfile(Long memberSeq, Pageable pageable) {
+        List<ProfileDto.Community> list = queryFactory
+                .select(new QProfileDto_Community(
+                        community.seq,
+                        community.title,
+                        community.category,
+                        community.createdDate))
+                .from(community)
+                .where(community.member.seq.eq(memberSeq).and(community.isDeleted.isFalse()))
                 .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
                 .limit(pageable.getPageSize())
                 .orderBy(community.createdDate.desc())
