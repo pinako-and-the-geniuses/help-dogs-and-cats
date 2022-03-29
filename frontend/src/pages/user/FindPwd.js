@@ -22,7 +22,6 @@ export default function FindPwd() {
       .then((res) => {
         const status = res.status;
         if (status === 200) {
-          console.log(res.data.data.email);
           alert("링크 전송 완료!");
           navigator("/");
         } else {
@@ -37,7 +36,7 @@ export default function FindPwd() {
 
   return (
     <div className={st.userformPage}>
-      <form onSubmit={onSubmit} className={cn(`${st.userform} ${st.findForm}`)}>
+      <div className={cn(`${st.userform} ${st.findForm}`)}>
         <h2>비밀번호 찾기</h2>
 
         <div className={cn("row", st.findCategory)}>
@@ -62,14 +61,14 @@ export default function FindPwd() {
             />
           </div>
 
-          <button type="submit" className={cn(st.longButton, "mt-4")}>
+          <button onClick={onSubmit} className={cn(st.longButton, "mt-4")}>
             확인
           </button>
           <p className={st.message}>
             아직 회원이 아니신가요? <a href="/signup">회원가입</a>
           </p>
         </>
-      </form>
+      </div>
     </div>
   );
 }
