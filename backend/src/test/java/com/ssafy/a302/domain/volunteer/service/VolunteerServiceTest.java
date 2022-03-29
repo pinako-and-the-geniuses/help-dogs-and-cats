@@ -134,9 +134,10 @@ class VolunteerServiceTest {
 
         Long savedVolunteerSeq = volunteerService.register(VolunteerRegisterInfo1.toServiceDto(), savedMember.getSeq());
         Optional<Volunteer> savedVolunteer = volunteerRepository.findBySeq(savedVolunteerSeq);
-        Volunteer deletedVolunteer = volunteerService.deleteVolunteer(savedVolunteer.get().getSeq(), savedMember.getSeq());
-
-        assertThat(deletedVolunteer.isDeleted()).isTrue();
+        volunteerService.remove(savedVolunteer.get().getSeq(), savedMember.getSeq());
+        Volunteer removedVolunteer = volunteerRepository.findBySeq(savedVolunteer.get().getSeq())
+                        .orElse(null);
+        assertThat(removedVolunteer).isNull();
 
     }
 

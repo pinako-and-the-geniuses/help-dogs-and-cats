@@ -166,7 +166,6 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .seq(seq)
                 .title(title)
                 .content(content)
-//                .category(category)
                 .activityArea(activityArea)
                 .authTime(authTime)
                 .contact(contact)
@@ -176,17 +175,17 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .build();
     }
 
-    public VolunteerDto.DetailResponse toResponseDetailDto() {
-        return VolunteerDto.DetailResponse.builder()
-                .memberSeq(member.getSeq())
-                .nickname(member.getDetail().getNickname())
-                .title(title)
-                .content(content)
-                .status(status)
-                .activityArea(activityArea)
-                .volunteerComment(volunteerComments)
-                .build();
-    }
+//    public VolunteerDto.DetailResponse toResponseDetailDto() {
+//        return VolunteerDto.DetailResponse.builder()
+//                .memberSeq(member.getSeq())
+//                .nickname(member.getDetail().getNickname())
+//                .title(title)
+//                .content(content)
+//                .status(status)
+//                .activityArea(activityArea)
+//                .volunteerComment(volunteerComments)
+//                .build();
+//    }
 
 
 

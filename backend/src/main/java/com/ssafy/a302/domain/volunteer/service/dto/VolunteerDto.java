@@ -166,38 +166,38 @@ public class VolunteerDto {
         }
     }
 
-    @Getter
-    @ToString(of = {"memberSeq", "nickname", "title", "content", "status", "activityArea", "volunteerComment"})
-    public static class DetailResponse {
-
-        private final Long memberSeq;
-
-        private final String nickname;
-
-        private final String title;
-
-        private final String content;
-
-        private final Volunteer.Status status;
-
-        private final String activityArea;
-
-        private List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment;
-
-        public void setVolunteerComment(List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment){
-            this.volunteerComment = volunteerComment;
-        }
-
-        @Builder
-        public DetailResponse(Long memberSeq, String nickname, String title, String content, Volunteer.Status status, String activityArea, List<VolunteerComment> volunteerComment) {
-            this.memberSeq = memberSeq;
-            this.nickname = nickname;
-            this.title = title;
-            this.content = content;
-            this.status = status;
-            this.activityArea = activityArea;
-        }
-    }
+//    @Getter
+//    @ToString(of = {"memberSeq", "nickname", "title", "content", "status", "activityArea", "volunteerComment"})
+//    public static class DetailResponse {
+//
+//        private final Long memberSeq;
+//
+//        private final String nickname;
+//
+//        private final String title;
+//
+//        private final String content;
+//
+//        private final Volunteer.Status status;
+//
+//        private final String activityArea;
+//
+//        private List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment;
+//
+//        public void setVolunteerComment(List<VolunteerServiceImpl.SimpleVolunteerCommentDto> volunteerComment){
+//            this.volunteerComment = volunteerComment;
+//        }
+//
+//        @Builder
+//        public DetailResponse(Long memberSeq, String nickname, String title, String content, Volunteer.Status status, String activityArea, List<VolunteerComment> volunteerComment) {
+//            this.memberSeq = memberSeq;
+//            this.nickname = nickname;
+//            this.title = title;
+//            this.content = content;
+//            this.status = status;
+//            this.activityArea = activityArea;
+//        }
+//    }
 
     @Schema(name = "detail", title = "봉사활동 상세페이지 조회용 DTO", description = "봉사활동 게시글 상세페이지 조회용 DTO 입니다.")
     @Getter
