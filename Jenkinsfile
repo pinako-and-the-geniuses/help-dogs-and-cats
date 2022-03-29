@@ -20,6 +20,7 @@ pipeline {
             steps {
                 sh 'chmod u+x ./backend/gradlew'
                 sh './backend/gradlew build'
+                sh 'cp -r /home/ubuntu/jenkins/backend/* ./backend/'
                 sh 'docker build -t backend ./backend/'
             }
         }
