@@ -4,6 +4,7 @@ import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ public class VolunteerAuthRequestDto {
 
     @Schema(name = "RequestInfo", title = "봉사활동 인증 요청 DTO", description = "봉사활동 인증 요청 DTO 입니다.")
     @Getter
+    @NoArgsConstructor
     @ToString(of = {"content", "authenticatedParticipantSequences"})
     public static class RequestInfo {
 
@@ -42,6 +44,7 @@ public class VolunteerAuthRequestDto {
 
     @Schema(name = "ModifyInfo", title = "봉사활동 인증 수정 요청 DTO", description = "봉사활동 인증 수정 요청 DTO 입니다.")
     @Getter
+    @NoArgsConstructor
     @ToString(of = {"content", "authenticatedParticipantSequences"})
     public static class ModifyInfo {
 
