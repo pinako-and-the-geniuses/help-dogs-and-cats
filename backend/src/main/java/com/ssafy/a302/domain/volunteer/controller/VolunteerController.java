@@ -327,10 +327,42 @@ public class VolunteerController {
                                                    @Validated @RequestBody VolunteerAuthRequestDto.RequestInfo requestInfo,
                                                    Authentication authentication) {
 
-        System.out.println("requestInfo = " + requestInfo);
-
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.requestVolunteerAuth(memberSeq, volunteerSeq, requestInfo.toServiceDto());
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @Operation(
+            summary = "봉사활동 인증 수정 API",
+            description = "봉사활동 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수정합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "봉사활동 인증 수정 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/{volunteerSeq}/auth")
+    public BaseResponseDto<?> modifyVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
+                                                   @Validated @RequestBody VolunteerAuthRequestDto.ModifyInfo modifyInfo,
+                                                   Authentication authentication) {
+
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        volunteerService.modifyVolunteerAuth(memberSeq, volunteerSeq, modifyInfo.toServiceDto());
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS)
