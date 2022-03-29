@@ -7,15 +7,16 @@ import style from "./styles/Community.module.scss";
 import cn from "classnames";
 import Pagination from "react-js-pagination";
 export default function Community() {
-  const [communitys, setCommunity] = useState([]);
-  const [page, setPage] = useState([]);
-  //const [size, setSize] = useState([]);
-  const [totalcount, setTotalcount] = useState([]);
-  const [totalPageNumber, setTotalPageNumber] = useState([]);
+  const [communitys, setCommunity] = useState("");
+  const [page, setPage] = useState("");
+  //const [size, setSize] = useState("");
+  const [totalcount, setTotalcount] = useState("");
+  const [totalPageNumber, setTotalPageNumber] = useState("");
   const size = 10;
-  const [search, setSearch] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [keyword, setKeyword] = useState([]);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [seq, setSeq] = useState("");
   
   //const [arr, setArr] = useState();
   
@@ -58,12 +59,9 @@ export default function Community() {
     // setPage(key);
   };
 
-  const seq = useParams();
-  //console.log(seq);
-
   const navigate = useNavigate();
 
-  const getSeq = () => {
+  const getSeq = (seq) => {
     //console.log(seq);
     navigate(`/community/communitydetail/${seq}`);
   };
@@ -138,7 +136,7 @@ export default function Community() {
         {communitys ? (
           <tbody>
             {communitys.map((community) => (
-              <tr key={community.seq} onClick={getSeq}>
+              <tr key={community.seq} onClick={()=>getSeq(community.seq)}> 
                 {community.category === "REPORT" ? <td>제보</td> : ""}
                 {community.category === "REVIEW" ? <td>후기</td> : ""}
                 {community.category === "GENERAL" ? <td>잡담</td> : ""}

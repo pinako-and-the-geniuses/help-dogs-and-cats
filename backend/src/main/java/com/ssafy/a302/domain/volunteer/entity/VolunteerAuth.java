@@ -8,7 +8,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(
@@ -59,6 +59,10 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
 
     public void modifyStatusToDone() {
         this.status = Status.DONE;
+    }
+
+    public void changeVolunteerAuthStatus(Status status){
+        this.status = status;
     }
 
     public VolunteerAuthDto.Response toResponseDto() {

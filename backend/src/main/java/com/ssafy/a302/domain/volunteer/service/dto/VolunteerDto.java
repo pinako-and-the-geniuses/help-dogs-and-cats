@@ -4,17 +4,15 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
-import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
-import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import com.ssafy.a302.global.constant.Path;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.List;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class VolunteerDto {
@@ -55,7 +53,6 @@ public class VolunteerDto {
         return Volunteer.builder()
                 .title(title)
                 .content(content)
-//                .category(category)
                 .activityArea(activityArea)
                 .authTime(authTime)
                 .contact(contact)
@@ -95,23 +92,26 @@ public class VolunteerDto {
 
         private String title;
 
-//        private Integer applyCount;
-
         private Integer maxParticipantCount;
 
         private String nickname;
 
         private Long memberSeq;
 
+        private String endDate;
+
+        private LocalDateTime createdDate;
+
         @QueryProjection
-        public ForPage(Long seq, Volunteer.Status status, String title, Integer maxParticipantCount, String nickname, Long memberSeq) {
+        public ForPage(Long seq, Volunteer.Status status, String title, Integer maxParticipantCount, String nickname, Long memberSeq, String endDate, LocalDateTime createdDate) {
             this.seq = seq;
             this.status = status;
             this.title = title;
-//            this.applyCount = applyCount;
             this.maxParticipantCount = maxParticipantCount;
             this.nickname = nickname;
             this.memberSeq = memberSeq;
+            this.endDate = endDate;
+            this.createdDate = createdDate;
         }
     }
 
@@ -129,9 +129,6 @@ public class VolunteerDto {
 
         @Schema(name = "content", title = "내용", description = "내용입니다.")
         private final String content;
-
-//        @Schema(name = "category", title = "카테고리", description = "봉사활동이 가지고 있는 카테고리입니다.")
-//        private final Volunteer.Category category;
 
         @Schema(name = "activityArea", title = "활동지역", description = "활동지역입니다.")
         private final String activityArea;
@@ -156,7 +153,6 @@ public class VolunteerDto {
             this.seq = seq;
             this.title = title;
             this.content = content;
-//            this.category = category;
             this.activityArea = activityArea;
             this.authTime = authTime;
             this.contact = contact;
@@ -201,7 +197,7 @@ public class VolunteerDto {
 
     @Schema(name = "detail", title = "봉사활동 상세페이지 조회용 DTO", description = "봉사활동 게시글 상세페이지 조회용 DTO 입니다.")
     @Getter
-    @ToString(of = {"writerSeq", "writerNickname", "writerProfileImagePath", "volunteerSeq", "title", "content", "activityArea", "status", "createdDate", "viewCount", "comments"})
+    @ToString(of = {"writerSeq", "writerNickname", "writerProfileImagePath", "volunteerSeq", "title", "content", "activityArea", "status", "createdDate", "viewCount", "endDate", "authTime", "contact", "comments"})
     public static class Detail {
 
         @Schema(name = "writerSeq", title = "작성자 식별키", description = "작성자 식별키입니다.")
@@ -234,11 +230,20 @@ public class VolunteerDto {
         @Schema(name = "viewCount", title = "조회수", description = "조회수입니다.")
         private Integer viewCount;
 
+        @Schema(name = "endDate", title = "종료일", description = "종료일입니다.")
+        private String endDate;
+
+        @Schema(name = "authTime", title = "인증시간", description = "인증시간입니다.")
+        private String authTime;
+
+        @Schema(name = "contact", title = "연락처", description = "연락처입니다.")
+        private String contact;
+
         @Schema(name = "comments", title = "댓글 목록", description = "댓글 목록입니다.")
         private List<VolunteerCommentDto.ForDetail> comments;
 
         @Builder
-        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, List<VolunteerCommentDto.ForDetail> comments) {
+        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, String endDate, String authTime, String contact, List<VolunteerCommentDto.ForDetail> comments) {
             this.writerSeq = writerSeq;
             this.writerNickname = writerNickname;
             this.writerProfileImagePath = writerProfileImagePath;
@@ -249,6 +254,9 @@ public class VolunteerDto {
             this.status = status;
             this.createdDate = createdDate;
             this.viewCount = viewCount;
+            this.endDate = endDate;
+            this.authTime = authTime;
+            this.contact = contact;
             this.comments = comments;
         }
 
@@ -265,6 +273,9 @@ public class VolunteerDto {
                     .status(volunteer.getStatus())
                     .createdDate(volunteer.getCreatedDate().toLocalDate())
                     .viewCount((int) (long) volunteer.getViewCount())
+                    .endDate(volunteer.getEndDate())
+                    .authTime(volunteer.getAuthTime())
+                    .contact(volunteer.getContact())
                     .comments(commentsForDetail)
                     .build();
         }
