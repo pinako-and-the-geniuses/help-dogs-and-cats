@@ -17,30 +17,30 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
-@RequiredArgsConstructor
-@RequestMapping("/api/v1/admin")
-@RestController
-@Tag(name = "관리자", description = "관리자 기능 관련 REST API가 작성됩니다.")
+//@Slf4j
+//@RequiredArgsConstructor
+//@RequestMapping("/api/v1/admin")
+//@RestController
+//@Tag(name = "관리자", description = "관리자 기능 관련 REST API가 작성됩니다.")
 public class AdminController {
 
-    private final VolunteerService volunteerService;
+//    private final VolunteerService volunteerService;
+//
+//    private final VolunteerCommentService volunteerCommentService;
+//
+//    private final AdminService adminService;
 
-    private final VolunteerCommentService volunteerCommentService;
-
-    private final AdminService adminService;
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public BaseResponseDto<?> getVolunteerAuthList(Pageable pageable,
-                                                   @RequestParam String order) {
-        //adminService.getPage(pageable, order);
-
-        return BaseResponseDto.builder()
-                .message(Message.SUCCESS_ADMIN_VOLUNTEER_AUTH_LIST)
-                .build();
-    }
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping
+//    public BaseResponseDto<?> getVolunteerAuthList(Pageable pageable,
+//                                                   @RequestParam String order) {
+//        //adminService.getPage(pageable, order);
+//
+//        return BaseResponseDto.builder()
+//                .message(Message.SUCCESS_ADMIN_VOLUNTEER_AUTH_LIST)
+//                .build();
+//    }
 
 
 

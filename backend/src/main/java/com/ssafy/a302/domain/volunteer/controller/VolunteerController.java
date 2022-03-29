@@ -167,13 +167,36 @@ public class VolunteerController {
     }
 
 
-    // 봉사활동 삭제
+    @Operation(
+            summary = "봉사활동 삭제 API",
+            description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동을 삭제합니다.",
+            tags = {"community"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "봉사활동을 삭제하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "존재하지 않는 봉사활동입니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{volunteerSeq}")
-    public BaseResponseDto<?> deleteVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
-        Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
-        volunteerService.deleteVolunteer(volunteerSeq, memberSeq);
+    public BaseResponseDto<?> deleteVolunteer(@PathVariable Long volunteerSeq,
+                                              Authentication authentication) {
+        Long memberSeq = authenticationUtil.getMemberSeq(authentication);
+        volunteerService.remove(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_DELETE_VOLUNTEER)
                 .build();

@@ -14,7 +14,6 @@ import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import com.ssafy.a302.global.enums.Status;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +21,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -76,17 +77,15 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Transactional
     @Override
-    public Volunteer deleteVolunteer(Long volunteerSeq, Long memberSeq) {
+    public void remove(Long volunteerSeq, Long memberSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if(findVolunteer.getMember().getSeq().equals(memberSeq)){
-            findVolunteer.delete();
-        }else{
-            throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER);
+        if(!findVolunteer.getMember().getSeq().equals(memberSeq)){
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
 
-        return findVolunteer;
+        findVolunteer.delete();
     }
 
     @Transactional
@@ -137,21 +136,6 @@ public class VolunteerServiceImpl implements VolunteerService {
             }
         });
         return result;
-    }
-    @Data
-    public static class SimpleVolunteerCommentDto {
-        private Long seq;
-        private String content;
-        private LocalDateTime createdDate;
-        private String nickname;
-        private Long memberSeq;
-        public SimpleVolunteerCommentDto(VolunteerComment volunteerComment) {
-            seq = volunteerComment.getSeq();
-            content = volunteerComment.getContent();
-            createdDate = volunteerComment.getCreatedDate();
-            nickname = volunteerComment.getMember().getDetail().getNickname();
-            memberSeq = volunteerComment.getMember().getSeq();
-        }
     }
 
     @Override
