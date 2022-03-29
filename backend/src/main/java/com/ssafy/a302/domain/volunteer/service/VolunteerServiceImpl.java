@@ -13,6 +13,7 @@ import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerCommentDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
+import com.ssafy.a302.global.enums.Status;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -253,5 +254,47 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
 
         return savedVolunteerAuth.getSeq();
+    }
+
+    @Transactional
+    @Override
+    public Long modifyVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth) {
+        VolunteerAuth findVolunteerAuth = volunteerAuthRepository.findByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findVolunteerAuth.getVolunteer().getMember().getSeq().equals(memberSeq)) {
+            throw new IllegalArgumentException(ErrorMessage.FORBIDDEN);
+        }
+
+        if (!findVolunteerAuth.getStatus().equals(Status.REJECT)) {
+            throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+        }
+
+        findVolunteerAuth.modify(volunteerAuth);
+
+        /**
+         * 봉사활동 seq 로 봉사활동 참여자 엔티티 리스트 조회
+         */
+        List<VolunteerParticipant> volunteerParticipants = volunteerParticipantRepository.findVolunteerParticipantBySeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        /**
+         * 전달 받은 인증할 회원의 seq 리스트
+         */
+        List<Long> authenticatedParticipantSequences = volunteerAuth.getAuthenticatedParticipantSequences();
+
+        /**
+         * 전달 받은 회원 seq 를 제외하고 모두 false 처리
+         */
+        for (VolunteerParticipant volunteerParticipant : volunteerParticipants) {
+            volunteerParticipant.changeParticipantIsApprove(false);
+            for (Long authenticatedParticipantSequence : authenticatedParticipantSequences) {
+                if (volunteerParticipant.getMember().getSeq().equals(authenticatedParticipantSequence)) {
+                    volunteerParticipant.changeParticipantIsApprove(true);
+                }
+            }
+        }
+
+        return findVolunteerAuth.getSeq();
     }
 }
