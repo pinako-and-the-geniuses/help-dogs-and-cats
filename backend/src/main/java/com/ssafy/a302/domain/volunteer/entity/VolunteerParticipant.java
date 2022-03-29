@@ -47,9 +47,7 @@ public class VolunteerParticipant {
                 .build();
     }
 
-    public void changeParticipantIsApprove(Boolean approve){
+    public void changeParticipantIsApprove(Boolean approve) {
         this.approve = approve;
     }
-
-
 }
