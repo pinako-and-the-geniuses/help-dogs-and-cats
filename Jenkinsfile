@@ -10,11 +10,11 @@ pipeline {
     }
 
     stages {
-        stage('Pull') {
-            steps {
-                git url: "${GIT_URL}", branch: "develop", poll: true, changelog: true
-            }
-        }
+        // stage('Pull') {
+        //     steps {
+        //         git url: "${GIT_URL}", branch: "develop", poll: true, changelog: true
+        //     }
+        // }
         
         stage('React Build') {
             steps {
