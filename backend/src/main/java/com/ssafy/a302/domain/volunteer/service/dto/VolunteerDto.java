@@ -1,9 +1,6 @@
 package com.ssafy.a302.domain.volunteer.service.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.a302.domain.community.entity.Community;
-import com.ssafy.a302.domain.community.service.dto.CommunityCommentDto;
-import com.ssafy.a302.domain.community.service.dto.CommunityDto;
 import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.member.entity.MemberDetail;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
@@ -18,8 +15,6 @@ import lombok.ToString;
 import java.util.List;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 public class VolunteerDto {
@@ -287,6 +282,42 @@ public class VolunteerDto {
         public VolunteerAuth(String content, List<Long> authenticatedParticipantSequences) {
             this.content = content;
             this.authenticatedParticipantSequences = authenticatedParticipantSequences;
+        }
+    }
+
+    @Getter
+    @ToString(of = {"volunteerSeq", "content", "participants"})
+    public static class VolunteerAuthDetail {
+
+        private Long volunteerSeq;
+
+        private String content;
+
+        private List<Participant> participants;
+
+        @Builder
+        public VolunteerAuthDetail(Long volunteerSeq, String content, List<Participant> participants) {
+            this.volunteerSeq = volunteerSeq;
+            this.content = content;
+            this.participants = participants;
+        }
+
+        @Getter
+        @ToString(of = {"memberSeq", "nickname", "isApprove"})
+        public static class Participant {
+
+            private Long memberSeq;
+
+            private String nickname;
+
+            private boolean isApprove;
+
+            @QueryProjection
+            public Participant(Long memberSeq, String nickname, boolean isApprove) {
+                this.memberSeq = memberSeq;
+                this.nickname = nickname;
+                this.isApprove = isApprove;
+            }
         }
     }
 }

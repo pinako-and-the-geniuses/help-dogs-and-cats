@@ -264,4 +264,24 @@ public class VolunteerServiceImpl implements VolunteerService {
 
         return findVolunteerAuth.getSeq();
     }
+
+    @Override
+    public VolunteerDto.VolunteerAuthDetail getVolunteerAuth(Long memberSeq, Long volunteerSeq) {
+        VolunteerAuth findVolunteerAuth = volunteerAuthRepository.findByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        if (!findVolunteerAuth.getVolunteer().getMember().getSeq().equals(memberSeq)) {
+            throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
+        }
+
+        List<VolunteerDto.VolunteerAuthDetail.Participant> participants =
+                volunteerAuthRepository.findVolunteerParticipantsDtoByVolunteerSeq(volunteerSeq)
+                        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        return VolunteerDto.VolunteerAuthDetail.builder()
+                .volunteerSeq(findVolunteerAuth.getSeq())
+                .content(findVolunteerAuth.getContent())
+                .participants(participants)
+                .build();
+    }
 }
