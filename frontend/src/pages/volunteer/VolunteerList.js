@@ -47,7 +47,7 @@ function VolunteerList(){
             method: "get",
         })
         .then((res)=>{
-            console.log(res.data.data.volunteersForPage);
+            console.log(res.data);
             setVolunteers(res.data.data.volunteersForPage);
         })
         .catch((err) => {
@@ -146,18 +146,13 @@ function VolunteerList(){
                 {
                     volunteers && volunteers.map((volunteer)=>{
                         return(
-                            <tr 
-                                key={volunteer.seq} 
+                            <tr key={volunteer.seq} 
                                 onClick={()=>{goToVolunteer(volunteer.seq)}}>
-                                <td>{workStatus(volunteer.status)} {leftDays(volunteer.endDate)}</td>
-                                <td>{volunteer.title}</td>
-                                <td>{volunteer.maxParticipantCount}</td>
-                                <td>{volunteer.nickname}</td>
-                                <td>{volunteer.createdDate.slice(0, 10)}</td>
-                                {/* 게시글 작성 날짜, 마감 날짜, 현재인원 필요 */}
-                                {/* 현재 인원 말고..그..뭐야.. 인증시간 써도 될듯? 암튼 필요 */}
-                                {/* 상태에 대한 정의 필요, RECRUITING 말고 나머지 두개 잘 모르겠음 */}
-                                {/* 조회수도? */}
+                            <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate)}</td>
+                            <td>{volunteer.title}</td>
+                            <td>0/{volunteer.maxParticipantCount}</td>
+                            <td>{volunteer.nickname}</td>
+                            <td>{volunteer.createdDate.slice(0,10)}</td>
                             </tr>
                         )
                     })

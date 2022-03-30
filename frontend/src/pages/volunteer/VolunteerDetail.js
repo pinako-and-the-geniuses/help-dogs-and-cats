@@ -151,7 +151,7 @@ function VolunteerDetail(){
                         }
                     </li>
                     <li className={style.people}>
-                        <p>모집 인원: {post.approvedCount}명/{post.maxParticipantCount}명</p>
+                        <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
                         <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
                         {/* 모달 */}
                         <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
