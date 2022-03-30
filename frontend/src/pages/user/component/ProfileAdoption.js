@@ -1,17 +1,32 @@
+import Dompurify from "dompurify";
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
 import Editor from "components/Editor";
 export default function ProfileAdoption({ category, seq, isLogin }) {
-  const [list, setList] = useState();
+  const [modal, setModal] = useState(0);
+  const [detail, setDetail] = useState({
+    title: "",
+    content: "",
+  });
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [list, setList] = useState({
+    adopts: "",
+    currentPageNumber: "",
+    totalCount: "",
+    totalPageNumber: "",
+  });
+  // const [list, setList] = useState("");
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState([]);
+  // const [total, setTotal] = useState("");
   const size = 5;
   const jwt = sessionStorage.getItem("jwt");
   const navigator = useNavigate();
+  const closeRef = useRef(null);
 
   useEffect(() => {
     if (isLogin) {
@@ -20,36 +35,81 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
           headers: { Authorization: `Bearer ${jwt}` },
         })
         .then((res) => {
-          const data = res.data.data;
-          setTotal([data.totalCount, data.totalPageNumber]);
+          console.log(res.data.data);
+          const { adopts, currentPageNumber, totalCount, totalPageNumber } =
+            res.data.data;
+          setList({
+            ...list,
+            adopts,
+            currentPageNumber,
+            totalCount,
+            totalPageNumber,
+          });
         })
         .catch((err) => console.log(err));
     }
   }, [page]);
 
+  //해당 내용 클릭시 본인만 상세 내용 볼 수 있음
   const onGoToDetail = (itemSeq) => {
-    console.log(itemSeq);
-    navigator(`/volunteer/detail/${itemSeq}`);
+    setModal(itemSeq);
+    axios
+      .get(`${URL}/adopts/auth/${itemSeq}`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+      .then((res) => {
+        const { title, content } = res.data.data;
+        setDetail({ ...detail, title, content });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
+  // 요청 완료되면 모달 자동으로 닫히게
+  const onhandleClose = () => {
+    closeRef.current.click();
+  };
+
+  // 입양 요청서 서버에 보내기
+  const onAdoptAuth = () => {
+    axios({
+      url: `${URL}/adopts/auth`,
+      method: "POST",
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: {
+        title: title,
+        content: content,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        onhandleClose();
+        alert("요청 성공");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("요청에 실패했습니다.");
+      });
+  };
   return (
     <div>
-      <div name="글목록" className={st.listBox}>
+      <div className={st.listBox}>
         <div className={st.adopts}>
-          <div className={st.btn}>
+          <div name="입양인증요청" className={st.btn}>
             <button
               type="button"
               className="btn"
               style={{ backgroundColor: "#d0a96c" }}
               data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
+              data-bs-target="#adoptsCreate"
             >
               입양 인증
             </button>
             <div
               className="modal fade"
-              id="exampleModal"
-              tabindex="-1"
+              id="adoptsCreate"
+              tabIndex="-1"
               aria-labelledby="adoptsCreate"
               aria-hidden="true"
             >
@@ -57,24 +117,48 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title" id="adoptsCreate">
-                      입양완료 인증 요청
+                      입양완료 인증 요청서
                     </h5>
                     <button
+                      ref={closeRef}
                       type="button"
                       className="btn-close"
                       data-bs-dismiss="modal"
                       aria-label="Close"
                     ></button>
                   </div>
-                  <div className="modal-body row">
-                    <div className="row">
-                      <label htmlFor="아이이름">
-                        <h4>아이 이름</h4>
-                      </label>
-                      <input id="아이이름" type="text" />
+                  <div className={cn(`${st.body}`, "modal-body")}>
+                    <div className={st.name}>
+                      <div className={st.label}>
+                        <label htmlFor="아이이름">
+                          <span>동물 이름</span>
+                        </label>
+                      </div>
+
+                      <div className={st.input}>
+                        <input
+                          id="아이이름"
+                          type="text"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                        />
+                      </div>
                     </div>
-                    <div className="row">
-                      <Editor height={"80%"} />
+                    <div className={st.content}>
+                      <div className={st.label}>
+                        <label htmlFor="content">
+                          <span>내용</span>
+                        </label>
+                      </div>
+                      <div className={st.editor}>
+                        <Editor
+                          id="content"
+                          height={"90%"}
+                          value={content}
+                          setValue={setContent}
+                          placeholder={""}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="modal-footer">
@@ -83,70 +167,139 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                       className="btn btn-secondary"
                       data-bs-dismiss="modal"
                     >
-                      Close
+                      취소
                     </button>
-                    <button type="button" className="btn btn-primary">
-                      신청
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={onAdoptAuth}
+                    >
+                      작성
                     </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div>
-            <div name="임시">
-              <div className={st.listItem} onClick={() => onGoToDetail(3)}>
-                <div className="card-body">
-                  <h5 className={cn(st.cardTitle, "card-title")}>제목이다</h5>
-                </div>
-                <div className={st.cardEnd}>작성일</div>
-              </div>
-            </div>
-            {list ? (
-              list.map((item) => {
+          <div name="글 목록" className={st.list}>
+            {list.adopts ? (
+              list.adopts.map((item) => {
                 return (
-                  <div
-                    key={item.seq}
-                    className={st.listItem}
-                    onClick={() => onGoToDetail(item.seq)}
-                  >
-                    <div className="card-body">
-                      <h5 className={cn(st.cardTitle, "card-title")}>
-                        {item.title}
-                      </h5>
+                  <div key={item.seq} className={st.listItemDiv}>
+                    <button
+                      type="button"
+                      className={cn("btn", `${st.listItem}`)}
+                      onClick={() => onGoToDetail(item.seq)}
+                      data-bs-toggle="modal"
+                      data-bs-target="#detailModal"
+                    >
+                      <div className={st.itemCategory}>
+                        <div>
+                          {item.status === "REQUEST" ? "요청중" : ""}
+                          {item.status === "DONE" ? "인증완료" : ""}
+                          {item.status === "REJECT" ? "거절" : ""}
+                        </div>
+                      </div>
+                      <div className="card-body">
+                        <h5 className={cn(st.cardTitle, "card-title")}>
+                          {item.title}
+                        </h5>
+                      </div>
+                      <div className={st.cardEnd}>{item.createdDate}</div>
+                    </button>
+
+                    {/* 모달창 */}
+                    <div
+                      className="modal fade"
+                      id="detailModal"
+                      tabIndex="-1"
+                      aria-labelledby="detailModal"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="detailModal">
+                              입양완료 인증 요청서
+                            </h5>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                              onClick={() => setDetail("")}
+                            ></button>
+                          </div>
+                          <div className={cn(`${st.body}`, "modal-body")}>
+                            <div className={st.name}>
+                              <div className={st.label}>
+                                <label htmlFor="아이이름">
+                                  <span>동물 이름</span>
+                                </label>
+                              </div>
+
+                              <div className={st.input}>{detail.title}</div>
+                            </div>
+                            <div className={st.content}>
+                              <div className={st.label}>
+                                <label htmlFor="content">
+                                  <span>내용</span>
+                                </label>
+                              </div>
+                              <div className={st.editor}>
+                                <div
+                                  className={st.htmlDiv}
+                                  dangerouslySetInnerHTML={{
+                                    __html: detail.content,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              data-bs-dismiss="modal"
+                              onClick={() => setDetail("")}
+                            >
+                              닫기
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className={st.cardEnd}>{item.createdDate}</div>
                   </div>
                 );
               })
             ) : (
-              <h4 className={st.comment}>작성한 글이 없습니다.</h4>
+              <h4 className={st.comment}>입양 활동이 없습니다.</h4>
             )}
 
             {/* <div name="페이저" className={st.pager}>
-            <li>
-              {page === 1 ? (
-                <button href="#" disabled>
-                  Previous
-                </button>
-              ) : (
-                <button href="#" onClick={() => setPage(page - 1)}>
-                  Previous
-                </button>
-              )}
-            </li>
-            <li>
-              {list ? (
-                <button href="#" onClick={() => setPage(page + 1)}>
-                  Next
-                </button>
-              ) : (
-                <button href="#" disabled>
-                  Next
-                </button>
-              )}
-            </li>
-          </div> */}
+          <li>
+            {page === 1 ? (
+              <button href="#" disabled>
+                Previous
+              </button>
+            ) : (
+              <button href="#" onClick={() => setPage(page - 1)}>
+                Previous
+              </button>
+            )}
+          </li>
+          <li>
+            {list ? (
+              <button href="#" onClick={() => setPage(page + 1)}>
+                Next
+              </button>
+            ) : (
+              <button href="#" disabled>
+                Next
+              </button>
+            )}
+          </li>
+        </div> */}
           </div>
         </div>
       </div>
