@@ -26,6 +26,8 @@ import {
   VolunteerWrite,
 } from "./pages/volunteer";
 import { ManageMain } from "./pages/manager";
+import { Guide } from "pages/guide";
+import Footer from "components/Footer";
 
 function App() {
   return (
@@ -45,6 +47,9 @@ function App() {
         </>
         <>
           <Route path="user/profile/:seq" element={<Profile />} />
+        </>
+        <>
+          <Route path="/guide" element={<Guide />} />
         </>
         <>
           <Route path="/animals/animal" element={<Animal />} />
@@ -85,6 +90,7 @@ function App() {
           <Route path="/manage" element={<ManageMain />}></Route>
         </>
       </Routes>
+      <Footer></Footer>
     </BrowserRouter>
   );
 }
