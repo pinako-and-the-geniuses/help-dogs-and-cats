@@ -18,10 +18,11 @@ export default function Community() {
   const [category, setCategory] = useState("");
   const [keyword, setKeyword] = useState("");
   const [seq, setSeq] = useState("");
-  
+  const [memberSeq, setMemberSeq] = useState("");
   //const [arr, setArr] = useState();
   
   console.log(page, totalcount, totalPageNumber);
+  console.log("member", memberSeq);
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     axios
@@ -29,6 +30,7 @@ export default function Community() {
         `${URL}/communities?page=1&size=${size}&category=${category}&search=${search}&keyword=${keyword}`
       )
       .then((response) => {
+        setMemberSeq(response.data.data.communitiesForPage[0].memberSeq);
         setCommunity(response.data.data.communitiesForPage);
         setPage(response.data.data.currentPageNumber);
         setTotalcount(response.data.data.totalCount);
@@ -38,7 +40,7 @@ export default function Community() {
       })
       .catch((err) => console.log(err));
   }, []); //한번만 해줄때 []넣는다
-
+  
   const getRead = (e) => {
     console.log(category, search, keyword, size, page);
     console.log("read", e.target.value);
@@ -53,7 +55,7 @@ export default function Community() {
       }) //콘솔에 있는 것에서 data를 한번 더 들어가려면 이렇게 쓰면 된다.
       .catch((err) => console.log(err));
   };
-
+  
   const getPage = (e) => {
     // const key = e.target.value;
     // console.log("page",e.target.value);
