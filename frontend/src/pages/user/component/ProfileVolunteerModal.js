@@ -7,9 +7,10 @@ import Editor from "components/Editor";
 export default function ProfileVolunteer(item) {
   const [content, setContent] = useState();
 
-  function onEditorChange(value) {
+  // 에디터 부분 변경
+  const onEditorChange = (value) => {
     setContent(value);
-  }
+  };
 
   console.log(content);
   return (

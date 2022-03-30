@@ -91,7 +91,10 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
         alert("요청에 실패했습니다.");
       });
   };
-
+  // 에디터 부분 변경
+  const onEditorChange = (value) => {
+    setContent(value);
+  };
   return (
     <div>
       <div className={st.listBox}>
@@ -155,7 +158,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                           id="content"
                           height={"90%"}
                           value={content}
-                          setValue={setContent}
+                          onChange={onEditorChange}
                           placeholder={""}
                         />
                       </div>
