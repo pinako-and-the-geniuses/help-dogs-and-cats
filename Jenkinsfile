@@ -16,26 +16,10 @@ pipeline {
             }
         }
 
-        stage('Backend Build') {
-            steps {
-                sh 'chmod u+x ./backend/gradlew'
-                sh 'cp -r "/home/ubuntu/jenkins/backend/*" ./backend/'
-                sh './backend/gradlew build'
-                sh 'docker build -t backend ./backend/'
-            }
-        }
-        
         stage('Frontend Deploy') {
             steps {
                 sh 'docker ps -q --filter name=frontend | grep -q . && docker stop frontend && docker rm frontend'
-                sh 'docker run -d --name frontend -p 80:80 -p 443:443 frontend'
-            }
-        }
-
-        stage('Backend Deploy') {
-            steps {
-                sh 'docker ps -q --filter name=backend | grep -q . && docker stop backend && docker rm backend'
-                sh 'docker run -v /var/tmp/springboot/files:/var/tmp/springboot/files -d -it -p 8080:8080 --name backend backend'
+                sh 'docker run -d -p 80:80 -p 443:443 -u root --name frontend frontend'
             }
         }
 

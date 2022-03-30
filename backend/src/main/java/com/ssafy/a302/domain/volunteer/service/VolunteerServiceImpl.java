@@ -115,10 +115,16 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<VolunteerComment> volunteerComments = volunteerCommentRepository.findCommentsByVolunteerSeq(volunteerSeq)
                 .orElse(null);
 
+        List<VolunteerParticipant> findVolunteerParticipantList = volunteerParticipantRepository.countParticipantNumber(volunteerSeq)
+                .orElse(null);
+        Integer approvedCount = 0;
+        if (findVolunteerParticipantList != null){
+            approvedCount = findVolunteerParticipantList.size();
+        }
 
         List<VolunteerCommentDto.ForDetail> commentsForDetail = convertNestedStructure((volunteerComments));
 
-        return VolunteerDto.Detail.create(findVolunteer, writer, commentsForDetail);
+        return VolunteerDto.Detail.create(findVolunteer, writer, approvedCount,commentsForDetail);
     }
 
     private List<VolunteerCommentDto.ForDetail> convertNestedStructure(List<VolunteerComment> comments) {
