@@ -7,6 +7,7 @@ import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
 import SmallPaging from "components/SmallPaging";
 import { useSelector } from "react-redux";
+import Editor from "components/Editor";
 
 export default function ProfileVolunteer({ category, seq, isLogin }) {
   // 활동 목록
@@ -21,6 +22,12 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const userSeq = useSelector((state) => state.userInfo.userInfo.seq);
   const [modal, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [content, setContent] = useState();
+
+  // 에디터 부분 변경
+  const onEditorChange = (value) => {
+    setContent(value);
+  };
 
   useEffect(() => {
     if (isLogin) {
@@ -158,13 +165,13 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                     </label>
                                   </div>
                                   <div className={st.editor}>
-                                    {/* <Editor
-                    id="content"
-                    height={"90%"}
-                    value={content}
-                    onChange={onEditorChange}
-                    placeholder={""}
-                  /> */}
+                                    <Editor
+                                      id="content"
+                                      height={"90%"}
+                                      value={content}
+                                      onChange={onEditorChange}
+                                      placeholder={""}
+                                    />
                                   </div>
                                 </div>
                               </div>
