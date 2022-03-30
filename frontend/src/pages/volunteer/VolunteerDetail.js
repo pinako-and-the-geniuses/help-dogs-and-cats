@@ -21,7 +21,8 @@ function VolunteerDetail(){
     const [post, setPost] = useState([]);
     const [commentContent, setCommentContent] = useState("");
     const [join, setJoin] = useState(false);
-    const [dd, setDd] = useState(1);
+    const [dd, setDd] = useState(1); //test용
+    const [volStatus, setVolstatus] = useState("");
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -36,21 +37,7 @@ function VolunteerDetail(){
         navigate(`/volunteer/write/${id}`)
     }
 
-    const deletePost=async()=>{
-        console.log('삭제');
-        await axios({
-            url: `${URL}/volunteers/${id}`,
-            method: "delete",
-            headers: { Authorization: `Bearer ${jwt}`}
-        })
-        .then((res)=>{
-            navigate('/volunteer/list');
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }
-
+    //게시글 정보 가져오기
     const getPost=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}`,
@@ -67,6 +54,45 @@ function VolunteerDetail(){
         })
     }
 
+    //글 작성자: 모집 상태 변경
+    const changeStatus=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/status`,
+            method: "patch",
+            data :{
+                status: "ONGOING",
+            },
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('상태 수정 완료');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    //일반: 참여 신청
+    const apply=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/apply`,
+            method: "post",
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('ok');
+            setJoin(true);
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+
+    //댓글 달기 - 안됨!
     const volReply=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}/comments`,
@@ -80,6 +106,22 @@ function VolunteerDetail(){
         })
         .then((res)=>{
             console.log('댓글달기성공');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    //게시글 삭제
+    const deletePost=async()=>{
+        console.log('삭제');
+        await axios({
+            url: `${URL}/volunteers/${id}`,
+            method: "delete",
+            headers: { Authorization: `Bearer ${jwt}`}
+        })
+        .then((res)=>{
+            navigate('/volunteer/list');
         })
         .catch((err)=>{
             console.log(err);
@@ -139,12 +181,12 @@ function VolunteerDetail(){
                         //모집 변수
                         join
                         ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>
-                        :<button type='button' onClick={joinBtn} className={style.joinBtn}>모집마감</button>
+                        :<button type='button' onClick={changeStatus} className={style.joinBtn}>모집마감</button>
                     )
                     :(
                         join
                         ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                        :<button type='button' onClick={joinBtn} className={style.joinBtn}>참여신청</button>
+                        :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
                     )
                 }
             </div>
