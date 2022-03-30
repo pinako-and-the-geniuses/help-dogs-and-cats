@@ -54,6 +54,7 @@ public class ImageController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BaseResponseDto<Map<String, String>> saveImageFile(@RequestPart MultipartFile imageFile) throws IOException {
+        log.info("이미지 파일 = {}", imageFile);
 
         String extRegx = "(.*?)\\.(png|jpeg|gif|jpg)$";
         String originalFilename = imageFile.getOriginalFilename();
@@ -95,6 +96,7 @@ public class ImageController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{imageFilename}")
     public BaseResponseDto<?> removeImageFile(@PathVariable(name = "imageFilename") String imageFilename) throws IOException {
+        log.info("이미지 파일 이름 = {}", imageFilename);
 
         imageService.removeImageFile(imageFilename);
 

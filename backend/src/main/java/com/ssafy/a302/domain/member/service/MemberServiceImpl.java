@@ -228,4 +228,13 @@ public class MemberServiceImpl implements MemberService {
         String[] emailInfo = email.split("@");
         return stringUtil.mask(emailInfo[0]) + "@" + emailInfo[1];
     }
+
+    @Transactional
+    @Override
+    public void withdraw(Long memberSeq) {
+        Member findMember = memberRepository.findMemberBySeq(memberSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+
+        findMember.delete();
+    }
 }

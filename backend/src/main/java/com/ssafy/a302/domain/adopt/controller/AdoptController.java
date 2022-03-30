@@ -56,6 +56,7 @@ public class AdoptController {
     @PostMapping("/auth")
     public BaseResponseDto<?> requestAdoptAuth(@Validated @RequestBody AdoptAuthRequestDto.RequestAdoptAuthInfo requestAdoptAuthInfo,
                                                Authentication authentication) {
+        log.info("입양 인증 요청 정보 = {}", requestAdoptAuthInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         adoptService.requestAdoptAuth(memberSeq, requestAdoptAuthInfo.toServiceDto());
@@ -90,6 +91,8 @@ public class AdoptController {
     public BaseResponseDto<?> requestAdoptAuth(@PathVariable(name = "adoptAuthSeq") Long adoptAuthSeq,
                                                @Validated @RequestBody AdoptAuthRequestDto.ModifyAdoptAuthInfo modifyAdoptAuthInfo,
                                                Authentication authentication) {
+        log.info("입양 인증 식별키 = {}", adoptAuthSeq);
+        log.info("입양 인증 수정 정보 = {}", modifyAdoptAuthInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         adoptService.modifyAdoptAuth(memberSeq, adoptAuthSeq, modifyAdoptAuthInfo.toServiceDto());
@@ -123,6 +126,7 @@ public class AdoptController {
     @GetMapping("/auth/{adoptAuthSeq}")
     public BaseResponseDto<AdoptDto.AdoptAuth> requestAdoptAuth(@PathVariable(name = "adoptAuthSeq") Long adoptAuthSeq,
                                                Authentication authentication) {
+        log.info("입양 인증 식별키 = {}", adoptAuthSeq);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         AdoptDto.AdoptAuth adoptAuth = adoptService.getAdoptAuth(memberSeq, adoptAuthSeq);
