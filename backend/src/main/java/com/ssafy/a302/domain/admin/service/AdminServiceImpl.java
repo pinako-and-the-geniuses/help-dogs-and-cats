@@ -9,14 +9,17 @@ import com.ssafy.a302.domain.volunteer.repository.VolunteerAuthRepository;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl implements AdminService {
 
     private final VolunteerAuthRepository volunteerAuthRepository;
 
@@ -56,5 +59,35 @@ public class AdminServiceImpl implements AdminService{
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_ADOPT_AUTH));
 
         findAdoptAuth.changeAdoptAuthStatus(adoptAuthDto.getStatus());
+    }
+
+    @Override
+    public VolunteerAuthDto.VolunteerAuthPage getVolunteerAuthList(Pageable pageable, String search) {
+        Integer totalCount = volunteerAuthRepository.countAllByStatus(search);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<VolunteerAuthDto.VolunteerAuthPage.VolunteerAuthForPage> volunteerAuthForPages = volunteerAuthRepository.findVolunteerAuthForPageDto(pageable, search)
+                .orElse(null);
+
+        return VolunteerAuthDto.VolunteerAuthPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .volunteerAuthForPages(volunteerAuthForPages)
+                .currentPageNumber(pageable.getPageNumber())
+                .build();
+    }
+
+    @Override
+    public AdoptAuthDto.AdoptAuthPage getAdoptAuthList(Pageable pageable, String search) {
+        Integer totalCount = adoptAuthRepository.countAllByStatus(search);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<AdoptAuthDto.AdoptAuthPage.AdoptAuthForPage> adoptAuthForPages = adoptAuthRepository.findAdoptAuthForPageDto(pageable, search)
+                .orElse(null);
+
+        return AdoptAuthDto.AdoptAuthPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .adoptAuthForPages(adoptAuthForPages)
+                .currentPageNumber(pageable.getPageNumber())
+                .build();
     }
 }
