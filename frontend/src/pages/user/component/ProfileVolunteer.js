@@ -1,3 +1,4 @@
+import VolunteerModal from "../component/ProfileVolunteerModal";
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
 import { useEffect, useState } from "react";
@@ -52,7 +53,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                     <button
                       type="button"
                       className={cn("btn", `${st.listItem}`)}
-                      onClick={() => onGoToDetail(item.seq)}
+                      onClick={() => onGoToDetail(item.volunteerSeq)}
                       data-bs-toggle="modal"
                       data-bs-target="#detailModal"
                     >
@@ -82,15 +83,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                       </div>
                       <div className={st.cardEnd}>{item.createdDate}</div>
                     </button>
-                    <button
-                      type="button"
-                      className="btn"
-                      style={{ backgroundColor: "#d0a96c" }}
-                      data-bs-toggle="modal"
-                      data-bs-target="#volunteerModal"
-                    >
-                      봉사 인증
-                    </button>
+                    <VolunteerModal item={item} />
                   </div>
                 );
               })

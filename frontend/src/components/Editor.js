@@ -84,6 +84,10 @@ export default function Editor(props) {
     "color",
   ];
 
+  const onSetValue = (e) => {
+    props.setValue(e.target.value);
+  };
+
   return (
     <ReactQuill
       style={{ height: `${props.height}`, width: "100%" }}
@@ -91,7 +95,7 @@ export default function Editor(props) {
       theme="snow"
       placeholder={props.placeholder}
       value={props.value}
-      onChange={props.setValue}
+      onChange={onSetValue}
       modules={modules}
       formats={formats}
     />
