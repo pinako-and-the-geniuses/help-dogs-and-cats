@@ -31,4 +31,6 @@ public interface MemberService {
     void removeProfileImage(Long memberSeq) throws IOException;
 
     String findMaskedEmail(String tel);
+
+    void withdraw(Long memberSeq);
 }
