@@ -30,16 +30,27 @@ public class OrganizeData {
         List<SpeciesNeutralDto> speciesNeutralDtoList = animalDataRepository.setSpeciesNeutral(year);
 
         annualBreedRepository.deleteAll();
-        annualBreedDtoList.forEach(a -> annualBreedRepository.save(a.toEntity()));
-
+        annualBreedDtoList.forEach(a -> {
+            if (a != null)
+                annualBreedRepository.save(a.toEntity());
+        });
         annualStateRepository.deleteAll();
-        annualStateDtoList.forEach(a -> annualStateRepository.save(a.toEntity()));
-
+        annualStateDtoList.forEach(a -> {
+            if (a != null)
+                annualStateRepository.save(a.toEntity());
+        });
         ageStateRepository.deleteAll();
-        ageStateDtoList.forEach(a -> ageStateRepository.save(a.toEntity()));
-
+        ageStateDtoList.forEach(a -> {
+            if (a != null) {
+                ageStateRepository.save(a.toEntity());
+            }
+        });
         speciesNeutralRepository.deleteAll();
-        speciesNeutralDtoList.forEach(a -> speciesNeutralRepository.save(a.toEntity()));
+        speciesNeutralDtoList.forEach(a -> {
+            if (a != null) {
+                speciesNeutralRepository.save(a.toEntity());
+            }
+        });
 
     }
 }
