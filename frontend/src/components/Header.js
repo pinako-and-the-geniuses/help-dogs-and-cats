@@ -34,7 +34,7 @@ export default function Header() {
   // 로그인 상태에 따라 보이기 (회원가입/로그인/로그아웃/MY)
   // 관리자일때 관리자페이지 보이기
   const isLogged = () => {
-    if(role === "ADMIN") {
+    if (role === "ADMIN") {
       return (
         <div className="logout">
           <a className="user me-4" onClick={onlogout}>
@@ -44,7 +44,7 @@ export default function Header() {
             관리자
           </a>
         </div>
-      )
+      );
     }
     if (isLogin) {
       return (
@@ -92,7 +92,7 @@ export default function Header() {
               </a>
               <ul>
                 <li>
-                  <a href="#">입양 가이드</a>
+                  <a href="/guide">입양 가이드</a>
                 </li>
                 <li>
                   <a href="/animals/animal">유기동물 조회</a>
