@@ -5,6 +5,7 @@ import cn from 'classnames';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
+import swal from 'sweetalert';
 
 function VolunteerList(){
     const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
@@ -15,6 +16,24 @@ function VolunteerList(){
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
 
+    //남은 날짜
+    const leftDays=(enddate)=>{
+        const today = new Date();
+        const endDate = new Date(enddate);
+        const gap = endDate.getTime() - today.getTime();
+        const leftdays = Math.ceil(gap/(1000*60*60*24));
+
+        if(leftdays < 0 ) return null;
+        else if(leftdays === 0) return(`[D-DAY]`);
+        else return(`[D-${leftdays}]`);
+    }
+
+    //봉사 모집 상태
+    const workStatus=(workStatus)=>{
+        if(workStatus === "RECRUITING") return "모집중";
+        else if(workStatus === "ONGOING") return "봉사중";
+        else if(workStatus === "DONE") return "봉사완료"; //수정필요
+    }
 
     const goToWrite =()=>{
         navigate('/volunteer/write');
@@ -48,7 +67,7 @@ function VolunteerList(){
         }
         else{
             //회원만 글을 읽을 수 있음
-            alert('권한이 없습니다');
+            swal('권한이 없습니다');
         }
 
     }
@@ -130,7 +149,7 @@ function VolunteerList(){
                             <tr 
                                 key={volunteer.seq} 
                                 onClick={()=>{goToVolunteer(volunteer.seq)}}>
-                                <td>{volunteer.status}</td>
+                                <td>{workStatus(volunteer.status)} {leftDays(volunteer.endDate)}</td>
                                 <td>{volunteer.title}</td>
                                 <td>{volunteer.maxParticipantCount}</td>
                                 <td>{volunteer.nickname}</td>
