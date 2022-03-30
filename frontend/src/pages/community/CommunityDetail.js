@@ -8,9 +8,12 @@ import Comment from "components/Comment/Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import Community from './Community';
 export default function CommunityDetail() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
   const [communityDetail, setCommunityDetail] = useState("");
+  const [writerSeq, setWriterSeq] = useState("");
   const { seq } = useParams();
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
@@ -28,13 +31,15 @@ export default function CommunityDetail() {
         headers: { Authorization: `Bearer ${jwt}` },
       })
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
+          setWriterSeq(response.data.data.writerSeq);
           setCommunityDetail(response.data);
         }) //엑시오스 보낸 결과
         .catch((err) => console.log(err));
     }
   }, [isLogin]); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-
+  console.log("writer",writerSeq);
+  console.log("member",memberSeq);
   console.log("detail", communityDetail);
   const getDelete = async () => {
     axios
@@ -54,7 +59,6 @@ export default function CommunityDetail() {
   const GotoEdit = () => {
     navigate(`/community/communityupdate/${seq}`);
   };
-
   return (
     <div className={st.community_commentBox}>
       <header>
@@ -74,11 +78,18 @@ export default function CommunityDetail() {
                 {communityDetail.data.writerNickname}
               </p>
             </div>
-            <div className={st.content_div}>{communityDetail.data.content}</div>
+            <div
+              className={st.content_div}
+              dangerouslySetInnerHTML={{
+                __html: communityDetail.data.content,
+              }}
+            ></div>
           </>
         ) : (
           "로딩중"
         )}
+        {writerSeq===memberSeq?
+        <>
         <div className={st.contentbtn}>
           <button onClick={getDelete} className={st.deletebutton}>
             삭제
@@ -87,23 +98,9 @@ export default function CommunityDetail() {
             수정
           </button>
         </div>
+        </>
+        :null}
       </section>
-      {/* <section className={st.topContent}>
-        <div className={st.title}>
-          <p className={st.tag_p}>[잡담]</p>
-          <p className={st.title_p}>강아지 간식으로 이거 최곱니다.</p>
-          <p className={st.read_p}>조회수</p>
-          <p className={st.date_p}>2022.03.03</p>
-          <p className={st.author_p}>김싸피</p>
-        </div>
-
-        <div className={st.content_div}>이거 정말 맛있습니다.</div>
-        <div className={st.content}>
-          <button type="button" className={st.button}>
-            수정
-          </button>
-        </div>
-      </section> */}
       <Comment />
     </div>
   );
