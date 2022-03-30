@@ -52,7 +52,7 @@ public class VolunteerAuthRepositoryImpl implements VolunteerAuthRepositoryCusto
 
         if (search.equals("auth")) {
             query.where(volunteerAuth.status.eq(Status.DONE));
-        } else {
+        } else if (search.equals("not-auth")) {
             query.where(volunteerAuth.status.ne(Status.DONE));
         }
 
@@ -74,7 +74,7 @@ public class VolunteerAuthRepositoryImpl implements VolunteerAuthRepositoryCusto
 
         if (search.equals("auth")) {
             query.where(volunteerAuth.status.eq(Status.DONE));
-        } else {
+        } else if (search.equals("not-auth")) {
             query.where(volunteerAuth.status.ne(Status.DONE));
         }
 

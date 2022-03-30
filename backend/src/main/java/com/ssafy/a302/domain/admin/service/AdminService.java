@@ -15,4 +15,6 @@ public interface AdminService {
     void changeAdoptAuthStatus(AdoptAuthDto adoptAuthDto, Long adoptSeq);
 
     VolunteerAuthDto.VolunteerAuthPage getVolunteerAuthList(Pageable pageable, String search);
+
+    AdoptAuthDto.AdoptAuthPage getAdoptAuthList(Pageable pageable, String search);
 }

@@ -23,7 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -169,6 +168,45 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(
             summary = "괸리자 봉사활동 인증 목록 조회 API",
+            description = "인증 상태, 봉사활동 인증 식별키 전달받고 봉사활동 인증 데이터를 반환합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "API 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/volunteers/auth")
+    public BaseResponseDto<VolunteerAuthDto.VolunteerAuthPage> getVolunteerAuthList(Pageable pageable, @RequestParam String search) {
+        if (StringUtils.hasText(search)) {
+            if (!search.equals("all") && !search.equals("auth") && !search.equals("not-auth")) {
+                throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
+            }
+
+            VolunteerAuthDto.VolunteerAuthPage volunteerAuthPage = adminService.getVolunteerAuthList(pageable, search);
+
+            return BaseResponseDto.<VolunteerAuthDto.VolunteerAuthPage>builder()
+                    .message(Message.SUCCESS)
+                    .data(volunteerAuthPage)
+                    .build();
+        } else {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_BLANK);
+        }
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Operation(
+            summary = "괸리자 입양 인증 목록 조회 API",
             description = "인증 상태, 입양 인증 식별키 전달받고 입양 인증 데이터를 반환합니다.",
             tags = {"member"}
     )
@@ -187,18 +225,18 @@ public class AdminController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/volunteer/auth")
-    public BaseResponseDto<VolunteerAuthDto.VolunteerAuthPage> getVolunteerAuthList(Pageable pageable, @RequestParam String search) {
+    @GetMapping("/adopts/auth")
+    public BaseResponseDto<AdoptAuthDto.AdoptAuthPage> getAdoptAuthList(Pageable pageable, @RequestParam String search) {
         if (StringUtils.hasText(search)) {
             if (!search.equals("all") && !search.equals("auth") && !search.equals("not-auth")) {
                 throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
             }
 
-            VolunteerAuthDto.VolunteerAuthPage volunteerAuthPage = adminService.getVolunteerAuthList(pageable, search);
+            AdoptAuthDto.AdoptAuthPage adoptAuthPage = adminService.getAdoptAuthList(pageable, search);
 
-            return BaseResponseDto.<VolunteerAuthDto.VolunteerAuthPage>builder()
+            return BaseResponseDto.<AdoptAuthDto.AdoptAuthPage>builder()
                     .message(Message.SUCCESS)
-                    .data(volunteerAuthPage)
+                    .data(adoptAuthPage)
                     .build();
         } else {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_BLANK);
