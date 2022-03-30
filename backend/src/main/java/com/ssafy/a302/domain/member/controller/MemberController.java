@@ -77,6 +77,8 @@ public class MemberController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BaseResponseDto<?> register(@Validated @RequestBody MemberRequestDto.RegisterInfo registerInfo) {
+        log.info("회원가입 정보 = {}", registerInfo);
+
         memberService.register(registerInfo.toServiceDto());
 
         return BaseResponseDto.builder()
@@ -124,6 +126,8 @@ public class MemberController {
     })
     @GetMapping("/email-duplicate-check/{email}")
     public ResponseEntity<BaseResponseDto<?>> emailDuplicateCheck(@PathVariable(name = "email") String email) {
+        log.info("이메일 = {}", email);
+
         String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
         if (!email.matches(emailRegx)) {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_EMAIL);
@@ -181,6 +185,8 @@ public class MemberController {
     })
     @GetMapping("/nickname-duplicate-check/{nickname}")
     public ResponseEntity<BaseResponseDto<?>> nicknameDuplicateCheck(@PathVariable(name = "nickname") String nickname) {
+        log.info("닉네임 = {}", nickname);
+
         String nicknameRegx = "^[0-9|a-z|가-힣|\\s]{4,10}$";
         if (!nickname.matches(nicknameRegx)) {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_NICKNAME);
@@ -234,9 +240,10 @@ public class MemberController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @GetMapping("/tel-duplicate-check/{tel}")
     public ResponseEntity<BaseResponseDto<?>> telDuplicateCheck(@PathVariable(name = "tel") String tel) {
+        log.info("핸드폰 번호 = {}", tel);
+
         String telRegx = "^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$";
         if (!tel.matches(telRegx)) {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_TEL);
@@ -279,6 +286,8 @@ public class MemberController {
     })
     @PostMapping("/login")
     public ResponseEntity<BaseResponseDto<Map<String, Object>>> login(@Validated @RequestBody MemberRequestDto.LoginInfo loginInfo) {
+        log.info("로그인 정보 = {}", loginInfo);
+
         HttpStatus status = null;
         Map<String, Object> data = null;
 
@@ -329,6 +338,8 @@ public class MemberController {
     public BaseResponseDto<?> modify(@PathVariable(name = "memberSeq") Long memberSeq,
                                      @Validated @RequestBody MemberRequestDto.ModifyInfo modifyInfo,
                                      Authentication authentication) {
+        log.info("회원 식별키 = {}", memberSeq);
+        log.info("회원정보 수정 정보 = {}", modifyInfo);
 
         authenticationUtil.verifyMemberSeq(authentication, memberSeq);
 
@@ -372,6 +383,8 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/email-auth/{email}")
     public BaseResponseDto<?> sendEmailAuthKey(@PathVariable String email) {
+        log.info("이메일 = {}", email);
+
         String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
         if (!email.matches(emailRegx)) {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_EMAIL);
@@ -404,6 +417,8 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/email-auth")
     public BaseResponseDto<?> verifyEmailAuthKey(@Validated @RequestBody EmailAuthVerifyRequestDto emailAuthVerifyRequestDto) {
+        log.info("이메일 인증 요청 정보 = {}", emailAuthVerifyRequestDto);
+
         emailService.verifyEmail(emailAuthVerifyRequestDto.toEmailAuthVerifyServiceDto());
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_AUTHENTICATE_EMAIL)
@@ -443,6 +458,8 @@ public class MemberController {
     public BaseResponseDto<Map<String, String>> modifyProfileImage(@PathVariable(name = "memberSeq") Long memberSeq,
                                                                    @RequestPart MultipartFile profileImageFile,
                                                                    Authentication authentication) throws IOException {
+        log.info("회원 식별키 = {}", memberSeq);
+        log.info("프로필 이미지 파일 = {}", profileImageFile);
 
         authenticationUtil.verifyMemberSeq(authentication, memberSeq);
 
@@ -491,6 +508,7 @@ public class MemberController {
     @DeleteMapping("/{memberSeq}/profile-image")
     public BaseResponseDto<?> removeProfileImage(@PathVariable(name = "memberSeq") Long memberSeq,
                                                  Authentication authentication) throws IOException {
+        log.info("회원 식별키 = {}", memberSeq);
 
         authenticationUtil.verifyMemberSeq(authentication, memberSeq);
 
@@ -523,6 +541,8 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/password-reset/{email}")
     public ResponseEntity<BaseResponseDto<?>> sendPasswordResetMail(@PathVariable String email) {
+        log.info("이메일 = {}", email);
+
         String emailRegx = "^[a-zA-Z0-9]([._-]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]$";
         if (!email.matches(emailRegx)) {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_EMAIL);
@@ -563,8 +583,10 @@ public class MemberController {
     })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/password-reset")
-    public BaseResponseDto<?> resetPassword(@Validated @RequestBody PasswordResetRequestDto passwordResetRequestDto
-            , Authentication authentication) {
+    public BaseResponseDto<?> resetPassword(@Validated @RequestBody PasswordResetRequestDto passwordResetRequestDto,
+                                            Authentication authentication) {
+        log.info("비밀번호 재설정 요청 정보 = {}", passwordResetRequestDto);
+
         String passwordRegx = "^((?=.*[a-z])(?=.*\\d)((?=.*\\W)|(?=.*[A-Z]))|(?=.*\\W)(?=.*[A-Z])((?=.*\\d)|(?=.*[a-z]))).{8,20}$";
 
         if (!passwordResetRequestDto.getNewPassword().matches(passwordRegx)) {
@@ -616,6 +638,8 @@ public class MemberController {
     })
     @GetMapping("/find-email-by/{tel}")
     public ResponseEntity<BaseResponseDto<Map<String, String>>> findEmailByTel(@PathVariable(name = "tel") String tel) {
+        log.info("핸드폰 번호 = {}", tel);
+
         String telRegx = "^[0-9]{3}-[0-9]{3,4}-[0-9]{3,4}$";
         if (!tel.matches(telRegx)) {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_MEMBER_TEL);
@@ -636,5 +660,44 @@ public class MemberController {
                 .message(status == HttpStatus.OK ? Message.SUCCESS_FIND_EMAIL : null)
                 .data(data)
                 .build(), status);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @Operation(
+            summary = "회원 탈퇴 API",
+            description = "회원 탈퇴 API 입니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "회원 탈퇴에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "접근 권한이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{memberSeq}")
+    public BaseResponseDto<?> withdraw(@PathVariable(name = "memberSeq") Long memberSeq,
+                                       Authentication authentication) {
+        log.info("회원 식별키 [{}]", memberSeq);
+
+        authenticationUtil.verifyMemberSeq(authentication, memberSeq);
+
+        memberService.withdraw(memberSeq);
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .build();
     }
 }
