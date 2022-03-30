@@ -8,7 +8,7 @@ import com.ssafy.a302.domain.volunteer.repository.VolunteerParticipantRepository
 import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerParticipantDto;
 import com.ssafy.a302.global.constant.ErrorMessage;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -85,14 +85,20 @@ public class VolunteerParticipantServiceImpl implements VolunteerParticipantServ
         return result;
     }
 
-    @Data
+    @Getter
     static class SimpleVolunteerParticipantDto {
         private Long seq;
+
         private String email;
+
+        private String nickname;
+
         private boolean isApprove;
+
         public SimpleVolunteerParticipantDto(VolunteerParticipant volunteerParticipant) {
             seq = volunteerParticipant.getMember().getSeq();
             email = volunteerParticipant.getMember().getEmail();
+            nickname = volunteerParticipant.getMember().getDetail().getNickname();
             isApprove = volunteerParticipant.getApprove();
         }
     }

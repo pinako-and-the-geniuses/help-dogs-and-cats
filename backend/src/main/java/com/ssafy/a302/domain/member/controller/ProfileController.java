@@ -46,6 +46,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{memberSeq}")
     public BaseResponseDto<MemberDto.Profile> profileView(@PathVariable(name = "memberSeq") Long memberSeq) {
+        log.info("회원 식별키 = {}", memberSeq);
 
         MemberDto.Profile memberProfile = profileService.getProfile(memberSeq);
 
@@ -78,7 +79,9 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{memberSeq}/communities")
     public BaseResponseDto<ProfileDto.CommunityPage> communities(@PathVariable(name = "memberSeq") Long memberSeq,
-                                          Pageable pageable) {
+                                                                 Pageable pageable) {
+        log.info("회원 식별키 = {}", memberSeq);
+        log.info("페이징 정보 = {}", pageable);
 
         ProfileDto.CommunityPage communityPage = profileService.getCommunities(memberSeq, pageable);
 
@@ -111,7 +114,9 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{memberSeq}/adopts")
     public BaseResponseDto<ProfileDto.AdoptPage> adopts(@PathVariable(name = "memberSeq") Long memberSeq,
-                                                                 Pageable pageable) {
+                                                        Pageable pageable) {
+        log.info("회원 식별키 = {}", memberSeq);
+        log.info("페이징 정보 = {}", pageable);
 
         ProfileDto.AdoptPage adoptPage = profileService.getAdopts(memberSeq, pageable);
 
@@ -145,6 +150,8 @@ public class ProfileController {
     @GetMapping("/{memberSeq}/volunteers")
     public BaseResponseDto<ProfileDto.VolunteerPage> volunteers(@PathVariable(name = "memberSeq") Long memberSeq,
                                                                  Pageable pageable) {
+        log.info("회원 식별키 = {}", memberSeq);
+        log.info("페이징 정보 = {}", pageable);
 
         ProfileDto.VolunteerPage volunteerPage = profileService.getVolunteers(memberSeq, pageable);
 
