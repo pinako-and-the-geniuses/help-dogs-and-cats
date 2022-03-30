@@ -20,6 +20,8 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const jwt = sessionStorage.getItem("jwt");
   const userSeq = useSelector((state) => state.userInfo.userInfo.seq);
   const [modal, setModal] = useState(false);
+  const [modalData, setModalData] = useState({});
+
   useEffect(() => {
     if (isLogin) {
       axios
@@ -42,7 +44,8 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     navigator(`/volunteer/detail/${itemSeq}`);
   };
 
-  const onClickModal = () => {
+  const onClickModal = (el) => {
+    setModalData(el);
     setModal(true);
   };
   console.log("렌더링수");
@@ -96,7 +99,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                         data-bs-toggle="modal"
                         data-bs-target="#volunteerModal"
                         onClick={() => {
-                          onClickModal(item.title);
+                          onClickModal(item);
                         }}
                       >
                         봉사 인증
@@ -132,7 +135,9 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                       <span>제목</span>
                                     </label>
                                   </div>
-                                  <div className={st.input}>{item.title}</div>
+                                  <div className={st.input}>
+                                    {modalData.title}
+                                  </div>
                                 </div>
 
                                 <div name="인원관리" className={st.name}>
@@ -142,7 +147,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                     </label>
                                   </div>
                                   <div className={st.input}>
-                                    {item.volunteerSeq}
+                                    {modalData.volunteerSeq}
                                   </div>
                                 </div>
 
