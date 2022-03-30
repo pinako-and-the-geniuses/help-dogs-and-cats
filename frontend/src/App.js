@@ -27,6 +27,7 @@ import {
 } from "./pages/volunteer";
 import { ManageMain } from "./pages/manager";
 import { Guide } from "pages/guide";
+import Footer from "components/Footer";
 
 function App() {
   return (
@@ -89,6 +90,7 @@ function App() {
           <Route path="/manage" element={<ManageMain />}></Route>
         </>
       </Routes>
+      <Footer></Footer>
     </BrowserRouter>
   );
 }
