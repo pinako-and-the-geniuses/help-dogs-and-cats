@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import style from './styles/VolunteerWrite.module.scss';
-import Editor from 'components/Editor';
-import axios from 'axios';
-import { URL } from '../../public/config';
 import { useNavigate } from 'react-router-dom';
+import { URL } from '../../public/config';
+import axios from 'axios';
+import Editor from 'components/Editor';
+import style from './styles/VolunteerWrite.module.scss';
+import swal from 'sweetalert';
 
 function VolunteerWrite(){
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ function VolunteerWrite(){
     const [cd, setCd] = useState("");
     // const [cgg, setCgg] = useState();
     const [time, setTime] = useState(0);
-    const [party, setParty] = useState(0);
+    const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
@@ -61,8 +62,8 @@ function VolunteerWrite(){
         console.log(text);
     }
 
-    ///일단 만들어만 놨음... htmlContent 받아와서 넣어줘야 함
-    //하위 컴포넌트에서 상위 컴포넌트로 데이터 보내기 가능?
+    
+    // title, endDate, 
     const post = async()=>{
         await axios({
             url: `${URL}/volunteers`,
@@ -92,6 +93,18 @@ function VolunteerWrite(){
 
     const onSubmit=(e)=>{
         e.preventDefault();
+        if(title === ""){
+            swal('제목값은 필수입니다.');
+            return;
+        }
+        if(endDate === ""){
+            swal('마감일은 필수입니다.');
+            return;
+        }
+        if(content.length < 15){
+            swal('내용을 더 자세히 적어주세요.');
+            return;
+        }
         post();
     }
 
@@ -167,7 +180,7 @@ function VolunteerWrite(){
                 setValue={setContent}
                 >
             </Editor>
-
+            {console.log('dd',content.length)}
             <button 
                 className={style.addBtn}
                 onClick={onSubmit}>등록</button>

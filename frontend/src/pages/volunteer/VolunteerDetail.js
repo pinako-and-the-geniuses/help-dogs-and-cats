@@ -112,14 +112,28 @@ function VolunteerDetail(){
             <h1>봉사활동</h1>
 
             <div className={style.titleBox}>
-                <p className={style.leftdays}>D-{leftdays}</p>
+                {
+                    leftdays >= 0
+                    ? <p className={style.leftdays}>D-{leftdays}</p>
+                    : <p className={style.leftdays}>마감</p>
+                }
+                {/* <p className={style.leftdays}>D-{leftdays}</p> */}
                 {/* 날짜 0일 내려가면 마감 뜸 */}
                 {/* 마감돼도 마감 뜸 */}
                 <p className={style.title}>{post.title}</p>
                 {
-                    join
-                    ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                    :<button type='button' onClick={joinBtn} className={style.joinBtn}>참여신청</button>
+                    memSeq === post.writerSeq
+                    ?(
+                        //모집 변수
+                        join
+                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>
+                        :<button type='button' onClick={joinBtn} className={style.joinBtn}>모집마감</button>
+                    )
+                    :(
+                        join
+                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                        :<button type='button' onClick={joinBtn} className={style.joinBtn}>참여신청</button>
+                    )
                 }
             </div>
 
@@ -137,7 +151,7 @@ function VolunteerDetail(){
                         }
                     </li>
                     <li className={style.people}>
-                        <p>모집 인원: {post.approvedCount}명/5명</p>
+                        <p>모집 인원: {post.approvedCount}명/{post.maxParticipantCount}명</p>
                         <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
                         {/* 모달 */}
                         <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
