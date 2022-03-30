@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage('Frontend Build') {
             steps {
-                sh 'docker build -t frontend:latest ./frontend/'
+                sh 'docker build -t frontend ./frontend/'
             }
         }
 
         stage('Frontend Deploy') {
             steps {
                 sh 'docker ps -q --filter name=frontend | grep -q . && docker stop frontend && docker rm frontend'
-                sh 'docker run -d --name frontend -p 80:80 -p 443:443 frontend'
+                sh 'docker run -d -p 80:80 -p 443:443 --name frontend frontend'
             }
         }
 
