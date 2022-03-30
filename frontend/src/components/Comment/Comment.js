@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import Reply from './Reply';
-import AddComment from './AddComment';
 import style from './style/Comment.module.scss';
 
 function Comment(){
+    const [rereply, setRereply] = useState(false);
     const [reply, setReply] = useState(false);
 
     const openReply=()=>{
-        setReply(true);
+        setRereply(true);
     }
 
     const closeReply=()=>{
-        setReply(false);
+        setRereply(false);
     }
 
     return(
@@ -34,7 +34,7 @@ function Comment(){
         </div>
         <Reply/>
         {
-            reply
+            rereply
             ?(
                 <div className={style.addReply}>
                     <div></div>
@@ -47,7 +47,13 @@ function Comment(){
         }
         <hr />
 
-        <AddComment />
+        {/* 대댓 수정하기 */}
+        <div className={style.addComment}>
+            <textarea 
+                cols="30" rows="3"
+                onChange={(e)=>{setReply(e.target.value)}}></textarea>
+            <button type="submit">댓글 작성</button>
+       </div>
     </div>
     )
 
