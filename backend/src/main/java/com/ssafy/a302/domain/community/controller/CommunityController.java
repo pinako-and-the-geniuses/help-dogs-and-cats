@@ -67,7 +67,10 @@ public class CommunityController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public BaseResponseDto<?> register(@Validated @RequestBody CommunityRequestDto.RegisterInfo registerInfo, Authentication authentication) {
+    public BaseResponseDto<?> register(@Validated @RequestBody CommunityRequestDto.RegisterInfo registerInfo,
+                                       Authentication authentication) {
+        log.info("커뮤니티 게시글 등록 정보 = {}", registerInfo);
+
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         communityService.register(registerInfo.toServiceDto(), memberSeq);
 
@@ -97,6 +100,10 @@ public class CommunityController {
                                                                     @RequestParam String category,
                                                                     @RequestParam String search,
                                                                     @RequestParam String keyword) {
+        log.info("페이징 정보 = {}", pageable);
+        log.info("카테고리 = {}", category);
+        log.info("검색 구분 = {}", search);
+        log.info("검색어 = {}", keyword);
 
         Community.Category communityCategory = null;
         if (StringUtils.hasText(category)) {
@@ -140,6 +147,8 @@ public class CommunityController {
     public BaseResponseDto<?> registerComment(@PathVariable(name = "communitySeq") Long communitySeq,
                                               @RequestBody CommunityCommentRequestDto.RegisterInfo registerInfo,
                                               Authentication authentication) {
+        log.info("커뮤니티 게시글 식별키 = {}", communitySeq);
+        log.info("커뮤니티 게시글 댓글 등록 정보 = {}", registerInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         communityService.registerComment(communitySeq, registerInfo.toServiceDto(), memberSeq);
@@ -178,6 +187,8 @@ public class CommunityController {
     public BaseResponseDto<?> removeComment(@PathVariable(name = "communitySeq") Long communitySeq,
                                             @PathVariable(name = "commentSeq") Long commentSeq,
                                             Authentication authentication) {
+        log.info("커뮤니티 게시글 식별키 = {}", communitySeq);
+        log.info("커뮤니티 게시글 댓글 식별키 = {}", commentSeq);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
 
@@ -216,6 +227,7 @@ public class CommunityController {
     @DeleteMapping("/{communitySeq}")
     public BaseResponseDto<?> removeCommunity(@PathVariable(name = "communitySeq") Long communitySeq,
                                               Authentication authentication) {
+        log.info("커뮤니티 게시글 식별키 = {}", communitySeq);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         communityService.remove(communitySeq, memberSeq);
@@ -258,6 +270,8 @@ public class CommunityController {
     public BaseResponseDto<?> modify(@PathVariable(name = "communitySeq") Long communitySeq,
                                      @Validated @RequestBody CommunityRequestDto.ModifyInfo modifyInfo,
                                      Authentication authentication) {
+        log.info("커뮤니티 게시글 식별키  = {}", communitySeq);
+        log.info("커뮤니티 게시글 수정 정보= {}", modifyInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         communityService.modify(communitySeq, modifyInfo.toServiceDto(), memberSeq);
@@ -294,6 +308,7 @@ public class CommunityController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{communitySeq}")
     public BaseResponseDto<CommunityDto.Detail> view(@PathVariable(name = "communitySeq") Long communitySeq) {
+        log.info("커뮤니티 게시글 식별키 = {}", communitySeq);
 
         CommunityDto.Detail detail = communityService.detail(communitySeq);
 

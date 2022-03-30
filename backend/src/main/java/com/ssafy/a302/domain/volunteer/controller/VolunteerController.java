@@ -62,6 +62,8 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BaseResponseDto<?> register(@Validated @RequestBody VolunteerRequestDto.RegisterInfo registerInfo, Authentication authentication) {
+        log.info("봉사활동 등록 정보 = {}", registerInfo);
+
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.register(registerInfo.toServiceDto(), memberSeq);
 
@@ -73,21 +75,20 @@ public class VolunteerController {
     // 봉사활동 목록 조회
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable,
-                                                                    @RequestParam String keyword) {
+    public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable, @RequestParam String keyword) {
+        log.info("페이징 정보 = {}", pageable);
+        log.info("검색어 = {}", keyword);
 
         VolunteerDto.VolunteerListPage volunteerListPage = volunteerService.getPage(pageable, keyword);
         return BaseResponseDto.<VolunteerDto.VolunteerListPage>builder()
                 .message(Message.SUCCESS_VIEWPAGE_VOLUNTEER)
                 .data(volunteerListPage)
                 .build();
-
     }
-
 
     @Operation(
             summary = "봉사활동 상세페이지 조회 API",
-            description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동 게시글을 조회합니다.",
+            description = "봉사활동 게시글 식별키, 회원 식별키를 전달받고 봉사활동 게시글을 조회합니다.",
             tags = {"volunteer"}
     )
     @ApiResponses(value = {
@@ -112,6 +113,7 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}")
     public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
 
         VolunteerDto.Detail detail = volunteerService.volunteerDetail(volunteerSeq);
 
@@ -119,7 +121,6 @@ public class VolunteerController {
                 .message(Message.SUCCESS_VOLUNTEER_DETAIL_LIST)
                 .data(detail)
                 .build();
-
     }
 
 
@@ -145,6 +146,9 @@ public class VolunteerController {
     public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
                                                     @PathVariable Long volunteerSeq,
                                                     Authentication authentication) {
+        log.info("봉사활동 게시글 수정 정보 = {}", updateInfo);
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.updateVolunteerDetail(updateInfo.toServiceDto(), volunteerSeq, memberSeq);
 
@@ -158,7 +162,10 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{volunteerSeq}/status")
-    public BaseResponseDto<?> changeVolunteerStatus(@Validated @RequestBody VolunteerRequestDto.StatusInfo statusInfo, @PathVariable Long volunteerSeq, Authentication authentication) {
+    public BaseResponseDto<?> changeVolunteerStatus(@Validated @RequestBody VolunteerRequestDto.StatusInfo statusInfo, 
+                                                    @PathVariable Long volunteerSeq, Authentication authentication) {
+        log.info("상태 정보 = {}", statusInfo);
+        
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
         volunteerService.changeVolunteerStatus(statusInfo.toServiceDto(), volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
@@ -170,7 +177,7 @@ public class VolunteerController {
 
     @Operation(
             summary = "봉사활동 삭제 API",
-            description = "봉사활동 식별키, 회원 식별키를 전달받고 봉사활동을 삭제합니다.",
+            description = "봉사활동 게시글 식별키, 회원 식별키를 전달받고 봉사활동을 삭제합니다.",
             tags = {"community"}
     )
     @ApiResponses(value = {
@@ -196,6 +203,8 @@ public class VolunteerController {
     @DeleteMapping("/{volunteerSeq}")
     public BaseResponseDto<?> deleteVolunteer(@PathVariable Long volunteerSeq,
                                               Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.remove(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
@@ -209,6 +218,8 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{volunteerSeq}/apply")
     public BaseResponseDto<?> applyVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
         volunteerParticipantService.applyVolunteer(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
@@ -221,6 +232,8 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/apply")
     public BaseResponseDto<?> cancelVolunteer(@PathVariable Long volunteerSeq, Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
         volunteerParticipantService.cancelVolunteer(volunteerSeq, memberSeq);
         return BaseResponseDto.builder()
@@ -233,6 +246,8 @@ public class VolunteerController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}/participants")
     public BaseResponseDto<?> getVolunteerParticipantList(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
 
         return BaseResponseDto.builder()
@@ -245,7 +260,14 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{volunteerSeq}/participants/{memberSeq}")
-    public BaseResponseDto<?> changeParticipantIsApprove(@Validated @PathVariable Long volunteerSeq, @PathVariable Long memberSeq, @RequestBody VolunteerParticipantRequestDto.IsApproveInfo isApproveInfo, Authentication authentication) {
+    public BaseResponseDto<?> changeParticipantIsApprove(@Validated @PathVariable Long volunteerSeq, 
+                                                         @PathVariable Long memberSeq, 
+                                                         @RequestBody VolunteerParticipantRequestDto.IsApproveInfo isApproveInfo, 
+                                                         Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        log.info("회원 식별키 = {}", memberSeq);
+        log.info("참석 여부 = {}", isApproveInfo);
+        
         Long memberCreatorSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
 
         volunteerParticipantService.changeParticipantIsApprove(isApproveInfo.toServiceDto(), volunteerSeq, memberSeq, memberCreatorSeq);
@@ -259,7 +281,12 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/participants/{memberSeq}")
-    public BaseResponseDto<?> deleteVolunteerParticipant(@Validated @PathVariable Long volunteerSeq, @PathVariable Long memberSeq, Authentication authentication) {
+    public BaseResponseDto<?> deleteVolunteerParticipant(@Validated @PathVariable Long volunteerSeq, 
+                                                         @PathVariable Long memberSeq, 
+                                                         Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        log.info("회원 식별키 = {}", memberSeq);
+        
         Long memberCreatorSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
 
         volunteerParticipantService.deleteVolunteerParticipant(volunteerSeq, memberSeq, memberCreatorSeq);
@@ -268,8 +295,7 @@ public class VolunteerController {
                 .message(Message.SUCCESS_DELETE_VOLUNTEER_PARTICIPANT)
                 .build();
     }
-
-
+    
     // 봉사활동 댓글 작성
     @Operation(
             summary = "봉사활동 게시글 댓글 등록 API",
@@ -296,6 +322,8 @@ public class VolunteerController {
     public BaseResponseDto<?> registerVolunteerComment(@PathVariable Long volunteerSeq,
                                                        @RequestBody VolunteerCommentRequestDto.RegisterInfo registerInfo,
                                                        Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        log.info("봉사활동 게시글 댓글 등록 정보 = {}", registerInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
 
@@ -315,7 +343,12 @@ public class VolunteerController {
     )
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/comments/{commentsSeq}")
-    public BaseResponseDto<?> deleteVolunteerComment(@Validated @PathVariable Long volunteerSeq, @PathVariable Long commentsSeq, Authentication authentication) {
+    public BaseResponseDto<?> deleteVolunteerComment(@Validated @PathVariable Long volunteerSeq, 
+                                                     @PathVariable Long commentsSeq, 
+                                                     Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        log.info("봉사활동 게시글 댓글 식별키 = {}", commentsSeq);
+        
         Long memberSeq = ((CustomUserDetails) authentication.getDetails()).getMember().getSeq();
 
         volunteerCommentService.deleteVolunteerComment(volunteerSeq, commentsSeq, memberSeq);
@@ -328,7 +361,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @Operation(
             summary = "봉사활동 인증 요청 API",
-            description = "봉사활동 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수행합니다.",
+            description = "봉사활동 게시글 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수행합니다.",
             tags = {"member"}
     )
     @ApiResponses(value = {
@@ -350,6 +383,8 @@ public class VolunteerController {
     public BaseResponseDto<?> requestVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
                                                    @Validated @RequestBody VolunteerAuthRequestDto.RequestInfo requestInfo,
                                                    Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        log.info("봉사활동 인증 요청 정보 = {}", requestInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.requestVolunteerAuth(memberSeq, volunteerSeq, requestInfo.toServiceDto());
@@ -362,7 +397,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @Operation(
             summary = "봉사활동 인증 수정 API",
-            description = "봉사활동 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수정합니다.",
+            description = "봉사활동 게시글 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수정합니다.",
             tags = {"member"}
     )
     @ApiResponses(value = {
@@ -384,6 +419,8 @@ public class VolunteerController {
     public BaseResponseDto<?> modifyVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
                                                   @Validated @RequestBody VolunteerAuthRequestDto.ModifyInfo modifyInfo,
                                                   Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
+        log.info("봉사활동 인증 수정 정보 = {}", modifyInfo);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         volunteerService.modifyVolunteerAuth(memberSeq, volunteerSeq, modifyInfo.toServiceDto());
@@ -396,7 +433,7 @@ public class VolunteerController {
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @Operation(
             summary = "봉사활동 인증 조회 API",
-            description = "봉사활동 식별키를 전달받고 입양 인증 조회를 수정합니다.",
+            description = "봉사활동 게시글 식별키를 전달받고 입양 인증 조회를 수정합니다.",
             tags = {"member"}
     )
     @ApiResponses(value = {
@@ -417,6 +454,7 @@ public class VolunteerController {
     @GetMapping("/{volunteerSeq}/auth")
     public BaseResponseDto<VolunteerDto.VolunteerAuthDetail> modifyVolunteerAuth(@PathVariable(name = "volunteerSeq") Long volunteerSeq,
                                                                                  Authentication authentication) {
+        log.info("봉사활동 게시글 식별키 = {}", volunteerSeq);
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         VolunteerDto.VolunteerAuthDetail volunteerAuthDetail = volunteerService.getVolunteerAuth(memberSeq, volunteerSeq);

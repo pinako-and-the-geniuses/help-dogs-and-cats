@@ -61,6 +61,8 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/volunteer/auth/{volunteerSeq}")
     public BaseResponseDto<?> volunteerAuthDetail(@PathVariable Long volunteerSeq) {
+        log.info("봉사활동 식별키 = {}", volunteerSeq);
+
         VolunteerAuthDto.Response findVolunteerAuth = adminService.volunteerAuthDetail(volunteerSeq);
 
         return BaseResponseDto.builder()
@@ -93,6 +95,8 @@ public class AdminController {
     @PatchMapping("/volunteer/auth/{volunteerSeq}")
     public BaseResponseDto<?> changeVolunteerAuthStatus(@RequestBody VolunteerAuthRequestDto.StatusInfo statusInfo,
                                                         @PathVariable Long volunteerSeq) {
+        log.info("상태 정보 = {}", statusInfo);
+        log.info("봉사활동 식별키 = {}", volunteerSeq);
 
         adminService.changeVolunteerAuthStatus(statusInfo.toServiceDto(), volunteerSeq);
 
@@ -124,6 +128,7 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/adopts/auth/{adoptSeq}")
     public BaseResponseDto<?> adoptAuthDetail(@PathVariable Long adoptSeq) {
+        log.info("입양 인증 식별키 = {}", adoptSeq);
 
         AdoptAuthDto.Response findAdoptAuth = adminService.adoptAuthDetail(adoptSeq);
 
@@ -157,6 +162,8 @@ public class AdminController {
     @PatchMapping("/adopts/auth/{adoptSeq}")
     public BaseResponseDto<?> changeAdoptAuthStatus(@RequestBody AdoptAuthRequestDto.StatusInfo statusInfo,
                                                     @PathVariable Long adoptSeq) {
+        log.info("상태 정보 = {}", statusInfo);
+        log.info("입양 인증 식별키 = {}", adoptSeq);
 
         adminService.changeAdoptAuthStatus(statusInfo.toServiceDto(), adoptSeq);
 
@@ -188,6 +195,9 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/volunteers/auth")
     public BaseResponseDto<VolunteerAuthDto.VolunteerAuthPage> getVolunteerAuthList(Pageable pageable, @RequestParam String search) {
+        log.info("페이징 정보 = {}", pageable);
+        log.info("검색 구분 = {}", search);
+
         if (StringUtils.hasText(search)) {
             if (!search.equals("all") && !search.equals("auth") && !search.equals("not-auth")) {
                 throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
@@ -227,6 +237,9 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/adopts/auth")
     public BaseResponseDto<AdoptAuthDto.AdoptAuthPage> getAdoptAuthList(Pageable pageable, @RequestParam String search) {
+        log.info("페이징 정보 = {}", pageable);
+        log.info("검색 구분 = {}", search);
+
         if (StringUtils.hasText(search)) {
             if (!search.equals("all") && !search.equals("auth") && !search.equals("not-auth")) {
                 throw new IllegalArgumentException(ErrorMessage.BAD_REQUEST);
