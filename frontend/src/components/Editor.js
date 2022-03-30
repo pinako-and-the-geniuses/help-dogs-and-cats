@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -6,7 +6,6 @@ import { URL, IMGURL } from "../public/config";
 
 export default function Editor(props) {
   const quillRef = useRef();
-  // const [value, setValue] = useState("");
 
   const jwt = sessionStorage.getItem("jwt");
 

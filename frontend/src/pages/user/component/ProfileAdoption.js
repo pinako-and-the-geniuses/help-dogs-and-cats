@@ -1,13 +1,12 @@
-import Dompurify from "dompurify";
+import SmallPaging from "components/SmallPaging";
+
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-import { useNavigate } from "react-router-dom";
 import Editor from "components/Editor";
 export default function ProfileAdoption({ category, seq, isLogin }) {
-  const [modal, setModal] = useState(0);
   const [detail, setDetail] = useState({
     title: "",
     content: "",
@@ -20,12 +19,13 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
     totalCount: "",
     totalPageNumber: "",
   });
-  // const [list, setList] = useState("");
+
+  //페이지네이션
   const [page, setPage] = useState(1);
-  // const [total, setTotal] = useState("");
-  const size = 5;
+  const [totalPageNumber, setTotalPageNumber] = useState(1);
+  const size = 3;
+  // 기타
   const jwt = sessionStorage.getItem("jwt");
-  const navigator = useNavigate();
   const closeRef = useRef(null);
 
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
           headers: { Authorization: `Bearer ${jwt}` },
         })
         .then((res) => {
-          console.log(res.data.data);
           const { adopts, currentPageNumber, totalCount, totalPageNumber } =
             res.data.data;
           setList({
@@ -45,6 +44,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
             totalCount,
             totalPageNumber,
           });
+          setTotalPageNumber(res.data.data.totalPageNumber);
         })
         .catch((err) => console.log(err));
     }
@@ -52,7 +52,6 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
 
   //해당 내용 클릭시 본인만 상세 내용 볼 수 있음
   const onGoToDetail = (itemSeq) => {
-    setModal(itemSeq);
     axios
       .get(`${URL}/adopts/auth/${itemSeq}`, {
         headers: { Authorization: `Bearer ${jwt}` },
@@ -92,6 +91,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
         alert("요청에 실패했습니다.");
       });
   };
+
   return (
     <div>
       <div className={st.listBox}>
@@ -275,31 +275,11 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
             ) : (
               <h4 className={st.comment}>입양 활동이 없습니다.</h4>
             )}
-
-            {/* <div name="페이저" className={st.pager}>
-          <li>
-            {page === 1 ? (
-              <button href="#" disabled>
-                Previous
-              </button>
-            ) : (
-              <button href="#" onClick={() => setPage(page - 1)}>
-                Previous
-              </button>
-            )}
-          </li>
-          <li>
-            {list ? (
-              <button href="#" onClick={() => setPage(page + 1)}>
-                Next
-              </button>
-            ) : (
-              <button href="#" disabled>
-                Next
-              </button>
-            )}
-          </li>
-        </div> */}
+            <SmallPaging
+              page={page}
+              setPage={setPage}
+              totalPageNumber={totalPageNumber}
+            />
           </div>
         </div>
       </div>
