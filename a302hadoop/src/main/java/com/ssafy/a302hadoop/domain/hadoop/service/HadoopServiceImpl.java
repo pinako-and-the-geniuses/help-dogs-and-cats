@@ -33,7 +33,6 @@ public class HadoopServiceImpl implements HadoopService {
     private final SpeciesNeutralRepository speciesNeutralRepository;
 
 
-
     @Override
     public void insertAnimalData(List<DataFromHadoopDto> datasFromHadoopDto, int year, String name) {
         int startYear = 0;
@@ -45,10 +44,10 @@ public class HadoopServiceImpl implements HadoopService {
         }
 
         for (int i = startYear; i <= year; i++) {
-            animalDataRepository.deleteAllByHappenDt(year);
+            animalDataRepository.deleteAllByHappenDt(i);
         }
 
-        for (DataFromHadoopDto data : datasFromHadoopDto){
+        for (DataFromHadoopDto data : datasFromHadoopDto) {
             animalDataRepository.save(data.toAnimalDataEntity());
         }
     }
@@ -62,21 +61,33 @@ public class HadoopServiceImpl implements HadoopService {
 
             List<AnimalDataResponseDto.AnnualBreedInfo> annualBreedInfos1 = new ArrayList<>();
             List<AnnualBreed> annualBreeds1 = annualBreedRepository.findAllByYearAndSpecies(i, "개");
-            annualBreeds1.forEach(annualBreed -> annualBreedInfos1.add(annualBreed.toAnnualBreedInfo()));
+            if (annualBreeds1 != null) {
+                annualBreeds1.forEach(annualBreed -> {
+                    if (annualBreed != null) {
+                        annualBreedInfos1.add(annualBreed.toAnnualBreedInfo());
+                    }
+                });
+            }
 
-            int totalDog = animalDataRepository.getAnimalCountInfo(i,"개");
+            int totalDog = animalDataRepository.getAnimalCountInfo(i, "개");
 
-            annualBreedInfos1.add(new AnimalDataResponseDto.AnnualBreedInfo("기타",totalDog - annualBreedRepository.getTotalFiveBreeds(i,"개") ));
+            annualBreedInfos1.add(new AnimalDataResponseDto.AnnualBreedInfo("기타", totalDog - annualBreedRepository.getTotalFiveBreeds(i, "개")));
             annualBreedInfoMap.put("개", annualBreedInfos1);
             annualBreedInfoMap.put("개Total", totalDog);
 
             List<AnimalDataResponseDto.AnnualBreedInfo> annualBreedInfos2 = new ArrayList<>();
             List<AnnualBreed> annualBreeds2 = annualBreedRepository.findAllByYearAndSpecies(i, "고양이");
-            annualBreeds2.forEach(annualBreed -> annualBreedInfos2.add(annualBreed.toAnnualBreedInfo()));
+            if (annualBreeds2 != null) {
+                annualBreeds2.forEach(annualBreed -> {
+                    if (annualBreed != null) {
+                        annualBreedInfos2.add(annualBreed.toAnnualBreedInfo());
+                    }
+                });
+            }
 
-            int totalCat = animalDataRepository.getAnimalCountInfo(i,"고양이");
+            int totalCat = animalDataRepository.getAnimalCountInfo(i, "고양이");
 
-            annualBreedInfos2.add(new AnimalDataResponseDto.AnnualBreedInfo("기타",totalCat - annualBreedRepository.getTotalFiveBreeds(i,"고양이") ));
+            annualBreedInfos2.add(new AnimalDataResponseDto.AnnualBreedInfo("기타", totalCat - annualBreedRepository.getTotalFiveBreeds(i, "고양이")));
             annualBreedInfoMap.put("고양이", annualBreedInfos2);
             annualBreedInfoMap.put("고양이Total", totalCat);
 
@@ -147,23 +158,31 @@ public class HadoopServiceImpl implements HadoopService {
     }
 
     @Override
-    public Map<Integer, Map<String, Object > > getSpeciesNeutralData(LocalDate curDate) {
+    public Map<Integer, Map<String, Object>> getSpeciesNeutralData(LocalDate curDate) {
         Map<Integer, Map<String, Object>> result = new HashMap<>();
         for (int i = 2017; i < curDate.getYear(); i++) {
             Map<String, Object> speciesNeutralInfoMap = new HashMap<>();
 
             List<AnimalDataResponseDto.SpeciesNeutralInfo> speciesNeutralInfos1 = new ArrayList<>();
             List<SpeciesNeutral> speciesNeutrals1 = speciesNeutralRepository.findAllByYearAndSpecies(i, "개");
-            speciesNeutrals1.forEach(speciesNeutral -> speciesNeutralInfos1.add(speciesNeutral.toSpeciesNeutralInfo()));
+            speciesNeutrals1.forEach(speciesNeutral -> {
+                if (speciesNeutral != null) {
+                    speciesNeutralInfos1.add(speciesNeutral.toSpeciesNeutralInfo());
+                }
+            });
 
             List<AnimalDataResponseDto.SpeciesNeutralInfo> speciesNeutralInfos2 = new ArrayList<>();
             List<SpeciesNeutral> speciesNeutrals2 = speciesNeutralRepository.findAllByYearAndSpecies(i, "고양이");
-            speciesNeutrals2.forEach(speciesNeutral -> speciesNeutralInfos2.add(speciesNeutral.toSpeciesNeutralInfo()));
+            speciesNeutrals2.forEach(speciesNeutral -> {
+                if (speciesNeutral != null) {
+                    speciesNeutralInfos2.add(speciesNeutral.toSpeciesNeutralInfo());
+                }
+            });
 
             speciesNeutralInfoMap.put("개", speciesNeutralInfos1);
-            speciesNeutralInfoMap.put("개Total", animalDataRepository.getAnimalCountInfo(i,"개"));
+            speciesNeutralInfoMap.put("개Total", animalDataRepository.getAnimalCountInfo(i, "개"));
             speciesNeutralInfoMap.put("고양이", speciesNeutralInfos2);
-            speciesNeutralInfoMap.put("고양이Total", animalDataRepository.getAnimalCountInfo(i,"고양이"));
+            speciesNeutralInfoMap.put("고양이Total", animalDataRepository.getAnimalCountInfo(i, "고양이"));
 
             result.put(i, speciesNeutralInfoMap);
 
