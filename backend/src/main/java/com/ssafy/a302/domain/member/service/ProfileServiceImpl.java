@@ -115,22 +115,24 @@ public class ProfileServiceImpl implements ProfileService {
         List<ProfileDto.Volunteer> volunteers = volunteerRepository.findVolunteersForProfile(memberSeq, pageable)
                 .orElse(null);
 
-        for (ProfileDto.Volunteer volunteer : volunteers) {
-            Volunteer findVolunteer = volunteerRepository.findBySeq(volunteer.getVolunteerSeq())
-                    .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+        if (volunteers != null) {
+            for (ProfileDto.Volunteer volunteer : volunteers) {
+                Volunteer findVolunteer = volunteerRepository.findBySeq(volunteer.getVolunteerSeq())
+                        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
 
-            List<ProfileDto.Volunteer.ParticipantInfo> participantInfos = new ArrayList<>();
-            for (VolunteerParticipant volunteerParticipant : findVolunteer.getVolunteerParticipants()) {
-                Member findMember = volunteerParticipant.getMember();
-                participantInfos.add(ProfileDto.Volunteer.ParticipantInfo.builder()
-                        .volunteerSeq(volunteer.getVolunteerSeq())
-                        .isApprove(volunteerParticipant.getApprove())
-                        .memberSeq(findMember.getSeq())
-                        .memberNickname(findMember.getDetail().getNickname())
-                        .build());
+                List<ProfileDto.Volunteer.ParticipantInfo> participantInfos = new ArrayList<>();
+                for (VolunteerParticipant volunteerParticipant : findVolunteer.getVolunteerParticipants()) {
+                    Member findMember = volunteerParticipant.getMember();
+                    participantInfos.add(ProfileDto.Volunteer.ParticipantInfo.builder()
+                            .volunteerSeq(volunteer.getVolunteerSeq())
+                            .isApprove(volunteerParticipant.getApprove())
+                            .memberSeq(findMember.getSeq())
+                            .memberNickname(findMember.getDetail().getNickname())
+                            .build());
+                }
+
+                volunteer.changeParticipantInfos(participantInfos);
             }
-
-            volunteer.changeParticipantInfos(participantInfos);
         }
 
         return ProfileDto.VolunteerPage.builder()
