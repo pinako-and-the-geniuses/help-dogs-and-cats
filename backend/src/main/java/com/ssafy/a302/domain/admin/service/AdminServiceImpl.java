@@ -75,4 +75,19 @@ public class AdminServiceImpl implements AdminService {
                 .currentPageNumber(pageable.getPageNumber())
                 .build();
     }
+
+    @Override
+    public AdoptAuthDto.AdoptAuthPage getAdoptAuthList(Pageable pageable, String search) {
+        Integer totalCount = adoptAuthRepository.countAllByStatus(search);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<AdoptAuthDto.AdoptAuthPage.AdoptAuthForPage> adoptAuthForPages = adoptAuthRepository.findAdoptAuthForPageDto(pageable, search)
+                .orElse(null);
+
+        return AdoptAuthDto.AdoptAuthPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .adoptAuthForPages(adoptAuthForPages)
+                .currentPageNumber(pageable.getPageNumber())
+                .build();
+    }
 }
