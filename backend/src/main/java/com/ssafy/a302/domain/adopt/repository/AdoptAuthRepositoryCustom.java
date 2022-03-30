@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.adopt.repository;
 
+import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
 import com.ssafy.a302.domain.member.service.dto.ProfileDto;
 import org.springframework.data.domain.Pageable;
 
@@ -11,4 +12,8 @@ public interface AdoptAuthRepositoryCustom {
     Integer countAllByMemberSeq(Long memberSeq);
 
     Optional<List<ProfileDto.Adopt>> findAdoptsForProfile(Long memberSeq, Pageable pageable);
+
+    Integer countAllByStatus(String search);
+
+    Optional<List<AdoptAuthDto.AdoptAuthPage.AdoptAuthForPage>> findAdoptAuthForPageDto(Pageable pageable, String search);
 }
