@@ -3,10 +3,12 @@ package com.ssafy.a302.domain.member.entity;
 import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
 import com.ssafy.a302.domain.badge.entity.MemberBadge;
 import com.ssafy.a302.domain.community.entity.Community;
+import com.ssafy.a302.domain.community.entity.CommunityComment;
 import com.ssafy.a302.domain.community.entity.CommunityLike;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
 import com.ssafy.a302.domain.report.entity.CautionHistory;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
@@ -64,11 +66,8 @@ public class Member extends BaseLastModifiedEntity {
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<CommunityLike> communityLikes = new ArrayList<>();
 
-    /**
-     * 현재 내가 작성한 커뮤니티 댓글 보기 기능이 없어서 주석 처리하였음
-     */
-//    @OneToMany(mappedBy = "member", cascade = ALL)
-//    private final List<CommunityComment> communityComments = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private final List<CommunityComment> communityComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberBadge> memberBadges = new ArrayList<>();
@@ -79,11 +78,8 @@ public class Member extends BaseLastModifiedEntity {
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<Volunteer> volunteers = new ArrayList<>();
 
-    /**
-     * 현재 내가 작성한 봉사활동 댓글 보기 기능이 없어서 주석 처리하였음
-     */
-//    @OneToMany(mappedBy = "member", cascade = ALL)
-//    private List<VolunteerComment> volunteerComments = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = ALL)
+    private List<VolunteerComment> volunteerComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<VolunteerParticipant> volunteerParticipants = new ArrayList<>();
