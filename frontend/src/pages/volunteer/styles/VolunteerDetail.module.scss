@@ -23,8 +23,8 @@ $sub-color: #E8E8E8;
 }
 
 .titleBox{
-    display: grid;
-    grid-template-columns: 70px auto 130px;
+    display: flex;
+    justify-content: space-between;
     border-bottom: 1px solid $main-color;
     height: 50px;
 

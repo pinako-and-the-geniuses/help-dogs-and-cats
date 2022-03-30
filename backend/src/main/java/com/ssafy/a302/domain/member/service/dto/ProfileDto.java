@@ -139,6 +139,8 @@ public class ProfileDto {
 
         private LocalDate createdDate;
 
+        private List<ParticipantInfo> participantInfos;
+
         @QueryProjection
         public Volunteer(Long volunteerSeq, Long memberSeq, String title, com.ssafy.a302.domain.volunteer.entity.Volunteer.Status volunteerStatus, Status authStatus, LocalDateTime createdDate) {
             this.volunteerSeq = volunteerSeq;
@@ -147,6 +149,30 @@ public class ProfileDto {
             this.volunteerStatus = volunteerStatus;
             this.authStatus = authStatus;
             this.createdDate = createdDate.toLocalDate();
+        }
+
+        public void changeParticipantInfos(List<ParticipantInfo> participantInfos) {
+            this.participantInfos = participantInfos;
+        }
+
+        @Getter
+        public static class ParticipantInfo {
+
+            private Long volunteerSeq;
+
+            private Long memberSeq;
+
+            private String memberNickname;
+
+            private boolean isApprove;
+
+            @Builder
+            public ParticipantInfo(Long volunteerSeq, Long memberSeq, String memberNickname, boolean isApprove) {
+                this.volunteerSeq = volunteerSeq;
+                this.memberSeq = memberSeq;
+                this.memberNickname = memberNickname;
+                this.isApprove = isApprove;
+            }
         }
     }
 }
