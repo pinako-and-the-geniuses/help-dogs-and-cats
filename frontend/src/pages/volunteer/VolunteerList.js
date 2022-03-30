@@ -8,12 +8,13 @@ import { URL } from '../../public/config';
 
 function VolunteerList(){
     const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+    const navigate = useNavigate();
+
     const [volunteers, setVolunteers] = useState("");
     const [seq, setSeq] = useState(0);
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
 
-    const navigate = useNavigate();
 
     const goToWrite =()=>{
         navigate('/volunteer/write');
@@ -27,7 +28,7 @@ function VolunteerList(){
             method: "get",
         })
         .then((res)=>{
-            // console.log(res.data.data.volunteersForPage);
+            console.log(res.data.data.volunteersForPage);
             setVolunteers(res.data.data.volunteersForPage);
         })
         .catch((err) => {
@@ -35,6 +36,7 @@ function VolunteerList(){
         })
     }
 
+    //페이지 넘어갈때마다 새로 목록 불러오기
     useEffect(()=>{
         getList();
     }, [page]);
@@ -132,7 +134,7 @@ function VolunteerList(){
                                 <td>{volunteer.title}</td>
                                 <td>{volunteer.maxParticipantCount}</td>
                                 <td>{volunteer.nickname}</td>
-                                <td>날짜</td>
+                                <td>{volunteer.createdDate.slice(0, 10)}</td>
                                 {/* 게시글 작성 날짜, 마감 날짜, 현재인원 필요 */}
                                 {/* 현재 인원 말고..그..뭐야.. 인증시간 써도 될듯? 암튼 필요 */}
                                 {/* 상태에 대한 정의 필요, RECRUITING 말고 나머지 두개 잘 모르겠음 */}
