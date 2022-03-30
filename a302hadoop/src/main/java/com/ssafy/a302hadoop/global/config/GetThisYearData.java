@@ -132,8 +132,8 @@ public class GetThisYearData {
                             .append("\n");
                 }
 //                }
-                out.write(record.toString());
             }
+            out.write(record.toString());
         }
         out.flush();
         out.close();

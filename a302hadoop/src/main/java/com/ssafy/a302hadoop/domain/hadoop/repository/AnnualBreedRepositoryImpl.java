@@ -16,11 +16,13 @@ public class AnnualBreedRepositoryImpl implements AnnualBreedRepositoryCustom {
 
     @Override
     public int getTotalFiveBreeds(int year, String species) {
-        return queryFactory
+        Object result = queryFactory
                 .select(
                         annualBreed.count.sum()
                 ).from(annualBreed)
                 .where(annualBreed.year.eq(year).and(annualBreed.species.eq(species)))
                 .fetch().get(0);
+
+        return (result == null ? 0 : (int)result);
     }
 }

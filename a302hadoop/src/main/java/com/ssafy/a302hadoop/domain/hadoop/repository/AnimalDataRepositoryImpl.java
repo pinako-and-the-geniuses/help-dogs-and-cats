@@ -150,11 +150,13 @@ public class AnimalDataRepositoryImpl implements AnimalDataRepositoryCustom {
 
     @Override
     public int getAnimalCountInfo(int year, String species) {
-        return queryFactory
+        Object result = queryFactory
                 .select(
-                    animalData.animalCount.sum()
+                        animalData.animalCount.sum()
                 ).from(animalData)
                 .where(animalData.happenDt.eq(year).and(animalData.animalSpecies.eq(species)))
                 .fetch().get(0);
+
+        return (result == null ? 0 : (int)result);
     }
 }
