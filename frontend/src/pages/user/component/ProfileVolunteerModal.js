@@ -6,6 +6,12 @@ import Editor from "components/Editor";
 
 export default function ProfileVolunteer(item) {
   const [content, setContent] = useState();
+
+  function onEditorChange(value) {
+    setContent(value);
+  }
+
+  console.log(content);
   return (
     <div className={st.volunteer}>
       <button
@@ -67,7 +73,7 @@ export default function ProfileVolunteer(item) {
                     id="content"
                     height={"90%"}
                     value={content}
-                    setValue={setContent}
+                    onChange={onEditorChange}
                     placeholder={""}
                   />
                 </div>
