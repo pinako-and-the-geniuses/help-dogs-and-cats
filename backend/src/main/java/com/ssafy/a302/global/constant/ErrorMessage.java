@@ -55,6 +55,10 @@ public class ErrorMessage {
 
     public static String INVALID_VOLUNTEER_CREATOR;
 
+    public static String INVALID_VOLUNTEER_AUTH;
+
+    public static String INVALID_ADOPT_AUTH;
+
     @Autowired
     public ErrorMessage(MessageSource messageSource) {
         AUTHENTICATION_MEMBER = messageSource.getMessage("authentication.member", null, null);
@@ -91,6 +95,9 @@ public class ErrorMessage {
         INVALID_VOLUNTEER_COMMENT = messageSource.getMessage("invalid.volunteer.comment", null, null);
         INVALID_VOLUNTEER_CREATOR_COMMENT = messageSource.getMessage("invalid.volunteer.creator.comment", null, null);
         INVALID_VOLUNTEER_CREATOR = messageSource.getMessage("invalid.volunteer.creator", null, null);
+
+        INVALID_VOLUNTEER_AUTH = messageSource.getMessage("invalid.volunteer.auth", null, null);
+        INVALID_ADOPT_AUTH = messageSource.getMessage("invalid.adopt.auth", null, null);
 
 
     }

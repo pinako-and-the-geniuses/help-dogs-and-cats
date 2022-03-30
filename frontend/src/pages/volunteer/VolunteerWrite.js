@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react';
-import style from './styles/VolunteerWrite.module.scss';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-// import Editor from 'components/Editor';
-import axios from 'axios';
-import { URL } from '../../public/config';
 import { useNavigate } from 'react-router-dom';
+import { URL } from '../../public/config';
+import axios from 'axios';
+import Editor from 'components/Editor';
+import style from './styles/VolunteerWrite.module.scss';
+import swal from 'sweetalert';
 
 function VolunteerWrite(){
     const navigate = useNavigate();
@@ -16,13 +15,13 @@ function VolunteerWrite(){
     // const [value, setValue] = useState("");
     // const quillRef = useRef();\
     const [title, setTitle] = useState("");
-    const [cd, setCd] = useState();
+    const [cd, setCd] = useState("");
     // const [cgg, setCgg] = useState();
     const [time, setTime] = useState(0);
-    const [party, setParty] = useState(0);
+    const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
-    const [endDate, setEndDate] = useState();
-    const [content, setContent] = useState();
+    const [endDate, setEndDate] = useState("");
+    const [content, setContent] = useState("");
 
     const onTitleHandelr=(e)=>{
         setTitle(e.target.value);
@@ -57,8 +56,14 @@ function VolunteerWrite(){
         console.log('date', endDate);
     }
 
-    ///일단 만들어만 놨음... htmlContent 받아와서 넣어줘야 함
-    //하위 컴포넌트에서 상위 컴포넌트로 데이터 보내기 가능?
+    const editContent=(text)=>{
+        // setContent(e.target.value);
+        // console.log('gg', content);
+        console.log(text);
+    }
+
+    
+    // title, endDate, 
     const post = async()=>{
         await axios({
             url: `${URL}/volunteers`,
@@ -88,6 +93,18 @@ function VolunteerWrite(){
 
     const onSubmit=(e)=>{
         e.preventDefault();
+        if(title === ""){
+            swal('제목값은 필수입니다.');
+            return;
+        }
+        if(endDate === ""){
+            swal('마감일은 필수입니다.');
+            return;
+        }
+        if(content.length < 15){
+            swal('내용을 더 자세히 적어주세요.');
+            return;
+        }
         post();
     }
 
@@ -151,17 +168,19 @@ function VolunteerWrite(){
                 </ul>
             </div>
 
-            <ReactQuill 
+            {/* <ReactQuill 
                 theme="snow"
                 htmlContent={content}
                 onChange={(value)=>{setContent(value)}}
-            />
-            {/* <Editor
+            /> */}
+            <Editor
+                height={"60vh"}
                 placeholder={placeholder}
-                htmlContent={content}
-                onChange={(e)=>{console.log('111',e.target.value)}}>
-            </Editor> */}
-
+                value={content}
+                setValue={setContent}
+                >
+            </Editor>
+            {console.log('dd',content.length)}
             <button 
                 className={style.addBtn}
                 onClick={onSubmit}>등록</button>

@@ -115,10 +115,16 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<VolunteerComment> volunteerComments = volunteerCommentRepository.findCommentsByVolunteerSeq(volunteerSeq)
                 .orElse(null);
 
+        List<VolunteerParticipant> findVolunteerParticipantList = volunteerParticipantRepository.countParticipantNumber(volunteerSeq)
+                .orElse(null);
+        Integer approvedCount = 0;
+        if (findVolunteerParticipantList != null){
+            approvedCount = findVolunteerParticipantList.size();
+        }
 
         List<VolunteerCommentDto.ForDetail> commentsForDetail = convertNestedStructure((volunteerComments));
 
-        return VolunteerDto.Detail.create(findVolunteer, writer, commentsForDetail);
+        return VolunteerDto.Detail.create(findVolunteer, writer, approvedCount,commentsForDetail);
     }
 
     private List<VolunteerCommentDto.ForDetail> convertNestedStructure(List<VolunteerComment> comments) {
@@ -140,9 +146,38 @@ public class VolunteerServiceImpl implements VolunteerService {
 
     @Override
     public VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword) {
-        Integer totalCount = volunteerRepository.countAllByKeyword(keyword);
+        if (keyword != null){
+            Integer totalCount = volunteerRepository.countAllByKeyword(keyword);
+            Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+            List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPage(pageable, keyword)
+                    .orElse(null);
+
+            return VolunteerDto.VolunteerListPage.builder()
+                    .totalCount(totalCount)
+                    .totalPageNumber(totalPageNumber)
+                    .volunteersForPage(volunteersForPage)
+                    .currentPageNumber(pageable.getPageNumber())
+                    .build();
+        }else{
+            Integer totalCount = volunteerRepository.countAll();
+            Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+            List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPageAll(pageable)
+                    .orElse(null);
+
+            return VolunteerDto.VolunteerListPage.builder()
+                    .totalCount(totalCount)
+                    .totalPageNumber(totalPageNumber)
+                    .volunteersForPage(volunteersForPage)
+                    .currentPageNumber(pageable.getPageNumber())
+                    .build();
+        }
+    }
+
+    @Override
+    public VolunteerDto.VolunteerListPage getPageAll(Pageable pageable) {
+        Integer totalCount = volunteerRepository.countAll();
         Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
-        List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPage(pageable, keyword)
+        List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPageAll(pageable)
                 .orElse(null);
 
         return VolunteerDto.VolunteerListPage.builder()

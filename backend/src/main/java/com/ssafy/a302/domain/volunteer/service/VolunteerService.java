@@ -18,6 +18,8 @@ public interface VolunteerService {
 
     VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword);
 
+    VolunteerDto.VolunteerListPage getPageAll(Pageable pageable);
+
     Long requestVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth);
 
     Long modifyVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth);

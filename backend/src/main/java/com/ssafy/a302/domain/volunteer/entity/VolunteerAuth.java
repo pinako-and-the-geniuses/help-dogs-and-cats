@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
+import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import com.ssafy.a302.global.enums.Status;
@@ -7,7 +8,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.EAGER;
 
 @Entity
 @Table(
@@ -58,5 +59,17 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
 
     public void modifyStatusToDone() {
         this.status = Status.DONE;
+    }
+
+    public void changeVolunteerAuthStatus(Status status){
+        this.status = status;
+    }
+
+    public VolunteerAuthDto.Response toResponseDto() {
+        return VolunteerAuthDto.Response.builder()
+                .seq(seq)
+                .content(content)
+                .lastModifiedDate(getLastModifiedDate())
+                .build();
     }
 }

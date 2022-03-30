@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -6,9 +6,8 @@ import { URL, IMGURL } from "../public/config";
 
 export default function Editor(props) {
   const quillRef = useRef();
-  const [value, setValue] = useState("");
-  const jwt = sessionStorage.getItem("jwt");
 
+  const jwt = sessionStorage.getItem("jwt");
   const imageHandler = () => {
     console.log("에디터에서 이미지 버튼 클릭");
 
@@ -21,6 +20,7 @@ export default function Editor(props) {
     // 이미지를 선택하면
     input.addEventListener("change", async () => {
       const file = input.files[0];
+      console.log(file);
       //multer에 맞는 형식으로 데이터 생성
       const formData = new FormData();
       formData.append("imageFile", file);
@@ -43,14 +43,22 @@ export default function Editor(props) {
       }
     });
   };
-  console.log(value);
+
   const modules = useMemo(() => {
     return {
       toolbar: {
         container: [
-          ["image"],
-          [{ header: [1, 2, 3, false] }],
+          [{ header: [1, 2, 3, 4, false] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
+          [
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
+          ],
+          ["link", "image"],
+          [{ color: [] }],
+          ["clean"],
         ],
         handlers: {
           // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
@@ -59,6 +67,7 @@ export default function Editor(props) {
       },
     };
   }, []);
+
   // 위에서 설정한 모듈들 foramts을 설정한다
   const formats = [
     "header",
@@ -67,21 +76,30 @@ export default function Editor(props) {
     "underline",
     "strike",
     "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
     "image",
+    "color",
   ];
 
+  // const onEditorChange = (value) => {
+  //   setContent(value);
+  // };
+
   return (
-    <div>
-      <ReactQuill
-        style={{ height: `${props.height}`, width: "100%" }}
-        ref={quillRef}
-        theme="snow"
-        placeholder="플레이스 홀더"
-        value={value}
-        onChange={setValue}
-        modules={modules}
-        formats={formats}
-      />
-    </div>
+    <ReactQuill
+      style={{ height: `${props.height}`, width: "100%" }}
+      ref={quillRef}
+      theme="snow"
+      placeholder={props.placeholder}
+      value={props.value}
+      onChange={(content, delta, source, editor) =>
+        props.onChange(editor.getHTML())
+      }
+      modules={modules}
+      formats={formats}
+    />
   );
 }
