@@ -242,11 +242,14 @@ public class VolunteerDto {
         @Schema(name = "approvedCount", title = "신청인원수", description = "신청인원수입니다.")
         private Integer approvedCount;
 
+        @Schema(name = "maxParticipantCount", title = "모집인원수", description = "모집인원수입니다.")
+        private Integer maxParticipantCount;
+
         @Schema(name = "comments", title = "댓글 목록", description = "댓글 목록입니다.")
         private List<VolunteerCommentDto.ForDetail> comments;
 
         @Builder
-        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, String endDate, String authTime, String contact, Integer approvedCount, List<VolunteerCommentDto.ForDetail> comments) {
+        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, String endDate, String authTime, String contact, Integer approvedCount, Integer maxParticipantCount, List<VolunteerCommentDto.ForDetail> comments) {
             this.writerSeq = writerSeq;
             this.writerNickname = writerNickname;
             this.writerProfileImagePath = writerProfileImagePath;
@@ -261,6 +264,7 @@ public class VolunteerDto {
             this.authTime = authTime;
             this.contact = contact;
             this.approvedCount = approvedCount;
+            this.maxParticipantCount = maxParticipantCount;
             this.comments = comments;
         }
 
@@ -281,6 +285,7 @@ public class VolunteerDto {
                     .authTime(volunteer.getAuthTime())
                     .contact(volunteer.getContact())
                     .approvedCount(approvedCount)
+                    .maxParticipantCount(volunteer.getMaxParticipantCount())
                     .comments(commentsForDetail)
                     .build();
         }
