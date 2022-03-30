@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.admin.service.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.a302.global.enums.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class VolunteerAuthDto {
@@ -48,4 +50,42 @@ public class VolunteerAuthDto {
         }
     }
 
+    @Getter
+    @ToString(of = {"totalCount", "currentPageNumber", "totalPageNumber", "volunteerAuthForPages"})
+    public static class VolunteerAuthPage {
+
+        private Integer totalCount;
+
+        private Integer currentPageNumber;
+
+        private Integer totalPageNumber;
+
+        private List<VolunteerAuthForPage> volunteerAuthForPages;
+
+        @Builder
+        public VolunteerAuthPage(Integer totalCount, Integer currentPageNumber, Integer totalPageNumber, List<VolunteerAuthForPage> volunteerAuthForPages) {
+            this.totalCount = totalCount;
+            this.currentPageNumber = currentPageNumber;
+            this.totalPageNumber = totalPageNumber;
+            this.volunteerAuthForPages = volunteerAuthForPages;
+        }
+
+        @Getter
+        @ToString(of = {"volunteerAuthSeq", "title", "status"})
+        public static class VolunteerAuthForPage {
+
+            private Long volunteerAuthSeq;
+
+            private String title;
+
+            private Status status;
+
+            @QueryProjection
+            public VolunteerAuthForPage(Long volunteerAuthSeq, String title, Status status) {
+                this.volunteerAuthSeq = volunteerAuthSeq;
+                this.title = title;
+                this.status = status;
+            }
+        }
+    }
 }
