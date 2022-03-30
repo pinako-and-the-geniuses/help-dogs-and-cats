@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Reply from './Reply';
 import style from './style/Comment.module.scss';
 
-function Comment(){
+function Comment(props){
     const [rereply, setRereply] = useState(false);
     const [reply, setReply] = useState(false);
 
@@ -47,12 +47,14 @@ function Comment(){
         }
         <hr />
 
-        {/* 대댓 수정하기 */}
         <div className={style.addComment}>
             <textarea 
                 cols="30" rows="3"
-                onChange={(e)=>{setReply(e.target.value)}}></textarea>
-            <button type="submit">댓글 작성</button>
+                value={props.commentContent}
+                // onChange={(e)=>{setReply(e.target.value)}}
+                onChange={(e)=>props.onChange(e.target.value)}
+                ></textarea>
+            <button type="submit" onClick={()=>{props.eventHandler(props.dd+1)}}>댓글 작성</button>
        </div>
     </div>
     )
