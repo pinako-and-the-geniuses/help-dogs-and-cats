@@ -8,7 +8,6 @@ import Comment from "components/Comment/Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import Community from './Community';
 export default function CommunityDetail() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
@@ -38,9 +37,9 @@ export default function CommunityDetail() {
         .catch((err) => console.log(err));
     }
   }, [isLogin]); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-  console.log("writer",writerSeq);
-  console.log("member",memberSeq);
-  console.log("detail", communityDetail);
+  // console.log("writer",writerSeq);
+  // console.log("member",memberSeq);
+  // console.log("detail", communityDetail);
   const getDelete = async () => {
     axios
       .delete(`${URL}/communities/${seq}`, {

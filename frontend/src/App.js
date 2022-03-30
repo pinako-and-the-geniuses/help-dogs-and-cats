@@ -26,7 +26,7 @@ import {
   VolunteerWrite,
 } from "./pages/volunteer";
 import { ManageMain } from "./pages/manager";
-import { Guide } from "pages/guide";
+// import { Guide } from './pages/guide';
 
 function App() {
   return (
@@ -47,9 +47,9 @@ function App() {
         <>
           <Route path="user/profile/:seq" element={<Profile />} />
         </>
-        <>
+        {/* <>
           <Route path="/guide" element={<Guide />} />
-        </>
+        </> */}
         <>
           <Route path="/animals/animal" element={<Animal />} />
           <Route path="/animals/animaldetails" element={<AnimalDetails />} />
