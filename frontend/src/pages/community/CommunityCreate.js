@@ -28,7 +28,7 @@ export default function CommunityCreate(api) {
   //   }
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
-  const [htmlcontent, setHtmlContent] = useState("");
+  const [content, setContent] = useState("");
   // const [desc, setDesc] = useState('');
   const navi = useNavigate();
 
@@ -43,7 +43,7 @@ export default function CommunityCreate(api) {
     event.preventDefault();
     console.log(category);
     console.log(title);
-    console.log(htmlcontent);
+    console.log(content);
     // console.log(desc);
     const jwt = sessionStorage.getItem("jwt")
     axios({
@@ -54,7 +54,7 @@ export default function CommunityCreate(api) {
         category : category,
         title : title,
         // desc : desc
-        content : htmlcontent
+        content : content
       },
     })
     .then((res) => {
@@ -88,32 +88,22 @@ export default function CommunityCreate(api) {
               setTitle(event.target.value)}/>
             </div>
       </div>
-        <div className={st.quill}>
-          <QuillEditor
-            quillRef={quillRef}
-            htmlContent={htmlcontent}
-            setHtmlContent={setHtmlContent}
-            onChange={(event) => setHtmlContent(event.target.value)}
-            api={api}
-          />
-        </div>
-        {/* <div>
-          <UploadFiles ref={uploadReferenece} />
-          <div className="text-center pd12">
-             <button className="lf-button primary" onClick={onClickSearch}>저장</button>
-          </div>
-      </div> */}
-      {/* <Editor value={desc} onChange={onEditorChange} className={st.quill}/> */}
+      <div className={st.Editorheight}>
+          <Editor
+            height={"90%"}
+            value={content}
+            setValue={setContent}
+            placeholder={""}></Editor>
+      </div>
       <div className={st.createbuttonContent}>
         {isLogin?
-        <button type="button" onClick={onSubmit} className={st.communitycreatebutton}>
+        <><button type="button" onClick={onSubmit} className={st.communitycreatebutton}>
           작성
         </button>
-        : null}
         <button type="reset" className={st.communitycreatebutton}>
           취소
-        </button>
-        
+        </button></>
+        : null}
       </div>
     </div>
   );

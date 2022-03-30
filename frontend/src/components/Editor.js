@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -6,10 +6,8 @@ import { URL, IMGURL } from "../public/config";
 
 export default function Editor(props) {
   const quillRef = useRef();
-  // const [value, setValue] = useState("");
 
   const jwt = sessionStorage.getItem("jwt");
-
   const imageHandler = () => {
     console.log("에디터에서 이미지 버튼 클릭");
 
@@ -22,6 +20,7 @@ export default function Editor(props) {
     // 이미지를 선택하면
     input.addEventListener("change", async () => {
       const file = input.files[0];
+      console.log(file);
       //multer에 맞는 형식으로 데이터 생성
       const formData = new FormData();
       formData.append("imageFile", file);
@@ -85,6 +84,10 @@ export default function Editor(props) {
     "color",
   ];
 
+  // const onEditorChange = (value) => {
+  //   setContent(value);
+  // };
+
   return (
     <ReactQuill
       style={{ height: `${props.height}`, width: "100%" }}
@@ -92,7 +95,9 @@ export default function Editor(props) {
       theme="snow"
       placeholder={props.placeholder}
       value={props.value}
-      onChange={props.setValue}
+      onChange={(content, delta, source, editor) =>
+        props.onChange(editor.getHTML())
+      }
       modules={modules}
       formats={formats}
     />
