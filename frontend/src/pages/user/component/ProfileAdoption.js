@@ -270,28 +270,6 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                       </div>
                     </div>
                   </div>
-                  // <div
-                  //   key={item.seq}
-                  //   // type="button"
-                  //   className={st.listItem}
-                  //   // className={cn("btn", `${st.listItem}`)}
-
-                  //   onClick={() => onGoToDetail(item.seq)}
-                  // >
-                  //   <div className={st.itemCategory}>
-                  //     <div>
-                  //       {item.status === "REQUEST" ? "요청중" : ""}
-                  //       {item.status === "DONE" ? "인증완료" : ""}
-                  //       {item.status === "REJECT" ? "거절" : ""}
-                  //     </div>
-                  //   </div>
-                  //   <div className="card-body">
-                  //     <h5 className={cn(st.cardTitle, "card-title")}>
-                  //       {item.title}
-                  //     </h5>
-                  //   </div>
-                  //   <div className={st.cardEnd}>{item.createdDate}</div>
-                  // </div>
                 );
               })
             ) : (
