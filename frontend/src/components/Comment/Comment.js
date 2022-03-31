@@ -54,7 +54,7 @@ function Comment(props){
                 // onChange={(e)=>{setReply(e.target.value)}}
                 onChange={(e)=>props.onChange(e.target.value)}
                 ></textarea>
-            <button type="submit" onClick={()=>{props.eventHandler(props.dd+1)}}>댓글 작성</button>
+            <button type="submit" onClick={()=>{props.eventHandler()}}>댓글 작성</button>
        </div>
     </div>
     )

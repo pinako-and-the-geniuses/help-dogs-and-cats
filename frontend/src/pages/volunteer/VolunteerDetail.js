@@ -92,26 +92,46 @@ function VolunteerDetail(){
         })
     }
 
-    //댓글 달기 - 안됨!
-    const volReply=async()=>{
+    //댓글 작성
+    const volComment=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}/comments`,
             method: "post",
             data:{
-                content: "test",
+                content: commentContent,
+                parentSeq: null,
             },
             headers: {
                 Authorization: `Bearer ${jwt}`,
             }
         })
         .then((res)=>{
-            console.log('댓글달기성공');
+            // console.log('댓글달기성공');
         })
         .catch((err)=>{
             console.log(err);
         })
     }
 
+    const test=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/participants/${memSeq}`,
+            method: "patch",
+            data: {
+            approve: true,
+            },
+            headers: {
+            Authorization: `Bearer ${jwt}`,
+        }
+        })
+        .then((res) =>{
+            console.log('test성공');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }   
+        
     //게시글 삭제
     const deletePost=async()=>{
         console.log('삭제');
@@ -148,8 +168,7 @@ function VolunteerDetail(){
     };
 
     const onClickEvent=(value)=>{
-        // setDd(value);
-        volReply();
+        volComment();
     }
 
     useEffect(()=>{
@@ -252,17 +271,13 @@ function VolunteerDetail(){
                 id={id} 
                 value={commentContent}
                 onChange={onCommentChange}
-                volReply={volReply}
-                dd={dd}
                 eventHandler={onClickEvent}
                 />
-            {console.log(commentContent)}
-            {console.log('클릭', dd)}
             <button 
                 className={style.listBtn}
                 onClick={()=>{navigate(-1)}}>목록</button>
 
-                <button onClick={volReply}>test</button>
+                <button onClick={test}>patchTest</button>
         </div>
     )
 }

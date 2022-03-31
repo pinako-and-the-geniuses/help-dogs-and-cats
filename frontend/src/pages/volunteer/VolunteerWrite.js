@@ -162,7 +162,7 @@ function VolunteerWrite(){
             <Editor
                 height={"60vh"}
                 placeholder={placeholder}
-                value={content}
+                value={content||""}
                 onChange={onEditorChange}
                 >
             </Editor>
