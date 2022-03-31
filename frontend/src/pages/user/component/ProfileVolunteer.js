@@ -1,4 +1,4 @@
-import VolunteerModal from "../component/ProfileVolunteerModal";
+// import VolunteerModal from "../component/ProfileVolunteerModal";
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
 import { useEffect, useState } from "react";
@@ -22,12 +22,9 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const userSeq = useSelector((state) => state.userInfo.userInfo.seq);
   const [modal, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [members, setMembers] = useState(["dum"]);
   const [content, setContent] = useState();
-
-  // 에디터 부분 변경
-  const onEditorChange = (value) => {
-    setContent(value);
-  };
+  const [checkedInputs, setCheckedInputs] = useState([]);
 
   useEffect(() => {
     if (isLogin) {
@@ -50,12 +47,27 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     console.log(itemSeq);
     navigator(`/volunteer/detail/${itemSeq}`);
   };
-
+  // 모달에 데이터 보내기
   const onClickModal = (el) => {
     setModalData(el);
     setModal(true);
   };
-  console.log("렌더링수");
+  // 인원관리
+
+  const changeHandler = (checked, id) => {
+    if (checked) {
+      setCheckedInputs([...checkedInputs, id]);
+    } else {
+      // 체크 해제
+      setCheckedInputs(checkedInputs.filter((el) => el !== id));
+    }
+  };
+
+  // 에디터 부분 변경
+  const onEditorChange = (value) => {
+    setContent(value);
+  };
+  console.log(checkedInputs);
   return (
     <div>
       <div className={st.listBox}>
@@ -154,7 +166,46 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                     </label>
                                   </div>
                                   <div className={st.input}>
-                                    {modalData.volunteerSeq}
+                                    {modalData.participantInfos
+                                      ? modalData.participantInfos.map(
+                                          (data) => {
+                                            return (
+                                              <>
+                                                <div
+                                                  key={data.volunteerSeq}
+                                                  className="form-check form-check-inline"
+                                                >
+                                                  <input
+                                                    id={data.volunteerSeq}
+                                                    type="checkbox"
+                                                    style={{ width: "15px" }}
+                                                    onChange={(e) => {
+                                                      changeHandler(
+                                                        e.currentTarget.checked,
+                                                        data.volunteerSeq
+                                                      );
+                                                    }}
+                                                    checked={
+                                                      checkedInputs.includes(
+                                                        data.volunteerSeq
+                                                      )
+                                                        ? true
+                                                        : false
+                                                    }
+                                                  />
+
+                                                  <label
+                                                    className="form-check-label"
+                                                    for="memberCheck"
+                                                  >
+                                                    {data.memberNickname}
+                                                  </label>
+                                                </div>
+                                              </>
+                                            );
+                                          }
+                                        )
+                                      : "멤버없음"}
                                   </div>
                                 </div>
 
@@ -168,7 +219,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                     <Editor
                                       id="content"
                                       height={"90%"}
-                                      value={content}
+                                      value={content || ""}
                                       onChange={onEditorChange}
                                       placeholder={""}
                                     />
@@ -198,16 +249,18 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                         ""
                       )}
                     </div>
-                    {/* {parseInt(seq) === userSeq ? (
-                      <VolunteerModal
-                        volunteerSeq={item.volunteerSeq}
-                        title={item.title}
-                        seq={parasInt(seq)}
-                        userSeq={userSeq}
-                      />
-                    ) : (
-                      ""
-                    )} */}
+                    {/* {parseInt(seq) === userSeq
+                      ? () => {
+                          setModalData(item);
+                          return (
+                            <VolunteerModal
+                              item={modalData}
+                              seq={parseInt(seq)}
+                              userSeq={userSeq}
+                            />
+                          );
+                        }
+                      : ""} */}
                   </div>
                 );
               })

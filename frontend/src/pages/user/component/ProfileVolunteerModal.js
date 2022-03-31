@@ -1,41 +1,30 @@
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
-import { useEffect, useState, useRef } from "react";
-import { URL } from "public/config";
-// import Editor from "components/Editor";
-import axios from "axios";
+import Editor from "components/Editor";
+import { useState, useRef } from "react";
+// import { URL } from "public/config";
+// import axios from "axios";
 
-export default function ProfileVolunteer({
-  volunteerSeq,
-  title,
-  seq,
-  userSeq,
-}) {
-  const [nowTitle, setNowTitle] = useState();
+export default function ProfileVolunteer(props) {
+  const [modalData, setModalData] = useState({});
   const [content, setContent] = useState();
-  // const [getData, setGetData] = useState();
-  const jwt = sessionStorage.getItem("jwt");
+  // const jwt = sessionStorage.getItem("jwt");
   const closeRef = useRef(null);
-  console.log("자식", title);
-  useEffect(() => {
-    setNowTitle(title);
-  }, []);
-
-  const onGetMembers = () => {
-    setNowTitle(title);
-    // console.log("zmfflr", volunteerSeq, title);
-    if (volunteerSeq)
-      axios
-        .get(`${URL}/volunteers/${volunteerSeq}/participants`, {
-          headers: { Authorization: `Bearer ${jwt}` },
-        })
-        .then((res) => {
-          console.log("getMemebers", res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  };
+  console.log(props);
+  // const onGetMembers = () => {
+  //   // console.log("zmfflr", volunteerSeq, title);
+  //   if (props.volunteerSeq)
+  //     axios
+  //       .get(`${URL}/volunteers/${props.volunteerSeq}/participants`, {
+  //         headers: { Authorization: `Bearer ${jwt}` },
+  //       })
+  //       .then((res) => {
+  //         console.log("getMemebers", res.data.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  // };
 
   // 에디터 부분 변경
   const onEditorChange = (value) => {
@@ -48,28 +37,32 @@ export default function ProfileVolunteer({
   };
 
   // 인증 요청
-  const onVolunAuth = () => {
-    axios({
-      url: `${URL}/voluteers/${volunteerSeq}/auth`,
-      method: "POST",
-      headers: { Authorization: `Bearer ${jwt}` },
-      data: {
-        content: "string",
-        authenticatedMemberSequences: [],
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        onhandleClose();
-        alert("요청 성공");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("요청에 실패했습니다.");
-      });
+  // const onVolunAuth = () => {
+  //   axios({
+  //     url: `${URL}/voluteers/${props.volunteerSeq}/auth`,
+  //     method: "POST",
+  //     headers: { Authorization: `Bearer ${jwt}` },
+  //     data: {
+  //       content: "string",
+  //       authenticatedMemberSequences: [],
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       onhandleClose();
+  //       alert("요청 성공");
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       alert("요청에 실패했습니다.");
+  //     });
+  // };
+
+  const onClickModal = (props) => {
+    setModalData(props);
   };
 
-  if (seq === userSeq) {
+  if (props.seq === props.userSeq) {
     return (
       <div className={st.volunteer}>
         <button
@@ -78,10 +71,13 @@ export default function ProfileVolunteer({
           style={{ backgroundColor: "#d0a96c" }}
           data-bs-toggle="modal"
           data-bs-target="#volunteerModal"
-          onClick={onGetMembers}
+          onClick={() => {
+            onClickModal(props.item);
+          }}
         >
           봉사 인증
         </button>
+
         <div
           className="modal fade"
           id="volunteerModal"
@@ -109,7 +105,7 @@ export default function ProfileVolunteer({
                       <span>제목</span>
                     </label>
                   </div>
-                  <div className={st.input}>{nowTitle}</div>
+                  <div className={st.input}>{modalData.title}</div>
                 </div>
 
                 <div name="인원관리" className={st.name}>
@@ -118,7 +114,7 @@ export default function ProfileVolunteer({
                       <span>인원관리</span>
                     </label>
                   </div>
-                  <div className={st.input}>{title}</div>
+                  <div className={st.input}>{modalData.volunteerSeq}</div>
                 </div>
 
                 <div name="내용" className={st.content}>
@@ -128,13 +124,13 @@ export default function ProfileVolunteer({
                     </label>
                   </div>
                   <div className={st.editor}>
-                    {/* <Editor
-                    id="content"
-                    height={"90%"}
-                    value={content}
-                    onChange={onEditorChange}
-                    placeholder={""}
-                  /> */}
+                    <Editor
+                      id="content"
+                      height={"90%"}
+                      value={content || ""}
+                      onChange={onEditorChange}
+                      placeholder={""}
+                    />
                   </div>
                 </div>
               </div>
@@ -149,7 +145,7 @@ export default function ProfileVolunteer({
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={onVolunAuth}
+                  // onClick={onVolunAuth}
                 >
                   작성
                 </button>
