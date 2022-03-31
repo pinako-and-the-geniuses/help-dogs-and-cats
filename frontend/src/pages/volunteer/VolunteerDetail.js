@@ -21,6 +21,8 @@ function VolunteerDetail(){
     const [post, setPost] = useState([]);
     const [commentContent, setCommentContent] = useState("");
     const [join, setJoin] = useState(false);
+    const [dd, setDd] = useState(1); //test용
+    const [volStatus, setVolstatus] = useState("");
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -35,21 +37,7 @@ function VolunteerDetail(){
         navigate(`/volunteer/write/${id}`)
     }
 
-    const deletePost=async()=>{
-        console.log('삭제');
-        await axios({
-            url: `${URL}/volunteers/${id}`,
-            method: "delete",
-            headers: { Authorization: `Bearer ${jwt}`}
-        })
-        .then((res)=>{
-            navigate('/volunteer/list');
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }
-
+    //게시글 정보 가져오기
     const getPost=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}`,
@@ -66,17 +54,74 @@ function VolunteerDetail(){
         })
     }
 
+    //글 작성자: 모집 상태 변경
+    const changeStatus=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/status`,
+            method: "patch",
+            data :{
+                status: "ONGOING",
+            },
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('상태 수정 완료');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    //일반: 참여 신청
+    const apply=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/apply`,
+            method: "post",
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('ok');
+            setJoin(true);
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+
+    //댓글 달기 - 안됨!
     const volReply=async()=>{
         await axios({
-            url: `${URL}/volunteers/${id}/comment`,
+            url: `${URL}/volunteers/${id}/comments`,
             method: "post",
             data:{
-                content: commentContent,
-                parentSeq: id
+                content: "test",
+            },
+            headers: {
+                Authorization: `Bearer ${jwt}`,
             }
         })
         .then((res)=>{
             console.log('댓글달기성공');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    //게시글 삭제
+    const deletePost=async()=>{
+        console.log('삭제');
+        await axios({
+            url: `${URL}/volunteers/${id}`,
+            method: "delete",
+            headers: { Authorization: `Bearer ${jwt}`}
+        })
+        .then((res)=>{
+            navigate('/volunteer/list');
         })
         .catch((err)=>{
             console.log(err);
@@ -98,6 +143,15 @@ function VolunteerDetail(){
         })
     }
 
+    const onCommentChange = (value) => {
+        setCommentContent(value);
+    };
+
+    const onClickEvent=(value)=>{
+        // setDd(value);
+        volReply();
+    }
+
     useEffect(()=>{
         getPost();
     }, []);
@@ -112,14 +166,28 @@ function VolunteerDetail(){
             <h1>봉사활동</h1>
 
             <div className={style.titleBox}>
-                <p className={style.leftdays}>D-{leftdays}</p>
+                {
+                    leftdays >= 0
+                    ? <p className={style.leftdays}>D-{leftdays}</p>
+                    : <p className={style.leftdays}>마감</p>
+                }
+                {/* <p className={style.leftdays}>D-{leftdays}</p> */}
                 {/* 날짜 0일 내려가면 마감 뜸 */}
                 {/* 마감돼도 마감 뜸 */}
                 <p className={style.title}>{post.title}</p>
                 {
-                    join
-                    ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                    :<button type='button' onClick={joinBtn} className={style.joinBtn}>참여신청</button>
+                    memSeq === post.writerSeq
+                    ?(
+                        //모집 변수
+                        join
+                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>
+                        :<button type='button' onClick={changeStatus} className={style.joinBtn}>모집마감</button>
+                    )
+                    :(
+                        join
+                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                        :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
+                    )
                 }
             </div>
 
@@ -137,7 +205,7 @@ function VolunteerDetail(){
                         }
                     </li>
                     <li className={style.people}>
-                        <p>모집 인원: {post.approvedCount}명/5명</p>
+                        <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
                         <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
                         {/* 모달 */}
                         <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
@@ -180,11 +248,21 @@ function VolunteerDetail(){
             }
             <br/>
 
-            <Comment id={id} volReply={volReply}/>
-
+            <Comment 
+                id={id} 
+                value={commentContent}
+                onChange={onCommentChange}
+                volReply={volReply}
+                dd={dd}
+                eventHandler={onClickEvent}
+                />
+            {console.log(commentContent)}
+            {console.log('클릭', dd)}
             <button 
                 className={style.listBtn}
                 onClick={()=>{navigate(-1)}}>목록</button>
+
+                <button onClick={volReply}>test</button>
         </div>
     )
 }

@@ -5,6 +5,7 @@ import cn from 'classnames';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
+import swal from 'sweetalert';
 
 function VolunteerList(){
     const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
@@ -15,6 +16,24 @@ function VolunteerList(){
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
 
+    //남은 날짜
+    const leftDays=(enddate)=>{
+        const today = new Date();
+        const endDate = new Date(enddate);
+        const gap = endDate.getTime() - today.getTime();
+        const leftdays = Math.ceil(gap/(1000*60*60*24));
+
+        if(leftdays < 0 ) return null;
+        else if(leftdays === 0) return(`[D-DAY]`);
+        else return(`[D-${leftdays}]`);
+    }
+
+    //봉사 모집 상태
+    const workStatus=(workStatus)=>{
+        if(workStatus === "RECRUITING") return "모집중";
+        else if(workStatus === "ONGOING") return "봉사중";
+        else if(workStatus === "DONE") return "봉사완료"; //수정필요
+    }
 
     const goToWrite =()=>{
         navigate('/volunteer/write');
@@ -28,7 +47,7 @@ function VolunteerList(){
             method: "get",
         })
         .then((res)=>{
-            console.log(res.data.data.volunteersForPage);
+            console.log(res.data);
             setVolunteers(res.data.data.volunteersForPage);
         })
         .catch((err) => {
@@ -48,7 +67,7 @@ function VolunteerList(){
         }
         else{
             //회원만 글을 읽을 수 있음
-            alert('권한이 없습니다');
+            swal('권한이 없습니다');
         }
 
     }
@@ -127,18 +146,13 @@ function VolunteerList(){
                 {
                     volunteers && volunteers.map((volunteer)=>{
                         return(
-                            <tr 
-                                key={volunteer.seq} 
+                            <tr key={volunteer.seq} 
                                 onClick={()=>{goToVolunteer(volunteer.seq)}}>
-                                <td>{volunteer.status}</td>
-                                <td>{volunteer.title}</td>
-                                <td>{volunteer.maxParticipantCount}</td>
-                                <td>{volunteer.nickname}</td>
-                                <td>{volunteer.createdDate.slice(0, 10)}</td>
-                                {/* 게시글 작성 날짜, 마감 날짜, 현재인원 필요 */}
-                                {/* 현재 인원 말고..그..뭐야.. 인증시간 써도 될듯? 암튼 필요 */}
-                                {/* 상태에 대한 정의 필요, RECRUITING 말고 나머지 두개 잘 모르겠음 */}
-                                {/* 조회수도? */}
+                            <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate)}</td>
+                            <td>{volunteer.title}</td>
+                            <td>0/{volunteer.maxParticipantCount}</td>
+                            <td>{volunteer.nickname}</td>
+                            <td>{volunteer.createdDate.slice(0,10)}</td>
                             </tr>
                         )
                     })

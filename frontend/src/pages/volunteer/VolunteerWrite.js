@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import style from './styles/VolunteerWrite.module.scss';
-import Editor from 'components/Editor';
-import axios from 'axios';
-import { URL } from '../../public/config';
 import { useNavigate } from 'react-router-dom';
+import { URL } from '../../public/config';
+import axios from 'axios';
+import Editor from 'components/Editor';
+import style from './styles/VolunteerWrite.module.scss';
+import swal from 'sweetalert';
 
 function VolunteerWrite(){
     const navigate = useNavigate();
@@ -17,14 +18,13 @@ function VolunteerWrite(){
     const [cd, setCd] = useState("");
     // const [cgg, setCgg] = useState();
     const [time, setTime] = useState(0);
-    const [party, setParty] = useState(0);
+    const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
 
     const onTitleHandelr=(e)=>{
         setTitle(e.target.value);
-        console.log('title', title);
     }
 
     const onCdHadler=(e)=>{
@@ -37,32 +37,25 @@ function VolunteerWrite(){
 
     const onTimeHandler=(e)=>{
         setTime(e.target.value);
-        console.log('봉사시간', time);
     }
 
     const onPartyHandler=(e)=>{
         setParty(e.target.value);
-        console.log('파티원', party);
     }
 
     const onContactHandler=(e)=>{
         setContact(e.target.value);
-        console.log('contact', contact);
     }
 
     const onEndDateHandler=(e)=>{
         setEndDate(e.target.value);
-        console.log('date', endDate);
     }
 
-    const editContent=(text)=>{
-        // setContent(e.target.value);
-        // console.log('gg', content);
-        console.log(text);
-    }
+    const onEditorChange = (value) => {
+        setContent(value);
+    };
 
-    ///일단 만들어만 놨음... htmlContent 받아와서 넣어줘야 함
-    //하위 컴포넌트에서 상위 컴포넌트로 데이터 보내기 가능?
+    // title, endDate, 
     const post = async()=>{
         await axios({
             url: `${URL}/volunteers`,
@@ -82,7 +75,6 @@ function VolunteerWrite(){
             }
         })
         .then((res)=>{
-            console.log('전송 성공!', res.data);
             navigate('/volunteer/list');
         })
         .catch((err) =>{
@@ -92,6 +84,18 @@ function VolunteerWrite(){
 
     const onSubmit=(e)=>{
         e.preventDefault();
+        if(title === ""){
+            swal('제목값은 필수입니다.');
+            return;
+        }
+        if(endDate === ""){
+            swal('마감일은 필수입니다.');
+            return;
+        }
+        if(content.length < 15){
+            swal('내용을 더 자세히 적어주세요.');
+            return;
+        }
         post();
     }
 
@@ -155,19 +159,13 @@ function VolunteerWrite(){
                 </ul>
             </div>
 
-            {/* <ReactQuill 
-                theme="snow"
-                htmlContent={content}
-                onChange={(value)=>{setContent(value)}}
-            /> */}
             <Editor
                 height={"60vh"}
                 placeholder={placeholder}
                 value={content}
-                setValue={setContent}
+                onChange={onEditorChange}
                 >
             </Editor>
-
             <button 
                 className={style.addBtn}
                 onClick={onSubmit}>등록</button>
