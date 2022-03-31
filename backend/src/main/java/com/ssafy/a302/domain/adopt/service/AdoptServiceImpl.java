@@ -63,4 +63,10 @@ public class AdoptServiceImpl implements AdoptService {
 
         return findAdoptAuth.toDto();
     }
+
+    @Override
+    public Member getMemberByAdoptSeq(Long adoptSeq) {
+        return adoptAuthRepository.findMemberByAdoptSeq(adoptSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+    }
 }

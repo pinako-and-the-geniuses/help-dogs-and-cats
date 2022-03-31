@@ -303,4 +303,10 @@ public class VolunteerServiceImpl implements VolunteerService {
                 .participants(participants)
                 .build();
     }
+
+    @Override
+    public Member getMemberByVolunteerSeq(Long volunteerSeq) {
+        return volunteerRepository.findMemberByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+    }
 }

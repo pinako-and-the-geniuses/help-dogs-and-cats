@@ -59,6 +59,8 @@ public class ErrorMessage {
 
     public static String INVALID_ADOPT_AUTH;
 
+    public static String INVALID_BADGE_APPROVE;
+
     @Autowired
     public ErrorMessage(MessageSource messageSource) {
         AUTHENTICATION_MEMBER = messageSource.getMessage("authentication.member", null, null);
@@ -99,6 +101,6 @@ public class ErrorMessage {
         INVALID_VOLUNTEER_AUTH = messageSource.getMessage("invalid.volunteer.auth", null, null);
         INVALID_ADOPT_AUTH = messageSource.getMessage("invalid.adopt.auth", null, null);
 
-
+        INVALID_BADGE_APPROVE = messageSource.getMessage("invalid.badge.approve", null, null);
     }
 }

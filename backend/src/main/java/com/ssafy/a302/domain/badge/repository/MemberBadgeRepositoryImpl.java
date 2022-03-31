@@ -34,4 +34,16 @@ public class MemberBadgeRepositoryImpl implements MemberBadgeRepositoryCustom {
 
         return Optional.ofNullable(list);
     }
+
+    @Override
+    public boolean existsByMemberSeqAndBadgeName(Long memberSeq, String badgeName) {
+        return Boolean.TRUE.equals(queryFactory
+                .select(memberBadge.isNotNull())
+                .from(memberBadge)
+                .where(
+                        memberBadge.badge.name.eq(badgeName),
+                        memberBadge.member.seq.eq(memberSeq)
+                )
+                .fetchOne());
+    }
 }
