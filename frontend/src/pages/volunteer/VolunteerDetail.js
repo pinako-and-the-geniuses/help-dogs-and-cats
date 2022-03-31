@@ -36,7 +36,7 @@ function VolunteerDetail(){
     }
 
     const goToEdit=()=>{
-        navigate(`/volunteer/write/${id}`)
+        navigate(`/volunteer/update/${id}`)
     }
 
     //게시글 정보 가져오기

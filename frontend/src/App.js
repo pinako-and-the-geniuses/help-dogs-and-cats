@@ -25,6 +25,7 @@ import {
   VolunteerList,
   VolunteerDetail,
   VolunteerWrite,
+  VolunteerUpdate,
 } from "./pages/volunteer";
 import { ManageMain } from "./pages/manager";
 import { Guide } from "pages/guide";
@@ -80,10 +81,8 @@ function App() {
           <Route path="/volunteer/list" element={<VolunteerList />} />
           <Route path="/volunteer/detail/:id" element={<VolunteerDetail />} />
           <Route path="/volunteer/write" element={<VolunteerWrite />}></Route>
-          <Route
-            path="/volunteer/write/:id"
-            element={<VolunteerWrite />}
-          ></Route>
+          <Route path="/volunteer/write/:id" element={<VolunteerWrite />}></Route>
+          <Route path="/volunteer/update/:id" element={<VolunteerUpdate/>}></Route>
         </>
         <>
           <Route path="*" element={<NotFound />} />
