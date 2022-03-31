@@ -25,7 +25,6 @@ function VolunteerWrite(){
 
     const onTitleHandelr=(e)=>{
         setTitle(e.target.value);
-        console.log('title', title);
     }
 
     const onCdHadler=(e)=>{
@@ -38,31 +37,24 @@ function VolunteerWrite(){
 
     const onTimeHandler=(e)=>{
         setTime(e.target.value);
-        console.log('봉사시간', time);
     }
 
     const onPartyHandler=(e)=>{
         setParty(e.target.value);
-        console.log('파티원', party);
     }
 
     const onContactHandler=(e)=>{
         setContact(e.target.value);
-        console.log('contact', contact);
     }
 
     const onEndDateHandler=(e)=>{
         setEndDate(e.target.value);
-        console.log('date', endDate);
     }
 
-    const editContent=(text)=>{
-        // setContent(e.target.value);
-        // console.log('gg', content);
-        console.log(text);
-    }
+    const onEditorChange = (value) => {
+        setContent(value);
+    };
 
-    
     // title, endDate, 
     const post = async()=>{
         await axios({
@@ -83,7 +75,6 @@ function VolunteerWrite(){
             }
         })
         .then((res)=>{
-            console.log('전송 성공!', res.data);
             navigate('/volunteer/list');
         })
         .catch((err) =>{
@@ -168,19 +159,13 @@ function VolunteerWrite(){
                 </ul>
             </div>
 
-            {/* <ReactQuill 
-                theme="snow"
-                htmlContent={content}
-                onChange={(value)=>{setContent(value)}}
-            /> */}
             <Editor
                 height={"60vh"}
                 placeholder={placeholder}
                 value={content}
-                setValue={setContent}
+                onChange={onEditorChange}
                 >
             </Editor>
-            {console.log('dd',content.length)}
             <button 
                 className={style.addBtn}
                 onClick={onSubmit}>등록</button>

@@ -21,6 +21,7 @@ function VolunteerDetail(){
     const [post, setPost] = useState([]);
     const [commentContent, setCommentContent] = useState("");
     const [join, setJoin] = useState(false);
+    const [dd, setDd] = useState(1);
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -68,11 +69,13 @@ function VolunteerDetail(){
 
     const volReply=async()=>{
         await axios({
-            url: `${URL}/volunteers/${id}/comment`,
+            url: `${URL}/volunteers/${id}/comments`,
             method: "post",
             data:{
-                content: commentContent,
-                parentSeq: id
+                content: "test",
+            },
+            headers: {
+                Authorization: `Bearer ${jwt}`,
             }
         })
         .then((res)=>{
@@ -96,6 +99,15 @@ function VolunteerDetail(){
             if(res.isConfirmed)
                 deletePost();
         })
+    }
+
+    const onCommentChange = (value) => {
+        setCommentContent(value);
+    };
+
+    const onClickEvent=(value)=>{
+        // setDd(value);
+        volReply();
     }
 
     useEffect(()=>{
@@ -151,7 +163,7 @@ function VolunteerDetail(){
                         }
                     </li>
                     <li className={style.people}>
-                        <p>모집 인원: {post.approvedCount}명/{post.maxParticipantCount}명</p>
+                        <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
                         <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
                         {/* 모달 */}
                         <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
@@ -194,11 +206,21 @@ function VolunteerDetail(){
             }
             <br/>
 
-            <Comment id={id} volReply={volReply}/>
-
+            <Comment 
+                id={id} 
+                value={commentContent}
+                onChange={onCommentChange}
+                volReply={volReply}
+                dd={dd}
+                eventHandler={onClickEvent}
+                />
+            {console.log(commentContent)}
+            {console.log('클릭', dd)}
             <button 
                 className={style.listBtn}
                 onClick={()=>{navigate(-1)}}>목록</button>
+
+                <button onClick={volReply}>test</button>
         </div>
     )
 }
