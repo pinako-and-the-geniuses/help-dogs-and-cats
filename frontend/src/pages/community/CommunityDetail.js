@@ -9,24 +9,26 @@ import CommunityComment from "components/Comment/CommunityComment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useSelector } from "react-redux";
+import { render } from "@testing-library/react";
 export default function CommunityDetail() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
   const [communityDetail, setCommunityDetail] = useState("");
   const [writerSeq, setWriterSeq] = useState("");
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState("");
   const { seq } = useParams();
   const [commentContent, setCommentContent] = useState("");
   // const[Comments, SetComments] = useState(initialState)
 
   const onCommentChange = (value) => {
     setCommentContent(value);
-};
-const onClickEvent=(value)=>{
+  };
+  const onClickEvent = (value) => {
+    // console.log(value);
     CommuComment()
-  .then(setCommentContent("")); //댓글 쓴 후 빈공간으로 만드는 코드
-}
-
+    .then(setCommentContent('')); //댓글 쓴 후 빈공간으로 만드는 코드
+    window.location.replace(`/community/communitydetail/${seq}`);
+  };
 
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
@@ -50,7 +52,7 @@ const onClickEvent=(value)=>{
           setComments(response.data.data.comments);
         }) //엑시오스 보낸 결과
         .catch((err) => console.log(err));
-        // console.log(Comments);
+      // console.log(Comments);
     }
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
   // console.log("writer",writerSeq);
@@ -70,28 +72,27 @@ const onClickEvent=(value)=>{
       })
       .catch((err) => console.log(err));
   };
-
-  const CommuComment=async()=>{
+  
+  const CommuComment = async () => {
     await axios({
-        url: `${URL}/communities/${seq}/comments`,
-        method: "post",
-        data:{
-            content: commentContent,
-            parentSeq: null,
-        },
-        headers: {
-            Authorization: `Bearer ${jwt}`,
-        }
+      url: `${URL}/communities/${seq}/comments`,
+      method: "post",
+      data: {
+        content: commentContent,
+        parentSeq: null,
+      },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
     })
-    .then((res)=>{
+      .then((res) => {
         // console.log('댓글달기성공');
-    })
-    .catch((err)=>{
+        //setCommentContent('');
+      })
+      .catch((err) => {
         console.log(err);
-    })
-}
-
-
+      });
+  };
 
   const GotoEdit = () => {
     navigate(`/community/communityupdate/${seq}`);
@@ -125,26 +126,26 @@ const onClickEvent=(value)=>{
         ) : (
           "로딩중"
         )}
-        {writerSeq===memberSeq?
-        <>
-        <div className={st.contentbtn}>
-          <button onClick={getDelete} className={st.deletebutton}>
-            삭제
-          </button>
-          <button onClick={GotoEdit} className={st.button}>
-            수정
-          </button>
-        </div>
-        </>
-        :null}
+        {writerSeq === memberSeq ? (
+          <>
+            <div className={st.contentbtn}>
+              <button onClick={getDelete} className={st.deletebutton}>
+                삭제
+              </button>
+              <button onClick={GotoEdit} className={st.button}>
+                수정
+              </button>
+            </div>
+          </>
+        ) : null}
       </section>
-      <CommunityComment 
-      id={seq} 
-      value={commentContent}
-      onChange={onCommentChange}
-      eventHandler={onClickEvent}
-      comments={comments}
-/>
+      <CommunityComment
+        id={seq}
+        value={commentContent}
+        onChange={onCommentChange}
+        eventHandler={onClickEvent}
+        comments={comments}
+      />
     </div>
   );
 }

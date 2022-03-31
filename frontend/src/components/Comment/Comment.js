@@ -6,6 +6,7 @@ import Reply from './Reply';
 import style from './style/Comment.module.scss';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { render } from '@testing-library/react';
 
 function Comment(props){
     const jwt = sessionStorage.getItem('jwt');
@@ -45,6 +46,7 @@ function Comment(props){
         })
         .then((res)=>{
             console.log('삭제완료');
+            
         })
         .catch((err) =>{
             console.log(err);
