@@ -98,7 +98,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
   return (
     <div>
       <div className={st.listBox}>
-        <div className={st.adopts}>
+        <div className={st.activity}>
           <div name="입양인증요청" className={st.btn}>
             <button
               type="button"
@@ -192,6 +192,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                     <button
                       type="button"
                       className={cn("btn", `${st.listItem}`)}
+                      style={{ margin: "10px auto" }}
                       onClick={() => onGoToDetail(item.seq)}
                       data-bs-toggle="modal"
                       data-bs-target="#detailModal"
