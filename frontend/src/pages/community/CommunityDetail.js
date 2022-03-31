@@ -4,7 +4,7 @@ import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityDetail.module.scss";
 import cn from "classnames";
 import { URL } from "public/config";
-import Comment from "components/Comment/Comment";
+import CommunityComment from "components/Comment/CommunityComment";
 // import Comment from "./Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -14,9 +14,19 @@ export default function CommunityDetail() {
   const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
   const [communityDetail, setCommunityDetail] = useState("");
   const [writerSeq, setWriterSeq] = useState("");
+  const [comments, setComments] = useState([]);
   const { seq } = useParams();
-
+  const [commentContent, setCommentContent] = useState("");
   // const[Comments, SetComments] = useState(initialState)
+
+  const onCommentChange = (value) => {
+    setCommentContent(value);
+};
+const onClickEvent=(value)=>{
+    CommuComment()
+  .then(setCommentContent("")); //댓글 쓴 후 빈공간으로 만드는 코드
+}
+
 
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
@@ -37,11 +47,12 @@ export default function CommunityDetail() {
           console.log(response.data);
           setWriterSeq(response.data.data.writerSeq);
           setCommunityDetail(response.data);
+          setComments(response.data.data.comments);
         }) //엑시오스 보낸 결과
         .catch((err) => console.log(err));
         // console.log(Comments);
     }
-  }, [isLogin]); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
+  }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
   // console.log("writer",writerSeq);
   // console.log("member",memberSeq);
   // console.log("detail", communityDetail);
@@ -59,6 +70,28 @@ export default function CommunityDetail() {
       })
       .catch((err) => console.log(err));
   };
+
+  const CommuComment=async()=>{
+    await axios({
+        url: `${URL}/communities/${seq}/comments`,
+        method: "post",
+        data:{
+            content: commentContent,
+            parentSeq: null,
+        },
+        headers: {
+            Authorization: `Bearer ${jwt}`,
+        }
+    })
+    .then((res)=>{
+        // console.log('댓글달기성공');
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+}
+
+
 
   const GotoEdit = () => {
     navigate(`/community/communityupdate/${seq}`);
@@ -105,7 +138,13 @@ export default function CommunityDetail() {
         </>
         :null}
       </section>
-      <Comment />
+      <CommunityComment 
+      id={seq} 
+      value={commentContent}
+      onChange={onCommentChange}
+      eventHandler={onClickEvent}
+      comments={comments}
+/>
     </div>
   );
 }

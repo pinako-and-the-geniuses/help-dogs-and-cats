@@ -1,7 +1,116 @@
 import animal from "./styles/Animal.module.scss";
-import cn from 'classnames'
+import React, { useEffect, useState } from "react";
+import cn from "classnames";
+import axios from "axios";
+import { URL, ANIMAL } from "../../public/config/index";
 import Box from "../../components/animals/Box";
 export default function Animal() {
+  const SHELTER_KEY = process.env.REACT_APP_SHELTER_API;
+  const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_API;
+  const all = [
+    {
+      orgCd: "0",
+      orgdownNm: "전체",
+    },
+  ];
+  const [cds, setCds] = useState();
+  const [selectCd, setSelectCd] = useState();
+  const [cggs, setCggs] = useState([...all]);
+  const [selectCgg, setSelectCgg] = useState();
+  const [areaSearch, setAreaSearch] = useState();
+  //시도 가져오기
+  const getSido = async () => {
+    await axios({
+      url: `${ANIMAL}/abandonmentPublicSrvc/sido?numOfRows=20&pageNo=1&_type=json&serviceKey=${ANIMAL_KEY}`,
+      method: "get",
+    })
+      .then((res) => {
+        console.log(res.data.response.body.items.item);
+        setCds([...all, ...res.data.response.body.items.item]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //시군구 가져오기
+  const getSigungu = async() =>{
+    await axios({
+        url: `${ANIMAL}/abandonmentPublicSrvc/sigungu?upr_cd=${selectCd}&_type=json&serviceKey=${ANIMAL_KEY}`,
+        method: "get",
+    })
+    .then((res)=>{
+        // console.log(...res.data.response.body.items.item);
+        setCggs([...all, ...res.data.response.body.items.item]);
+        // console.log(res.data.response.body.items.item)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  }
+
+  //보호소목록 가져오기
+  const shelterList = async() => {
+      await axios({
+          url: `${ANIMAL}/abandonmentPublicSrvc/sigungu?upr_cd=6110000&_type=json&serviceKey=${SHELTER_KEY}`,
+          method:"get",
+      })
+      .then((res) => {
+          console.log(res.data);
+      })
+      .catch((err) => {
+          console.log(err);
+      })
+  }
+  useEffect(() => {
+    getSido();
+  }, []);
+
+  useEffect(()=>{
+    getSigungu();
+  }, [selectCd]);
+
+  useEffect(()=>{
+    getSigungu();
+  }, [selectCgg]);
+
+  const handleCd = (e) => {
+    setSelectCd(e.target.value);
+    // console.log(e.target.value);
+  };
+
+  const handleCgg =(e)=>{
+    setSelectCgg(e.target.value);
+    // console.log(selectCgg);
+  }
+
+  //지역 검색 필터
+  let cdQuery = "";
+  let cggQuery = "";
+
+  const onSubmit=()=>{
+    // console.log('등록!');
+    //1. 시도 전체일 때
+    if(selectCd !== '0') cdQuery =`&upr_cd=${selectCd}`;
+    else cdQuery="";
+    //2. 시군구 전체일 때
+    if(selectCgg !== '0') cggQuery = `&org_cd=${selectCgg}`;
+    else cggQuery="";
+    //3. 둘다 검색일 때
+    if(selectCd !== '0' && selectCgg !== '0'){
+        axios({
+            url: `${ANIMAL}/abandonmentPublicSrvc/shelter?upr_cd=${selectCd}&org_cd=${selectCgg}&_type=json&serviceKey=${ANIMAL_KEY}`,
+            method: "get",
+        })
+        .then((res)=>{
+            setAreaSearch([...res.data.response.body.items.item]);
+            console.log(areaSearch);
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+}
   return (
     <div className={animal.animalcontent}>
       <header>
@@ -14,9 +123,17 @@ export default function Animal() {
           </span>
           <select className={animal.textBox} aria-label="시도">
             <option selected>시도</option>
-            <option value="1">One</option>
+            {/* <option value="1">One</option>
             <option value="2">Two</option>
-            <option value="3">Three</option>
+            <option value="3">Three</option> */}
+            <select name="searchCd" value={selectCd} onChange={handleCd}>
+              {cds &&
+                cds.map((cd) => (
+                  <option value={cd.orgCd} key={cd.orgCd}>
+                    {cd.orgdownNm}
+                  </option>
+                ))}
+            </select>
           </select>
           <select className={animal.textBox} aria-label="시군구">
             <option selected>시군구</option>
