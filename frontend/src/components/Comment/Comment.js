@@ -57,9 +57,9 @@ function Comment(props){
                 (props.comments).map((comment)=>{
                     return(
                         <>
-                        <div className={style.comment}>
+                        <div className={style.comment} key={comment.commentSeq}>
                             {/* 이미지 수정 필요 */}
-                            <img src={comment.writerProfileImagePath} />
+                            <img src={comment.writerProfileImagePath}/>
                             <div className={style.content}>
                                 <div className={style.top}>
                                     <div className={style.left}>

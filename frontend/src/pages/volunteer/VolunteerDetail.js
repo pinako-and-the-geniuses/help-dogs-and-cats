@@ -116,23 +116,6 @@ function VolunteerDetail(){
         })
     }
 
-    //댓글 삭제
-    const deleteComment=async(commentSeq)=>{
-        await axios({
-            url: `${URL}/volunteers/${id}/comments/${commentSeq}`,
-            method: "delete",
-            headers: {
-                Authorization: `Bearer ${jwt}`,
-            }
-        })
-        .then((res)=>{
-            console.log('삭제완료');
-        })
-        .catch((err) =>{
-            console.log(err);
-        })
-    }
-
     const test=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}/participants/${memSeq}`,
@@ -181,10 +164,6 @@ function VolunteerDetail(){
             if(res.isConfirmed)
                 deletePost();
         })
-    }
-
-    const onDeleteEvent=()=>{
-
     }
     
     const onCommentChange = (value) => {

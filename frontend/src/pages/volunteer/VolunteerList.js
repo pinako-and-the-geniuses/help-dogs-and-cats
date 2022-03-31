@@ -17,13 +17,13 @@ function VolunteerList(){
     const [keyword, setKeyword] = useState("");
 
     //남은 날짜
-    const leftDays=(enddate)=>{
+    const leftDays=(enddate, workStatus)=>{
         const today = new Date();
         const endDate = new Date(enddate);
         const gap = endDate.getTime() - today.getTime();
         const leftdays = Math.ceil(gap/(1000*60*60*24));
 
-        if(leftdays < 0 ) return null;
+        if(leftdays < 0  || workStatus !== "RECRUITING") return null;
         else if(leftdays === 0) return(`[D-DAY]`);
         else return(`[D-${leftdays}]`);
     }
@@ -148,7 +148,7 @@ function VolunteerList(){
                         return(
                             <tr key={volunteer.seq} 
                                 onClick={()=>{goToVolunteer(volunteer.seq)}}>
-                            <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate)}</td>
+                            <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate, volunteer.status)}</td>
                             <td>{volunteer.title}</td>
                             <td>0/{volunteer.maxParticipantCount}</td>
                             <td>{volunteer.nickname}</td>
