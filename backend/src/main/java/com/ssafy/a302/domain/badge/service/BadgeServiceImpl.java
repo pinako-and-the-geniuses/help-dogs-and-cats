@@ -102,7 +102,7 @@ public class BadgeServiceImpl implements BadgeService {
             return false;
         }
 
-        Integer count = adoptAuthRepository.countAllByMemberSeq(memberSeq);
+        Integer count = adoptAuthRepository.countAllByMemberSeqAndStatusEqDone(memberSeq);
         if (count != 1) {
             return false;
         }
@@ -132,7 +132,7 @@ public class BadgeServiceImpl implements BadgeService {
             return false;
         }
 
-        Integer count = adoptAuthRepository.countAllByMemberSeq(memberSeq);
+        Integer count = adoptAuthRepository.countAllByMemberSeqAndStatusEqDone(memberSeq);
         if (count != 2) {
             return false;
         }
