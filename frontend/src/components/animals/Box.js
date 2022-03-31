@@ -1,4 +1,5 @@
 import "./styles/Box.scss";
+import CardItem from "pages/animals/CardItem";
 export default function Box() {
   const arr = [6];
   const rendering = () => {
@@ -7,11 +8,16 @@ export default function Box() {
       result.push(
         <div className="col">
           <div className="card h-100">
-            <img
+            {/* <img
               src="https://mdbootstrap.com/img/Photos/Others/images/43.webp"
               className="card-img-top"
               alt="..."
-            />
+              path='/animals/animaldetails'
+            /> */}
+            <CardItem 
+              src = "https://mdbootstrap.com/img/Photos/Others/images/43.webp"
+              path='/animals/animaldetails'
+            />   
             <div className="card-body">
               <div className="card-text">
                 <span className="title">공고번호</span>

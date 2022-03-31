@@ -120,7 +120,6 @@ export default function CommunityCreate(api) {
           id="content"
           height={"90%"}
           value={content}
-          setValue={setContent}
           onChange={onEditorChange}
           placeholder={""}
         ></Editor>
