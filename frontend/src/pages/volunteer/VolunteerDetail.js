@@ -20,6 +20,8 @@ function VolunteerDetail(){
 
     const [post, setPost] = useState([]);
     const [commentContent, setCommentContent] = useState("");
+    const [commented, setCommented] = useState(1); //코멘트달림
+    const [comments, setComments] = useState([]);
     const [join, setJoin] = useState(false);
     const [dd, setDd] = useState(1); //test용
     const [volStatus, setVolstatus] = useState("");
@@ -48,6 +50,7 @@ function VolunteerDetail(){
         })
         .then((res)=>{
             setPost(res.data.data);
+            setComments(res.data.data.comments);
         })
         .catch((err) =>{
             console.log(err);
@@ -92,26 +95,46 @@ function VolunteerDetail(){
         })
     }
 
-    //댓글 달기 - 안됨!
-    const volReply=async()=>{
+    //댓글 작성
+    const volComment=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}/comments`,
             method: "post",
             data:{
-                content: "test",
+                content: commentContent,
+                parentSeq: null,
             },
             headers: {
                 Authorization: `Bearer ${jwt}`,
             }
         })
         .then((res)=>{
-            console.log('댓글달기성공');
+            // console.log('댓글달기성공');
         })
         .catch((err)=>{
             console.log(err);
         })
     }
 
+    const test=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/participants/${memSeq}`,
+            method: "patch",
+            data: {
+            approve: true,
+            },
+            headers: {
+            Authorization: `Bearer ${jwt}`,
+        }
+        })
+        .then((res) =>{
+            console.log('test성공');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }   
+        
     //게시글 삭제
     const deletePost=async()=>{
         console.log('삭제');
@@ -142,24 +165,27 @@ function VolunteerDetail(){
                 deletePost();
         })
     }
-
+    
     const onCommentChange = (value) => {
         setCommentContent(value);
     };
 
     const onClickEvent=(value)=>{
-        // setDd(value);
-        volReply();
+        volComment()
+        .then(setCommentContent(""));
+        setCommented(1);
     }
 
     useEffect(()=>{
         getPost();
     }, []);
 
-    //지울부분
+    //지울부분 //dk..아..아.....아..!아 getPost를 commented일때마다
+    //아..지우면 안됨..생각필요필요
     useEffect(()=>{
         console.log(post);
-    }, [post]);
+        console.log(post.comments);
+    }, [post,commented]);
 
     return(
         <div className={style.myContainer}>
@@ -252,17 +278,14 @@ function VolunteerDetail(){
                 id={id} 
                 value={commentContent}
                 onChange={onCommentChange}
-                volReply={volReply}
-                dd={dd}
                 eventHandler={onClickEvent}
+                comments={comments}
                 />
-            {console.log(commentContent)}
-            {console.log('클릭', dd)}
             <button 
                 className={style.listBtn}
                 onClick={()=>{navigate(-1)}}>목록</button>
 
-                <button onClick={volReply}>test</button>
+                <button onClick={test}>patchTest</button>
         </div>
     )
 }
