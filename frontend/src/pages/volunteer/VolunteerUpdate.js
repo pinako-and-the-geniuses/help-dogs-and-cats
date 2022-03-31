@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { URL } from '../../public/config';
 import axios from 'axios';
 import Editor from 'components/Editor';
@@ -9,6 +9,7 @@ import swal from 'sweetalert';
 function VolunteerUpdate(){
     const navigate = useNavigate();
     const jwt = sessionStorage.getItem('jwt');
+    const { id } = useParams();
     const placeholder=[
         "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
     ];
@@ -23,9 +24,55 @@ function VolunteerUpdate(){
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
 
+    //게시글 정보 가져오기
+    const getPost=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}`,
+            method: "get",
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            setTitle(res.data.data.title);
+            setCd(res.data.data.activityArea);
+            setTime(res.data.data.authTime);
+            setParty(res.data.data.maxParticipantCount);
+            setContact(res.data.data.contact);
+            setEndDate(res.data.data.endDate);
+            setContent(res.data.data.content);
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
 
+    //게시글 수정하기
+    const editPost=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}`,
+            method: "put",
+            data:{
+                title: title,
+                content: content,
+                activityArea: "",
+                authTime: time,
+                contact: contact,
+                endDate: endDate,
+                minParticipantCount: 3,
+                maxParticipantCount: party
+            },
+            headers:{ Authorization: `Bearer ${jwt}`}
+        })
+        .then((res)=>{
+            navigate(-1);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
 
-    const onTitleHandelr=(e)=>{
+    const onTitleHandler=(e)=>{
         setTitle(e.target.value);
     }
 
@@ -57,59 +104,46 @@ function VolunteerUpdate(){
         setContent(value);
     };
 
-    // title, endDate, 
-    const post = async()=>{
-        await axios({
-            url: `${URL}/volunteers`,
-            method: "post",
-            data: {
-                title: title,
-                content: content,
-                activityArea: "",
-                authTime: time,
-                contact: contact,
-                endDate: endDate,
-                minParticipantCount: 3,
-                maxParticipantCount: party
-            },
-            headers: {
-                Authorization: `Bearer ${jwt}`,
+    const onSubmit=(e)=>{
+        swal('글을 수정합니다',{
+            buttons: ['취소', '확인']
+        })
+        .then((willUpdate)=>{
+            if(willUpdate){
+                e.preventDefault();
+                if(title === ""){
+                    swal('제목값은 필수입니다.');
+                    return;
+                }
+                if(endDate === ""){
+                    swal('마감일은 필수입니다.');
+                    return;
+                }
+                if(content.length < 15){
+                    swal('내용을 더 자세히 적어주세요.');
+                    return;
+                }
+                editPost();
+            } else{
+
             }
-        })
-        .then((res)=>{
-            navigate('/volunteer/list');
-        })
-        .catch((err) =>{
-            console.log(err);
-        }) 
+        });        
     }
 
-    const onSubmit=(e)=>{
-        e.preventDefault();
-        if(title === ""){
-            swal('제목값은 필수입니다.');
-            return;
-        }
-        if(endDate === ""){
-            swal('마감일은 필수입니다.');
-            return;
-        }
-        if(content.length < 15){
-            swal('내용을 더 자세히 적어주세요.');
-            return;
-        }
-        post();
-    }
+    useEffect(()=>{
+        getPost();
+    }, []);
 
     return(
         <div className={style.myContainer}>
-            <h1>봉사활동<span> 글 작성</span></h1>
+            <h1>봉사활동<span> 글 수정</span></h1>
 
             <div className={style.thisTitle}>
                 <input
+                    value={title}
                     type="text" 
                     placeholder='제목'
-                    onChange={onTitleHandelr}/>
+                    onChange={onTitleHandler}/>
             </div>
 
             <div className={style.infoBox}>
@@ -129,6 +163,7 @@ function VolunteerUpdate(){
                     <li className={style.vol_time}>
                         <span>봉사인증시간</span>
                         <input 
+                            value={time}
                             type="number" 
                             placeholder='0' 
                             min="0"
@@ -137,7 +172,9 @@ function VolunteerUpdate(){
                     </li>
                     <li className={style.party}>
                         <span>모집 인원</span>
+                        {console.log(party)}
                         <input 
+                            value={party}
                             type="number" 
                             placeholder='3' 
                             min="3" 
@@ -148,6 +185,7 @@ function VolunteerUpdate(){
                     <li className={style.contact}>
                         <span>연락 방법</span>
                         <input
+                            value={contact}
                             type="text" 
                             placeholder='ex. 오픈채팅 주소'
                             onChange={onContactHandler}/>
@@ -155,6 +193,7 @@ function VolunteerUpdate(){
                     <li className={style.endDate}>
                         <span>모집 마감 날짜</span>
                         <input 
+                            value={endDate}
                             type="date"
                             onChange={onEndDateHandler} />
                     </li>
@@ -170,7 +209,7 @@ function VolunteerUpdate(){
             </Editor>
             <button 
                 className={style.addBtn}
-                onClick={onSubmit}>등록</button>
+                onClick={onSubmit}>수정</button>
         </div>
     )
 }

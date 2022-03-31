@@ -23,7 +23,7 @@ function VolunteerWrite(){
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
 
-    const onTitleHandelr=(e)=>{
+    const onTitleHandler=(e)=>{
         setTitle(e.target.value);
     }
 
@@ -55,7 +55,6 @@ function VolunteerWrite(){
         setContent(value);
     };
 
-    // title, endDate, 
     const post = async()=>{
         await axios({
             url: `${URL}/volunteers`,
@@ -107,7 +106,7 @@ function VolunteerWrite(){
                 <input
                     type="text" 
                     placeholder='제목'
-                    onChange={onTitleHandelr}/>
+                    onChange={onTitleHandler}/>
             </div>
 
             <div className={style.infoBox}>
