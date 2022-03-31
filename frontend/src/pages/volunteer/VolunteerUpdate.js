@@ -110,7 +110,7 @@ function VolunteerUpdate(){
         })
         .then((willUpdate)=>{
             if(willUpdate){
-                e.preventDefault();
+                // e.preventDefault();
                 if(title === ""){
                     swal('제목값은 필수입니다.');
                     return;
@@ -172,7 +172,6 @@ function VolunteerUpdate(){
                     </li>
                     <li className={style.party}>
                         <span>모집 인원</span>
-                        {console.log(party)}
                         <input 
                             value={party}
                             type="number" 
