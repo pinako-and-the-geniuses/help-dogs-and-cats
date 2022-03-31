@@ -24,7 +24,7 @@ function VolunteerDetail(){
     const [comments, setComments] = useState([]);
     const [join, setJoin] = useState(false);
     const [dd, setDd] = useState(1); //test용
-    const [volStatus, setVolStatus] = useState("");
+    const [stateChanged, setStateChanged] = useState(true);
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -58,12 +58,12 @@ function VolunteerDetail(){
     }
 
     //글 작성자: 모집 상태 변경
-    const changeStatus=async()=>{
+    const changeStatus=async(volState)=>{
         await axios({
             url: `${URL}/volunteers/${id}/status`,
             method: "patch",
             data :{
-                status: volStatus,
+                status: volState,
             },
             headers: {
                 Authorization: `Bearer ${jwt}`,
@@ -71,6 +71,7 @@ function VolunteerDetail(){
         })
         .then((res)=>{
             console.log('상태 수정 완료');
+            setStateChanged(!stateChanged);
         })
         .catch((err)=>{
             console.log(err);
@@ -139,7 +140,6 @@ function VolunteerDetail(){
         
     //게시글 삭제
     const deletePost=async()=>{
-        console.log('삭제');
         await axios({
             url: `${URL}/volunteers/${id}`,
             method: "delete",
@@ -177,35 +177,18 @@ function VolunteerDetail(){
         .then(getPost());
     }
 
-    const onStatusHandler=()=>{
-        if(volStatus === "ONGOING"){
-            setVolStatus("RECRUITING").then(changeStatus());
-            console.log('changed', volStatus);
-        }
-        if(volStatus === "RECRUTING"){
-            setVolStatus("ONGOING").then(changeStatus());
-            console.log('changed', volStatus);
-        }
+    const onChangeHandler=(volState)=>{
+        changeStatus(volState);
     }
 
     useEffect(()=>{
         getPost();
-    }, [changed]);
+    }, [changed, stateChanged]); //댓글, 모집, 
 
     useEffect(()=>{
         console.log(post);
-        console.log(comments);
+        // console.log(comments);
     }, [post, changed]);
-
-    //수정할 것! 제대로 안됨
-    // useEffect(()=> {
-    //     getPost().then(console.log(post));
-    // }, [changed]);
-
-    // useEffect(()=>{
-    //     console.log(post);
-    //     // console.log(comments);
-    // }, [changed]);
 
     return(
         <div className={style.myContainer}>
@@ -224,6 +207,22 @@ function VolunteerDetail(){
                 {
                     memSeq === post.writerSeq
                     ?{
+                        "ONGOING": (
+                            <button 
+                                type='button' 
+                                className={`${style.joinBtn} ${style.joinXBtn}`}
+                                onClick={()=>{onChangeHandler("RECRUITING");}}>모집시작</button>),
+                        "RECRUITING": (
+                            <button 
+                                type='button' 
+                                className={style.joinBtn}
+                                onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
+                    }[post.status]
+                    :null
+                }
+                {/* {
+                    memSeq === post.writerSeq
+                    ?{
                         ONGOING : <button type='button' onClick={()=>{setVolStatus(post.status);onStatusHandler()}} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>,
                         RECRUITING : <button type='button' onClick={()=>{setVolStatus(post.status);onStatusHandler()}} className={style.joinBtn}>모집마감</button>
                     }[post.status]
@@ -232,8 +231,8 @@ function VolunteerDetail(){
                         ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
                         :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
                     )
-                }
-                {/* {
+                } */}
+                {
                     memSeq === post.writerSeq
                     ?(
                         //모집 변수
@@ -246,7 +245,7 @@ function VolunteerDetail(){
                         ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
                         :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
                     )
-                } */}
+                }
             </div>
 
             <div className={style.infoBox}>
