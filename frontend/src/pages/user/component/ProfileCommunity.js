@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
+import SmallPaging from "components/SmallPaging";
 
 export default function ProfileCommunity({ category, seq, isLogin }) {
   const [list, setList] = useState();
+  //페이지
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState([]);
-  const size = 5;
+  const [totalPageNumber, setTotalPageNumber] = useState(1);
+  const size = 4;
+  //기타
   const jwt = sessionStorage.getItem("jwt");
   const navigator = useNavigate();
 
@@ -22,7 +25,7 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
         .then((res) => {
           const data = res.data.data;
           setList(data.communities);
-          setTotal([data.totalCount, data.totalPageNumber]);
+          setTotalPageNumber(res.data.data.totalPageNumber);
         })
         .catch((err) => console.log(err));
     }
@@ -35,60 +38,45 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
 
   return (
     <div>
-      <div name="글목록">
-        <div className={st.listBox}>
-          {list ? (
-            list.map((item) => {
-              return (
-                <div
-                  key={item.seq}
-                  className={st.listItem}
-                  onClick={() => onGoToDetail(item.seq)}
-                >
-                  <div className={st.itemCategory}>
-                    <div>
-                      {item.category === "GENERAL" ? "제너럴" : ""}
-                      {item.category === "REVIEW" ? "후기" : ""}
-                      {item.category === "REPORT" ? "제보?" : ""}
-                    </div>
+      <div name="글목록" className={st.listBox}>
+        <div className={st.activity}>
+          <div className={st.list}>
+            {list ? (
+              list.map((item) => {
+                return (
+                  <div key={item.seq} className={st.listItemDiv}>
+                    <button
+                      type="button"
+                      style={{ margin: "10px auto" }}
+                      className={cn("btn", `${st.listItem}`)}
+                      onClick={() => onGoToDetail(item.seq)}
+                    >
+                      <div className={st.itemCategory}>
+                        <div>
+                          {item.category === "GENERAL" ? "잡담" : ""}
+                          {item.category === "REVIEW" ? "후기" : ""}
+                          {item.category === "REPORT" ? "제보" : ""}
+                        </div>
+                      </div>
+                      <div className="card-body">
+                        <h5 className={cn(st.cardTitle, "card-title")}>
+                          {item.title}
+                        </h5>
+                      </div>
+                      <div className={st.cardEnd}>{item.createdDate}</div>
+                    </button>
                   </div>
-                  <div className="card-body">
-                    <h5 className={cn(st.cardTitle, "card-title")}>
-                      {item.title}
-                    </h5>
-                  </div>
-                  <div className={st.cardEnd}>{item.createdDate}</div>
-                </div>
-              );
-            })
-          ) : (
-            <h4 className={st.comment}>작성한 글이 없습니다.</h4>
-          )}
-
-          {/* <div name="페이저" className={st.pager}>
-            <li>
-              {page === 1 ? (
-                <button href="#" disabled>
-                  Previous
-                </button>
-              ) : (
-                <button href="#" onClick={() => setPage(page - 1)}>
-                  Previous
-                </button>
-              )}
-            </li>
-            <li>
-              {list ? (
-                <button href="#" onClick={() => setPage(page + 1)}>
-                  Next
-                </button>
-              ) : (
-                <button href="#" disabled>
-                  Next
-                </button>
-              )}
-            </li>
-          </div> */}
+                );
+              })
+            ) : (
+              <h4 className={st.comment}>작성한 글이 없습니다.</h4>
+            )}
+            <SmallPaging
+              page={page}
+              setPage={setPage}
+              totalPageNumber={totalPageNumber}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -37,7 +37,7 @@ export default function Profile() {
               size="30"
             />
             <ul className={cn(`${st.dropdown}`, "dropdown-menu")}>
-              {seq === mySeq ? (
+              {parseInt(seq) === mySeq ? (
                 <li>
                   <a className="dropdown-item" href="/user/editInfo">
                     수정

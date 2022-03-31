@@ -15,7 +15,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   //페이지네이션
   const [page, setPage] = useState(1);
   const [totalPageNumber, setTotalPageNumber] = useState(1);
-  const size = 2;
+  const size = 4;
   // 기타
   const navigator = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
@@ -362,7 +362,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                 onClickModal(item);
                               }}
                             >
-                              참가자
+                              &nbsp; 참여자 &nbsp;
                             </button>
                           )}
                           {modal ? (
@@ -460,18 +460,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                     ) : (
                       ""
                     )}
-                    {/* {parseInt(seq) === userSeq
-                      ? () => {
-                          setModalData(item);
-                          return (
-                            <VolunteerModal
-                              item={modalData}
-                              seq={parseInt(seq)}
-                              userSeq={userSeq}
-                            />
-                          );
-                        }
-                      : ""} */}
                   </div>
                 );
               })
