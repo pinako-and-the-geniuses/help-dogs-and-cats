@@ -20,6 +20,8 @@ function VolunteerDetail(){
 
     const [post, setPost] = useState([]);
     const [commentContent, setCommentContent] = useState("");
+    const [commented, setCommented] = useState(1); //코멘트달림
+    const [comments, setComments] = useState([]);
     const [join, setJoin] = useState(false);
     const [dd, setDd] = useState(1); //test용
     const [volStatus, setVolstatus] = useState("");
@@ -48,6 +50,7 @@ function VolunteerDetail(){
         })
         .then((res)=>{
             setPost(res.data.data);
+            setComments(res.data.data.comments);
         })
         .catch((err) =>{
             console.log(err);
@@ -113,6 +116,23 @@ function VolunteerDetail(){
         })
     }
 
+    //댓글 삭제
+    const deleteComment=async(commentSeq)=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/comments/${commentSeq}`,
+            method: "delete",
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('삭제완료');
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+
     const test=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}/participants/${memSeq}`,
@@ -163,22 +183,30 @@ function VolunteerDetail(){
         })
     }
 
+    const onDeleteEvent=()=>{
+
+    }
+    
     const onCommentChange = (value) => {
         setCommentContent(value);
     };
 
     const onClickEvent=(value)=>{
-        volComment();
+        volComment()
+        .then(setCommentContent(""));
+        setCommented(1);
     }
 
     useEffect(()=>{
         getPost();
     }, []);
 
-    //지울부분
+    //지울부분 //dk..아..아.....아..!아 getPost를 commented일때마다
+    //아..지우면 안됨..생각필요필요
     useEffect(()=>{
         console.log(post);
-    }, [post]);
+        console.log(post.comments);
+    }, [post,commented]);
 
     return(
         <div className={style.myContainer}>
@@ -272,6 +300,7 @@ function VolunteerDetail(){
                 value={commentContent}
                 onChange={onCommentChange}
                 eventHandler={onClickEvent}
+                comments={comments}
                 />
             <button 
                 className={style.listBtn}

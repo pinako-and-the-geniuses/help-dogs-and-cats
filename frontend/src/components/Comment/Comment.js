@@ -1,8 +1,16 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { URL } from '../../public/config';
 import Reply from './Reply';
 import style from './style/Comment.module.scss';
+import swal from 'sweetalert';
+import axios from 'axios';
 
 function Comment(props){
+    const jwt = sessionStorage.getItem('jwt');
+    const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
+    const { id } = useParams();
     const [rereply, setRereply] = useState(false);
     const [reply, setReply] = useState(false);
 
@@ -14,49 +22,90 @@ function Comment(props){
         setRereply(false);
     }
 
+    const deleteHandler=(commentSeq)=>{
+        console.log('11',commentSeq);
+        swal("댓글을 삭제합니다",{
+            buttons: ['취소', '확인']
+        })
+        .then((willDelete)=>{
+            if(willDelete){
+                deleteComment(commentSeq);
+            } else{
+            }
+        });
+    }
+
+    const deleteComment=async(commentSeq)=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/comments/${commentSeq}`,
+            method: "delete",
+            headers: {
+                Authorization: `Bearer ${jwt}`,
+            }
+        })
+        .then((res)=>{
+            console.log('삭제완료');
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+
     return(
         <div className={style.commentBox}>
-        <div className={style.comment}>
-            <img src="https://cdn-icons-png.flaticon.com/512/2088/2088112.png" />
+            {
+                (props.comments).map((comment)=>{
+                    return(
+                        <>
+                        <div className={style.comment}>
+                            {/* 이미지 수정 필요 */}
+                            <img src={comment.writerProfileImagePath} />
+                            <div className={style.content}>
+                                <div className={style.top}>
+                                    <div className={style.left}>
+                                        <span className={style.writer}>{comment.writerNickname}</span>
+                                        <span className={style.date}>{comment.createdDate}</span>
+                                    </div>
+                                    {
+                                        memSeq === comment.writerSeq
+                                        ? <p className={style.delete} onClick={()=>{deleteHandler(comment.commentSeq)}}>삭제</p>
+                                        : null
+                                    }
+                                </div>
+                                <p onClick={openReply}>
+                                    {comment.content}
+                                </p>
+                            </div>
+                        </div>
+                        {/* <Reply />
+                        {
+                            rereply
+                            ?(
+                                <div className={style.addReply}>
+                                    <div></div>
+                                    <textarea type="text"/>
+                                    <button type="submit" className={style.replyBtn}>등록</button>
+                                    <button className={style.XBtn} onClick={closeReply}>X</button>
+                                </div>
+                            )
+                            : ""
+                        } */}
+                        <hr />
+                        </>
+                    )
+                })
+            }
 
-            <div className={style.content}>
-                <div className={style.top}>
-                    <div className={style.left}>
-                        <span className={style.writer}>싸피강아지</span>
-                        <span className={style.date}>2022-03-22</span>
-                    </div>
-                    <p className={style.delete}>삭제</p>
-                </div>
-                <p onClick={openReply}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor possimus quae quas temporibus adipisci ad, consequatur ut nesciunt et blanditiis totam harum cupiditate quis aperiam amet molestias deserunt suscipit ipsa. Omnis, perferendis ullam? Numquam molestias unde reiciendis ab voluptate ullam ex amet laborum soluta vitae! Corporis ipsa architecto omnis est?
-                </p>
+
+            <div className={style.addComment}>
+                <textarea 
+                    cols="30" rows="3"
+                    value={props.commentContent}
+                    onChange={(e)=>props.onChange(e.target.value)}
+                    ></textarea>
+                <button type="submit" onClick={()=>{props.eventHandler();}}>댓글 작성</button>
             </div>
         </div>
-        <Reply/>
-        {
-            rereply
-            ?(
-                <div className={style.addReply}>
-                    <div></div>
-                    <textarea type="text"/>
-                    <button type="submit" className={style.replyBtn}>등록</button>
-                    <button className={style.XBtn} onClick={closeReply}>X</button>
-                </div>
-            )
-            : ""
-        }
-        <hr />
-
-        <div className={style.addComment}>
-            <textarea 
-                cols="30" rows="3"
-                value={props.commentContent}
-                // onChange={(e)=>{setReply(e.target.value)}}
-                onChange={(e)=>props.onChange(e.target.value)}
-                ></textarea>
-            <button type="submit" onClick={()=>{props.eventHandler()}}>댓글 작성</button>
-       </div>
-    </div>
     )
 
 }
