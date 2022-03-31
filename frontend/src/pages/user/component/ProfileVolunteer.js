@@ -1,7 +1,7 @@
-import VolunteerModal from "../component/ProfileVolunteerModal";
+// import VolunteerModal from "../component/ProfileVolunteerModal";
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   //페이지네이션
   const [page, setPage] = useState(1);
   const [totalPageNumber, setTotalPageNumber] = useState(1);
-  const size = 5;
+  const size = 2;
   // 기타
   const navigator = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
@@ -23,11 +23,8 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const [modal, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
   const [content, setContent] = useState();
-
-  // 에디터 부분 변경
-  const onEditorChange = (value) => {
-    setContent(value);
-  };
+  const [checkedInputs, setCheckedInputs] = useState("");
+  const closeRef = useRef(null);
 
   useEffect(() => {
     if (isLogin) {
@@ -43,7 +40,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [page]);
 
   // 해당 모집 상세페이지로
   const onGoToDetail = (itemSeq) => {
@@ -51,15 +48,276 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     navigator(`/volunteer/detail/${itemSeq}`);
   };
 
+  // 인원관리
+  const changeHandler = (checked, id) => {
+    if (checked) {
+      setCheckedInputs([...checkedInputs, id]);
+    } else {
+      // 체크 해제
+      setCheckedInputs(checkedInputs.filter((el) => el !== id));
+    }
+  };
+
+  // 에디터 부분 변경
+  const onEditorChange = (value) => {
+    setContent(value);
+  };
+
+  // 요청 완료되면 모달 자동으로 닫히게
+  const onhandleClose = () => {
+    closeRef.current.click();
+  };
+
+  // 인증 요청
+  const onVolunAuth = (props) => {
+    const method = props[0];
+    const volunteerSeq = props[1];
+    console.log("==========================");
+    // console.log(method, volunteerSeq, content, checkedInputs);
+    axios({
+      url: `${URL}/volunteers/${volunteerSeq}/auth`,
+      method: method,
+      headers: { Authorization: `Bearer ${jwt}` },
+      data: {
+        content: content,
+        authenticatedParticipantSequences: checkedInputs,
+      },
+    })
+      .then((res) => {
+        console.log("봉사인증요청성공", res);
+        alert("요청 성공");
+        onhandleClose();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("요청에 실패했습니다.");
+      });
+  };
+  // 인증요청서 내용 가져오기
+  const onGetModalData = (props) => {
+    const now = props[0];
+    const volunteerSeq = props[1];
+    axios({
+      url: `${URL}/volunteers/${volunteerSeq}/auth`,
+      method: "GET",
+      headers: { Authorization: `Bearer ${jwt}` },
+    })
+      .then((res) => {
+        setContent(res.data.data.content);
+        if (now !== "REJECT") {
+          var temp = res.data.data.participants.filter(function (n) {
+            if (n.approve) {
+              return n;
+            }
+          });
+          setCheckedInputs(temp);
+        }
+      })
+      .then(console.log(content, "======", checkedInputs))
+      .catch((err) => {
+        console.log(err);
+        alert("요청에 실패했습니다.");
+      });
+  };
+
+  // 모달에 데이터 보내기
   const onClickModal = (el) => {
     setModalData(el);
     setModal(true);
   };
-  console.log("렌더링수");
+  // 인증상태별 인증요청 버튼 이름 다르게 출력
+  const onModal = (item) => {
+    // 처음 인증 신청할때
+    if (item.authStatus === null) {
+      return (
+        <>
+          <button
+            type="button"
+            className="btn"
+            style={{ backgroundColor: "#d0a96c" }}
+            data-bs-toggle="modal"
+            data-bs-target="#volunteerModal"
+            onClick={() => {
+              onClickModal(item);
+            }}
+          >
+            인증신청
+          </button>
+        </>
+      );
+    } else if (item.authStatus === "REJECT") {
+      return (
+        <>
+          <button
+            type="button"
+            className="btn"
+            style={{ backgroundColor: "#d0a96c" }}
+            data-bs-toggle="modal"
+            data-bs-target="#volunteerModal"
+            onClick={() => {
+              onClickModal(item);
+              onGetModalData(["REJECT", item.volunteerSeq]);
+            }}
+          >
+            신청거절
+          </button>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <button
+            type="button"
+            className="btn"
+            style={{ backgroundColor: "#d0a96c" }}
+            data-bs-toggle="modal"
+            data-bs-target="#volunteerModal"
+            onClick={() => {
+              onClickModal(item);
+              onGetModalData(["etc", item.volunteerSeq]);
+            }}
+          >
+            {item.authStatus === "REQUEST" ? "신청완료" : ""}
+            {item.authStatus === "DONE" ? "인증완료" : ""}
+          </button>
+        </>
+      );
+    }
+  };
+
+  // 인증상태별 모달 하단 버튼(수정/ 등록/ 닫기/ 취소) 다르게 출력
+  const onBottomBtn = (item) => {
+    if (item === null) {
+      return (
+        <>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            data-bs-dismiss="modal"
+            onClick={() => {
+              setContent("");
+              setCheckedInputs([]);
+            }}
+          >
+            취소
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            value={"POST"}
+            onClick={(e) => {
+              onVolunAuth([e.target.value, modalData.volunteerSeq]);
+            }}
+          >
+            작성
+          </button>
+        </>
+      );
+    } else if (item === "REJECT") {
+      return (
+        <>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            data-bs-dismiss="modal"
+            onClick={() => {
+              setContent("");
+              setCheckedInputs([]);
+            }}
+          >
+            취소
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            value={"PUT"}
+            onClick={(e) => {
+              onVolunAuth([e.target.value, modalData.volunteerSeq]);
+            }}
+          >
+            수정
+          </button>
+        </>
+      );
+    } else {
+      return (
+        <button
+          type="button"
+          className="btn btn-secondary"
+          data-bs-dismiss="modal"
+          onClick={() => {
+            setContent("");
+            setCheckedInputs([]);
+          }}
+        >
+          닫기
+        </button>
+      );
+    }
+  };
+
+  // 인증상태별 인원관리 다르게 출력
+  const onMemberCheck = () => {
+    // 처음 신청 할때 또는 수정할때
+    if (modalData.authStatus === null || modalData.authStatus === "REJECT") {
+      return (
+        <div name="인원유무에따라" className={st.input}>
+          {modalData.participantInfos
+            ? modalData.participantInfos.map((data) => {
+                return (
+                  <>
+                    <div
+                      key={data.memberSeq}
+                      className="form-check form-check-inline"
+                    >
+                      <input
+                        id={data.memberSeq}
+                        type="checkbox"
+                        style={{
+                          width: "15px",
+                        }}
+                        onChange={(e) => {
+                          changeHandler(
+                            e.currentTarget.checked,
+                            data.memberSeq
+                          );
+                        }}
+                        checked={
+                          checkedInputs.includes(data.memberSeq) ? true : false
+                        }
+                      />
+
+                      <label className="form-check-label" htmlFor="memberCheck">
+                        {data.memberNickname}
+                      </label>
+                    </div>
+                  </>
+                );
+              })
+            : "멤버없음"}
+        </div>
+      );
+    } else {
+      return (
+        <div name="최종참가인원" className={st.input}>
+          {checkedInputs.length >= 1
+            ? checkedInputs.map((mem) => {
+                return (
+                  <>
+                    <span className="me-2">{mem.nickname} /</span>
+                  </>
+                );
+              })
+            : "없음"}
+        </div>
+      );
+    }
+  };
+
   return (
     <div>
       <div className={st.listBox}>
-        <div className={st.adopts}>
+        <div className={st.activity}>
           <div name="글 목록" className={st.list}>
             {list ? (
               list.map((item) => {
@@ -74,21 +332,11 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                     >
                       <div className={st.itemCategory}>
                         <div>
+                          {item.volunteerStatus === "ONGOING" ? "진행중" : ""}
+                          {item.volunteerStatus === "DONE" ? "모집완료" : ""}
                           {item.volunteerStatus === "RECRUITING"
                             ? "모집중"
                             : ""}
-                          {item.volunteerStatus === "ONGOING" ? "진행중" : ""}
-                          {item.volunteerStatus === "DONE" ? "모집완료" : ""}
-                          {item.volunteerStatus === "DONE" &&
-                          item.authStatus ? (
-                            <>
-                              {item.authStatus === "REQUEST" ? "인증대기" : ""}
-                              {item.authStatus === "REJECT" ? "인증거절" : ""}
-                              {item.authStatus === "DONE" ? "인증완료" : ""}
-                            </>
-                          ) : (
-                            ""
-                          )}
                         </div>
                       </div>
                       <div className="card-body">
@@ -98,116 +346,132 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                       </div>
                       <div className={st.cardEnd}>{item.createdDate}</div>
                     </button>
-                    <div className={st.volunteer}>
-                      <button
-                        type="button"
-                        className="btn"
-                        style={{ backgroundColor: "#d0a96c" }}
-                        data-bs-toggle="modal"
-                        data-bs-target="#volunteerModal"
-                        onClick={() => {
-                          onClickModal(item);
-                        }}
-                      >
-                        봉사 인증
-                      </button>
-                      {modal ? (
-                        <div
-                          className="modal fade"
-                          id="volunteerModal"
-                          tabIndex="-1"
-                          aria-labelledby="volunteerModalLabel"
-                          aria-hidden="true"
-                        >
-                          <div className="modal-dialog modal-dialog-centered">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <h5
-                                  className="modal-title"
-                                  id="volunteerModalLabel"
-                                >
-                                  봉사 인증 요청
-                                </h5>
-                                <button
-                                  type="button"
-                                  className="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                ></button>
-                              </div>
-                              <div className={cn(`${st.body}`, "modal-body")}>
-                                <div name="봉사제목" className={st.name}>
-                                  <div className={st.label}>
-                                    <label htmlFor="모집제목">
-                                      <span>제목</span>
-                                    </label>
+                    {parseInt(seq) === userSeq ? (
+                      <>
+                        <div className={st.volunteer}>
+                          {item.memberSeq === userSeq ? (
+                            <>{onModal(item)}</>
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn"
+                              style={{ backgroundColor: "#d0a96c" }}
+                              data-bs-toggle="modal"
+                              data-bs-target="#volunteerModal"
+                              onClick={() => {
+                                onClickModal(item);
+                              }}
+                            >
+                              참가자
+                            </button>
+                          )}
+                          {modal ? (
+                            <div
+                              className="modal fade"
+                              id="volunteerModal"
+                              tabIndex="-1"
+                              aria-labelledby="volunteerModalLabel"
+                              aria-hidden="true"
+                            >
+                              <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content">
+                                  <div className="modal-header">
+                                    <h5
+                                      className="modal-title"
+                                      id="volunteerModalLabel"
+                                    >
+                                      봉사 인증 요청서
+                                    </h5>
+                                    <button
+                                      type="button"
+                                      className="btn-close"
+                                      data-bs-dismiss="modal"
+                                      aria-label="Close"
+                                      onClick={() => {
+                                        setContent("");
+                                        setCheckedInputs([]);
+                                      }}
+                                    ></button>
                                   </div>
-                                  <div className={st.input}>
-                                    {modalData.title}
-                                  </div>
-                                </div>
+                                  <div
+                                    className={cn(`${st.body}`, "modal-body")}
+                                  >
+                                    <div name="봉사제목" className={st.name}>
+                                      <div className={st.label}>
+                                        <label htmlFor="모집제목">
+                                          <span>제목</span>
+                                        </label>
+                                      </div>
+                                      <div className={st.input}>
+                                        {modalData.title}
+                                      </div>
+                                    </div>
 
-                                <div name="인원관리" className={st.name}>
-                                  <div className={st.label}>
-                                    <label htmlFor="인원관리">
-                                      <span>인원관리</span>
-                                    </label>
-                                  </div>
-                                  <div className={st.input}>
-                                    {modalData.volunteerSeq}
-                                  </div>
-                                </div>
+                                    <div name="인원관리" className={st.name}>
+                                      <div className={st.label}>
+                                        <label htmlFor="인원관리">
+                                          <span>참가인원</span>
+                                        </label>
+                                      </div>
 
-                                <div name="내용" className={st.content}>
-                                  <div className={st.label}>
-                                    <label htmlFor="content">
-                                      <span>내용</span>
-                                    </label>
+                                      {onMemberCheck()}
+                                    </div>
+
+                                    <div name="내용" className={st.content}>
+                                      <div className={st.label}>
+                                        <label htmlFor="content">
+                                          <span>내용</span>
+                                        </label>
+                                      </div>
+
+                                      <div className={st.editor}>
+                                        {modalData.authStatus === null ||
+                                        modalData.authStatus === "REJECT" ? (
+                                          <Editor
+                                            id="content"
+                                            height={"90%"}
+                                            value={content || ""}
+                                            onChange={onEditorChange}
+                                            placeholder={""}
+                                          />
+                                        ) : (
+                                          <div
+                                            className={st.htmlDiv}
+                                            dangerouslySetInnerHTML={{
+                                              __html: content,
+                                            }}
+                                          ></div>
+                                        )}
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className={st.editor}>
-                                    <Editor
-                                      id="content"
-                                      height={"90%"}
-                                      value={content}
-                                      onChange={onEditorChange}
-                                      placeholder={""}
-                                    />
+
+                                  <div name="하단버튼" className="modal-footer">
+                                    {onBottomBtn(modalData.authStatus)}
                                   </div>
                                 </div>
-                              </div>
-                              <div className="modal-footer">
-                                <button
-                                  type="button"
-                                  className="btn btn-secondary"
-                                  data-bs-dismiss="modal"
-                                >
-                                  취소
-                                </button>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary"
-                                  // onClick={onVolunAuth}
-                                >
-                                  작성
-                                </button>
                               </div>
                             </div>
-                          </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                    {/* {parseInt(seq) === userSeq ? (
-                      <VolunteerModal
-                        volunteerSeq={item.volunteerSeq}
-                        title={item.title}
-                        seq={parasInt(seq)}
-                        userSeq={userSeq}
-                      />
+                      </>
                     ) : (
                       ""
-                    )} */}
+                    )}
+                    {/* {parseInt(seq) === userSeq
+                      ? () => {
+                          setModalData(item);
+                          return (
+                            <VolunteerModal
+                              item={modalData}
+                              seq={parseInt(seq)}
+                              userSeq={userSeq}
+                            />
+                          );
+                        }
+                      : ""} */}
                   </div>
                 );
               })

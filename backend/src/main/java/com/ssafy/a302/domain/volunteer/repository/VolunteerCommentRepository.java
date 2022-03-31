@@ -1,6 +1,5 @@
 package com.ssafy.a302.domain.volunteer.repository;
 
-import com.ssafy.a302.domain.community.entity.CommunityComment;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

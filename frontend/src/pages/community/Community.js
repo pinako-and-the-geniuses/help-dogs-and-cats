@@ -5,6 +5,7 @@ import XMLParser from "react-xml-parser";
 import { useParams, useNavigate } from "react-router-dom";
 import style from "./styles/Community.module.scss";
 import cn from "classnames";
+import "./styles/Paging.module.scss";
 import Pagination from "react-js-pagination";
 export default function Community() {
   const [communitys, setCommunity] = useState("");
@@ -41,8 +42,8 @@ export default function Community() {
   }, []); //한번만 해줄때 []넣는다
   
   const getRead = (e) => {
-    console.log(category, search, keyword, size, page);
-    console.log("read", e.target.value);
+    // console.log(category, search, keyword, size, page);
+    // console.log("read", e.target.value);
     axios
       .get(
         `${URL}/communities?page=${page}&size=${size}&category=${category}&search=${search}&keyword=${keyword}`
@@ -153,7 +154,8 @@ export default function Community() {
           <td colSpan="5">작성 글이 없습니다.</td>
         )}
       </table>
-      <Pagination
+      {/* <Pagination
+      className={style.commupagination}
       onClick={getPage}
       activePage={page}
       itemsCountPerPage={size}
@@ -161,8 +163,8 @@ export default function Community() {
       pageRangeDisplayed={totalPageNumber}
       prevPageText={"‹"}
       nextPageText={"›"}
-    />
-      {/* <nav aria-label="Page navigation example">
+    /> */}
+      <nav aria-label="Page navigation example">
         <ul className="pagination justify-content-center" onClick={getPage}>
           <li className="page-item">
             <a className="page-link" href="#" aria-label="Previous">
@@ -190,7 +192,7 @@ export default function Community() {
             </a>
           </li>
         </ul>
-      </nav> */}
+      </nav>
       
     </div>
   );
