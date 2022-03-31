@@ -89,12 +89,12 @@ export default function Editinfo() {
               nickname: nickName,
             };
             dispatch(loginAction(userInfo));
-            navi(`user/profile/${info.seq}`);
+            navi(`/user/profile/${info.seq}`);
           }
         })
         .catch((err) => {
           alert("수정 실패");
-          // navi("/NotFound")
+          navi("/NotFound");
         });
     } else {
       alert("형식을 다시 확인해 입력해주세요");
