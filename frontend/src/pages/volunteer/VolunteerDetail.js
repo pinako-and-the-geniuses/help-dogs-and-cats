@@ -20,11 +20,11 @@ function VolunteerDetail(){
 
     const [post, setPost] = useState([]);
     const [commentContent, setCommentContent] = useState("");
-    const [commented, setCommented] = useState(1); //코멘트달림
+    const [changed, setChanged] = useState(true);
     const [comments, setComments] = useState([]);
     const [join, setJoin] = useState(false);
     const [dd, setDd] = useState(1); //test용
-    const [volStatus, setVolstatus] = useState("");
+    const [volStatus, setVolStatus] = useState("");
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -63,7 +63,7 @@ function VolunteerDetail(){
             url: `${URL}/volunteers/${id}/status`,
             method: "patch",
             data :{
-                status: "ONGOING",
+                status: volStatus,
             },
             headers: {
                 Authorization: `Bearer ${jwt}`,
@@ -110,6 +110,8 @@ function VolunteerDetail(){
         })
         .then((res)=>{
             // console.log('댓글달기성공');
+            setChanged(!changed);
+            setCommentContent("");
         })
         .catch((err)=>{
             console.log(err);
@@ -170,22 +172,40 @@ function VolunteerDetail(){
         setCommentContent(value);
     };
 
-    const onClickEvent=(value)=>{
+    const onClickEvent=()=>{
         volComment()
-        .then(setCommentContent(""));
-        setCommented(1);
+        .then(getPost());
+    }
+
+    const onStatusHandler=()=>{
+        if(volStatus === "ONGOING"){
+            setVolStatus("RECRUITING").then(changeStatus());
+            console.log('changed', volStatus);
+        }
+        if(volStatus === "RECRUTING"){
+            setVolStatus("ONGOING").then(changeStatus());
+            console.log('changed', volStatus);
+        }
     }
 
     useEffect(()=>{
         getPost();
-    }, []);
+    }, [changed]);
 
-    //지울부분 //dk..아..아.....아..!아 getPost를 commented일때마다
-    //아..지우면 안됨..생각필요필요
     useEffect(()=>{
         console.log(post);
-        console.log(post.comments);
-    }, [post,commented]);
+        console.log(comments);
+    }, [post, changed]);
+
+    //수정할 것! 제대로 안됨
+    // useEffect(()=> {
+    //     getPost().then(console.log(post));
+    // }, [changed]);
+
+    // useEffect(()=>{
+    //     console.log(post);
+    //     // console.log(comments);
+    // }, [changed]);
 
     return(
         <div className={style.myContainer}>
@@ -203,6 +223,18 @@ function VolunteerDetail(){
                 <p className={style.title}>{post.title}</p>
                 {
                     memSeq === post.writerSeq
+                    ?{
+                        ONGOING : <button type='button' onClick={()=>{setVolStatus(post.status);onStatusHandler()}} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>,
+                        RECRUITING : <button type='button' onClick={()=>{setVolStatus(post.status);onStatusHandler()}} className={style.joinBtn}>모집마감</button>
+                    }[post.status]
+                    :(
+                        join
+                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                        :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
+                    )
+                }
+                {/* {
+                    memSeq === post.writerSeq
                     ?(
                         //모집 변수
                         join
@@ -214,7 +246,7 @@ function VolunteerDetail(){
                         ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
                         :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
                     )
-                }
+                } */}
             </div>
 
             <div className={style.infoBox}>
@@ -257,9 +289,7 @@ function VolunteerDetail(){
             </div>
 
             <div className={style.mainBox}>
-                    <div dangerouslySetInnerHTML={{__html:post.content}}></div>
-                    {/* 사진이 크면 칸을 넘어가는 문제 발생..omg! */}
-                    {/* 사진 크기를 조정해줘야겠다 */}
+                <div dangerouslySetInnerHTML={{__html:post.content}}></div>
             </div>
             
             {
