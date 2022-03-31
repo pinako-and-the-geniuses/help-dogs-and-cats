@@ -75,6 +75,7 @@ class ProfileServiceTest {
     void setUp() {
         memberRepository.deleteAll();
         badgeRepository.deleteAll();
+        adoptAuthRepository.deleteAll();
         em.flush();
         em.clear();
 
