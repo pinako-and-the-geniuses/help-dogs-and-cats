@@ -16,7 +16,7 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
   const jwt = sessionStorage.getItem("jwt");
   const navigator = useNavigate();
 
-  useEffect(() => {
+  const getData = () => {
     if (isLogin) {
       axios
         .get(`${URL}/members/${seq}/${category}?page=${page}&size=${size}`, {
@@ -29,6 +29,9 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
         })
         .catch((err) => console.log(err));
     }
+  };
+  useEffect(() => {
+    getData();
   }, [page]);
 
   const onGoToDetail = (itemSeq) => {

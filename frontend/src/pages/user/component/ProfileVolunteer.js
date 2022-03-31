@@ -26,7 +26,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const [checkedInputs, setCheckedInputs] = useState("");
   const closeRef = useRef(null);
 
-  useEffect(() => {
+  const getData = () => {
     if (isLogin) {
       axios
         .get(`${URL}/members/${seq}/${category}?page=${page}&size=${size}`, {
@@ -40,7 +40,19 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         })
         .catch((err) => console.log(err));
     }
+  };
+
+  useEffect(() => {
+    getData();
   }, [page]);
+
+  // 요청 완료되면 모달 자동으로 닫히게
+  const onhandleClose = () => {
+    closeRef.current.click();
+    setCheckedInputs("");
+    setContent("");
+    console.log("닫혀라");
+  };
 
   // 해당 모집 상세페이지로
   const onGoToDetail = (itemSeq) => {
@@ -63,35 +75,36 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     setContent(value);
   };
 
-  // 요청 완료되면 모달 자동으로 닫히게
-  const onhandleClose = () => {
-    closeRef.current.click();
-  };
-
   // 인증 요청
   const onVolunAuth = (props) => {
     const method = props[0];
     const volunteerSeq = props[1];
-    console.log("==========================");
-    // console.log(method, volunteerSeq, content, checkedInputs);
-    axios({
-      url: `${URL}/volunteers/${volunteerSeq}/auth`,
-      method: method,
-      headers: { Authorization: `Bearer ${jwt}` },
-      data: {
-        content: content,
-        authenticatedParticipantSequences: checkedInputs,
-      },
-    })
-      .then((res) => {
-        console.log("봉사인증요청성공", res);
-        alert("요청 성공");
-        onhandleClose();
+    if (checkedInputs.length < 1) {
+      alert("인원을 선택하세요");
+    } else if (content.length < 10) {
+      alert("내용을 확인해주세요");
+    } else {
+      axios({
+        url: `${URL}/volunteers/${volunteerSeq}/auth`,
+        method: method,
+        headers: { Authorization: `Bearer ${jwt}` },
+        data: {
+          content: content,
+          authenticatedParticipantSequences: checkedInputs,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-        alert("요청에 실패했습니다.");
-      });
+        .then((res) => {
+          onhandleClose();
+          console.log("봉사인증요청성공", res);
+          alert("요청 성공");
+          getData();
+        })
+        .catch((err) => {
+          console.log(err);
+
+          alert("요청에 실패했습니다.");
+        });
+    }
   };
   // 인증요청서 내용 가져오기
   const onGetModalData = (props) => {
@@ -122,6 +135,8 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
 
   // 모달에 데이터 보내기
   const onClickModal = (el) => {
+    setContent("");
+    setCheckedInputs("");
     setModalData(el);
     setModal(true);
   };
@@ -266,10 +281,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
             ? modalData.participantInfos.map((data) => {
                 return (
                   <>
-                    <div
-                      key={data.memberSeq}
-                      className="form-check form-check-inline"
-                    >
+                    <div key={data.id} className="form-check form-check-inline">
                       <input
                         id={data.memberSeq}
                         type="checkbox"
@@ -304,7 +316,9 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
             ? checkedInputs.map((mem) => {
                 return (
                   <>
-                    <span className="me-2">{mem.nickname} /</span>
+                    <span key={mem.nickname} className="me-2">
+                      {mem.nickname} /
+                    </span>
                   </>
                 );
               })
@@ -383,14 +397,11 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                                       봉사 인증 요청서
                                     </h5>
                                     <button
+                                      ref={closeRef}
                                       type="button"
                                       className="btn-close"
                                       data-bs-dismiss="modal"
                                       aria-label="Close"
-                                      onClick={() => {
-                                        setContent("");
-                                        setCheckedInputs([]);
-                                      }}
                                     ></button>
                                   </div>
                                   <div

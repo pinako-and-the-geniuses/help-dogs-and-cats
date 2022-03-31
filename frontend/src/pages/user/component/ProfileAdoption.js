@@ -1,5 +1,4 @@
 import SmallPaging from "components/SmallPaging";
-
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
 import { useEffect, useState, useRef } from "react";
@@ -7,6 +6,7 @@ import axios from "axios";
 import { URL } from "public/config";
 import Editor from "components/Editor";
 import { useSelector } from "react-redux";
+
 export default function ProfileAdoption({ category, seq, isLogin }) {
   const [detail, setDetail] = useState({
     title: "",
@@ -20,7 +20,6 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
     totalCount: "",
     totalPageNumber: "",
   });
-
   //페이지네이션
   const [page, setPage] = useState(1);
   const [totalPageNumber, setTotalPageNumber] = useState(1);
@@ -29,7 +28,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
   const jwt = sessionStorage.getItem("jwt");
   const closeRef = useRef(null);
   const userSeq = useSelector((state) => state.userInfo.userInfo.seq);
-  useEffect(() => {
+  const getData = () => {
     if (isLogin) {
       axios
         .get(`${URL}/members/${seq}/${category}?page=${page}&size=${size}`, {
@@ -49,6 +48,9 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
         })
         .catch((err) => console.log(err));
     }
+  };
+  useEffect(() => {
+    getData();
   }, [page]);
 
   //해당 내용 클릭시 본인만 상세 내용 볼 수 있음
@@ -92,6 +94,9 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
         console.log(res);
         onhandleClose();
         alert("요청 성공");
+        setTitle("");
+        setContent("");
+        getData();
       })
       .catch((err) => {
         console.log(err);
