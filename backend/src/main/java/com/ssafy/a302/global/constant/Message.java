@@ -93,11 +93,6 @@ public class Message {
 
     public static String SUCCESS;
 
-
-
-
-
-
     @Autowired
     public Message(MessageSource messageSource) {
         REGISTER_MEMBER = messageSource.getMessage("register.member", null, null);

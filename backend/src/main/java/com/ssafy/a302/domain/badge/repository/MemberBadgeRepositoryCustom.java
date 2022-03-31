@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface MemberBadgeRepositoryCustom {
 
     Optional<List<Badge>> findBadgeAllByMemberSeq(Long memberSeq);
+
+    boolean existsByMemberSeqAndBadgeName(Long memberSeq, String badgeName);
 }

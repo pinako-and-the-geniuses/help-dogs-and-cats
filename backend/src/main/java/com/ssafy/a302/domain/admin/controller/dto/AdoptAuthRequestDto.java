@@ -25,7 +25,7 @@ public class AdoptAuthRequestDto {
 
         public AdoptAuthDto toServiceDto(){
             return AdoptAuthDto.builder()
-                    .status(Status.valueOf(status))
+                    .status(Status.valueOf(status.toUpperCase()))
                     .build();
         }
     }

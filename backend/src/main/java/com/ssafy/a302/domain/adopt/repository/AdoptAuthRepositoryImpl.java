@@ -30,7 +30,9 @@ public class AdoptAuthRepositoryImpl implements AdoptAuthRepositoryCustom {
                 .select(adoptAuth.count().intValue())
                 .from(adoptAuth)
                 .where(
-                        adoptAuth.member.seq.eq(memberSeq))
+                        adoptAuth.member.seq.eq(memberSeq),
+                        adoptAuth.status.eq(Status.DONE)
+                )
                 .fetchOne();
     }
 

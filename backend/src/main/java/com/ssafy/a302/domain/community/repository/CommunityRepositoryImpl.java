@@ -48,6 +48,18 @@ public class CommunityRepositoryImpl implements CommunityRepositoryCustom {
     }
 
     @Override
+    public Integer countAllByMemberSeqAndCategoryEqReport(Long memberSeq) {
+        return queryFactory
+                .select(community.count().intValue())
+                .from(community)
+                .where(
+                        community.isDeleted.isFalse(),
+                        community.member.seq.eq(memberSeq),
+                        community.category.eq(Community.Category.REPORT))
+                .fetchOne();
+    }
+
+    @Override
     public Optional<List<CommunityDto.ForPage>> findCommunitiesForPage(Pageable pageable, Community.Category category, String search, String keyword) {
         List<CommunityDto.ForPage> list = queryFactory
                 .select(new QCommunityDto_ForPage(
