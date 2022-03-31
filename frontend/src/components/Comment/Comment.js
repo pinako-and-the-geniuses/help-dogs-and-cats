@@ -35,12 +35,12 @@ function Comment() {
   const [content, setContent] = useState("");
 
   const nickname = useSelector((state) => state.userInfo.userInfo.NickName);
-  const { seq } = useParams();
+  const { communitySeq } = useParams();
   const jwt = sessionStorage.getItem("jwt");
   const onSubmit = (event) => {
     event.preventDefault();
     axios({
-      url: `${URL}/communities/${seq}/comments`,
+      url: `${URL}/communities/${communitySeq}/comments`,
       method: "POST",
       headers: { Authorization: `Bearer ${jwt}` },
       data: {

@@ -5,6 +5,7 @@ import st from "./styles/CommunityDetail.module.scss";
 import cn from "classnames";
 import { URL } from "public/config";
 import Comment from "components/Comment/Comment";
+// import Comment from "./Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -14,6 +15,9 @@ export default function CommunityDetail() {
   const [communityDetail, setCommunityDetail] = useState("");
   const [writerSeq, setWriterSeq] = useState("");
   const { seq } = useParams();
+
+  // const[Comments, SetComments] = useState(initialState)
+
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
   useEffect(() => {
@@ -35,6 +39,7 @@ export default function CommunityDetail() {
           setCommunityDetail(response.data);
         }) //엑시오스 보낸 결과
         .catch((err) => console.log(err));
+        // console.log(Comments);
     }
   }, [isLogin]); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
   // console.log("writer",writerSeq);
