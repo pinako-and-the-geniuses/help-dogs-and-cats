@@ -25,15 +25,12 @@ function VolunteerDetail(){
     const [join, setJoin] = useState(false);
     const [dd, setDd] = useState(1); //test용
     const [stateChanged, setStateChanged] = useState(true);
+    const [participants, setParticipants] = useState([]);
 
     const today = new Date();
     const endDate = new Date(post.endDate);
     const gap = endDate.getTime() - today.getTime();
     const leftdays = Math.ceil(gap/(1000*60*60*24));
-
-    const joinBtn=()=>{
-        setJoin(!join);
-    }
 
     const goToEdit=()=>{
         navigate(`/volunteer/update/${id}`)
@@ -82,18 +79,22 @@ function VolunteerDetail(){
     const apply=async()=>{
         await axios({
             url: `${URL}/volunteers/${id}/apply`,
-            method: "post",
+            method: "POST",
             headers: {
                 Authorization: `Bearer ${jwt}`,
             }
         })
         .then((res)=>{
             console.log('ok');
-            setJoin(true);
+            console.log(res.data);
         })
         .catch((err) =>{
             console.log(err);
         })
+    }
+
+    const joinBtn=()=>{
+        apply();
     }
 
     //댓글 작성
@@ -113,6 +114,22 @@ function VolunteerDetail(){
             // console.log('댓글달기성공');
             setChanged(!changed);
             setCommentContent("");
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    //신청자 조회
+    const getParticipants=async()=>{
+        await axios({
+            url:`${URL}/volunteers/${id}/participants`,
+            method: "get",
+            headers: { Authorization : `Bearer ${jwt}`}
+        })
+        .then((res) =>{
+            console.log(res.data.data);
+            setParticipants(res.data.data);
         })
         .catch((err)=>{
             console.log(err);
@@ -218,20 +235,13 @@ function VolunteerDetail(){
                                 className={style.joinBtn}
                                 onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
                     }[post.status]
-                    :null
-                }
-                {/* {
-                    memSeq === post.writerSeq
-                    ?{
-                        ONGOING : <button type='button' onClick={()=>{setVolStatus(post.status);onStatusHandler()}} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>,
-                        RECRUITING : <button type='button' onClick={()=>{setVolStatus(post.status);onStatusHandler()}} className={style.joinBtn}>모집마감</button>
-                    }[post.status]
-                    :(
-                        join
-                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                        :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
+                    :( //
+                        <button 
+                            type='button' 
+                            onClick={()=>{joinBtn();}} 
+                            className={`${style.joinBtn} ${style.joinXBtn}`}>참여</button>
                     )
-                } */}
+                }
                 {
                     memSeq === post.writerSeq
                     ?(
@@ -263,7 +273,7 @@ function VolunteerDetail(){
                     </li>
                     <li className={style.people}>
                         <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
-                        <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
+                        <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement" onClick={()=>{getParticipants()}}>인원관리</button>
                         {/* 모달 */}
                         <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
                             <div className="modal-dialog">
@@ -273,7 +283,7 @@ function VolunteerDetail(){
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-                                        <TeamManage />
+                                        <TeamManage participants={participants}/>
                                     </div>
                                 </div>
                             </div>
