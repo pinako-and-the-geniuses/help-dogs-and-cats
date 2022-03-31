@@ -95,7 +95,9 @@ export default function Editor(props) {
       theme="snow"
       placeholder={props.placeholder}
       value={props.value}
-      onChange={(content, source, editor) => props.onChange(editor.getHTML())}
+      onChange={(content, source, delta, editor) =>
+        props.onChange(editor.getHTML())
+      }
       modules={modules}
       formats={formats}
     />
