@@ -22,7 +22,7 @@ export default function Community() {
   //const [arr, setArr] = useState();
   
   console.log(page, totalcount, totalPageNumber);
-  console.log("member", memberSeq);
+  // console.log("member", memberSeq);
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     axios
