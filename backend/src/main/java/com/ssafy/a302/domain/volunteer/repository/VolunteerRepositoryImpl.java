@@ -25,7 +25,6 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-
     @Override
     public Integer countAllByKeyword(String keyword) {
         return queryFactory

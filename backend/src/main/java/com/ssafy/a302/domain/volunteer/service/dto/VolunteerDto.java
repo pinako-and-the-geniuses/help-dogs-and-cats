@@ -98,12 +98,12 @@ public class VolunteerDto {
 
         private Long memberSeq;
 
-        private String endDate;
+        private LocalDate endDate;
 
         private LocalDateTime createdDate;
 
         @QueryProjection
-        public ForPage(Long seq, Volunteer.Status status, String title, Integer maxParticipantCount, String nickname, Long memberSeq, String endDate, LocalDateTime createdDate) {
+        public ForPage(Long seq, Volunteer.Status status, String title, Integer maxParticipantCount, String nickname, Long memberSeq, LocalDate endDate, LocalDateTime createdDate) {
             this.seq = seq;
             this.status = status;
             this.title = title;
