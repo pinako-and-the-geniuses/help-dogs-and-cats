@@ -41,15 +41,15 @@ function App() {
           <Route path="/" element={<One />} />
         </>
         <>
-          <Route path="signup" element={<Signup />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/user/findid" element={<FindId />} />
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd/:jwt" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
         </>
         <>
-          <Route path="user/profile/:seq" element={<Profile />} />
+          <Route path="/user/profile/:seq" element={<Profile />} />
         </>
         <>
           <Route path="/guide" element={<Guide />} />
@@ -83,8 +83,14 @@ function App() {
           <Route path="/volunteer/list" element={<VolunteerList />} />
           <Route path="/volunteer/detail/:id" element={<VolunteerDetail />} />
           <Route path="/volunteer/write" element={<VolunteerWrite />}></Route>
-          <Route path="/volunteer/write/:id" element={<VolunteerWrite />}></Route>
-          <Route path="/volunteer/update/:id" element={<VolunteerUpdate/>}></Route>
+          <Route
+            path="/volunteer/write/:id"
+            element={<VolunteerWrite />}
+          ></Route>
+          <Route
+            path="/volunteer/update/:id"
+            element={<VolunteerUpdate />}
+          ></Route>
         </>
         <>
           <Route path="*" element={<NotFound />} />
