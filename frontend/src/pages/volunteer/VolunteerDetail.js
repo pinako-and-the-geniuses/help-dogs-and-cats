@@ -95,27 +95,6 @@ function VolunteerDetail(){
     console.log('확인', isApply);
     //isApply.length로 처리
 
-    //참석 여부 변경(승인, 미승인)
-    const test=async()=>{
-        await axios({
-            url: `${URL}/volunteers/${id}/participants/${memSeq}`,
-            method: "patch",
-            data: {
-            approve: true,
-            },
-            headers: {
-            Authorization: `Bearer ${jwt}`,
-        }
-        })
-        .then((res) =>{
-            console.log(res.data)
-            console.log('test성공');
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }   
-
     //일반: 참여 신청
     const apply=async()=>{
         await axios({
@@ -144,20 +123,6 @@ function VolunteerDetail(){
             console.log('참여 취소');
         })
         .catch((err)=>{
-            console.log(err);
-        })
-    }
-
-    const cancleTest=()=>{
-        axios({
-            url:`${URL}/volunteers/${id}/participants/${memSeq}`,
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${jwt}`}
-        })
-        .then((res)=>{
-            console.log('나만 삭제되었나 보거라');
-        })
-        .catch((err) =>{
             console.log(err);
         })
     }
@@ -191,7 +156,7 @@ function VolunteerDetail(){
         .then((res)=>{
             // console.log('댓글달기성공');
             setChanged(!changed);
-            setCommentContent("");
+            // setCommentContent("");
         })
         .catch((err)=>{
             console.log(err);
@@ -234,6 +199,7 @@ function VolunteerDetail(){
 
     const onClickEvent=()=>{
         volComment()
+        .then(setCommentContent(""))
         .then(getPost());
     }
 
@@ -243,17 +209,17 @@ function VolunteerDetail(){
 
     useEffect(()=>{
         getPost();
-        // getParticipants();
+        getParticipants();
     }, [changed, stateChanged]); //댓글, 모집, 
-
-    useEffect(()=>{
-        console.log(post);
-        // console.log(comments);
-    }, [post, changed]);
 
     useEffect(()=>{
         getParticipants();
     }, [join]);
+    
+    //얘는 확인용이니까 나중에 지우기
+    useEffect(()=>{
+        console.log(post);
+    }, [post, changed]);
 
     return(
         <div className={style.myContainer}>
@@ -290,13 +256,13 @@ function VolunteerDetail(){
                         ?(
                             <button 
                                 type='button' 
-                                onClick={cancleBtn} 
+                                onClick={()=>{cancleBtn()}} 
                                 className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
                         )
                         :(
                             <button 
                                 type='button' 
-                                onClick={applyBtn} 
+                                onClick={()=>{applyBtn()}} 
                                 className={`${style.joinBtn}`}>참여신청</button>
                         )
                     )
@@ -334,7 +300,7 @@ function VolunteerDetail(){
                         <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
                         {
                             memSeq === post.writerSeq
-                            ? <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement" onClick={()=>{getParticipants()}}>인원관리</button>
+                            ? <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
                             : null
                         }
                         {/* 모달 */}
@@ -386,8 +352,6 @@ function VolunteerDetail(){
             <button 
                 className={style.listBtn}
                 onClick={()=>{navigate(-1)}}>목록</button>
-
-                <button onClick={test}>patchTest</button>
         </div>
     )
 }

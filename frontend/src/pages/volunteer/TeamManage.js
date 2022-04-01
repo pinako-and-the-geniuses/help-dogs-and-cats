@@ -1,20 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import style from './styles/TeamModal.module.scss';
 
-function TeamManage(props){
+function TeamManage(){
     const { id } = useParams();
     const jwt = sessionStorage.getItem('jwt');
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
     const [approve, setApprove] = useState(false);
+    const [participants, setParticipants] = useState([]);
+    const [change, setChange] = useState(true);
 
-    // console.log(props.id, props.memSeq);
+    //신청자 조회
+    const getParticipants=async()=>{
+        await axios({
+            url:`${URL}/volunteers/${id}/participants`,
+            method: "get",
+            headers: { Authorization : `Bearer ${jwt}`}
+        })
+        .then((res) =>{
+            console.log('신청자조회', res.data.data);
+            setParticipants(res.data.data);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
     //참가자 승인.미승인
     const partyApprove=async(apv, memSeq)=>{
-        console.log(memSeq);
+        // console.log(memSeq);
         await axios({
             url: `${URL}/volunteers/${id}/participants/${memSeq}`,
             method: "patch",
@@ -26,7 +43,7 @@ function TeamManage(props){
         }
         })
         .then((res) =>{
-            console.log(approve);
+            // console.log(approve);
         })
         .catch((err)=>{
             console.log(err);
@@ -50,21 +67,29 @@ function TeamManage(props){
 
     const getApprove=async(seq)=>{
         partyApprove(true, seq);
+        getParticipants();
+        // setChange(!change);
     }
 
     const cancleApprove=(seq)=>{
         partyApprove(false, seq);
+        getParticipants();
+        // setChange(!change);
     }
+
+    useEffect(()=>{
+        getParticipants();
+    }, [])
 
     return(
         <>
         {
-            props.participants
+            participants
             ?(
-                props.participants.map((p)=>{
+                participants.map((p)=>{
                     return(
                         <div className={style.person} key={p.seq}>
-                            {console.log(p)}
+                            {/* {console.log(p)} */}
                             <p>{p.nickname}</p>
                             {
                                 p.seq === memSeq
