@@ -268,7 +268,7 @@ class ProfileServiceTest {
                 .activityArea("봉사활동 활동지역1")
                 .authTime("인증시간1")
                 .member(member1)
-                .endDate(LocalDate.now().toString())
+                .endDate(LocalDate.now())
                 .minParticipantCount(2)
                 .maxParticipantCount(6)
                 .content("contact1")

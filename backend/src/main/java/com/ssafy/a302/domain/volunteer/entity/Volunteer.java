@@ -1,16 +1,15 @@
 package com.ssafy.a302.domain.volunteer.entity;
 
 import com.ssafy.a302.domain.member.entity.Member;
-import com.ssafy.a302.domain.volunteer.service.VolunteerServiceImpl;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.entity.base.BaseLastModifiedEntity;
 import lombok.*;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
@@ -47,8 +46,8 @@ public class Volunteer extends BaseLastModifiedEntity {
     @Column(nullable = false)
     private String contact;
 
-    @Column(nullable = false)
-    private String endDate;
+    @Column(nullable = false, columnDefinition = "DATE")
+    private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -78,11 +77,10 @@ public class Volunteer extends BaseLastModifiedEntity {
     private VolunteerAuth volunteerAuth;
 
     @Builder
-    public Volunteer(String title, String content, String activityArea, String authTime, String contact, String endDate, Integer minParticipantCount, Integer maxParticipantCount, Member member) {
+    public Volunteer(String title, String content, String activityArea, String authTime, String contact, LocalDate endDate, Integer minParticipantCount, Integer maxParticipantCount, Member member) {
         this.title = title;
         this.content = content;
         this.viewCount = 0L;
-//        this.category = category;
         this.activityArea = activityArea;
         this.authTime = authTime;
         this.contact = contact;
@@ -93,7 +91,6 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.isDeleted = false;
         this.member = member;
     }
-
 
     // 봉사활동 신청
     public void apply(Member member){
@@ -127,7 +124,6 @@ public class Volunteer extends BaseLastModifiedEntity {
         this.minParticipantCount = volunteerDto.getMinParticipantCount();
         this.maxParticipantCount = volunteerDto.getMaxParticipantCount();
     }
-
 
     public enum Category {
 
@@ -174,20 +170,4 @@ public class Volunteer extends BaseLastModifiedEntity {
                 .maxParticipantCount(maxParticipantCount)
                 .build();
     }
-
-//    public VolunteerDto.DetailResponse toResponseDetailDto() {
-//        return VolunteerDto.DetailResponse.builder()
-//                .memberSeq(member.getSeq())
-//                .nickname(member.getDetail().getNickname())
-//                .title(title)
-//                .content(content)
-//                .status(status)
-//                .activityArea(activityArea)
-//                .volunteerComment(volunteerComments)
-//                .build();
-//    }
-
-
-
-
 }
