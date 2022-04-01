@@ -6,31 +6,29 @@ import { useParams, useNavigate } from "react-router-dom";
 import style from "./styles/Community.module.scss";
 import cn from "classnames";
 import "./styles/Paging.module.scss";
-import Pagination from "react-js-pagination";
+import { useSelector } from "react-redux";
+
 export default function Community() {
   const [communitys, setCommunity] = useState("");
-  const [page, setPage] = useState("");
   //const [size, setSize] = useState("");
+  const [page, setPage] = useState(1);
   const [totalcount, setTotalcount] = useState("");
   const [totalPageNumber, setTotalPageNumber] = useState("");
   const size = 10;
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [keyword, setKeyword] = useState("");
-  const [seq, setSeq] = useState("");
-  const [memberSeq, setMemberSeq] = useState("");
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   //const [arr, setArr] = useState();
-  
   console.log(page, totalcount, totalPageNumber);
   // console.log("member", memberSeq);
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     axios
       .get(
-        `${URL}/communities?page=1&size=${size}&category=${category}&search=${search}&keyword=${keyword}`
+        `${URL}/communities?page=${page}&size=${size}&category=${category}&search=${search}&keyword=${keyword}`
       )
       .then((response) => {
-        setMemberSeq(response.data.data.communitiesForPage[0].memberSeq);
         setCommunity(response.data.data.communitiesForPage);
         setPage(response.data.data.currentPageNumber);
         setTotalcount(response.data.data.totalCount);
@@ -40,7 +38,7 @@ export default function Community() {
       })
       .catch((err) => console.log(err));
   }, []); //한번만 해줄때 []넣는다
-  
+
   const getRead = (e) => {
     // console.log(category, search, keyword, size, page);
     // console.log("read", e.target.value);
@@ -51,16 +49,24 @@ export default function Community() {
       .then((response) => {
         setCommunity(response.data.data.communitiesForPage);
         setPage(response.data.data.currentPageNumber);
+        setTotalcount(response.data.data.totalCount);
+        setTotalPageNumber(response.data.data.totalPageNumber);
         console.log(response.data);
       }) //콘솔에 있는 것에서 data를 한번 더 들어가려면 이렇게 쓰면 된다.
       .catch((err) => console.log(err));
   };
-  
-  const getPage = (e) => {
-    // const key = e.target.value;
-    // console.log("page",e.target.value);
-    // setPage(key);
-  };
+
+  //페이지네이션
+  useEffect(() => {
+    getRead();
+  }, [page]);
+
+  const items = [];
+
+  for (let i = 1; i <= totalPageNumber; i++) {
+    items.push(i);
+  }
+  //
 
   const navigate = useNavigate();
 
@@ -87,6 +93,7 @@ export default function Community() {
     console.log("keyword", key);
     setKeyword(key);
   };
+  const paginate = (pageNumber) => setPage(pageNumber);
 
   //console.log( category, search, keyword, size, page);
   return (
@@ -115,16 +122,17 @@ export default function Community() {
           </div>
         </div>
       </div>
-      <div className="d-md-flex justify-content-md-end">
-        <button
-          className={style.communitybutton}
-          type="submit"
-          onClick={getWrite}
-        >
-          글쓰기
-        </button>
-      </div>
-
+      {isLogin ? (
+        <div className="d-md-flex justify-content-md-end">
+          <button
+            className={style.communitybutton}
+            type="submit"
+            onClick={getWrite}
+          >
+            글쓰기
+          </button>
+        </div>
+      ) : null}
       {/* <table className="table table-bordered table-hover"> */}
       <table className={cn("table table-hover", style.my_table)}>
         <thead>
@@ -136,14 +144,15 @@ export default function Community() {
             <th scope="col">조회수</th>
           </tr>
         </thead>
+        {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
         {communitys ? (
           <tbody>
             {communitys.map((community) => (
-              <tr key={community.seq} onClick={()=>getSeq(community.seq)}> 
+              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
                 {community.category === "REPORT" ? <td>제보</td> : ""}
                 {community.category === "REVIEW" ? <td>후기</td> : ""}
                 {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                <td>{community.title}</td>
+                <td style={{ width: "20rem" }}>{community.title}</td>
                 <td>{community.memberNickname}</td>
                 <td>{community.createdDate}</td>
                 <td>{community.viewCount}</td>
@@ -154,46 +163,42 @@ export default function Community() {
           <td colSpan="5">작성 글이 없습니다.</td>
         )}
       </table>
-      {/* <Pagination
-      className={style.commupagination}
-      onClick={getPage}
-      activePage={page}
-      itemsCountPerPage={size}
-      totalItemsCount={totalcount}
-      pageRangeDisplayed={totalPageNumber}
-      prevPageText={"‹"}
-      nextPageText={"›"}
-    /> */}
-      <nav aria-label="Page navigation example">
-        <ul className="pagination justify-content-center" onClick={getPage}>
-          <li className="page-item">
+
+      <nav aria-label="Page navigation example" className={style.commupage}>
+        <ul className="pagination justify-content-center">
+          <li
+            className="page-item"
+            onClick={() => {
+              setPage(page - 1);
+            }}
+          >
             <a className="page-link" href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              3
-            </a>
-          </li>
-          <li className="page-item">
+          {items.map((number) => (
+            <li key={number} className="page-item">
+              <a
+                onClick={() => paginate(number)}
+                className="page-link"
+                style={page == number ? { background : '#b59d7c', color: '#292e3d' } : null}
+              >
+                {number}
+              </a>
+            </li>
+          ))}
+          <li
+            className="page-item"
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          >
             <a className="page-link" href="#" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
         </ul>
       </nav>
-      
     </div>
   );
 }
