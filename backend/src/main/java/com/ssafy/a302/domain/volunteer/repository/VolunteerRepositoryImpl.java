@@ -4,12 +4,14 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.a302.domain.member.service.dto.ProfileDto;
 import com.ssafy.a302.domain.member.service.dto.QProfileDto_Volunteer;
+import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.service.dto.QVolunteerDto_ForPage;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -128,6 +130,18 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
         }
 
         return Optional.ofNullable(list);
+    }
+
+    @Override
+    public void updateStatusRecruitingToOngoing() {
+        queryFactory
+                .update(volunteer)
+                .set(volunteer.status, Volunteer.Status.ONGOING)
+                .where(
+                        volunteer.endDate.before(LocalDate.now()),
+                        volunteer.isDeleted.isFalse()
+                )
+                .execute();
     }
 
     private BooleanExpression searchEq(String keyword) {

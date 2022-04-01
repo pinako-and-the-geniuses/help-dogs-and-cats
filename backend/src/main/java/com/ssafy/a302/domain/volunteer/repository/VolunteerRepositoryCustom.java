@@ -19,4 +19,5 @@ public interface VolunteerRepositoryCustom {
 
     Optional<List<ProfileDto.Volunteer>> findVolunteersForProfile(Long memberSeq, Pageable pageable);
 
+    void updateStatusRecruitingToOngoing();
 }
