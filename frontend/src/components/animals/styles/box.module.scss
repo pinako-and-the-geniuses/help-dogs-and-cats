@@ -1,0 +1,25 @@
+.card {
+  border: 1px solid black;
+  .cardText {
+    margin: 10px 0;
+    p {
+      font-size: 15px;
+      justify-content: space-evenly;
+    }
+    .title {
+      font-weight: 600;
+      width: 120px;
+      margin-right: 10px;
+    }
+  }
+}
+.cardImgTop {
+  padding: 5px;
+  height: 300px;
+  object-fit: cover;
+}
+.detilaBtn {
+  margin: 8px 0;
+  display: flex;
+  justify-content: end;
+}

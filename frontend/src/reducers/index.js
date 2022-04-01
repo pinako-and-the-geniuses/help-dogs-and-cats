@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
 import userInfo from "./UserReducer";
+import animalInfo from "./AnimalReducer";
 
 // 새로고침해도 기존 정보 유지하도록!
 const persistConfig = {
@@ -13,6 +14,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   userInfo,
+  animalInfo,
 });
 
 export default persistReducer(persistConfig, rootReducer);
