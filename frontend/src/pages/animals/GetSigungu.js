@@ -26,7 +26,7 @@ export default function GetSigunguList({
     setSigunguData(sidoDataArr);
   };
 
-  // 시도 조회하기
+  // 조회하기
   function getAPI() {
     if (ANIMALKEY) {
       axios({

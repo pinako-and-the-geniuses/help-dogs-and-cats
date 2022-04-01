@@ -17,12 +17,10 @@ export default function AnimalList() {
   });
   const [type, setType] = useState("");
   const [gender, setGender] = useState("");
-  const [selectedTypes, setSelectedTypes] = useState({
-    type: "0",
-    gender: "0",
-  });
-  console.log("seleted", selected);
-  // console.log("seletedTypes", selectedTypes);
+
+  const onSend = () => {
+    console.log(selected, type, gender);
+  };
 
   return (
     <div className={st.div}>
@@ -65,18 +63,31 @@ export default function AnimalList() {
 
           <div name="조건2줄" className={st.secondCon}>
             <div name="축종">
-              <GetType />
+              <GetType type={type} setType={setType} />
             </div>
-            <div name="성별">
-              <>
-                <div className="form-check form-check-inline mx-4">
+            <div name="성별" className="ms-4">
+              <form onChange={(e) => setGender(e.target.value)}>
+                <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
+                    name="inlineRadioOptions"
                     id="inlineRadio1"
-                    value="1"
+                    value="0"
                   />
                   <label className="form-check-label" htmlFor="inlineRadio1">
+                    전체
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="inlineRadioOptions"
+                    id="inlineRadio2"
+                    value="1"
+                  />
+                  <label className="form-check-label" htmlFor="inlineRadio2">
                     남
                   </label>
                 </div>
@@ -84,20 +95,21 @@ export default function AnimalList() {
                   <input
                     className="form-check-input"
                     type="radio"
-                    id="inlineRadio2"
+                    name="inlineRadioOptions"
+                    id="inlineRadio3"
                     value="2"
                   />
-                  <label className="form-check-label" htmlFor="inlineRadio2">
+                  <label className="form-check-label" htmlFor="inlineRadio3">
                     여
                   </label>
                 </div>
-              </>
+              </form>
             </div>
           </div>
         </div>
 
         <div name="조회버튼">
-          <button type="button" className={st.btn}>
+          <button type="button" className={st.btn} onClick={onSend}>
             조회
           </button>
         </div>

@@ -1,54 +1,18 @@
-import axios from "axios";
-import XMLParser from "react-xml-parser";
-import { ANIMAL } from "public/config";
-import { useEffect, useState } from "react";
 import animal from "./styles/Animal.module.scss";
 
-//) [축종 조회]
-export default function GetSigungu(props) {
-  const ANIMALKEY = process.env.REACT_APP_ANIMAL_KEY;
-  const sidoCode = props.sidoCode;
-  const [sigungu, setSigungu] = useState({
-    sigunguCode: [],
-    sigunguName: [],
-  });
-
-  // xml을 json으로 바꾸고 원하는 데이터 뽑아 저장하기
-  function parseStr(dataSet) {
-    const arr = new XMLParser().parseFromString(dataSet).children;
-    const data = arr[1].children[0].children;
-    const sigunguCode = data.map((val) => val.children[0].value);
-    const sigunguName = data.map((val) => val.children[1].value);
-
-    setSigungu({ sigunguCode, sigunguName });
-  }
-
-  // 시도 조회하기
-  async function getAPI() {
-    if (ANIMALKEY) {
-      axios({
-        url: `${ANIMAL}/abandonmentPublicSrvc/sigungu?upr_cd=${sidoCode}&serviceKey=${ANIMALKEY}&_type=0`,
-        method: "GET",
-      })
-        .then((res) => {
-          const dataSet = res.data;
-          parseStr(dataSet);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }
-
-  useEffect(() => {
-    getAPI();
-  }, []);
+// [축종 조회]
+export default function GetType({ setType }) {
   return (
-    <select defaultValue="0" className={animal.textBox} aria-label="축종">
-      <option value="0">축종</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
+    <select
+      defaultValue="0"
+      className={animal.textBox}
+      aria-label="축종"
+      onChange={(e) => setType(e.target.value)}
+    >
+      <option value="0">품종</option>
+      <option value="417000">강아지</option>
+      <option value="422400">고양이</option>
+      <option value="429900">기타</option>
     </select>
   );
 }
