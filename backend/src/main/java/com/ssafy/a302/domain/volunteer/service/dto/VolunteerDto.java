@@ -28,7 +28,7 @@ public class VolunteerDto {
 
     private String contact;
 
-    private String endDate;
+    private LocalDate endDate;
 
     private Volunteer.Status status;
 
@@ -37,7 +37,7 @@ public class VolunteerDto {
     private Integer maxParticipantCount;
 
     @Builder
-    public VolunteerDto(String title, String content, String activityArea, String authTime, String contact, String endDate, Volunteer.Status status, Integer minParticipantCount, Integer maxParticipantCount){
+    public VolunteerDto(String title, String content, String activityArea, String authTime, String contact, LocalDate endDate, Volunteer.Status status, Integer minParticipantCount, Integer maxParticipantCount){
         this.title = title;
         this.content = content;
         this.activityArea = activityArea;
@@ -140,7 +140,7 @@ public class VolunteerDto {
         private final String contact;
 
         @Schema(name = "endDate", title = "종료일", description = "종료일입니다.")
-        private final String endDate;
+        private final LocalDate endDate;
 
         @Schema(name = "minParticipantCount", title = "최소인원", description = "최소인원입니다.")
         private final Integer minParticipantCount;
@@ -149,7 +149,7 @@ public class VolunteerDto {
         private final Integer maxParticipantCount;
 
         @Builder
-        public Response(Long seq, String title, String content, String activityArea, String authTime, String contact, String endDate, Integer minParticipantCount, Integer maxParticipantCount) {
+        public Response(Long seq, String title, String content, String activityArea, String authTime, String contact, LocalDate endDate, Integer minParticipantCount, Integer maxParticipantCount) {
             this.seq = seq;
             this.title = title;
             this.content = content;
@@ -231,7 +231,7 @@ public class VolunteerDto {
         private Integer viewCount;
 
         @Schema(name = "endDate", title = "종료일", description = "종료일입니다.")
-        private String endDate;
+        private LocalDate endDate;
 
         @Schema(name = "authTime", title = "인증시간", description = "인증시간입니다.")
         private String authTime;
@@ -249,7 +249,7 @@ public class VolunteerDto {
         private List<VolunteerCommentDto.ForDetail> comments;
 
         @Builder
-        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, String endDate, String authTime, String contact, Integer approvedCount, Integer maxParticipantCount, List<VolunteerCommentDto.ForDetail> comments) {
+        public Detail(Long writerSeq, String writerNickname, String writerProfileImagePath, Long volunteerSeq, String title, String content, String activityArea, Volunteer.Status status, LocalDate createdDate, Integer viewCount, LocalDate endDate, String authTime, String contact, Integer approvedCount, Integer maxParticipantCount, List<VolunteerCommentDto.ForDetail> comments) {
             this.writerSeq = writerSeq;
             this.writerNickname = writerNickname;
             this.writerProfileImagePath = writerProfileImagePath;
