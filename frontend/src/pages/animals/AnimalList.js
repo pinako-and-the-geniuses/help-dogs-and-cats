@@ -9,9 +9,11 @@ import { useState } from "react";
 export default function AnimalList() {
   const [sidoData, setSidoData] = useState("");
   const [sigunguData, setSigunguData] = useState("");
+  const [shelter, setShelter] = useState("");
   const [selected, setSelected] = useState({
     sidoCode: "0",
     sigunguCode: "0",
+    shelter: "0",
   });
   const [type, setType] = useState("");
   const [gender, setGender] = useState("");
@@ -20,9 +22,8 @@ export default function AnimalList() {
     gender: "0",
   });
   console.log("seleted", selected);
-  console.log("seletedTypes", selectedTypes);
+  // console.log("seletedTypes", selectedTypes);
 
-  // console.log(sigu);
   return (
     <div className={st.div}>
       <div name="페이지이름">
@@ -48,7 +49,12 @@ export default function AnimalList() {
               />
             </div>
             <div name="보호소">
-              <GetShelter />
+              <GetShelter
+                shelter={shelter}
+                setShelter={setShelter}
+                selected={selected}
+                setSelected={setSelected}
+              />
             </div>
             {/* <div name="날짜" className="ms-5">
               <span>
@@ -70,7 +76,7 @@ export default function AnimalList() {
                     id="inlineRadio1"
                     value="1"
                   />
-                  <label className="form-check-label" for="inlineRadio1">
+                  <label className="form-check-label" htmlFor="inlineRadio1">
                     남
                   </label>
                 </div>
@@ -81,7 +87,7 @@ export default function AnimalList() {
                     id="inlineRadio2"
                     value="2"
                   />
-                  <label className="form-check-label" for="inlineRadio2">
+                  <label className="form-check-label" htmlFor="inlineRadio2">
                     여
                   </label>
                 </div>
@@ -96,9 +102,9 @@ export default function AnimalList() {
           </button>
         </div>
       </div>
-      <div name="리스트Box">
+      {/* <div name="리스트Box">
         <Box />
-      </div>
+      </div> */}
     </div>
   );
 }

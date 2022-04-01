@@ -44,20 +44,22 @@ export default function GetSigunguList({
   }
   // 먼저!
   useEffect(() => {
+    setSigunguData("");
     if (selected.sidoCode !== "0") {
       getAPI();
     }
-  }, [selected]);
+  }, [selected.sidoCode]);
 
   return (
     <select
-      defaultValue={0}
+      defaultValue="0"
       className={animal.textBox}
       aria-label="시군구"
       onChange={(e) =>
         setSelected({
           sidoCode: selected.sidoCode,
           sigunguCode: e.target.value,
+          shelterCode: "",
         })
       }
     >

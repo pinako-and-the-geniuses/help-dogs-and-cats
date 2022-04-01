@@ -64,7 +64,7 @@ export default function GetSidoList({ sidoData, setSidoData, setSelected }) {
           );
         })
       ) : (
-        <option selected>서버오류</option>
+        <option>서버오류</option>
       )}
     </select>
   );
