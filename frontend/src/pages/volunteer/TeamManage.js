@@ -4,12 +4,12 @@ import { URL } from '../../public/config';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import style from './styles/TeamModal.module.scss';
+import swal from 'sweetalert';
 
 function TeamManage(){
     const { id } = useParams();
     const jwt = sessionStorage.getItem('jwt');
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
-    const [approve, setApprove] = useState(false);
     const [participants, setParticipants] = useState([]);
     const [change, setChange] = useState(true);
 
@@ -43,7 +43,7 @@ function TeamManage(){
         }
         })
         .then((res) =>{
-            // console.log(approve);
+            console.log(apv, '로 변경되었습니다');
         })
         .catch((err)=>{
             console.log(err);
@@ -66,15 +66,28 @@ function TeamManage(){
     }
 
     const getApprove=async(seq)=>{
-        partyApprove(true, seq);
-        getParticipants();
+        partyApprove(true, seq)
+        .then(getParticipants());
         // setChange(!change);
     }
 
     const cancleApprove=(seq)=>{
-        partyApprove(false, seq);
-        getParticipants();
+        partyApprove(false, seq)
+        .then(getParticipants());
         // setChange(!change);
+    }
+
+    const deleteHandler=(memSeq)=>{
+        swal("목록에서 삭제합니다", {
+            buttons: ['취소', '확인']
+        })
+        .then((willDelete)=>{
+            if(willDelete){
+                partyDelete(memSeq);
+            }else{
+
+            }
+        })
     }
 
     useEffect(()=>{
@@ -100,12 +113,11 @@ function TeamManage(){
                                     : <button className={`${style.btnAprv} ${style.btn}`} type="button" onClick={()=>{getApprove(p.seq)}}>승인</button>
                                 )
                             }
-                            {/* {
-                                p.approve
-                                ? <button className={`${style.btnCancle} ${style.btn}`} type="button" onClick={()=>{cancleApprove(p.seq)}}>승인 취소</button>
-                                : <button className={`${style.btnAprv} ${style.btn}`} type="button" onClick={()=>{getApprove(p.seq)}}>승인</button>
-                            } */}
-                            <button className={style.btn} onClick={()=>{partyDelete(p.seq)}}>미승인</button>
+                            {
+                                p.seq === memSeq
+                                ? null
+                                : <button className={style.btn} onClick={()=>{deleteHandler(p.seq)}}>삭제</button>
+                            }
                         </div>
                     )     
                 }
