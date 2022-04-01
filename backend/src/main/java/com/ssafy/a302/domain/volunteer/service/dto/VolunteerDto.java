@@ -100,7 +100,7 @@ public class VolunteerDto {
 
         private LocalDate endDate;
 
-        private LocalDateTime createdDate;
+        private LocalDate createdDate;
 
         @QueryProjection
         public ForPage(Long seq, Volunteer.Status status, String title, Integer maxParticipantCount, String nickname, Long memberSeq, LocalDate endDate, LocalDateTime createdDate) {
@@ -111,7 +111,7 @@ public class VolunteerDto {
             this.nickname = nickname;
             this.memberSeq = memberSeq;
             this.endDate = endDate;
-            this.createdDate = createdDate;
+            this.createdDate = createdDate.toLocalDate();
         }
     }
 
@@ -339,6 +339,27 @@ public class VolunteerDto {
                 this.nickname = nickname;
                 this.isApprove = isApprove;
             }
+        }
+    }
+
+    @Getter
+    @ToString(of = {"keyword", "endDate", "admit", "activityArea"})
+    public static class SearchInfo {
+
+        private String keyword;
+
+        private LocalDate endDate;
+
+        private Boolean admit;
+
+        private String activityArea;
+
+        @Builder
+        public SearchInfo(String keyword, LocalDate endDate, Boolean admit, String activityArea) {
+            this.keyword = keyword;
+            this.endDate = endDate;
+            this.admit = admit;
+            this.activityArea = activityArea;
         }
     }
 }
