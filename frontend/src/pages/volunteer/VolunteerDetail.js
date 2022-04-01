@@ -22,13 +22,14 @@ function VolunteerDetail(){
     const [commentContent, setCommentContent] = useState("");
     const [changed, setChanged] = useState(true);
     const [comments, setComments] = useState([]);
-    const [dd, setDd] = useState(1); //test용
     const [stateChanged, setStateChanged] = useState(true);
     const [participants, setParticipants] = useState([]);
     const [join, setJoin] = useState(false);
 
     const today = new Date();
+    // console.log('오늘', today.getMonth()+1, today.getDate());
     const endDate = new Date(post.endDate);
+    // console.log('엔데', endDate);
     const gap = endDate.getTime() - today.getTime();
     const leftdays = Math.ceil(gap/(1000*60*60*24));
 
@@ -127,19 +128,6 @@ function VolunteerDetail(){
         })
     }
 
-    const applyBtn=()=>{
-        apply();
-        // isApply();
-        setJoin(true);
-    }
-
-    const cancleBtn=()=>{
-        applyCancle();
-        // isApply();
-        setJoin(false);
-    }
-
-
     //댓글 작성
     const volComment=async()=>{
         await axios({
@@ -203,8 +191,22 @@ function VolunteerDetail(){
         .then(getPost());
     }
 
+    //모집상태변경핸들러
     const onChangeHandler=(volState)=>{
         changeStatus(volState);
+        // changeStatus(volState);
+    }
+
+    const applyBtn=()=>{
+        apply();
+        // isApply();
+        setJoin(true);
+    }
+
+    const cancleBtn=()=>{
+        applyCancle();
+        // isApply();
+        setJoin(false);
     }
 
     useEffect(()=>{
@@ -267,20 +269,6 @@ function VolunteerDetail(){
                         )
                     )
                 }
-                {/* {
-                    memSeq === post.writerSeq
-                    ?(
-                        //모집 변수
-                        join
-                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>모집시작</button>
-                        :<button type='button' onClick={changeStatus} className={style.joinBtn}>모집마감</button>
-                    )
-                    :(
-                        join
-                        ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                        :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
-                    )
-                } */}
             </div>
 
             <div className={style.infoBox}>
@@ -312,7 +300,7 @@ function VolunteerDetail(){
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-                                        <TeamManage id={id} memSeq={memSeq} participants={participants}/>
+                                        <TeamManage/>
                                     </div>
                                 </div>
                             </div>
