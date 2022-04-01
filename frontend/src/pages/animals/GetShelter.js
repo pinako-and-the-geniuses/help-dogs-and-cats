@@ -17,7 +17,6 @@ export default function GetShelter({
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const data = arr.children[0].children;
-    console.log("data", data);
     if (data.length > 1) {
       const shelterDataArr = data.map((items) => {
         return {
@@ -46,6 +45,7 @@ export default function GetShelter({
       })
         .then((res) => {
           const dataSet = res.data;
+          console.log(res);
           parseStr(dataSet);
         })
         .catch((err) => {
@@ -53,6 +53,7 @@ export default function GetShelter({
         });
     }
   }
+
   // 먼저!
   useEffect(() => {
     setShelter("");
@@ -70,7 +71,7 @@ export default function GetShelter({
         setSelected({
           sidoCode: selected.sidoCode,
           sigunguCode: selected.sigunguCode,
-          shelter: e.target.value,
+          shelterCode: e.target.value,
         })
       }
     >
@@ -83,8 +84,10 @@ export default function GetShelter({
             </option>
           );
         })
-      ) : (
+      ) : shelter.code ? (
         <option value={shelter.code}>{shelter.name}</option>
+      ) : (
+        ""
       )}
     </select>
   );
