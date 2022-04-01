@@ -56,9 +56,8 @@ function App() {
         </>
         <>
           <Route path="/animals/animal" element={<Animal />} />
-          <Route path="/animals/animal/list" element={<AnimalList />} />
-
-          <Route path="/animals/animaldetails" element={<AnimalDetails />} />
+          <Route path="/animals/list" element={<AnimalList />} />
+          <Route path="/animals/detail/:seq" element={<AnimalDetails />} />
         </>
         <>
           <Route path="/community/community" element={<Community />} />

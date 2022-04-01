@@ -95,7 +95,7 @@ export default function Header() {
                   <a href="/guide">입양 가이드</a>
                 </li>
                 <li>
-                  <a href="/animals/animal">유기동물 조회</a>
+                  <a href="/animals/list">유기동물 조회</a>
                 </li>
                 <li>
                   <a href="/shelter/list">보호소 조회</a>

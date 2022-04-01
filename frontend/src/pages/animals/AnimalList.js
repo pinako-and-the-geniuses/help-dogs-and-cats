@@ -34,7 +34,6 @@ export default function AnimalList() {
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
-    console.log("동물 리스트 데이터", listData);
     setList(listData);
   };
 
@@ -203,11 +202,8 @@ export default function AnimalList() {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-5">
-        <AnimalBox list={list} />{" "}
+        <AnimalBox list={list} />
       </div>
-      {/* <div name="리스트Box">
-        <Box />
-      </div> */}
     </div>
   );
 }
