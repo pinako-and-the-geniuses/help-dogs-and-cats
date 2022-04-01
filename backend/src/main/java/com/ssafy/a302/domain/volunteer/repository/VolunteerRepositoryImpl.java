@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.volunteer.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.a302.domain.member.service.dto.ProfileDto;
 import com.ssafy.a302.domain.member.service.dto.QProfileDto_Volunteer;
@@ -29,13 +30,41 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
 
     @Override
     public Integer countAllByKeyword(String keyword) {
-        return queryFactory
+        JPAQuery<Integer> query = queryFactory
+                .select(volunteer.count().intValue())
+                .from(volunteer)
+                .where(volunteer.isDeleted.isFalse());
+
+        if (StringUtils.hasText(keyword)) {
+            query.where(volunteer.title.contains(keyword));
+        }
+
+        return query.fetchOne();
+    }
+
+    @Override
+    public Integer countAllBySearchInfo(VolunteerDto.SearchInfo searchInfo) {
+        JPAQuery<Integer> query = queryFactory
                 .select(volunteer.count().intValue())
                 .from(volunteer)
                 .where(
                         volunteer.isDeleted.isFalse(),
-                        searchEq(keyword))
-                .fetchOne();
+                        volunteer.endDate.loe(searchInfo.getEndDate())
+                );
+
+        if (!searchInfo.getActivityArea().equals("전체")) {
+            query.where(volunteer.activityArea.eq(searchInfo.getActivityArea()));
+        }
+
+        if (searchInfo.getAdmit()) {
+            query.where(volunteer.authTime.ne("0"));
+        }
+
+        if (StringUtils.hasText(searchInfo.getKeyword())) {
+            query.where(volunteer.title.contains(searchInfo.getKeyword()));
+        }
+
+        return query.fetchOne();
     }
 
     @Override
@@ -49,8 +78,8 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
     }
 
     @Override
-    public Optional<List<VolunteerDto.ForPage>> findVolunteersForPage(Pageable pageable, String keyword) {
-        List<VolunteerDto.ForPage> list = queryFactory
+    public Optional<List<VolunteerDto.ForPage>> findVolunteersForPage(Pageable pageable, VolunteerDto.SearchInfo searchInfo) {
+        JPAQuery<VolunteerDto.ForPage> query = queryFactory
                 .select(new QVolunteerDto_ForPage(
                         volunteer.seq,
                         volunteer.status,
@@ -60,16 +89,29 @@ public class VolunteerRepositoryImpl implements VolunteerRepositoryCustom {
                         volunteer.member.seq,
                         volunteer.endDate,
                         volunteer.createdDate
-
                 ))
                 .from(volunteer)
                 .where(
                         volunteer.isDeleted.isFalse(),
-                        searchEq(keyword))
+                        volunteer.endDate.loe(searchInfo.getEndDate())
+                )
                 .offset((long) (pageable.getPageNumber() - 1) * pageable.getPageSize())
                 .limit(pageable.getPageSize())
-                .orderBy(volunteer.createdDate.desc())
-                .fetch();
+                .orderBy(volunteer.seq.desc());
+
+        if (!searchInfo.getActivityArea().equals("전체")) {
+            query.where(volunteer.activityArea.eq(searchInfo.getActivityArea()));
+        }
+
+        if (searchInfo.getAdmit()) {
+            query.where(volunteer.authTime.ne("0"));
+        }
+
+        if (StringUtils.hasText(searchInfo.getKeyword())) {
+            query.where(volunteer.title.contains(searchInfo.getKeyword()));
+        }
+
+        List<VolunteerDto.ForPage> list = query.fetch();
 
         if (list.size() == 0) {
             list = null;
