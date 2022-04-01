@@ -9,6 +9,7 @@ import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import com.ssafy.a302.global.auth.CustomUserDetails;
+import com.ssafy.a302.global.constant.ErrorMessage;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
@@ -27,6 +28,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,13 +76,48 @@ public class VolunteerController {
     }
 
     // 봉사활동 목록 조회
+    @Operation(
+            summary = "봉사활동 목록 조회/검색 API",
+            description = "페이징 정보, 마감일, 지역, 봉사 시간 인정 여부, 제목 검색어를 전달받고 봉사활동 목록을 조회니다.",
+            tags = {"volunteer"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "봉사활동 목록을 조회하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable, @RequestParam String keyword) {
+    public BaseResponseDto<VolunteerDto.VolunteerListPage> viewPage(Pageable pageable,
+                                                                    @RequestParam String keyword,
+                                                                    @RequestParam String endDate,
+                                                                    @RequestParam(defaultValue = "false") boolean admit,
+                                                                    @RequestParam(defaultValue = "전체") String activityArea) {
         log.info("페이징 정보 = {}", pageable);
+        log.info("모집 종료일 = {}", endDate);
+        log.info("봉사 시간 인정 여부 = {}", admit);
+        log.info("활동 지역 = {}", activityArea);
         log.info("검색어 = {}", keyword);
 
-        VolunteerDto.VolunteerListPage volunteerListPage = volunteerService.getPage(pageable, keyword);
+        String dateRegx = "^(20[0-9][0-9]-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]))?";
+        if (!endDate.matches(dateRegx)) {
+            throw new IllegalArgumentException(ErrorMessage.PATTERN_DATE);
+        }
+
+        VolunteerDto.SearchInfo searchInfo = VolunteerDto.SearchInfo.builder()
+                .endDate(LocalDate.parse(endDate))
+                .admit(admit)
+                .activityArea(activityArea)
+                .keyword(keyword)
+                .build();
+
+        VolunteerDto.VolunteerListPage volunteerListPage = volunteerService.getPage(pageable, searchInfo);
+
         return BaseResponseDto.<VolunteerDto.VolunteerListPage>builder()
                 .message(Message.SUCCESS_VIEWPAGE_VOLUNTEER)
                 .data(volunteerListPage)

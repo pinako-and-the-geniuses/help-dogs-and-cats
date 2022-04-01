@@ -11,9 +11,11 @@ public interface VolunteerRepositoryCustom {
 
     Integer countAllByKeyword(String keyword);
 
+    Integer countAllBySearchInfo(VolunteerDto.SearchInfo searchInfo);
+
     Integer countAll();
 
-    Optional<List<VolunteerDto.ForPage>> findVolunteersForPage(Pageable pageable, String keyword);
+    Optional<List<VolunteerDto.ForPage>> findVolunteersForPage(Pageable pageable, VolunteerDto.SearchInfo searchInfo);
 
     Optional<List<VolunteerDto.ForPage>> findVolunteersForPageAll(Pageable pageable);
 
