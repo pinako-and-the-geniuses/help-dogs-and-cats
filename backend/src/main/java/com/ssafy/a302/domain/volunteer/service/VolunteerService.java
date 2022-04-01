@@ -17,7 +17,7 @@ public interface VolunteerService {
 
     VolunteerDto.Detail volunteerDetail(Long volunteerSeq);
 
-    VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword);
+    VolunteerDto.VolunteerListPage getPage(Pageable pageable, VolunteerDto.SearchInfo searchInfo);
 
     VolunteerDto.VolunteerListPage getPageAll(Pageable pageable);
 
