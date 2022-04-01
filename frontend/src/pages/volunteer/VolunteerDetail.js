@@ -108,6 +108,7 @@ function VolunteerDetail(){
         }
         })
         .then((res) =>{
+            console.log(res.data)
             console.log('test성공');
         })
         .catch((err)=>{
