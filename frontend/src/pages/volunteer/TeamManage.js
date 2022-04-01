@@ -21,7 +21,6 @@ function TeamManage(){
             headers: { Authorization : `Bearer ${jwt}`}
         })
         .then((res) =>{
-            console.log('신청자조회', res.data.data);
             setParticipants(res.data.data);
         })
         .catch((err)=>{
@@ -31,7 +30,6 @@ function TeamManage(){
 
     //참가자 승인.미승인
     const partyApprove=async(apv, memSeq)=>{
-        // console.log(memSeq);
         await axios({
             url: `${URL}/volunteers/${id}/participants/${memSeq}`,
             method: "patch",
@@ -43,7 +41,6 @@ function TeamManage(){
         }
         })
         .then((res) =>{
-            console.log(apv, '로 변경되었습니다');
         })
         .catch((err)=>{
             console.log(err);
@@ -58,7 +55,6 @@ function TeamManage(){
             headers:{ Authorization: `Bearer ${jwt}`}
         })
         .then((res)=>{
-            console.log('참가자 삭제');
         })
         .catch((err)=>{
             console.log(err);
@@ -68,13 +64,13 @@ function TeamManage(){
     const getApprove=async(seq)=>{
         partyApprove(true, seq)
         .then(getParticipants());
-        // setChange(!change);
+        getParticipants();
     }
 
     const cancleApprove=(seq)=>{
         partyApprove(false, seq)
         .then(getParticipants());
-        // setChange(!change);
+        getParticipants();
     }
 
     const deleteHandler=(memSeq)=>{
@@ -102,7 +98,6 @@ function TeamManage(){
                 participants.map((p)=>{
                     return(
                         <div className={style.person} key={p.seq}>
-                            {/* {console.log(p)} */}
                             <p>{p.nickname}</p>
                             {
                                 p.seq === memSeq
