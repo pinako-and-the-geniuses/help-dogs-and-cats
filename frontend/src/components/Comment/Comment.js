@@ -56,8 +56,8 @@ function Comment(props){
             {
                 (props.comments).map((comment)=>{
                     return(
-                        <>
-                        <div className={style.comment} key={comment.commentSeq}>
+                        <div key={comment.commentSeq}>
+                        <div className={style.comment}>
                             {/* 이미지 수정 필요 */}
                             <img src={comment.writerProfileImagePath}/>
                             <div className={style.content}>
@@ -91,7 +91,7 @@ function Comment(props){
                             : ""
                         } */}
                         <hr />
-                        </>
+                        </div>
                     )
                 })
             }
@@ -100,7 +100,7 @@ function Comment(props){
             <div className={style.addComment}>
                 <textarea 
                     cols="30" rows="3"
-                    value={props.commentContent}
+                    value={props.value}
                     onChange={(e)=>props.onChange(e.target.value)}
                     ></textarea>
                 <button type="submit" onClick={()=>{props.eventHandler();}}>댓글 작성</button>
