@@ -6,9 +6,7 @@ import st from "./styles/CommunityCreate.module.scss";
 import cn from "classnames";
 import Editor from "components/Editor";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 export default function CommunityCreate(api) {
-  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -86,14 +84,14 @@ export default function CommunityCreate(api) {
             placeholder={""}></Editor>
       </div>
       <div className={st.createbuttonContent}>
-        {isLogin?
+
         <><button type="button" onClick={onSubmit} className={st.communitycreatebutton}>
           작성
         </button>
         <button type="reset" className={st.communitycreatebutton}>
           취소
         </button></>
-        : null}
+
       </div>
     </div>
   );

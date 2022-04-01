@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
@@ -45,7 +45,8 @@ function CommunityComment(props){
         })
         .then((res)=>{
             console.log('삭제완료');
-            window.location.replace(`/community/communitydetail/${seq}`);
+            // window.location.replace(`/community/communitydetail/${seq}`);
+            props.getComment();
         })
         .catch((err) =>{
             console.log(err);

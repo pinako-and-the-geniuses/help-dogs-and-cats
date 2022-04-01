@@ -20,44 +20,42 @@ export default function CommunityDetail() {
   const [commentContent, setCommentContent] = useState("");
   // const[Comments, SetComments] = useState(initialState)
 
-  const onCommentChange = (value) => {
-    setCommentContent(value);
-  };
-  const onClickEvent = (value) => {
-    // console.log(value);
-    CommuComment()
-    .then(setCommentContent('')); //댓글 쓴 후 빈공간으로 만드는 코드
-    window.location.replace(`/community/communitydetail/${seq}`);
-  };
-
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
-  useEffect(() => {
-    //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
-    // axios
-    //   .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : `Bearer ${jwt}`}})
+
+  const getComment = () => {
+    
     if (!isLogin) {
       alert("로그인 해주세요.");
       navigate("/login", { replace: true });
     } else {
-      axios({
-        url: `${URL}/communities/${seq}`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${jwt}` },
-      })
-        .then((response) => {
-          console.log(response.data);
-          setWriterSeq(response.data.data.writerSeq);
-          setCommunityDetail(response.data);
-          setComments(response.data.data.comments);
-        }) //엑시오스 보낸 결과
-        .catch((err) => console.log(err));
-      // console.log(Comments);
+        axios({
+          url: `${URL}/communities/${seq}`,
+          method: "GET",
+          headers: { Authorization: `Bearer ${jwt}` },
+        })
+          .then((response) => {
+            console.log(response.data);
+            setWriterSeq(response.data.data.writerSeq);
+            setCommunityDetail(response.data);
+            setComments(response.data.data.comments);
+          }) //엑시오스 보낸 결과
+          .catch((err) => console.log(err));
     }
+  }
+  useEffect(() => {
+  //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
+    getComment();
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-  // console.log("writer",writerSeq);
-  // console.log("member",memberSeq);
-  // console.log("detail", communityDetail);
+  const onCommentChange = (value) => {
+    setCommentContent(value);
+  };
+  const onClickEvent = (value) => {
+    // .then(setCommentContent('')); //댓글 쓴 후 빈공간으로 만드는 코드
+    CommuComment();
+    // window.location.replace(`/community/communitydetail/${seq}`);
+  };
+
   const getDelete = async () => {
     axios
       .delete(`${URL}/communities/${seq}`, {
@@ -72,7 +70,7 @@ export default function CommunityDetail() {
       })
       .catch((err) => console.log(err));
   };
-  
+
   const CommuComment = async () => {
     await axios({
       url: `${URL}/communities/${seq}/comments`,
@@ -87,7 +85,12 @@ export default function CommunityDetail() {
     })
       .then((res) => {
         // console.log('댓글달기성공');
-        //setCommentContent('');
+        // setChanged(!changed);
+        // setCommentContent('');
+        // console.log(res.data);
+        console.log(commentContent);
+        getComment();
+        setCommentContent('');
       })
       .catch((err) => {
         console.log(err);
@@ -97,6 +100,17 @@ export default function CommunityDetail() {
   const GotoEdit = () => {
     navigate(`/community/communityupdate/${seq}`);
   };
+
+  // useEffect(() => {
+  //   getPost();
+  //   setCommentContent("")
+  // }, [changed]);
+
+  // useEffect(() => {
+  //   console.log(post);
+  //   console.log(comments);
+  //   setCommentContent("")
+  // }, [post, changed]);
   return (
     <div className={st.community_commentBox}>
       <header>
@@ -106,8 +120,13 @@ export default function CommunityDetail() {
         {communityDetail ? (
           <>
             <div className={st.alltitle}>
-              <p className={st.tag_p}>{communityDetail.data.category}</p>
-              <p className={st.title_p}>{communityDetail.data.title}</p>
+              {/* <p className={st.tag_p}>{communityDetail.data.category}</p> */}
+              <p className={st.tag_p}>
+                {communityDetail.data.category === "REPORT" ? "제보" : ""}
+                {communityDetail.data.category === "REVIEW" ? "후기" : ""}
+                {communityDetail.data.category === "GENERAL" ? "잡담" : ""}
+              </p>
+              <p className={st.title_p}>제목 : {communityDetail.data.title}</p>
               <p className={st.read_p}>
                 조회수 : {communityDetail.data.viewCount}
               </p>
@@ -141,10 +160,11 @@ export default function CommunityDetail() {
       </section>
       <CommunityComment
         id={seq}
-        value={commentContent}
+        commentContent={commentContent}
         onChange={onCommentChange}
         eventHandler={onClickEvent}
         comments={comments}
+        getComment={getComment}
       />
     </div>
   );
