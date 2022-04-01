@@ -22,10 +22,10 @@ function VolunteerDetail(){
     const [commentContent, setCommentContent] = useState("");
     const [changed, setChanged] = useState(true);
     const [comments, setComments] = useState([]);
-    const [join, setJoin] = useState(false);
     const [dd, setDd] = useState(1); //test용
     const [stateChanged, setStateChanged] = useState(true);
     const [participants, setParticipants] = useState([]);
+    const [join, setJoin] = useState(false);
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -75,6 +75,46 @@ function VolunteerDetail(){
         })
     }
 
+    //신청자 조회
+    const getParticipants=async()=>{
+        await axios({
+            url:`${URL}/volunteers/${id}/participants`,
+            method: "get",
+            headers: { Authorization : `Bearer ${jwt}`}
+        })
+        .then((res) =>{
+            console.log('신청자조회', res.data.data);
+            setParticipants(res.data.data);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+
+    const isApply=participants.filter(p=>p.seq===memSeq);
+    console.log('확인', isApply);
+    //isApply.length로 처리
+
+    //참석 여부 변경(승인, 미승인)
+    const test=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/participants/${memSeq}`,
+            method: "patch",
+            data: {
+            approve: true,
+            },
+            headers: {
+            Authorization: `Bearer ${jwt}`,
+        }
+        })
+        .then((res) =>{
+            console.log('test성공');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }   
+
     //일반: 참여 신청
     const apply=async()=>{
         await axios({
@@ -92,10 +132,47 @@ function VolunteerDetail(){
             console.log(err);
         })
     }
-
-    const joinBtn=()=>{
-        apply();
+    //일반: 참여 취소
+    const applyCancle=async()=>{
+        await axios({
+            url: `${URL}/volunteers/${id}/apply`,
+            method: "delete",
+            headers: { Authorization: `Bearer ${jwt}`}
+        })
+        .then((res) =>{
+            console.log('참여 취소');
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
     }
+
+    const cancleTest=()=>{
+        axios({
+            url:`${URL}/volunteers/${id}/participants/${memSeq}`,
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${jwt}`}
+        })
+        .then((res)=>{
+            console.log('나만 삭제되었나 보거라');
+        })
+        .catch((err) =>{
+            console.log(err);
+        })
+    }
+
+    const applyBtn=()=>{
+        apply();
+        // isApply();
+        setJoin(true);
+    }
+
+    const cancleBtn=()=>{
+        applyCancle();
+        // isApply();
+        setJoin(false);
+    }
+
 
     //댓글 작성
     const volComment=async()=>{
@@ -119,41 +196,6 @@ function VolunteerDetail(){
             console.log(err);
         })
     }
-
-    //신청자 조회
-    const getParticipants=async()=>{
-        await axios({
-            url:`${URL}/volunteers/${id}/participants`,
-            method: "get",
-            headers: { Authorization : `Bearer ${jwt}`}
-        })
-        .then((res) =>{
-            console.log(res.data.data);
-            setParticipants(res.data.data);
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }
-
-    const test=async()=>{
-        await axios({
-            url: `${URL}/volunteers/${id}/participants/${memSeq}`,
-            method: "patch",
-            data: {
-            approve: true,
-            },
-            headers: {
-            Authorization: `Bearer ${jwt}`,
-        }
-        })
-        .then((res) =>{
-            console.log('test성공');
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }   
         
     //게시글 삭제
     const deletePost=async()=>{
@@ -200,6 +242,7 @@ function VolunteerDetail(){
 
     useEffect(()=>{
         getPost();
+        // getParticipants();
     }, [changed, stateChanged]); //댓글, 모집, 
 
     useEffect(()=>{
@@ -207,19 +250,25 @@ function VolunteerDetail(){
         // console.log(comments);
     }, [post, changed]);
 
+    useEffect(()=>{
+        getParticipants();
+    }, [join]);
+
     return(
         <div className={style.myContainer}>
             <h1>봉사활동</h1>
 
             <div className={style.titleBox}>
                 {
-                    leftdays >= 0
-                    ? <p className={style.leftdays}>D-{leftdays}</p>
+                    post.status === "RECRUITING"
+                    ?(
+                        leftdays >= 0
+                        ? <p className={style.leftdays}>D-{leftdays}</p>
+                        : <p className={style.leftdays}>마감</p>
+                    )
                     : <p className={style.leftdays}>마감</p>
+
                 }
-                {/* <p className={style.leftdays}>D-{leftdays}</p> */}
-                {/* 날짜 0일 내려가면 마감 뜸 */}
-                {/* 마감돼도 마감 뜸 */}
                 <p className={style.title}>{post.title}</p>
                 {
                     memSeq === post.writerSeq
@@ -236,13 +285,22 @@ function VolunteerDetail(){
                                 onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
                     }[post.status]
                     :( //
-                        <button 
-                            type='button' 
-                            onClick={()=>{joinBtn();}} 
-                            className={`${style.joinBtn} ${style.joinXBtn}`}>참여</button>
+                        isApply.length !== 0 //참여신청을 이미 했다면?
+                        ?(
+                            <button 
+                                type='button' 
+                                onClick={cancleBtn} 
+                                className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                        )
+                        :(
+                            <button 
+                                type='button' 
+                                onClick={applyBtn} 
+                                className={`${style.joinBtn}`}>참여신청</button>
+                        )
                     )
                 }
-                {
+                {/* {
                     memSeq === post.writerSeq
                     ?(
                         //모집 변수
@@ -255,7 +313,7 @@ function VolunteerDetail(){
                         ? <button type='button' onClick={joinBtn} className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
                         :<button type='button' onClick={apply} className={style.joinBtn}>참여신청</button>
                     )
-                }
+                } */}
             </div>
 
             <div className={style.infoBox}>
@@ -273,7 +331,11 @@ function VolunteerDetail(){
                     </li>
                     <li className={style.people}>
                         <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
-                        <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement" onClick={()=>{getParticipants()}}>인원관리</button>
+                        {
+                            memSeq === post.writerSeq
+                            ? <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement" onClick={()=>{getParticipants()}}>인원관리</button>
+                            : null
+                        }
                         {/* 모달 */}
                         <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
                             <div className="modal-dialog">
@@ -283,7 +345,7 @@ function VolunteerDetail(){
                                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div className="modal-body">
-                                        <TeamManage participants={participants}/>
+                                        <TeamManage id={id} memSeq={memSeq} participants={participants}/>
                                     </div>
                                 </div>
                             </div>

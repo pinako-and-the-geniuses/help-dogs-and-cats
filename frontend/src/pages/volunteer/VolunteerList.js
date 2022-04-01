@@ -31,8 +31,8 @@ function VolunteerList(){
     //봉사 모집 상태
     const workStatus=(workStatus)=>{
         if(workStatus === "RECRUITING") return "모집중";
-        else if(workStatus === "ONGOING") return "봉사중";
-        else if(workStatus === "DONE") return "봉사완료"; //수정필요
+        else if(workStatus === "ONGOING") return "모집마감";
+        else if(workStatus === "DONE") return "모집마감"; //수정필요
     }
 
     const goToWrite =()=>{
@@ -143,20 +143,28 @@ function VolunteerList(){
                     </tr>
                 </thead>
                 <tbody>
-                {
-                    volunteers && volunteers.map((volunteer)=>{
-                        return(
-                            <tr key={volunteer.seq} 
-                                onClick={()=>{goToVolunteer(volunteer.seq)}}>
-                            <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate, volunteer.status)}</td>
-                            <td>{volunteer.title}</td>
-                            <td>0/{volunteer.maxParticipantCount}</td>
-                            <td>{volunteer.nickname}</td>
-                            <td>{volunteer.createdDate.slice(0,10)}</td>
+                    {
+                        volunteers
+                        ?(
+                            volunteers.map((volunteer)=>{
+                                return(
+                                    <tr key={volunteer.seq} 
+                                        onClick={()=>{goToVolunteer(volunteer.seq)}}>
+                                    <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate, volunteer.status)}</td>
+                                    <td>{volunteer.title}</td>
+                                    <td>0/{volunteer.maxParticipantCount}</td>
+                                    <td>{volunteer.nickname}</td>
+                                    <td>{volunteer.createdDate.slice(0,10)}</td>
+                                    </tr>
+                                )
+                            })
+                        )
+                        :(
+                            <tr>
+                                <td colSpan={5}>작성 글이 없습니다</td>
                             </tr>
                         )
-                    })
-                }
+                    }
                 </tbody>
             </table>
 
