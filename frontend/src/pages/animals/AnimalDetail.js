@@ -1,57 +1,20 @@
 import animaldetails from "./styles/AnimalDetails.module.scss";
-import React, { useEffect, useState } from "react";
 import Map from "components/Map";
 import cn from "classnames";
-import axios from "axios";
-import XMLParser from "react-xml-parser";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 export default function AnimalDetails() {
-  function parseStr(dataSet) {
-    const dataArr = new XMLParser().parseFromString(dataSet).children;
-    console.log(dataArr);
-  }
+  const animalSeq = useParams();
+  const info = useSelector((state) => state.animalInfo.info);
+  const data = info.children;
+  console.log("info", data);
 
-  const APP_KEY = process.env.REACT_APP_ANIMAL_API;
-  async function getAPI() {
-    await axios({
-      method: "get",
-      url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&endde=20211231&
-      pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
-    }).then(function (response) {
-      const dataSet = response.data;
-      // console.log(dataSet);
-
-      parseStr(dataSet);
-    });
-  }
-
-  useEffect(() => {
-    getAPI();
-  }, []);
-
-  // const APP_KEY = process.env.REACT_APP_ANIMAL_API;
-
-  //   const getAPI = async() => {
-  //       await axios({
-  //           url: `/abandonmentPublicSrvc/abandonmentPublic?bgnde=20211201&
-  //           endde=20211231&pageNo=1&numOfRows=10&serviceKey=${APP_KEY}`,
-  //           method:"get",
-  //       })
-  //       .then((res) => {
-  //           console.log(res.data);
-  //       })
-  //       .catch((err) => {
-  //           console.log(err);
-  //       })
-  //   }
-
-  //   useEffect(() =>{
-  //     getAPI();
-  //   }, []);
   return (
     <body className={animaldetails.animaldetailbody}>
       <main className={animaldetails.animaldetailmain}>
         <header>
-        <h2>보호 중 동물</h2>
+          <h2>동물 상세조회</h2>
         </header>
         <section className={animaldetails.topContent}>
           <div className={animaldetails.mainInfo}>
@@ -60,9 +23,9 @@ export default function AnimalDetails() {
               style={{ width: "23rem" }}
             >
               <img
-                src="https://mdbootstrap.com/img/Photos/Others/images/43.webp"
+                src={data[1].value}
                 className="card-img-top"
-                alt="..."
+                alt="사진 없음"
               />
               <div className="card-body">
                 <span className="badge rounded-pill bg-secondary">
@@ -70,15 +33,18 @@ export default function AnimalDetails() {
                 </span>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>공고번호</p>
-                  <p>0000000000</p>
+                  <p>{data[0].value}</p>
                 </div>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>접수일시</p>
-                  <p>2022-03-22</p>
+                  <p>
+                    {data[2].value.slice(0, 4)}-{data[2].value.slice(4, 6)}-
+                    {data[2].value.slice(6)}
+                  </p>
                 </div>
                 <div className={animaldetails.cardText}>
                   <p className={animaldetails.title}>발견장소</p>
-                  <p>멀티캠퍼스</p>
+                  <p>{data[3].value}</p>
                 </div>
                 <button
                   type="button"
@@ -110,8 +76,41 @@ export default function AnimalDetails() {
                       </div>
                       <div className="modal-body">
                         안뇽하세요
-                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
                       </div>
                       <div className="modal-footer">
                         <button
@@ -140,31 +139,31 @@ export default function AnimalDetails() {
                 <tbody>
                   <tr>
                     <th scope="row">품종</th>
-                    <td colspan="3">Mark</td>
+                    <td colspan="3">{data[4].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">연생</th>
-                    <td colspan="3">Mark</td>
+                    <td colspan="3">{data[6].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">kg</th>
-                    <td colspan="3">Mark</td>
+                    <td colspan="3">{data[7].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">성별</th>
-                    <td colspan="3">000-0000-0000</td>
+                    <td colspan="3">{data[13].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">중성화여부</th>
-                    <td colspan="3">000-0000-0000</td>
+                    <td colspan="3">{data[14].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">색상</th>
-                    <td colspan="3">000-0000-0000</td>
+                    <td colspan="3">{data[5].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">특징</th>
-                    <td colspan="3">000-0000-0000</td>
+                    <td colspan="3">{data[15].value}</td>
                   </tr>
                 </tbody>
               </table>
@@ -180,19 +179,19 @@ export default function AnimalDetails() {
                 <tbody>
                   <tr>
                     <th scope="row">관할기관</th>
-                    <td colspan="3">Mark</td>
+                    <td colspan="3">{data[19].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">보호센터</th>
-                    <td colspan="3">Mark</td>
+                    <td colspan="3">{data[16].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">보호소 주소</th>
-                    <td colspan="3">Mark</td>
+                    <td colspan="3">{data[18].value}</td>
                   </tr>
                   <tr>
                     <th scope="row">연락처</th>
-                    <td colspan="3">000-0000-0000</td>
+                    <td colspan="3">{data[21].value}</td>
                   </tr>
                 </tbody>
               </table>

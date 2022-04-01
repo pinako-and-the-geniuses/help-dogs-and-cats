@@ -13,7 +13,7 @@ import {
 } from "./pages/user";
 import { One } from "./pages/statistics";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
-import { AnimalDetails, Animal, AnimalList } from "./pages/animals";
+import { AnimalDetail, Animal, AnimalList } from "./pages/animals";
 import {
   Community,
   CommunityDetail,
@@ -57,7 +57,7 @@ function App() {
         <>
           <Route path="/animals/animal" element={<Animal />} />
           <Route path="/animals/list" element={<AnimalList />} />
-          <Route path="/animals/detail/:seq" element={<AnimalDetails />} />
+          <Route path="/animals/detail" element={<AnimalDetail />} />
         </>
         <>
           <Route path="/community/community" element={<Community />} />
