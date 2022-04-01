@@ -3,7 +3,7 @@ import GetSigungu from "./GetSigungu";
 import GetShelter from "./GetShelter";
 import GetKind from "./GetKind";
 import AnimalBox from "../../components/animals/AnimalBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
@@ -105,6 +105,10 @@ export default function AnimalList() {
       });
   };
 
+  useEffect(() => {
+    onGetList("");
+  }, []);
+
   return (
     <div className={st.div}>
       <div name="페이지이름">
@@ -198,7 +202,9 @@ export default function AnimalList() {
           </button>
         </div>
       </div>
-      <AnimalBox list={list} />;
+      <div className="row row-cols-1 row-cols-md-4 g-5">
+        <AnimalBox list={list} />{" "}
+      </div>
       {/* <div name="리스트Box">
         <Box />
       </div> */}
