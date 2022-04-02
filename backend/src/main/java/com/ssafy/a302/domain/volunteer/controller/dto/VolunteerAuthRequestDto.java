@@ -20,11 +20,11 @@ public class VolunteerAuthRequestDto {
     @ToString(of = {"content", "authenticatedParticipantSequences"})
     public static class RequestInfo {
 
-        @Schema(name = "content", title = "인증 내용", description = "봉사활동 인증 내용입니다.")
+        @Schema(title = "인증 내용", description = "봉사활동 인증 내용입니다.")
         @NotBlank(message = "{pattern.blank}")
         private String content;
 
-        @Schema(name = "authenticatedMemberSequences", title = "봉사활동 인증 인원 식별키", description = "봉사활동 인증 인원 식별키 리스트입니다.")
+        @Schema(title = "봉사활동 인증 인원 식별키", description = "봉사활동 인증 인원 식별키 리스트입니다.")
         @NotNull(message = "{pattern}")
         private List<Long> authenticatedParticipantSequences;
 
@@ -52,7 +52,7 @@ public class VolunteerAuthRequestDto {
         @NotBlank(message = "{pattern.blank}")
         private String content;
 
-        @Schema(name = "authenticatedMemberSequences", title = "봉사활동 인증 인원 식별키", description = "봉사활동 인증 인원 식별키 리스트입니다.")
+        @Schema(title = "봉사활동 인증 인원 식별키", description = "봉사활동 인증 인원 식별키 리스트입니다.")
         @NotNull(message = "{pattern}")
         private List<Long> authenticatedParticipantSequences;
 

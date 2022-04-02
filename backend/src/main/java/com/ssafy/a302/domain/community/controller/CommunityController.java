@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.community.controller;
 
+import com.ssafy.a302.domain.badge.service.BadgeService;
 import com.ssafy.a302.domain.community.controller.dto.CommunityCommentRequestDto;
 import com.ssafy.a302.domain.community.controller.dto.CommunityRequestDto;
 import com.ssafy.a302.domain.community.entity.Community;
@@ -9,6 +10,7 @@ import com.ssafy.a302.global.constant.ErrorMessage;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
+import com.ssafy.a302.global.entity.base.QBaseCreatedEntity;
 import com.ssafy.a302.global.util.AuthenticationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,6 +38,8 @@ public class CommunityController {
     private final CommunityService communityService;
 
     private final AuthenticationUtil authenticationUtil;
+
+    private final BadgeService badgeService;
 
     @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
     @Operation(
@@ -73,6 +77,20 @@ public class CommunityController {
 
         Long memberSeq = authenticationUtil.getMemberSeq(authentication);
         communityService.register(registerInfo.toServiceDto(), memberSeq);
+
+        /**
+         * 소통하는 활동가 뱃지 체크
+         */
+        if (badgeService.isQualifiedCommunicationActivistBadge(memberSeq)) {
+            badgeService.approveCommunicationActivistBadge(memberSeq);
+        }
+
+        /**
+         * 세심한 관찰꾼 뱃지 체크
+         */
+        if (badgeService.isQualifiedACarefulObserverBadge(memberSeq)) {
+            badgeService.approveACarefulObserverBadge(memberSeq);
+        }
 
         return BaseResponseDto.builder()
                 .message(Message.REGISTER_COMMUNITY_ARTICLE)

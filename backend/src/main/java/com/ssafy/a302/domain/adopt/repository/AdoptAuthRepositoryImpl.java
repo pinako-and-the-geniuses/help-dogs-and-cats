@@ -29,8 +29,19 @@ public class AdoptAuthRepositoryImpl implements AdoptAuthRepositoryCustom {
         return queryFactory
                 .select(adoptAuth.count().intValue())
                 .from(adoptAuth)
+                .where(adoptAuth.member.seq.eq(memberSeq))
+                .fetchOne();
+    }
+
+    @Override
+    public Integer countAllByMemberSeqAndStatusEqDone(Long memberSeq) {
+        return queryFactory
+                .select(adoptAuth.count().intValue())
+                .from(adoptAuth)
                 .where(
-                        adoptAuth.member.seq.eq(memberSeq))
+                        adoptAuth.member.seq.eq(memberSeq),
+                        adoptAuth.status.eq(Status.DONE)
+                )
                 .fetchOne();
     }
 

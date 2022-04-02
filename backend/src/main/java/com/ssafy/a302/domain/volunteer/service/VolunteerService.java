@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.volunteer.service;
 
+import com.ssafy.a302.domain.member.entity.Member;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +17,7 @@ public interface VolunteerService {
 
     VolunteerDto.Detail volunteerDetail(Long volunteerSeq);
 
-    VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword);
+    VolunteerDto.VolunteerListPage getPage(Pageable pageable, VolunteerDto.SearchInfo searchInfo);
 
     VolunteerDto.VolunteerListPage getPageAll(Pageable pageable);
 
@@ -25,4 +26,6 @@ public interface VolunteerService {
     Long modifyVolunteerAuth(Long memberSeq, Long volunteerSeq, VolunteerDto.VolunteerAuth volunteerAuth);
 
     VolunteerDto.VolunteerAuthDetail getVolunteerAuth(Long memberSeq, Long volunteerSeq);
+
+    Member getMemberByVolunteerSeq(Long volunteerSeq);
 }

@@ -4,13 +4,17 @@ import com.ssafy.a302.domain.admin.controller.dto.AdoptAuthRequestDto;
 import com.ssafy.a302.domain.admin.controller.dto.VolunteerAuthRequestDto;
 import com.ssafy.a302.domain.admin.service.AdminService;
 import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
+import com.ssafy.a302.domain.adopt.service.AdoptService;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
+import com.ssafy.a302.domain.badge.service.BadgeService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerCommentService;
+import com.ssafy.a302.domain.volunteer.service.VolunteerParticipantService;
 import com.ssafy.a302.domain.volunteer.service.VolunteerService;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
+import com.ssafy.a302.global.enums.Status;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,6 +29,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/admins")
@@ -37,6 +43,12 @@ public class AdminController {
     private final VolunteerCommentService volunteerCommentService;
 
     private final AdminService adminService;
+
+    private final BadgeService badgeService;
+
+    private final AdoptService adoptService;
+
+    private final VolunteerParticipantService volunteerParticipantService;
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @Operation(
@@ -99,6 +111,42 @@ public class AdminController {
         log.info("봉사활동 식별키 = {}", volunteerSeq);
 
         adminService.changeVolunteerAuthStatus(statusInfo.toServiceDto(), volunteerSeq);
+
+        if (Status.valueOf(statusInfo.getStatus().toUpperCase()) == Status.DONE) {
+            List<Long> volunteerParticipantSeqList = volunteerParticipantService.getParticipantSeqALlByVolunteerSeqAndApproveEqTrue(volunteerSeq);
+            for (Long memberSeq : volunteerParticipantSeqList) {
+                if (badgeService.isQualifiedBraveStepBadge(memberSeq)) {
+                    /**
+                     * 용기있는 발 딛음 뱃지 체크
+                     */
+                    badgeService.approveBraveStepBadge(memberSeq);
+                } else if (badgeService.isQualifiedVolunteerParticipationKingBadge(memberSeq)) {
+                    /**
+                     * 나는 봉사 참여왕 뱃지 체크
+                     */
+                    badgeService.approveVolunteerParticipationKingBadge(memberSeq);
+                } else if (badgeService.isQualifiedVolunteerParticipationKing2Badge(memberSeq)) {
+                    /**
+                     * 나는 봉사 참여왕2 모집 체크
+                     */
+                    badgeService.approveVolunteerParticipationKing2Badge(memberSeq);
+                }
+            }
+
+            Long memberSeq = volunteerService.getMemberByVolunteerSeq(volunteerSeq).getSeq();
+            if (badgeService.isQualifiedVolunteerRecruitmentKingBadge(memberSeq)) {
+                /**
+                 * 나는 봉사 모집왕 뱃지 체크
+                 */
+                badgeService.approveVolunteerRecruitmentKingBadge(memberSeq);
+
+            } else if (badgeService.isQualifiedVolunteerRecruitmentKing2Badge(memberSeq)) {
+                /**
+                 * 나는 봉사 모집왕2 뱃지 체크
+                 */
+                badgeService.approveVolunteerRecruitmentKing2Badge(memberSeq);
+            }
+        }
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_ADMIN_CHANGE_VOLUNTEER_AUTH_STATUS)
@@ -166,6 +214,22 @@ public class AdminController {
         log.info("입양 인증 식별키 = {}", adoptSeq);
 
         adminService.changeAdoptAuthStatus(statusInfo.toServiceDto(), adoptSeq);
+
+        if (Status.valueOf(statusInfo.getStatus().toUpperCase()) == Status.DONE) {
+            Long memberSeq = adoptService.getMemberByAdoptSeq(adoptSeq).getSeq();
+
+            if (badgeService.isQualifiedStartOfHappinessBadge(memberSeq)) {
+                /**
+                 * 행복의 시작 뱃지 체크
+                 */
+                badgeService.approveStartOfHappinessBadge(memberSeq);
+            } else if (badgeService.isQualifiedHappinessIsSquareBadge(memberSeq)) {
+                /**
+                 * 행복은 제곱 뱃지 체크
+                 */
+                badgeService.approveHappinessIsSquareBadge(memberSeq);
+            }
+        }
 
         return BaseResponseDto.builder()
                 .message(Message.SUCCESS_ADMIN_CHANGE_ADOPT_AUTH_STATUS)

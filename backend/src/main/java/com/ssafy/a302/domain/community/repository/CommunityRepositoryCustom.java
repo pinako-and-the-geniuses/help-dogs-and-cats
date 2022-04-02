@@ -16,5 +16,7 @@ public interface CommunityRepositoryCustom {
 
     Integer countAllByMemberSeq(Long memberSeq);
 
+    Integer countAllByMemberSeqAndCategoryEqReport(Long memberSeq);
+
     Optional<List<ProfileDto.Community>> findCommunitiesForProfile(Long memberSeq, Pageable pageable);
 }

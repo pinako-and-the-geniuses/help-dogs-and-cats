@@ -1,6 +1,5 @@
 package com.ssafy.a302.domain.volunteer.service;
 
-import com.ssafy.a302.domain.volunteer.controller.dto.VolunteerParticipantRequestDto;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerParticipantDto;
 
@@ -17,4 +16,6 @@ public interface VolunteerParticipantService {
     VolunteerParticipant changeParticipantIsApprove(VolunteerParticipantDto volunteerParticipantDto, Long volunteerSeq, Long memberSeq, Long memberCreatorSeq);
 
     VolunteerParticipant deleteVolunteerParticipant(Long volunteerSeq, Long memberSeq, Long memberCreatorSeq);
+
+    List<Long> getParticipantSeqALlByVolunteerSeqAndApproveEqTrue(Long volunteerSeq);
 }

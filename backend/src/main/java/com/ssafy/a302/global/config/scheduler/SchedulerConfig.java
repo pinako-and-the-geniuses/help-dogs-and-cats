@@ -2,12 +2,12 @@ package com.ssafy.a302.global.config.scheduler;
 
 import com.ssafy.a302.domain.member.entity.EmailAuth;
 import com.ssafy.a302.domain.member.repository.EmailAuthRepository;
+import com.ssafy.a302.domain.volunteer.repository.VolunteerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -20,6 +20,8 @@ public class SchedulerConfig{
 
     private final EmailAuthRepository emailAuthRepository;
 
+    private final VolunteerRepository volunteerRepository;
+
     @Scheduled(cron = "0 0 12,23 * * *")
     public void deleteExpiredAuthKey(){
         List<EmailAuth> emailAuths = emailAuthRepository.findAll();
@@ -31,4 +33,9 @@ public class SchedulerConfig{
         });
     }
 
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    public void finishVolunteerRecruit() {
+        volunteerRepository.updateStatusRecruitingToOngoing();
+    }
 }

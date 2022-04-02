@@ -82,6 +82,12 @@ public class AnimalDataResponseDto {
             this.count = count;
 //            this.species = species;
         }
+
+        public void changeCount(int newCount){
+            this.count = newCount;
+        }
+
+
     }
 
     @Schema(name = "연도별 유기동물 별 중성화 여부 데이터 응답 DTO", description = "연도별로, 발생하는 유기동물들의 중성화 여부 데이터를 반환합니다.")

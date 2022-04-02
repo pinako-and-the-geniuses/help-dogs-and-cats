@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.member.controller;
 
+import com.ssafy.a302.domain.badge.service.BadgeService;
 import com.ssafy.a302.domain.member.controller.dto.EmailAuthVerifyRequestDto;
 import com.ssafy.a302.domain.member.controller.dto.MemberRequestDto;
 import com.ssafy.a302.domain.member.controller.dto.PasswordResetRequestDto;
@@ -51,6 +52,8 @@ public class MemberController {
 
     private final AuthenticationUtil authenticationUtil;
 
+    private final BadgeService badgeService;
+
     @Operation(
             summary = "회원가입 API",
             description = "이메일, 패스워드, 닉네임, 핸드폰 번호, 활동 지역을 전달받고 회원가입을 진행합니다.",
@@ -79,7 +82,11 @@ public class MemberController {
     public BaseResponseDto<?> register(@Validated @RequestBody MemberRequestDto.RegisterInfo registerInfo) {
         log.info("회원가입 정보 = {}", registerInfo);
 
-        memberService.register(registerInfo.toServiceDto());
+        Long memberSeq = memberService.register(registerInfo.toServiceDto()).getSeq();
+
+        if (badgeService.isQualifiedWelcomeBadge(memberSeq)) {
+            badgeService.approveWelcomeBadge(memberSeq);
+        }
 
         return BaseResponseDto.builder()
                 .message(Message.REGISTER_MEMBER)
