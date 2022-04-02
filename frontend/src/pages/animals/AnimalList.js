@@ -37,64 +37,12 @@ export default function AnimalList() {
     setList(listData);
   };
 
-  function onGetChoice() {
-    //지역 관련 선택
-    if (selected.sidoCode != "0") {
-      // 시도만 선택
-      if (
-        selected.sidoCode !== "0" &&
-        (selected.sigunguCode === "" || selected.sigunguCode === "0")
-      ) {
-        console.log("시도만 선택");
-        const region = `&upr_cd=${selected.sidoCode}`;
-        setRegionUrl(region);
-      } // 시도 + 시군구 선택
-      else if (
-        (selected.sigunguCode !== "" || selected.sigunguCode !== "0") &&
-        (selected.shelterCode === "" || selected.shelterCode === "0")
-      ) {
-        console.log("시도 + 시군구 선택");
-        const region = `&upr_cd=${selected.sidoCode}&org_cd=${selected.sigunguCode}`;
-        setRegionUrl(region);
-      } // 시도 + 시군구 + 보호소 선택
-      else if (selected.shelterCode !== "" || selected.shelterCode !== "0") {
-        console.log("시도 + 시군구 + 보호소 선택");
-        const region = `&upr_cd=${selected.sidoCode}&org_cd=${selected.sigunguCode}&care_reg_no=${selected.shelterCode}`;
-        setRegionUrl(region);
-      }
-    } else {
-      // 지역을 선택하지 않은 경우
-      console.log(" // 지역을 선택하지 않은 경우");
-      const region = "";
-      setRegionUrl(region);
-    }
-
-    // 축종 관련 선택
-    if (kind) {
-      console.log(" 축종 선택");
-      const upkind = `&upkind=${kind}`;
-      setKindUrl(upkind);
-    } else {
-      console.log(" 축종 선택안함");
-      setKindUrl("");
-    }
-
-    // 성별 관련 선택
-    if (state) {
-      console.log("상태 선택");
-      const upstate = `&state=${state}`;
-      setStateUrl(upstate);
-    } else {
-      console.log("상태 선택안함");
-      setStateUrl("");
-    }
-
-    const SUBURL = `${regionUrl}${kindUrl}${stateUrl}`;
-    onGetList(SUBURL);
-  }
-  const onGetList = (SUBURL) => {
+  const onGetList = () => {
+    console.log(`${regionUrl}${kindUrl}${stateUrl}`);
     axios
-      .get(`${ANIMAL}?pageNo=1&numOfRows=12${SUBURL}&serviceKey=${ANIMALKEY}`)
+      .get(
+        `${ANIMAL}?pageNo=1&numOfRows=12${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
+      )
       .then((res) => {
         const dataSet = res.data;
         parseStr(dataSet);
@@ -151,10 +99,15 @@ export default function AnimalList() {
 
           <div name="조건2줄" className={st.secondCon}>
             <div name="축종">
-              <GetKind setKind={setKind} />
+              <GetKind setKind={setKind} setKindUrl={setKindUrl} />
             </div>
             <div name="상태" className="ms-4">
-              <form onChange={(e) => setState(e.target.value)}>
+              <form
+                onChange={(e) => {
+                  setState(e.target.value);
+                  setStateUrl(`&state=${e.target.value}`);
+                }}
+              >
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
@@ -198,7 +151,7 @@ export default function AnimalList() {
         </div>
 
         <div name="조회버튼">
-          <button type="button" className={st.btn} onClick={onGetChoice}>
+          <button type="button" className={st.btn} onClick={onGetList}>
             조회
           </button>
         </div>
