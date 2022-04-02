@@ -5,8 +5,8 @@ import style from './styles/ShelterList.module.scss';
 import cn from 'classnames';
 
 function ShelterList(){
-    const SHELTER_KEY = process.env.REACT_APP_SHELTER_API;
-    const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_API;
+    const SHELTER_KEY = process.env.REACT_APP_SHELTER_KEY;
+    const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_KEY;
     const all = [
         {
           orgCd: '0',
