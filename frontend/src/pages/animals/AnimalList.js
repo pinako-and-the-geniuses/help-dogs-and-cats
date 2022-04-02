@@ -122,6 +122,7 @@ export default function AnimalList() {
                 selected={selected}
                 setSidoData={setSidoData}
                 setSelected={setSelected}
+                setRegionUrl={setRegionUrl}
               />
             </div>
             <div name="시군구">
@@ -130,6 +131,7 @@ export default function AnimalList() {
                 setSigunguData={setSigunguData}
                 selected={selected}
                 setSelected={setSelected}
+                setRegionUrl={setRegionUrl}
               />
             </div>
             <div name="보호소">
