@@ -10,11 +10,11 @@ import style from './styles/VolunteerDetail.module.scss';
 import { URL } from '../../public/config';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import swal from 'sweetalert';
 
 function VolunteerDetail(){
     const { id } = useParams();
     const jwt = sessionStorage.getItem('jwt');
-    //회원번호 확인
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
     const navigate = useNavigate();
 
@@ -27,11 +27,25 @@ function VolunteerDetail(){
     const [join, setJoin] = useState(false);
 
     const today = new Date();
-    // console.log('오늘', today.getMonth()+1, today.getDate());
     const endDate = new Date(post.endDate);
-    // console.log('엔데', endDate);
     const gap = endDate.getTime() - today.getTime();
     const leftdays = Math.ceil(gap/(1000*60*60*24));
+
+    function getYyyyMmDdToString(date)
+    {
+        var dd = date.getDate();
+        var mm = date.getMonth()+1; //January is 0!
+    
+        var yyyy = date.getFullYear();
+        if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
+        
+        yyyy = yyyy.toString();
+        mm = mm.toString();
+        dd = dd.toString();
+    
+        var s1 = yyyy+'-'+mm+'-'+dd;
+        return s1;
+    }
 
     const goToEdit=()=>{
         navigate(`/volunteer/update/${id}`)
@@ -144,7 +158,6 @@ function VolunteerDetail(){
         .then((res)=>{
             // console.log('댓글달기성공');
             setChanged(!changed);
-            // setCommentContent("");
         })
         .catch((err)=>{
             console.log(err);
@@ -193,8 +206,11 @@ function VolunteerDetail(){
 
     //모집상태변경핸들러
     const onChangeHandler=(volState)=>{
-        changeStatus(volState);
-        // changeStatus(volState);
+        if(getYyyyMmDdToString(today) > post.endDate){
+            swal('모집 마감일이 지났습니다');
+            return;
+        }
+        else changeStatus(volState);
     }
 
     const applyBtn=()=>{
@@ -241,7 +257,14 @@ function VolunteerDetail(){
                 <p className={style.title}>{post.title}</p>
                 {
                     memSeq === post.writerSeq
+                    // DONE 상태 추가!!!
                     ?{
+                        "DONE": (
+                            <button 
+                                type='button' 
+                                className={`${style.joinBtn} ${style.joinXBtn}`}
+                                >봉사종료</button>
+                        ),
                         "ONGOING": (
                             <button 
                                 type='button' 

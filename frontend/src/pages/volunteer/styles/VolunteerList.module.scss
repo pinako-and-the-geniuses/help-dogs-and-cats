@@ -19,6 +19,7 @@ $sub-color: #999999;
     }
 
     .searchBar {
+        // display: grid;
         border: 1px solid $sub-color;
         border-radius: 5px;
         padding: 20px 20px;
@@ -33,18 +34,16 @@ $sub-color: #999999;
             .volunteer {
                 display: flex;
                 align-items: center;
-                width: 350px;
+                width: 30%;
             }
     
             .vol_time{
-                margin-left: 10px;
                 border: 1px solid $sub-color;
                 line-height: 18px;
             }
 
             span{
-                
-                margin-left: 3px;
+                margin: 0 5px 0 3px;
             }
 
 
@@ -64,7 +63,7 @@ $sub-color: #999999;
     
             .areaBox {
                 display: flex;
-                width: 350px;
+                width: 30%;
 
                 .area {
                     margin: 0 5px 0 10px;
@@ -89,7 +88,7 @@ $sub-color: #999999;
             }
         }
 
-        button {
+        .searchBtn {
             background-color: $main-color;
             padding: 5px 13px;
             margin-left: 30px; //끝으로 보낼거면 없애기

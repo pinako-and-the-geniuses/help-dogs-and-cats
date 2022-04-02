@@ -151,7 +151,7 @@ export default function AnimalList() {
             <div name="축종">
               <GetKind setKind={setKind} />
             </div>
-            <div name="성별" className="ms-4">
+            <div name="상태" className="ms-4">
               <form onChange={(e) => setState(e.target.value)}>
                 <div className="form-check form-check-inline">
                   <input

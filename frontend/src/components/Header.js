@@ -82,7 +82,7 @@ export default function Header() {
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              <a className="nav-link scrollto active" href="#hero">
+              <a className="nav-link scrollto active">
                 유기동물현황
               </a>
             </li>
