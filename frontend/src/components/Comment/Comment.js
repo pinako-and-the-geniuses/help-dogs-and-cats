@@ -6,7 +6,7 @@ import Reply from './Reply';
 import style from './style/Comment.module.scss';
 import swal from 'sweetalert';
 import axios from 'axios';
-import { render } from '@testing-library/react';
+import ProfileImage from 'pages/user/component/ProfileImage';
 
 function Comment(props){
     const jwt = sessionStorage.getItem('jwt');
@@ -65,7 +65,7 @@ function Comment(props){
                         <div key={comment.commentSeq}>
                             <div className={style.comment}>
                                 {/* 이미지 수정 필요 */}
-                                <img src={comment.writerProfileImagePath}/>
+                                <ProfileImage profileImageFilePath={comment.writerProfileImagePath} />
                                 <div className={style.content}>
                                     <div className={style.top}>
                                         <div className={style.left}>
