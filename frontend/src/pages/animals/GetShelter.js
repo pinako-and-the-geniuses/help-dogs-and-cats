@@ -45,7 +45,6 @@ export default function GetShelter({
       })
         .then((res) => {
           const dataSet = res.data;
-          console.log(res);
           parseStr(dataSet);
         })
         .catch((err) => {

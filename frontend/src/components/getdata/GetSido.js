@@ -2,11 +2,11 @@ import axios from "axios";
 import XMLParser from "react-xml-parser";
 import { ANIMAL } from "public/config";
 import { useEffect } from "react";
-import animal from "./styles/Animal.module.scss";
+import animal from "pages/animals/styles/Animal.module.scss";
 const ANIMALKEY = process.env.REACT_APP_ANIMAL_KEY;
 
 // [시도 조회]
-export default function GetSidoList({ sidoData, setSidoData, setSelected }) {
+export default function GetSido({ sidoData, setSidoData, setSelected }) {
   // xml을 json으로 바꾸고 원하는 데이터 뽑아 저장하기
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children;
@@ -55,6 +55,7 @@ export default function GetSidoList({ sidoData, setSidoData, setSelected }) {
       }
     >
       <option value="0">시도</option>
+
       {sidoData ? (
         sidoData.map((item) => {
           return (

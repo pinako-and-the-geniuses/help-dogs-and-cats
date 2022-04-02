@@ -2,7 +2,7 @@ import axios from "axios";
 import XMLParser from "react-xml-parser";
 import { ANIMAL } from "public/config";
 import { useEffect } from "react";
-import animal from "./styles/Animal.module.scss";
+import animal from "pages/animals/styles/Animal.module.scss";
 
 const ANIMALKEY = process.env.REACT_APP_ANIMAL_KEY;
 
@@ -64,6 +64,7 @@ export default function GetSigunguList({
       }
     >
       <option value="0">시군구</option>
+
       {sigunguData
         ? sigunguData.map((item) => {
             return (

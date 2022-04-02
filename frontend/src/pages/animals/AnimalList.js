@@ -1,8 +1,8 @@
-import GetSidoList from "./GetSidoList";
-import GetSigungu from "./GetSigungu";
+import GetSido from "components/getdata/GetSido";
+import GetSigungu from "components/getdata/GetSigungu";
 import GetShelter from "./GetShelter";
 import GetKind from "./GetKind";
-import AnimalBox from "../../components/animals/AnimalBox";
+import AnimalBox from "components/animals/AnimalBox";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
@@ -117,7 +117,7 @@ export default function AnimalList() {
         <div name="조건box" className={st.condition}>
           <div name="조건1줄" className={st.firstCon}>
             <div name="시도">
-              <GetSidoList
+              <GetSido
                 sidoData={sidoData}
                 selected={selected}
                 setSidoData={setSidoData}
