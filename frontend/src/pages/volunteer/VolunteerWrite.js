@@ -15,20 +15,41 @@ function VolunteerWrite(){
     // const [value, setValue] = useState("");
     // const quillRef = useRef();\
     const [title, setTitle] = useState("");
-    const [cd, setCd] = useState("");
+    const [selectArea, setSelectArea] = useState("");
     // const [cgg, setCgg] = useState();
     const [time, setTime] = useState(0);
     const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
+    const areas = [
+        {value: '전체', name: '전체'},
+        {value: '서울', name: '서울'},
+        {value: '부산', name: '부산'},
+        {value: '대구', name: '대구'},
+        {value: '인천', name: '인천'},
+        {value: '광주', name: '광주'},
+        {value: '세종', name: '세종'},
+        {value: '대전', name: '대전'},
+        {value: '울산', name: '울산'},
+        {value: '경기', name: '경기'},
+        {value: '강원', name: '강원'},
+        {value: '충북', name: '충북'},
+        {value: '충남', name: '충남'},
+        {value: '전북', name: '전북'},
+        {value: '전남', name: '전남'},
+        {value: '경북', name: '경북'},
+        {value: '경남', name: '경남'},
+        {value: '제주', name: '제주'},
+    ];
 
     const onTitleHandler=(e)=>{
         setTitle(e.target.value);
     }
 
-    const onCdHadler=(e)=>{
-        setCd(e.target.value);
+    const onAreaHadler=(e)=>{
+        setSelectArea(e.target.value);
+        console.log(selectArea)
     }
 
     // const onCggHandler=(e)=>{
@@ -62,7 +83,7 @@ function VolunteerWrite(){
             data: {
                 title: title,
                 content: content,
-                activityArea: "",
+                activityArea: selectArea,
                 authTime: time,
                 contact: contact,
                 endDate: endDate,
@@ -113,9 +134,20 @@ function VolunteerWrite(){
                 <ul>
                     <li className={style.region}>
                         <span>지역</span>
-                        <p className={style.area}>시도</p>
-                        <select name='searchCd'>
-                            <option value="0">전체</option>
+                        {/* <p className={style.area}>시도</p> */}
+                        <select 
+                            name='searchCd'
+                            value={selectArea}
+                            onChange={onAreaHadler}>
+                            {
+                                areas.map((area)=>(
+                                    <option
+                                        value={area.value}
+                                        key={area.value}>
+                                        {area.name}
+                                    </option>
+                                ))
+                            }
                         </select>
 
                         {/* <p className={style.area}>시군구</p>

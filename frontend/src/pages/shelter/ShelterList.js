@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { URL, ANIMAL } from '../../public/config/index';
+import axios from 'axios';
 import style from './styles/ShelterList.module.scss';
 import cn from 'classnames';
 
 function ShelterList(){
-    const SHELTER_KEY = process.env.REACT_APP_SHELTER_API;
-    const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_API;
+    const navigate =useNavigate();
+    const SHELTER_KEY = process.env.REACT_APP_SHELTER_KEY;
+    const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_KEY;
     const all = [
         {
           orgCd: '0',
@@ -66,6 +68,9 @@ function ShelterList(){
         })
     }
 
+    const goToShelter=(shelter)=>{
+        navigate(`/shelter/detail/${shelter}`);
+    }
 
     useEffect(() =>{
         getSido();
@@ -182,20 +187,20 @@ function ShelterList(){
                     <th scope="col">보호센터 주소</th>
                     </tr>
                 </thead>
+                <tbody>
                 {
                     areaSearch && areaSearch.map((i)=>{
                         return(
-                            <tbody>
-                                <tr>
+                                <tr key={i.careNm} onClick={()=>{goToShelter(i.careRegNo)}}>
                                 <td>f</td>
                                 <td>f</td>
                                 <td>f</td>
                                 <td>{i.careNm}</td>
                                 </tr>
-                            </tbody>
                         )
                     })
                 }
+                </tbody>
                 {/* <tbody>
                     <tr>
                     <td>어디</td>

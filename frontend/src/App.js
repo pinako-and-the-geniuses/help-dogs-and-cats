@@ -75,7 +75,7 @@ function App() {
           />
         </>
         <>
-          <Route path="/shelter/detail" element={<ShelterDetail />} />
+          <Route path="/shelter/detail/:id" element={<ShelterDetail />} />
           <Route path="/shelter/list" element={<ShelterList />} />
         </>
         <>
