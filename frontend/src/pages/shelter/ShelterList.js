@@ -41,7 +41,7 @@ function ShelterList() {
   };
   useEffect(() => {
     // onSetPage();
-    onGetList("&upr_cd=6110000&org_cd=3220000");
+    // onGetList("&upr_cd=6110000&org_cd=3220000");
   }, []);
 
   // 보호센터명 입력
@@ -78,23 +78,50 @@ function ShelterList() {
     }
 
     const SUBURL = `${regionUrl}`;
-    onGetList(SUBURL);
+    onGetList();
   }
 
   //조건별 보호소 목록 가져오기
   const onGetList = (SUBURL) => {
-    axios
-      .get(
-        `${ANIMAL}/abandonmentPublicSrvc/shelter?serviceKey=${ANIMAL_KEY}&_type=JSON${SUBURL}`
-      )
-      .then((res) => {
-        const data = res.data.response.body;
-        console.log(data);
-        setList(data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    console.log(regionUrl);
+    if (regionUrl.length > 15) {
+      axios
+        .get(
+          `${ANIMAL}/abandonmentPublicSrvc/shelter?serviceKey=${ANIMAL_KEY}&_type=JSON${regionUrl}`
+        )
+        .then((res) => {
+          const data = res.data.response.body.items.item;
+          console.log("조건별 목록조회", data);
+          setList(data);
+          const temp = [];
+          if (data) {
+            data.map((item) => {
+              console.log("map들어옴", item.careRegNo);
+              axios
+                .get(
+                  `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}`
+                )
+                .then((res) => {
+                  console.log("상세데이터", res.data);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            });
+          } else {
+            axios
+              .get(
+                `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=311320202100002`
+              )
+              .then((res) => {
+                console.log("ㅅㄷㅌㅅ데이터", res.data);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    } else alert("시군구까지 선택해야 조회 가능합니다.");
   };
 
   return (
@@ -115,15 +142,16 @@ function ShelterList() {
             selected={selected}
             setSidoData={setSido}
             setSelected={setSelected}
+            setRegionUrl={setRegionUrl}
           />
 
           <p>시군구</p>
-
           <GetSigungu
             sigunguData={sigungu}
             setSigunguData={setSigungu}
             selected={selected}
             setSelected={setSelected}
+            setRegionUrl={setRegionUrl}
           />
 
           <p>보호센터명</p>
@@ -135,8 +163,11 @@ function ShelterList() {
             }}
           />
         </div>
-        {/* onClick={onSubmit} */}
-        <button type="submit">조회</button>
+        <div>[ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ] </div>
+
+        <button type="submit" onClick={onGetChoice}>
+          조회
+        </button>
       </div>
 
       <table className={cn("table table-bordered table-hover", style.my_table)}>

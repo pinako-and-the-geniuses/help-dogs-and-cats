@@ -12,6 +12,7 @@ export default function GetSigunguList({
   setSigunguData,
   selected,
   setSelected,
+  setRegionUrl,
 }) {
   // 원하는 데이터 뽑아 저장하기
   const parseStr = (dataSet) => {
@@ -55,13 +56,14 @@ export default function GetSigunguList({
       defaultValue="0"
       className={animal.textBox}
       aria-label="시군구"
-      onChange={(e) =>
+      onChange={(e) => {
+        setRegionUrl(`&upr_cd=${selected.sidoCode}&org_cd=${e.target.value}`);
         setSelected({
           sidoCode: selected.sidoCode,
           sigunguCode: e.target.value,
           shelterCode: "",
-        })
-      }
+        });
+      }}
     >
       <option value="0">시군구</option>
 
