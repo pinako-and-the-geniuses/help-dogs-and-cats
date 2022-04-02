@@ -13,7 +13,7 @@ import {
 } from "./pages/user";
 import { One } from "./pages/statistics";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
-import { AnimalDetails, Animal } from "./pages/animals";
+import { AnimalDetail, Animal, AnimalList } from "./pages/animals";
 import {
   Community,
   CommunityDetail,
@@ -41,22 +41,23 @@ function App() {
           <Route path="/" element={<One />} />
         </>
         <>
-          <Route path="signup" element={<Signup />} />
-          <Route path="login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/user/findid" element={<FindId />} />
           <Route path="/user/findpwd" element={<FindPwd />} />
           <Route path="/user/resetpwd/:jwt" element={<ResetPwd />} />
           <Route path="/user/editinfo" element={<EditInfo />} />
         </>
         <>
-          <Route path="user/profile/:seq" element={<Profile />} />
+          <Route path="/user/profile/:seq" element={<Profile />} />
         </>
         <>
           <Route path="/guide" element={<Guide />} />
         </>
         <>
           <Route path="/animals/animal" element={<Animal />} />
-          <Route path="/animals/animaldetails" element={<AnimalDetails />} />
+          <Route path="/animals/list" element={<AnimalList />} />
+          <Route path="/animals/detail" element={<AnimalDetail />} />
         </>
         <>
           <Route path="/community/community" element={<Community />} />
@@ -81,8 +82,14 @@ function App() {
           <Route path="/volunteer/list" element={<VolunteerList />} />
           <Route path="/volunteer/detail/:id" element={<VolunteerDetail />} />
           <Route path="/volunteer/write" element={<VolunteerWrite />}></Route>
-          <Route path="/volunteer/write/:id" element={<VolunteerWrite />}></Route>
-          <Route path="/volunteer/update/:id" element={<VolunteerUpdate/>}></Route>
+          <Route
+            path="/volunteer/write/:id"
+            element={<VolunteerWrite />}
+          ></Route>
+          <Route
+            path="/volunteer/update/:id"
+            element={<VolunteerUpdate />}
+          ></Route>
         </>
         <>
           <Route path="*" element={<NotFound />} />

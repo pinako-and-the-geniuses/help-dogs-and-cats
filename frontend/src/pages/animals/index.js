@@ -1,3 +1,4 @@
 import Animal from "./Animal";
-import AnimalDetails from './AnimalDetails';
-export {Animal, AnimalDetails};
+import AnimalDetail from "./AnimalDetail";
+import AnimalList from "./AnimalList";
+export { Animal, AnimalDetail, AnimalList };

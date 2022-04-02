@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
 import Reply from './Reply';
@@ -13,7 +13,7 @@ function CommunityComment(props){
     const { seq } = useParams();
     const [rereply, setRereply] = useState(false);
     const [reply, setReply] = useState(false);
-
+    const navigate = useNavigate();
     const openReply=()=>{
         setRereply(true);
     }
@@ -45,6 +45,8 @@ function CommunityComment(props){
         })
         .then((res)=>{
             console.log('삭제완료');
+            // window.location.replace(`/community/communitydetail/${seq}`);
+            props.getComment();
         })
         .catch((err) =>{
             console.log(err);
@@ -57,7 +59,7 @@ function CommunityComment(props){
                 props.comments&&(props.comments).map((comment)=>{
                     return(
                         <>
-                        <div key={comment.commmentSeq} className={style.comment}>
+                        <div key={comment.commments} className={style.comment}>
                             {/* 이미지 수정 필요 */}
                             <img src={comment.writerProfileImagePath} />
                             <div className={style.content}>
