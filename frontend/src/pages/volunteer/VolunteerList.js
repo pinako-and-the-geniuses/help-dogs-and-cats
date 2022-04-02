@@ -15,6 +15,9 @@ function VolunteerList(){
     const [seq, setSeq] = useState(0);
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
+    const [endDate, setEndDate] = useState(new Date());
+    const [admit, setAdmit] = useState(false);
+    const [activityArea, setActivityArea] = useState("전체");
 
     //남은 날짜
     const leftDays=(enddate, workStatus)=>{
@@ -41,9 +44,11 @@ function VolunteerList(){
 
 
     //봉사활동 목록 받아오기
+    //page
     const getList=async()=>{
         await axios({
-            url: `${URL}/volunteers?page=${page}&size=10&keyword=${keyword}`,
+            // /volunteers?page={page}&size={size}&keyword={keyword}&endDate={endDate}&activityArea={activityArea}&admit=true
+            url: `${URL}/volunteers?page=${page}&size=10&keyword=${keyword}&endDate=${endDate}&admit=${admit}&activityArea=${activityArea}`,
             method: "get",
         })
         .then((res)=>{
