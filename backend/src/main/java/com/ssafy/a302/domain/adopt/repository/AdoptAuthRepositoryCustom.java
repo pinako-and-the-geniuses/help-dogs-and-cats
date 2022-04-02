@@ -11,6 +11,8 @@ public interface AdoptAuthRepositoryCustom {
 
     Integer countAllByMemberSeq(Long memberSeq);
 
+    Integer countAllByMemberSeqAndStatusEqDone(Long memberSeq);
+
     Optional<List<ProfileDto.Adopt>> findAdoptsForProfile(Long memberSeq, Pageable pageable);
 
     Integer countAllByStatus(String search);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -47,6 +48,16 @@ public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ErrorResponseDto<?> httpMessageNotReadableExceptionExceptionHandler(HttpMessageNotReadableException e) {
+        logPrint(e);
+
+        return ErrorResponseDto.builder()
+                .message(ErrorMessage.PATTERN)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ErrorResponseDto<?> methodArgumentTypeMismatchExceptionExceptionHandler(MethodArgumentTypeMismatchException e) {
         logPrint(e);
 
         return ErrorResponseDto.builder()

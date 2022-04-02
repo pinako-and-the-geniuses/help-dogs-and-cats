@@ -27,7 +27,7 @@ public class VolunteerAuthRequestDto {
 
         public VolunteerAuthDto toServiceDto(){
             return VolunteerAuthDto.builder()
-                    .status(Status.valueOf(status))
+                    .status(Status.valueOf(status.toUpperCase()))
                     .build();
         }
     }

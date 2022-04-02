@@ -58,42 +58,29 @@ function Comment(props){
             {
                 (props.comments).map((comment)=>{
                     return(
-                        <>
-                        <div className={style.comment} key={comment.commentSeq}>
-                            {/* 이미지 수정 필요 */}
-                            <img src={comment.writerProfileImagePath}/>
-                            <div className={style.content}>
-                                <div className={style.top}>
-                                    <div className={style.left}>
-                                        <span className={style.writer}>{comment.writerNickname}</span>
-                                        <span className={style.date}>{comment.createdDate}</span>
+                        <div key={comment.commentSeq}>
+                            <div className={style.comment}>
+                                {/* 이미지 수정 필요 */}
+                                <img src={comment.writerProfileImagePath}/>
+                                <div className={style.content}>
+                                    <div className={style.top}>
+                                        <div className={style.left}>
+                                            <span className={style.writer}>{comment.writerNickname}</span>
+                                            <span className={style.date}>{comment.createdDate}</span>
+                                        </div>
+                                        {
+                                            memSeq === comment.writerSeq
+                                            ? <p className={style.delete} onClick={()=>{deleteHandler(comment.commentSeq)}}>삭제</p>
+                                            : null
+                                        }
                                     </div>
-                                    {
-                                        memSeq === comment.writerSeq
-                                        ? <p className={style.delete} onClick={()=>{deleteHandler(comment.commentSeq)}}>삭제</p>
-                                        : null
-                                    }
+                                    <p onClick={openReply}>
+                                        {comment.content}
+                                    </p>
                                 </div>
-                                <p onClick={openReply}>
-                                    {comment.content}
-                                </p>
                             </div>
+                            <hr />
                         </div>
-                        {/* <Reply />
-                        {
-                            rereply
-                            ?(
-                                <div className={style.addReply}>
-                                    <div></div>
-                                    <textarea type="text"/>
-                                    <button type="submit" className={style.replyBtn}>등록</button>
-                                    <button className={style.XBtn} onClick={closeReply}>X</button>
-                                </div>
-                            )
-                            : ""
-                        } */}
-                        <hr />
-                        </>
                     )
                 })
             }
@@ -102,7 +89,7 @@ function Comment(props){
             <div className={style.addComment}>
                 <textarea 
                     cols="30" rows="3"
-                    value={props.commentContent}
+                    value={props.value}
                     onChange={(e)=>props.onChange(e.target.value)}
                     ></textarea>
                 <button type="submit" onClick={()=>{props.eventHandler();}}>댓글 작성</button>

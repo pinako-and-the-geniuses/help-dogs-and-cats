@@ -104,4 +104,27 @@ class MemberBadgeRepositoryCustomTest {
                     .isEqualTo(badge);
         }
     }
+
+    @Test
+    @DisplayName("뱃지 보유 여부 조회 - 성공")
+    void existsByMemberSeqAndBadgeNameSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        Member savedMember1 = memberRepository.save(member1);
+        Badge savedBadge1 = badgeRepository.save(badge1);
+        em.flush();
+        em.clear();
+
+        boolean exists1 = memberBadgeRepository.existsByMemberSeqAndBadgeName(member1.getSeq(), savedBadge1.getName());
+        assertThat(exists1).isFalse();
+
+        MemberBadge savedMemberBadge1 = memberBadgeRepository.save(MemberBadge.builder()
+                .member(savedMember1)
+                .badge(savedBadge1)
+                .build());
+
+        boolean exists2 = memberBadgeRepository.existsByMemberSeqAndBadgeName(member1.getSeq(), savedBadge1.getName());
+        assertThat(exists2).isTrue();
+    }
 }

@@ -26,21 +26,21 @@ public class OpenApiDataSave {
     private String serviceKey;
 
 //    30분 마다 최근 2년치 데이터 받아와서 db에 저장해줘야함
-    @Scheduled(cron = "0 0 18 * * *")
+//    @Scheduled(cron = "0 0 18 * * *")
     public void getRecentAnimalData() throws IOException, ParseException {
 
         LocalDate curDate = LocalDate.now();
-
-        GetLastYearData glyd = new GetLastYearData();
-
-        glyd.getLastYearData(curDate.getYear() - 1, "recentdata", false, serviceKey);
-
-        GetThisYearData gtyd = new GetThisYearData();
-
-        gtyd.getThisYearData(curDate, serviceKey);
-
-        //sh코드 실행
-        // https://codechacha.com/ko/java-run-shell-script/ 참고하자
+//
+//        GetLastYearData glyd = new GetLastYearData();
+//
+//        glyd.getLastYearData(curDate.getYear() - 1, "recentdata", false, serviceKey);
+//
+//        GetThisYearData gtyd = new GetThisYearData();
+//
+//        gtyd.getThisYearData(curDate, serviceKey);
+//
+//        //sh코드 실행
+//        // https://codechacha.com/ko/java-run-shell-script/ 참고하자
         try {
             String prepare = new ProcessExecutor()
                     .command("sh", "/home/hadoop/a302hadoop/prepare_helpdogcat_data_docker.sh")
@@ -79,21 +79,21 @@ public class OpenApiDataSave {
     }
 
     //1년마다 전체 데이터 업데이트 해줄 예정
-    @Scheduled(cron = "0 0 17 1 1 *")
+//    @Scheduled(cron = "0 0 17 1 1 *")
     public void getAllAnimalData() throws IOException, ParseException {
 
-        LocalDate curDate = LocalDate.now();
-
-        GetLastYearData glyd = new GetLastYearData();
-
-        glyd.getLastYearData(2017, "alldata", false, serviceKey);
-
-        for (int i = 2018; i <= curDate.getYear() - 2; i++) {
-            glyd.getLastYearData(i, "alldata", true, serviceKey);
-        }
-
-        //sh코드 실행
-        // https://codechacha.com/ko/java-run-shell-script/ 참고하자
+//        LocalDate curDate = LocalDate.now();
+//
+//        GetLastYearData glyd = new GetLastYearData();
+//
+//        glyd.getLastYearData(2017, "alldata", false, serviceKey);
+//
+//        for (int i = 2018; i <= curDate.getYear() - 2; i++) {
+//            glyd.getLastYearData(i, "alldata", true, serviceKey);
+//        }
+//
+//        //sh코드 실행
+//        // https://codechacha.com/ko/java-run-shell-script/ 참고하자
         try {
             String prepare = new ProcessExecutor()
                     .command("sh", "/home/hadoop/a302hadoop/prepare_helpdogcat_all_data_docker.sh")

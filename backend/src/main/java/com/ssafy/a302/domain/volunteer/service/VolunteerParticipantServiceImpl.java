@@ -141,4 +141,10 @@ public class VolunteerParticipantServiceImpl implements VolunteerParticipantServ
             throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER_CREATOR_PARTICIPANT);
         }
     }
+
+    @Override
+    public List<Long> getParticipantSeqALlByVolunteerSeqAndApproveEqTrue(Long volunteerSeq) {
+        return volunteerParticipantRepository.findParticipantSeqAllByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
+    }
 }

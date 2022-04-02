@@ -2,10 +2,7 @@ package com.ssafy.a302hadoop.domain.hadoop.service;
 
 
 import com.ssafy.a302hadoop.domain.hadoop.controller.dto.AnimalDataResponseDto;
-import com.ssafy.a302hadoop.domain.hadoop.entity.AgeState;
-import com.ssafy.a302hadoop.domain.hadoop.entity.AnnualBreed;
-import com.ssafy.a302hadoop.domain.hadoop.entity.AnnualState;
-import com.ssafy.a302hadoop.domain.hadoop.entity.SpeciesNeutral;
+import com.ssafy.a302hadoop.domain.hadoop.entity.*;
 import com.ssafy.a302hadoop.domain.hadoop.repository.*;
 import com.ssafy.a302hadoop.domain.hadoop.service.dto.DataFromHadoopDto;
 import lombok.RequiredArgsConstructor;
@@ -132,20 +129,59 @@ public class HadoopServiceImpl implements HadoopService {
 
             for (int j = 0; j <= 13; j++) {
                 //나이랑 정보
-                List<AnimalDataResponseDto.AgeStateInfo> ageStateInfos1 = new ArrayList<>();
+//                List<AnimalDataResponseDto.AgeStateInfo> ageStateInfos1 = new ArrayList<>();
+
+                List<AnimalDataResponseDto.AgeStateInfo> baseAgeStatesDog = new ArrayList<>();
+                AnimalData.ProcessState adopt = AnimalData.ProcessState.ADOPTED;
+                AnimalData.ProcessState donate = AnimalData.ProcessState.DONATED;
+                AnimalData.ProcessState emission = AnimalData.ProcessState.EMISSION;
+                AnimalData.ProcessState euthanasia = AnimalData.ProcessState.EUTHANASIA;
+                AnimalData.ProcessState naturalDeath = AnimalData.ProcessState.NATURALDEATH;
+                AnimalData.ProcessState protect = AnimalData.ProcessState.PROTECT;
+                AnimalData.ProcessState returned = AnimalData.ProcessState.RETURNED;
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(adopt,0));
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(donate,0));
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(emission,0));
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(euthanasia,0));
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(naturalDeath,0));
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(protect,0));
+                baseAgeStatesDog.add(new AnimalDataResponseDto.AgeStateInfo(returned,0));
+
+
                 List<AgeState> ageStates1 = ageStateRepository.findAllByAgeAndSpeciesAndYear(j, "개", i);
                 if (ageStates1 != null) {
-                    ageStates1.forEach(ageState -> ageStateInfos1.add(ageState.toAgeStateInfo()));
+                    ageStates1.forEach(ageState -> {
+                        for(AnimalDataResponseDto.AgeStateInfo a : baseAgeStatesDog){
+                            if(a.getState() == ageState.toAgeStateInfo().getState()) {
+                                a.changeCount(ageState.toAgeStateInfo().getCount());
+                            }
+                        }
+                    });
                 }
 
-                List<AnimalDataResponseDto.AgeStateInfo> ageStateInfos2 = new ArrayList<>();
+                List<AnimalDataResponseDto.AgeStateInfo> baseAgeStatesCat = new ArrayList<>();
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(adopt,0));
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(donate,0));
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(emission,0));
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(euthanasia,0));
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(naturalDeath,0));
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(protect,0));
+                baseAgeStatesCat.add(new AnimalDataResponseDto.AgeStateInfo(returned,0));
+
+//                List<AnimalDataResponseDto.AgeStateInfo> ageStateInfos2 = new ArrayList<>();
                 List<AgeState> ageStates2 = ageStateRepository.findAllByAgeAndSpeciesAndYear(j, "고양이", i);
                 if (ageStates2 != null) {
-                    ageStates2.forEach(ageState -> ageStateInfos2.add(ageState.toAgeStateInfo()));
+                    ageStates2.forEach(ageState -> {
+                        for(AnimalDataResponseDto.AgeStateInfo a : baseAgeStatesCat){
+                            if(a.getState() == ageState.toAgeStateInfo().getState()) {
+                                a.changeCount(ageState.toAgeStateInfo().getCount());
+                            }
+                        }
+                    });
                 }
 
-                ageStateInfoMapDog.put(j, ageStateInfos1);
-                ageStateInfoMapCat.put(j, ageStateInfos2);
+                ageStateInfoMapDog.put(j, baseAgeStatesDog);
+                ageStateInfoMapCat.put(j, baseAgeStatesCat);
             }
             species.put("개", ageStateInfoMapDog);
             species.put("고양이", ageStateInfoMapCat);

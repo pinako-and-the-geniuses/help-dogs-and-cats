@@ -3,10 +3,9 @@ package com.ssafy.a302.domain.volunteer.controller.dto;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.service.dto.VolunteerDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Schema(name = "봉사활동 요청 DTO", description = "봉사활동 API 호출 시 사용되는 요청 DTO 입니다.")
 @Getter
@@ -40,7 +39,6 @@ public class VolunteerRequestDto {
         public RegisterInfo(String title, String content, String activityArea, String authTime, String contact, String endDate, Integer minParticipantCount, Integer maxParticipantCount){
             this.title = title;
             this.content = content;
-//            this.category = category;
             this.activityArea = activityArea;
             this.authTime = authTime;
             this.contact = contact;
@@ -53,11 +51,10 @@ public class VolunteerRequestDto {
             return VolunteerDto.builder()
                     .title(title)
                     .content(content)
-//                    .category(Volunteer.Category.valueOf(category))
                     .activityArea(activityArea)
                     .authTime(authTime)
                     .contact(contact)
-                    .endDate(endDate)
+                    .endDate(LocalDate.parse(endDate))
                     .minParticipantCount(minParticipantCount)
                     .maxParticipantCount(maxParticipantCount)
                     .build();
@@ -104,10 +101,9 @@ public class VolunteerRequestDto {
             return VolunteerDto.builder()
                     .title(title)
                     .content(content)
-//                    .category(Volunteer.Category.valueOf(category))
                     .authTime(authTime)
                     .contact(contact)
-                    .endDate(endDate)
+                    .endDate(LocalDate.parse(endDate))
                     .activityArea(activityArea)
                     .minParticipantCount(minParticipantCount)
                     .maxParticipantCount(maxParticipantCount)

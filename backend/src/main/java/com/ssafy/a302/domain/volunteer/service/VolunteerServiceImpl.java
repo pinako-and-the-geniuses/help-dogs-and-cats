@@ -145,32 +145,18 @@ public class VolunteerServiceImpl implements VolunteerService {
     }
 
     @Override
-    public VolunteerDto.VolunteerListPage getPage(Pageable pageable, String keyword) {
-        if (keyword != null){
-            Integer totalCount = volunteerRepository.countAllByKeyword(keyword);
-            Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
-            List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPage(pageable, keyword)
-                    .orElse(null);
+    public VolunteerDto.VolunteerListPage getPage(Pageable pageable, VolunteerDto.SearchInfo searchInfo) {
+        Integer totalCount = volunteerRepository.countAllBySearchInfo(searchInfo);
+        Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+        List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPage(pageable, searchInfo)
+                .orElse(null);
 
-            return VolunteerDto.VolunteerListPage.builder()
-                    .totalCount(totalCount)
-                    .totalPageNumber(totalPageNumber)
-                    .volunteersForPage(volunteersForPage)
-                    .currentPageNumber(pageable.getPageNumber())
-                    .build();
-        }else{
-            Integer totalCount = volunteerRepository.countAll();
-            Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
-            List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPageAll(pageable)
-                    .orElse(null);
-
-            return VolunteerDto.VolunteerListPage.builder()
-                    .totalCount(totalCount)
-                    .totalPageNumber(totalPageNumber)
-                    .volunteersForPage(volunteersForPage)
-                    .currentPageNumber(pageable.getPageNumber())
-                    .build();
-        }
+        return VolunteerDto.VolunteerListPage.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .volunteersForPage(volunteersForPage)
+                .currentPageNumber(pageable.getPageNumber())
+                .build();
     }
 
     @Override
@@ -302,5 +288,11 @@ public class VolunteerServiceImpl implements VolunteerService {
                 .content(findVolunteerAuth.getContent())
                 .participants(participants)
                 .build();
+    }
+
+    @Override
+    public Member getMemberByVolunteerSeq(Long volunteerSeq) {
+        return volunteerRepository.findMemberByVolunteerSeq(volunteerSeq)
+                .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.BAD_REQUEST));
     }
 }

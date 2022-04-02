@@ -82,7 +82,7 @@ class VolunteerRepositoryCustomTest {
                 .activityArea("봉사활동 활동지역1")
                 .authTime("인증시간1")
                 .member(member1)
-                .endDate(LocalDate.now().toString())
+                .endDate(LocalDate.now())
                 .minParticipantCount(2)
                 .maxParticipantCount(6)
                 .content("contact1")
@@ -94,7 +94,7 @@ class VolunteerRepositoryCustomTest {
                 .activityArea("봉사활동 활동지역2")
                 .authTime("인증시간2")
                 .member(member2)
-                .endDate(LocalDate.now().toString())
+                .endDate(LocalDate.now())
                 .minParticipantCount(2)
                 .maxParticipantCount(6)
                 .content("contact2")
@@ -146,5 +146,63 @@ class VolunteerRepositoryCustomTest {
         List<ProfileDto.Volunteer> volunteersForProfile2 = volunteerRepository.findVolunteersForProfile(savedMember1.getSeq(), pageable)
                 .orElse(null);
         assertThat(volunteersForProfile2.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("봉사활동 모집 종료 - 성공")
+    void updateStatusRecruitingToOngoingSuccess() {
+        /**
+         * 테스트 데이터 세팅
+         */
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = LocalDate.now().minusDays(1L);
+
+        volunteer1 = Volunteer.builder()
+                .title("봉사활동 제목1")
+                .contact("봉사활동 본문1")
+                .activityArea("봉사활동 활동지역1")
+                .authTime("인증시간1")
+                .member(member1)
+                .endDate(today)
+                .minParticipantCount(2)
+                .maxParticipantCount(6)
+                .content("contact1")
+                .build();
+
+        volunteer2 = Volunteer.builder()
+                .title("봉사활동 제목2")
+                .contact("봉사활동 본문2")
+                .activityArea("봉사활동 활동지역2")
+                .authTime("인증시간2")
+                .member(member2)
+                .endDate(yesterday)
+                .minParticipantCount(2)
+                .maxParticipantCount(6)
+                .content("contact2")
+                .build();
+
+        Volunteer savedVolunteer1 = volunteerRepository.save(volunteer1);
+        Volunteer savedVolunteer2 = volunteerRepository.save(volunteer2);
+        em.flush();
+        em.clear();
+
+        /**
+         * 모집 종료 메서드 호출
+         */
+        volunteerRepository.updateStatusRecruitingToOngoing();
+
+        /**
+         * 데이터 검증
+         */
+        Volunteer findVolunteer1 = volunteerRepository.findBySeq(savedVolunteer1.getSeq())
+                .orElse(null);
+        Volunteer findVolunteer2 = volunteerRepository.findBySeq(savedVolunteer2.getSeq())
+                .orElse(null);
+
+        assertThat(findVolunteer1.getStatus()).isEqualTo(Volunteer.Status.RECRUITING);
+        assertThat(findVolunteer2.getStatus()).isEqualTo(Volunteer.Status.ONGOING);
     }
 }
