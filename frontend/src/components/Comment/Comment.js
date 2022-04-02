@@ -53,6 +53,10 @@ function Comment(props){
         })
     }
 
+    const enterKey=()=>{
+        if(window.event.keyCode === 13) props.eventHandler();;
+    }
+
     return(
         <div className={style.commentBox}>
             {
@@ -91,6 +95,7 @@ function Comment(props){
                     cols="30" rows="3"
                     value={props.value}
                     onChange={(e)=>props.onChange(e.target.value)}
+                    onKeyUp={enterKey}
                     ></textarea>
                 <button type="submit" onClick={()=>{props.eventHandler();}}>댓글 작성</button>
             </div>

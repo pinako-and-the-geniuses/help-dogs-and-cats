@@ -12,11 +12,8 @@ function VolunteerWrite(){
     const placeholder=[
         "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
     ];
-    // const [value, setValue] = useState("");
-    // const quillRef = useRef();\
     const [title, setTitle] = useState("");
-    const [selectArea, setSelectArea] = useState("");
-    // const [cgg, setCgg] = useState();
+    const [selectArea, setSelectArea] = useState("전체");
     const [time, setTime] = useState(0);
     const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
@@ -49,12 +46,7 @@ function VolunteerWrite(){
 
     const onAreaHadler=(e)=>{
         setSelectArea(e.target.value);
-        console.log(selectArea)
     }
-
-    // const onCggHandler=(e)=>{
-    //     setCgg(e.target.value);
-    // }
 
     const onTimeHandler=(e)=>{
         setTime(e.target.value);
@@ -134,7 +126,6 @@ function VolunteerWrite(){
                 <ul>
                     <li className={style.region}>
                         <span>지역</span>
-                        {/* <p className={style.area}>시도</p> */}
                         <select 
                             name='searchCd'
                             value={selectArea}
@@ -149,11 +140,6 @@ function VolunteerWrite(){
                                 ))
                             }
                         </select>
-
-                        {/* <p className={style.area}>시군구</p>
-                        <select name='searchCgg'>
-                            <option value="0">전체</option>
-                        </select> */}
                     </li>
                     <li className={style.vol_time}>
                         <span>봉사인증시간</span>

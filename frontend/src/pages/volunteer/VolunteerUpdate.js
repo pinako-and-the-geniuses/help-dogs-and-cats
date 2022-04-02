@@ -13,16 +13,33 @@ function VolunteerUpdate(){
     const placeholder=[
         "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
     ];
-    // const [value, setValue] = useState("");
-    // const quillRef = useRef();\
     const [title, setTitle] = useState("");
-    const [cd, setCd] = useState("");
-    // const [cgg, setCgg] = useState();
+    const [selectArea, setSelectArea] = useState("전체");
     const [time, setTime] = useState(0);
     const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
+    const areas = [
+        {value: '전체', name: '전체'},
+        {value: '서울', name: '서울'},
+        {value: '부산', name: '부산'},
+        {value: '대구', name: '대구'},
+        {value: '인천', name: '인천'},
+        {value: '광주', name: '광주'},
+        {value: '세종', name: '세종'},
+        {value: '대전', name: '대전'},
+        {value: '울산', name: '울산'},
+        {value: '경기', name: '경기'},
+        {value: '강원', name: '강원'},
+        {value: '충북', name: '충북'},
+        {value: '충남', name: '충남'},
+        {value: '전북', name: '전북'},
+        {value: '전남', name: '전남'},
+        {value: '경북', name: '경북'},
+        {value: '경남', name: '경남'},
+        {value: '제주', name: '제주'},
+    ];
 
     //게시글 정보 가져오기
     const getPost=async()=>{
@@ -35,7 +52,7 @@ function VolunteerUpdate(){
         })
         .then((res)=>{
             setTitle(res.data.data.title);
-            setCd(res.data.data.activityArea);
+            setSelectArea(res.data.data.activityArea);
             setTime(res.data.data.authTime);
             setParty(res.data.data.maxParticipantCount);
             setContact(res.data.data.contact);
@@ -55,7 +72,7 @@ function VolunteerUpdate(){
             data:{
                 title: title,
                 content: content,
-                activityArea: "",
+                activityArea: selectArea,
                 authTime: time,
                 contact: contact,
                 endDate: endDate,
@@ -76,13 +93,9 @@ function VolunteerUpdate(){
         setTitle(e.target.value);
     }
 
-    const onCdHadler=(e)=>{
-        setCd(e.target.value);
+    const onAreaHadler=(e)=>{
+        setSelectArea(e.target.value);
     }
-
-    // const onCggHandler=(e)=>{
-    //     setCgg(e.target.value);
-    // }
 
     const onTimeHandler=(e)=>{
         setTime(e.target.value);
@@ -110,7 +123,6 @@ function VolunteerUpdate(){
         })
         .then((willUpdate)=>{
             if(willUpdate){
-                // e.preventDefault();
                 if(title === ""){
                     swal('제목값은 필수입니다.');
                     return;
@@ -150,15 +162,20 @@ function VolunteerUpdate(){
                 <ul>
                     <li className={style.region}>
                         <span>지역</span>
-                        <p className={style.area}>시도</p>
-                        <select name='searchCd'>
-                            <option value="0">전체</option>
+                        <select 
+                            name='searchCd'
+                            value={selectArea}
+                            onChange={onAreaHadler}>
+                            {
+                                areas.map((area)=>(
+                                    <option
+                                        value={area.value}
+                                        key={area.value}>
+                                        {area.name}
+                                    </option>
+                                ))
+                            }
                         </select>
-
-                        {/* <p className={style.area}>시군구</p>
-                        <select name='searchCgg'>
-                            <option value="0">전체</option>
-                        </select> */}
                     </li>
                     <li className={style.vol_time}>
                         <span>봉사인증시간</span>

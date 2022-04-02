@@ -13,12 +13,33 @@ function VolunteerList(){
 
     const [volunteers, setVolunteers] = useState("");
     const [seq, setSeq] = useState(0);
+    const [totalPage, setTotalPage] = useState(0);
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
-    const [endDate, setEndDate] = useState(new Date());
-    const [admit, setAdmit] = useState(false);
+    const [admit, setAdmit] = useState(false); //봉사 인정
+    const [endDate, setEndDate] = useState("2099-12-31");
     const [activityArea, setActivityArea] = useState("전체");
-
+    const areas = [
+        {value: '전체', name: '전체'},
+        {value: '서울', name: '서울'},
+        {value: '부산', name: '부산'},
+        {value: '대구', name: '대구'},
+        {value: '인천', name: '인천'},
+        {value: '광주', name: '광주'},
+        {value: '세종', name: '세종'},
+        {value: '대전', name: '대전'},
+        {value: '울산', name: '울산'},
+        {value: '경기', name: '경기'},
+        {value: '강원', name: '강원'},
+        {value: '충북', name: '충북'},
+        {value: '충남', name: '충남'},
+        {value: '전북', name: '전북'},
+        {value: '전남', name: '전남'},
+        {value: '경북', name: '경북'},
+        {value: '경남', name: '경남'},
+        {value: '제주', name: '제주'},
+    ];
+    
     //남은 날짜
     const leftDays=(enddate, workStatus)=>{
         const today = new Date();
@@ -35,35 +56,37 @@ function VolunteerList(){
     const workStatus=(workStatus)=>{
         if(workStatus === "RECRUITING") return "모집중";
         else if(workStatus === "ONGOING") return "모집마감";
-        else if(workStatus === "DONE") return "모집마감"; //수정필요
+        else if(workStatus === "DONE") return "봉사종료"; //수정필요
     }
-
-    const goToWrite =()=>{
-        navigate('/volunteer/write');
-    }
-
 
     //봉사활동 목록 받아오기
-    //page
     const getList=async()=>{
         await axios({
-            // /volunteers?page={page}&size={size}&keyword={keyword}&endDate={endDate}&activityArea={activityArea}&admit=true
             url: `${URL}/volunteers?page=${page}&size=10&keyword=${keyword}&endDate=${endDate}&admit=${admit}&activityArea=${activityArea}`,
             method: "get",
         })
         .then((res)=>{
-            console.log(res.data);
+            console.log(res.data.data);
             setVolunteers(res.data.data.volunteersForPage);
+            setTotalPage(res.data.data.totalPageNumber);
         })
         .catch((err) => {
             console.log(err);
         })
     }
 
-    //페이지 넘어갈때마다 새로 목록 불러오기
-    useEffect(()=>{
-        getList();
-    }, [page]);
+    const onAreaHandler=(e)=>{
+        setActivityArea(e.target.value);
+        console.log(activityArea);
+    }
+
+    const enterKey=()=>{
+        if(window.event.keyCode === 13) getList();
+    }
+
+    const goToWrite =()=>{
+        navigate('/volunteer/write');
+    }
 
     const goToVolunteer=(seq)=>{
         if(isLogin){
@@ -74,13 +97,12 @@ function VolunteerList(){
             //회원만 글을 읽을 수 있음
             swal('권한이 없습니다');
         }
-
     }
 
-    const enterKey=()=>{
-        if(window.event.keyCode === 13) getList();
-    }
-
+    //페이지 넘어갈때마다 새로 목록 불러오기
+    useEffect(()=>{
+        getList();
+    }, [page]);
 
     return(
         <div className={style.myContainer}>
@@ -90,32 +112,51 @@ function VolunteerList(){
                 <div className={style.top}>
                     <div className={style.volunteer}>
                         <p className={style.title}>봉사시간</p>
+                        <form onChange={(e)=>{setAdmit(e.target.value)}}>
                         <label htmlFor="radio1">
-                            <input type="radio" name="vol_time" id="radio1" className={style.vol_time} checked/><span>무관</span>
+                            <input 
+                                type="radio" 
+                                name="vol_time" 
+                                id="radio1"
+                                value="false" 
+                                defaultChecked
+                                className={style.vol_time}/><span>무관</span>
                         </label>
                         <label htmlFor="radio2">
-                            <input type="radio" name="vol_time" id="radio2" className={style.vol_time}/><span>인정</span>
+                            <input 
+                                type="radio" 
+                                name="vol_time" 
+                                id="radio2" 
+                                value="true"
+                                className={style.vol_time}/><span>인정</span>
                         </label>
+                        </form>
                     </div>
 
                     <div className={style.endDate}>
                         <p className={style.title}>마감날짜</p>
-                        <input type="date" name="" id="" />
+                        <input 
+                            type="date"  
+                            onChange={(e)=>setEndDate(e.target.value)}/>
                     </div>
                 </div>
 
                 <div className={style.bottom}>
                     <div className={style.areaBox}>
                         <p className={style.title}>지역</p>
-
-                        <p className={style.area}>시도</p>
-                        <select name='searchCd'>
-                            <option value="0">전체</option>
-                        </select>
-
-                        <p className={style.area}>시군구</p>
-                        <select name='searchCgg'>
-                            <option value="0">전체</option>
+                        <select 
+                            name="activityArea"
+                            value={activityArea}
+                            onChange={onAreaHandler}>
+                            {
+                                areas.map((area)=>(
+                                    <option
+                                        value={area.value}
+                                        key={area.value}>
+                                        {area.name}
+                                    </option>
+                                ))
+                            }
                         </select>
                     </div>
 
@@ -127,7 +168,7 @@ function VolunteerList(){
                             onChange={(e)=>setKeyword(e.target.value)} />
                     </div>
 
-                    <button onClick={getList}>조회</button>
+                    <button className={style.searchBtn} onClick={getList}>조회</button>
                 </div>
             </div>
 
@@ -140,11 +181,11 @@ function VolunteerList(){
             <table className={cn("table table-hover")}>
                 <thead>
                     <tr>
-                        <th scope="col">상태</th>
-                        <th scope="col">제목</th>
-                        <th scope="col">모집인원</th>
-                        <th scope="col">작성자</th>
-                        <th scope="col">작성일</th>
+                        <th scope="col" width="15%">상태</th>
+                        <th scope="col" width="30%">제목</th>
+                        <th scope="col" width="10%">모집인원</th>
+                        <th scope="col" width="10%">작성자</th>
+                        <th scope="col" width="10%">작성일</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -173,10 +214,11 @@ function VolunteerList(){
                 </tbody>
             </table>
 
-            {/* 전체 페이지의 수를 가져오는 방법? */}
             {/* 밑에는 test입니다 */}
+            {console.log(totalPage)}
             <nav>
                 <ul>
+                    {/* pageDownHandler pageUpHandler */}
                     <li onClick={()=>{setPage(page-1)}}>🌛</li>
                     <li>{page}</li>
                     <li onClick={()=>{setPage(page+1)}}>🌜</li>
