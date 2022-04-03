@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
 import Area from './areaData';
 import swal from 'sweetalert';
+import Paging from 'components/Paging';
 
 function VolunteerList(){
     const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
@@ -14,13 +15,13 @@ function VolunteerList(){
 
     const [volunteers, setVolunteers] = useState("");
     const [seq, setSeq] = useState(0);
-    const [totalPage, setTotalPage] = useState(0);
     const [page, setPage] = useState(1);
     const [keyword, setKeyword] = useState("");
     const [admit, setAdmit] = useState(false); //봉사 인정
     const [endDate, setEndDate] = useState("2099-12-31");
     const [activityArea, setActivityArea] = useState("전체");
     const [areas, setAreas] = useState(Area);
+    const [totalItemCount, setTotalItemCount] = useState(0);
     
     //남은 날짜
     const leftDays=(enddate, workStatus)=>{
@@ -50,7 +51,8 @@ function VolunteerList(){
         .then((res)=>{
             console.log(res.data.data);
             setVolunteers(res.data.data.volunteersForPage);
-            setTotalPage(res.data.data.totalPageNumber);
+            // setTotalPage(res.data.data.totalPageNumber);
+            setTotalItemCount(res.data.data.totalCount);
         })
         .catch((err) => {
             console.log(err);
@@ -59,7 +61,6 @@ function VolunteerList(){
 
     const onAreaHandler=(e)=>{
         setActivityArea(e.target.value);
-        console.log(activityArea);
     }
 
     const enterKey=()=>{
@@ -80,6 +81,16 @@ function VolunteerList(){
             swal('권한이 없습니다');
         }
     }
+
+    // const pageDownHandler=()=>{
+    //     if(page === 1) return;
+    //     else setPage(page-1);
+    // }
+
+    // const pageUpHandler=()=>{
+    //     if(page === totalPage) return;
+    //     else setPage(page+1);
+    // }
 
     //페이지 넘어갈때마다 새로 목록 불러오기
     useEffect(()=>{
@@ -195,34 +206,13 @@ function VolunteerList(){
                     }
                 </tbody>
             </table>
-
-            {/* 밑에는 test입니다 */}
-            {console.log(totalPage)}
-            <nav>
-                <ul>
-                    {/* pageDownHandler pageUpHandler */}
-                    <li onClick={()=>{setPage(page-1)}}>🌛</li>
-                    <li>{page}</li>
-                    <li onClick={()=>{setPage(page+1)}}>🌜</li>
-                </ul>
-            </nav>
-            <nav aria-label="Page navigation example">
-                <ul className="pagination">
-                    <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                    </li>
-                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                    <li className="page-item"><a className="page-link" href="#">2</a></li>
-                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                    <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                    </li>
-                </ul>
-            </nav>
+            
+            <Paging
+                total={totalItemCount}
+                limit={10}
+                page={page}
+                setPage={setPage}
+            />
         </div>
     )
 }

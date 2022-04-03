@@ -7,6 +7,7 @@ import style from "./styles/Community.module.scss";
 import cn from "classnames";
 import "./styles/Paging.module.scss";
 import { useSelector } from "react-redux";
+import Paging from 'components/Paging';
 
 export default function Community() {
   const [communitys, setCommunity] = useState("");
@@ -18,6 +19,7 @@ export default function Community() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [keyword, setKeyword] = useState("");
+
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   //const [arr, setArr] = useState();
   console.log(page, totalcount, totalPageNumber);
@@ -164,41 +166,12 @@ export default function Community() {
         )}
       </table>
 
-      <nav aria-label="Page navigation example" className={style.commupage}>
-        <ul className="pagination justify-content-center">
-          <li
-            className="page-item"
-            onClick={() => {
-              setPage(page - 1);
-            }}
-          >
-            <a className="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          {items.map((number) => (
-            <li key={number} className="page-item">
-              <a
-                onClick={() => paginate(number)}
-                className="page-link"
-                style={page == number ? { background : '#b59d7c', color: '#292e3d' } : null}
-              >
-                {number}
-              </a>
-            </li>
-          ))}
-          <li
-            className="page-item"
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
-            <a className="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Paging
+        total={totalcount}
+        limit={10}
+        page={page}
+        setPage={setPage}
+      />  
     </div>
   );
 }

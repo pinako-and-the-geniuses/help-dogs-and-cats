@@ -82,7 +82,6 @@ function VolunteerDetail(){
             }
         })
         .then((res)=>{
-            console.log('상태 수정 완료');
             setStateChanged(!stateChanged);
         })
         .catch((err)=>{
@@ -98,7 +97,6 @@ function VolunteerDetail(){
             headers: { Authorization : `Bearer ${jwt}`}
         })
         .then((res) =>{
-            console.log('신청자조회', res.data.data);
             setParticipants(res.data.data);
         })
         .catch((err)=>{
@@ -106,9 +104,13 @@ function VolunteerDetail(){
         })
     }
 
-    const isApply=participants.filter(p=>p.seq===memSeq);
-    console.log('확인', isApply);
-    //isApply.length로 처리
+    const testIsApply=()=>{
+        // const isApply=participants.filter(p=>p.seq===memSeq);
+    }
+    const isApply=()=>participants.filter(p=>p.seq===memSeq);
+    //알았따 ~~ 취소하면 목록에 없으니까 안불러와지는거임!
+    //참여 신청 -> 참여자 목록 불러오기 -> 내가 있다 -> 참여취소버튼으로 바뀜
+    //참여 취소 -> 참여자 목록 불러오기 -> 내가 없다 -> 참여취소버튼으로 바뀜
 
     //일반: 참여 신청
     const apply=async()=>{
@@ -120,8 +122,8 @@ function VolunteerDetail(){
             }
         })
         .then((res)=>{
-            console.log('ok');
-            console.log(res.data);
+            console.log('참여신청완료');
+            getParticipants();
         })
         .catch((err) =>{
             console.log(err);
@@ -135,7 +137,8 @@ function VolunteerDetail(){
             headers: { Authorization: `Bearer ${jwt}`}
         })
         .then((res) =>{
-            console.log('참여 취소');
+            console.log('참여취소완료')
+            getParticipants();
         })
         .catch((err)=>{
             console.log(err);
@@ -156,7 +159,6 @@ function VolunteerDetail(){
             }
         })
         .then((res)=>{
-            // console.log('댓글달기성공');
             setChanged(!changed);
         })
         .catch((err)=>{
@@ -230,10 +232,14 @@ function VolunteerDetail(){
         getParticipants();
     }, [changed, stateChanged]); //댓글, 모집, 
 
-    useEffect(()=>{
-        getParticipants();
-    }, [join]);
+    // useEffect(()=>{
+    //     // getParticipants();
+    // }, [join]);
     
+    useEffect(()=>{
+        testIsApply();
+    }, [participants]);
+
     //얘는 확인용이니까 나중에 지우기
     useEffect(()=>{
         console.log(post);
