@@ -151,6 +151,12 @@ public class VolunteerServiceImpl implements VolunteerService {
         List<VolunteerDto.ForPage> volunteersForPage = volunteerRepository.findVolunteersForPage(pageable, searchInfo)
                 .orElse(null);
 
+        if (volunteersForPage != null) {
+            for (VolunteerDto.ForPage forPage : volunteersForPage) {
+                forPage.addApproveCount(volunteerParticipantRepository.countAllByVolunteerSeqAndApproveEqTrue(forPage.getSeq()));
+            }
+        }
+
         return VolunteerDto.VolunteerListPage.builder()
                 .totalCount(totalCount)
                 .totalPageNumber(totalPageNumber)
