@@ -52,7 +52,7 @@ export default function Header() {
           <a className="user me-4" onClick={onlogout}>
             로그아웃
           </a>
-          <a className="user" onClick={() => navi(`user/profile/${seq}`)}>
+          <a className="user" onClick={() => navi(`/user/profile/${seq}`)}>
             MY
           </a>
         </div>
@@ -82,7 +82,7 @@ export default function Header() {
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              <a className="nav-link scrollto active" href="#hero">
+              <a className="nav-link scrollto active">
                 유기동물현황
               </a>
             </li>
@@ -95,7 +95,7 @@ export default function Header() {
                   <a href="/guide">입양 가이드</a>
                 </li>
                 <li>
-                  <a href="/animals/animal">유기동물 조회</a>
+                  <a href="/animals/list">유기동물 조회</a>
                 </li>
                 <li>
                   <a href="/shelter/list">보호소 조회</a>

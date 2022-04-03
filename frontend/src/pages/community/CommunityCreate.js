@@ -4,34 +4,16 @@ import { URL } from "public/config";
 import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityCreate.module.scss";
 import cn from "classnames";
-import QuillEditor from "./QuillEditor";
 import Editor from "components/Editor";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-//import UploadFiles from "./UploadFiles";
 export default function CommunityCreate(api) {
-  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
-  const quillRef = useRef();
-  
-  // function onEditorChange(value) {   
-  //     // console.log(desc);  
-  //     setDesc(value)
-  // }
-  //   const uploadReferenece = React.createRef();
-
-  //   async function onClickSearch() {
-  //       await uploadReferenece.current.upload().then(function (result) {
-  //           const files = result;
-  //           alert('저장 완료');
-  //       }).catch(function (err) {
-  //       });
-  //   }
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  // const [desc, setDesc] = useState('');
   const navi = useNavigate();
-
+  const onEditorChange = (value) => {
+    setContent(value);
+  };
   // useEffect(() => {
   //   if (!isLogin) {
   //     alert("로그인 해주세요.");
@@ -88,22 +70,28 @@ export default function CommunityCreate(api) {
               setTitle(event.target.value)}/>
             </div>
       </div>
+      {/* <div>
+        <label htmlFor="content">
+          <span>내용</span>
+        </label>
+      </div> */}
       <div className={st.Editorheight}>
           <Editor
+            id="content"
             height={"90%"}
-            value={content}
-            setValue={setContent}
+            value={content || ""}
+            onChange={onEditorChange}
             placeholder={""}></Editor>
       </div>
       <div className={st.createbuttonContent}>
-        {isLogin?
+
         <><button type="button" onClick={onSubmit} className={st.communitycreatebutton}>
           작성
         </button>
         <button type="reset" className={st.communitycreatebutton}>
           취소
         </button></>
-        : null}
+
       </div>
     </div>
   );

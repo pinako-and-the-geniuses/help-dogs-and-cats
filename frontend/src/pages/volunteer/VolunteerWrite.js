@@ -4,6 +4,7 @@ import { URL } from '../../public/config';
 import axios from 'axios';
 import Editor from 'components/Editor';
 import style from './styles/VolunteerWrite.module.scss';
+import Area from './areaData';
 import swal from 'sweetalert';
 
 function VolunteerWrite(){
@@ -12,28 +13,22 @@ function VolunteerWrite(){
     const placeholder=[
         "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
     ];
-    // const [value, setValue] = useState("");
-    // const quillRef = useRef();\
     const [title, setTitle] = useState("");
-    const [cd, setCd] = useState("");
-    // const [cgg, setCgg] = useState();
+    const [selectArea, setSelectArea] = useState("전체");
     const [time, setTime] = useState(0);
     const [party, setParty] = useState(3);
     const [contact, setContact] = useState("");
     const [endDate, setEndDate] = useState("");
     const [content, setContent] = useState("");
+    const [areas, setAreas] = useState(Area);
 
-    const onTitleHandelr=(e)=>{
+    const onTitleHandler=(e)=>{
         setTitle(e.target.value);
     }
 
-    const onCdHadler=(e)=>{
-        setCd(e.target.value);
+    const onAreaHadler=(e)=>{
+        setSelectArea(e.target.value);
     }
-
-    // const onCggHandler=(e)=>{
-    //     setCgg(e.target.value);
-    // }
 
     const onTimeHandler=(e)=>{
         setTime(e.target.value);
@@ -55,7 +50,6 @@ function VolunteerWrite(){
         setContent(value);
     };
 
-    // title, endDate, 
     const post = async()=>{
         await axios({
             url: `${URL}/volunteers`,
@@ -63,7 +57,7 @@ function VolunteerWrite(){
             data: {
                 title: title,
                 content: content,
-                activityArea: "",
+                activityArea: selectArea,
                 authTime: time,
                 contact: contact,
                 endDate: endDate,
@@ -107,22 +101,27 @@ function VolunteerWrite(){
                 <input
                     type="text" 
                     placeholder='제목'
-                    onChange={onTitleHandelr}/>
+                    onChange={onTitleHandler}/>
             </div>
 
             <div className={style.infoBox}>
                 <ul>
                     <li className={style.region}>
                         <span>지역</span>
-                        <p className={style.area}>시도</p>
-                        <select name='searchCd'>
-                            <option value="0">전체</option>
+                        <select 
+                            name='searchCd'
+                            value={selectArea}
+                            onChange={onAreaHadler}>
+                            {
+                                areas.map((area)=>(
+                                    <option
+                                        value={area.value}
+                                        key={area.value}>
+                                        {area.name}
+                                    </option>
+                                ))
+                            }
                         </select>
-
-                        {/* <p className={style.area}>시군구</p>
-                        <select name='searchCgg'>
-                            <option value="0">전체</option>
-                        </select> */}
                     </li>
                     <li className={style.vol_time}>
                         <span>봉사인증시간</span>
@@ -162,7 +161,7 @@ function VolunteerWrite(){
             <Editor
                 height={"60vh"}
                 placeholder={placeholder}
-                value={content}
+                value={content||""}
                 onChange={onEditorChange}
                 >
             </Editor>

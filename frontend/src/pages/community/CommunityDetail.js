@@ -4,43 +4,58 @@ import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityDetail.module.scss";
 import cn from "classnames";
 import { URL } from "public/config";
-import Comment from "components/Comment/Comment";
+import CommunityComment from "components/Comment/CommunityComment";
+// import Comment from "./Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useSelector } from "react-redux";
-import Community from './Community';
+import { render } from "@testing-library/react";
 export default function CommunityDetail() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
   const [communityDetail, setCommunityDetail] = useState("");
   const [writerSeq, setWriterSeq] = useState("");
+  const [comments, setComments] = useState("");
   const { seq } = useParams();
+  const [commentContent, setCommentContent] = useState("");
+  // const[Comments, SetComments] = useState(initialState)
+
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
-  useEffect(() => {
-    //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
-    // axios
-    //   .get(`${URL}/communities/${communitySeq}`, {headers: {Authorization : `Bearer ${jwt}`}})
+
+  const getComment = () => {
+    
     if (!isLogin) {
       alert("로그인 해주세요.");
       navigate("/login", { replace: true });
     } else {
-      axios({
-        url: `${URL}/communities/${seq}`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${jwt}` },
-      })
-        .then((response) => {
-          console.log(response.data);
-          setWriterSeq(response.data.data.writerSeq);
-          setCommunityDetail(response.data);
-        }) //엑시오스 보낸 결과
-        .catch((err) => console.log(err));
+        axios({
+          url: `${URL}/communities/${seq}`,
+          method: "GET",
+          headers: { Authorization: `Bearer ${jwt}` },
+        })
+          .then((response) => {
+            console.log(response.data);
+            setWriterSeq(response.data.data.writerSeq);
+            setCommunityDetail(response.data);
+            setComments(response.data.data.comments);
+          }) //엑시오스 보낸 결과
+          .catch((err) => console.log(err));
     }
-  }, [isLogin]); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
-  console.log("writer",writerSeq);
-  console.log("member",memberSeq);
-  console.log("detail", communityDetail);
+  }
+  useEffect(() => {
+  //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
+    getComment();
+  }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
+  const onCommentChange = (value) => {
+    setCommentContent(value);
+  };
+  const onClickEvent = (value) => {
+    // .then(setCommentContent('')); //댓글 쓴 후 빈공간으로 만드는 코드
+    CommuComment();
+    // window.location.replace(`/community/communitydetail/${seq}`);
+  };
+
   const getDelete = async () => {
     axios
       .delete(`${URL}/communities/${seq}`, {
@@ -56,9 +71,46 @@ export default function CommunityDetail() {
       .catch((err) => console.log(err));
   };
 
+  const CommuComment = async () => {
+    await axios({
+      url: `${URL}/communities/${seq}/comments`,
+      method: "post",
+      data: {
+        content: commentContent,
+        parentSeq: null,
+      },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        // console.log('댓글달기성공');
+        // setChanged(!changed);
+        // setCommentContent('');
+        // console.log(res.data);
+        console.log(commentContent);
+        getComment();
+        setCommentContent('');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const GotoEdit = () => {
     navigate(`/community/communityupdate/${seq}`);
   };
+
+  // useEffect(() => {
+  //   getPost();
+  //   setCommentContent("")
+  // }, [changed]);
+
+  // useEffect(() => {
+  //   console.log(post);
+  //   console.log(comments);
+  //   setCommentContent("")
+  // }, [post, changed]);
   return (
     <div className={st.community_commentBox}>
       <header>
@@ -68,8 +120,13 @@ export default function CommunityDetail() {
         {communityDetail ? (
           <>
             <div className={st.alltitle}>
-              <p className={st.tag_p}>{communityDetail.data.category}</p>
-              <p className={st.title_p}>{communityDetail.data.title}</p>
+              {/* <p className={st.tag_p}>{communityDetail.data.category}</p> */}
+              <p className={st.tag_p}>
+                {communityDetail.data.category === "REPORT" ? "제보" : ""}
+                {communityDetail.data.category === "REVIEW" ? "후기" : ""}
+                {communityDetail.data.category === "GENERAL" ? "잡담" : ""}
+              </p>
+              <p className={st.title_p}>제목 : {communityDetail.data.title}</p>
               <p className={st.read_p}>
                 조회수 : {communityDetail.data.viewCount}
               </p>
@@ -88,20 +145,27 @@ export default function CommunityDetail() {
         ) : (
           "로딩중"
         )}
-        {writerSeq===memberSeq?
-        <>
-        <div className={st.contentbtn}>
-          <button onClick={getDelete} className={st.deletebutton}>
-            삭제
-          </button>
-          <button onClick={GotoEdit} className={st.button}>
-            수정
-          </button>
-        </div>
-        </>
-        :null}
+        {writerSeq === memberSeq ? (
+          <>
+            <div className={st.contentbtn}>
+              <button onClick={getDelete} className={st.deletebutton}>
+                삭제
+              </button>
+              <button onClick={GotoEdit} className={st.button}>
+                수정
+              </button>
+            </div>
+          </>
+        ) : null}
       </section>
-      <Comment />
+      <CommunityComment
+        id={seq}
+        commentContent={commentContent}
+        onChange={onCommentChange}
+        eventHandler={onClickEvent}
+        comments={comments}
+        getComment={getComment}
+      />
     </div>
   );
 }

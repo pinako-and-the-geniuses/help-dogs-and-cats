@@ -35,7 +35,6 @@ export default function ProfileInfo({ isLogin, seq }) {
         .get(`${URL}/members/${seq}`)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data.data);
             const {
               nickname,
               level,

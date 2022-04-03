@@ -1,8 +1,10 @@
 import React, { useMemo, useRef } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import { URL, IMGURL } from "../public/config";
+import ImageResize from "quill-image-resize";
+Quill.register("modules/ImageResize", ImageResize);
 
 export default function Editor(props) {
   const quillRef = useRef();
@@ -20,7 +22,12 @@ export default function Editor(props) {
     // 이미지를 선택하면
     input.addEventListener("change", async () => {
       const file = input.files[0];
-      console.log(file);
+      const editor = quillRef.current.getEditor();
+      const range = editor.getSelection();
+
+      // 로딩중 표시
+      editor.insertEmbed(range.index, "image", `/public/img/loading.gif`);
+
       //multer에 맞는 형식으로 데이터 생성
       const formData = new FormData();
       formData.append("imageFile", file);
@@ -33,10 +40,11 @@ export default function Editor(props) {
         });
 
         const IMG_URL = `${IMGURL}${res.data.data.imageFilePath}`;
-        const editor = quillRef.current.getEditor();
+        // 정상적으로 업로드 됐다면 로딩 placeholder 삭제
+        editor.deleteText(range.index, 1);
+
         // editor.root.innerHTML =
         //   editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`; // 현재 있는 내용들 뒤에 써줘야한다.
-        const range = editor.getSelection();
         editor.insertEmbed(range.index, "image", IMG_URL);
       } catch (err) {
         console.log(err);
@@ -64,6 +72,10 @@ export default function Editor(props) {
           // 이미지 처리는 우리가 직접 imageHandler라는 함수로 처리할 것이다.
           image: imageHandler,
         },
+      },
+
+      ImageResize: {
+        parchment: Quill.import("parchment"),
       },
     };
   }, []);
@@ -95,7 +107,7 @@ export default function Editor(props) {
       theme="snow"
       placeholder={props.placeholder}
       value={props.value}
-      onChange={(content, source, editor) => props.onChange(editor.getHTML())}
+      onChange={(content, source, delta, editor) => props.onChange(editor.getHTML())}
       modules={modules}
       formats={formats}
     />
