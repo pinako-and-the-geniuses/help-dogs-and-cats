@@ -1,22 +1,25 @@
 import GetSido from "components/getdata/GetSido";
 import GetSigungu from "components/getdata/GetSigungu";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ANIMAL, SHELTER } from "public/config/index";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { shelterGetAction } from "actions/ShelterAction";
+
 import axios from "axios";
 import style from "./styles/ShelterList.module.scss";
 import cn from "classnames";
 
 function ShelterList() {
-  const navigate = useNavigate();
+  // 외부 요청 key
   const SHELTER_KEY = process.env.REACT_APP_SHELTER_KEY;
   const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_KEY;
+  // 상태관리
   const [name, setName] = useState("");
   const [list, setList] = useState("");
+  const [newList, setNewList] = useState([]);
   const [sido, setSido] = useState("");
   const [sigungu, setSigungu] = useState("");
-  const [shelter, setShelter] = useState("");
-  // 선택 조건
   const [selected, setSelected] = useState({
     sidoCode: "0",
     sigunguCode: "0",
@@ -24,6 +27,9 @@ function ShelterList() {
   });
   // 조건별 요청 url
   const [regionUrl, setRegionUrl] = useState("");
+  // 기타
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // 첫 페이지 모든 목록 출력
   const onSetPage = () => {
@@ -40,88 +46,132 @@ function ShelterList() {
       });
   };
   useEffect(() => {
-    // onSetPage();
-    // onGetList("&upr_cd=6110000&org_cd=3220000");
+    onSetPage();
   }, []);
 
   // 보호센터명 입력
   const setNameSearch = (value) => {
+    setSido("");
+    setSigungu("");
     setName(value);
   };
 
-  // 조건 선택별 url변경
-  function onGetChoice() {
-    //지역선택
-    if (selected.sidoCode != "0") {
-      // 시도만 선택
-      if (
-        selected.sidoCode !== "0" &&
-        (selected.sigunguCode === "" || selected.sigunguCode === "0")
-      ) {
-        console.log("시도만 선택");
-        const region = `&upr_cd=${selected.sidoCode}`;
-        setRegionUrl(region);
-      } // 시도 + 시군구 선택
-      else if (
-        (selected.sigunguCode !== "" || selected.sigunguCode !== "0") &&
-        (selected.shelterCode === "" || selected.shelterCode === "0")
-      ) {
-        console.log("시도 + 시군구 선택");
-        const region = `&upr_cd=${selected.sidoCode}&org_cd=${selected.sigunguCode}`;
-        setRegionUrl(region);
-      }
-    } else {
-      // 지역을 선택하지 않은 경우
-      console.log(" // 지역을 선택하지 않은 경우");
-      const region = "";
-      setRegionUrl(region);
-    }
-
-    const SUBURL = `${regionUrl}`;
-    onGetList();
-  }
-
   //조건별 보호소 목록 가져오기
-  const onGetList = (SUBURL) => {
-    console.log(regionUrl);
-    if (regionUrl.length > 15) {
+  const onGetList = () => {
+    if (name.length > 1) {
+      console.log("이름검색들어옴", name);
+      axios
+        .get(
+          `${SHELTER}/shelterInfo?numOfRows=10&pageNo=1&serviceKey=${SHELTER_KEY}&_type=JSON&care_nm=${name}`
+        )
+        .then((res) => {
+          const temp = res.data.response.body.items;
+          if (temp.item) {
+            temp.item.map((item) => {
+              setNewList((newList) => [...newList, [item]]);
+            });
+          } else {
+            setNewList(0);
+          }
+        })
+        .catch((err) => {
+          console.log("이름조회에러", err);
+          alert("이름 조회에 실패했습니다.");
+        });
+    } else if (name.length < 1 && regionUrl.length > 15) {
       axios
         .get(
           `${ANIMAL}/abandonmentPublicSrvc/shelter?serviceKey=${ANIMAL_KEY}&_type=JSON${regionUrl}`
         )
         .then((res) => {
           const data = res.data.response.body.items.item;
-          console.log("조건별 목록조회", data);
-          setList(data);
-          const temp = [];
           if (data) {
             data.map((item) => {
-              console.log("map들어옴", item.careRegNo);
               axios
                 .get(
-                  `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}`
+                  `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}&_type=JSON`
                 )
                 .then((res) => {
-                  console.log("상세데이터", res.data);
+                  const temp = res.data.response.body.items;
+                  if (temp.item) {
+                    const data = temp.item;
+                    setNewList((newList) => [...newList, data]);
+                  }
                 })
                 .catch((err) => {
                   console.log(err);
+                  alert("서버 에러 발생");
                 });
             });
           } else {
-            axios
-              .get(
-                `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=311320202100002`
-              )
-              .then((res) => {
-                console.log("ㅅㄷㅌㅅ데이터", res.data);
-              });
+            setList("");
           }
         })
         .catch((err) => {
           console.log("err", err);
+          alert("네트워크 에러가 발생했습니다.");
         });
-    } else alert("시군구까지 선택해야 조회 가능합니다.");
+    } else alert("검색 조건을 확인하세요.");
+  };
+
+  //상세페이지로
+  const onGoDetail = (item) => {
+    dispatch(shelterGetAction(item));
+    navigate(`/shelter/detail`);
+  };
+
+  // 상태에 따라 목록화면 조절
+  const onList = () => {
+    // console.log("전체리스트는 있고 조회리스트는 없는상태");
+    if (list && newList.length === 0) {
+      return (
+        <>
+          {list &&
+            list.map((item, index) => {
+              return (
+                <tr
+                  key={index}
+                  onClick={() => {
+                    onGoDetail(item);
+                  }}
+                >
+                  <td>{item.careNm}</td>
+                  <td>{item.careTel}</td>
+                  <td>
+                    {item.weekOprStime} ~ {item.weekOprEtime}{" "}
+                  </td>
+                  <td>{item.careAddr}</td>
+                </tr>
+              );
+            })}
+        </>
+      );
+    } //      console.log("조회리스트있는 상태");
+    else if (newList || newList === 0) {
+      return (
+        <>
+          {newList &&
+            newList.map((item, index) => {
+              console.log("newList.map.item", item);
+              return (
+                <tr
+                  key={index}
+                  onClick={() => {
+                    onGoDetail(item[0]);
+                  }}
+                >
+                  <td>{item[0].careNm}</td>
+                  <td>{item[0].careTel}</td>
+                  <td>
+                    {item[0].weekOprStime} ~ {item[0].weekOprEtime}{" "}
+                  </td>
+                  <td>{item[0].careAddr}</td>
+                </tr>
+              );
+            })}
+        </>
+      );
+    }
   };
 
   return (
@@ -129,10 +179,6 @@ function ShelterList() {
       <header>
         <h2>동물 보호 센터</h2>
       </header>
-
-      <div className={style.my_city}>
-        <p>우리 지역 보호소 찾기</p>
-      </div>
 
       <div className={style.search_bar}>
         <div className={style.search_input}>
@@ -164,60 +210,37 @@ function ShelterList() {
           />
         </div>
         <div>[ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ] </div>
-
-        <button type="submit" onClick={onGetChoice}>
+        <div>[ 정확한 보호센터명을 입력해주세요. ] </div>
+        <button
+          type="submit"
+          onClick={() => {
+            setNewList("");
+            onGetList();
+          }}
+        >
           조회
+        </button>
+        <button
+          type="submit"
+          onClick={() => {
+            setNewList("");
+            onSetPage();
+          }}
+        >
+          전체보기
         </button>
       </div>
 
       <table className={cn("table table-bordered table-hover", style.my_table)}>
         <thead>
           <tr>
-            <th scope="col">관할구역</th>
             <th scope="col">보호센터명</th>
             <th scope="col">전화번호</th>
-            <th scope="col">보호센터 유형</th>
+            <th scope="col">영업시간</th>
+            <th scope="col">주소</th>
           </tr>
         </thead>
-        <tbody>
-          {/* {list &&
-            list.map((item, index) => {
-              console.log(item);
-              return (
-                <tr
-                  key={index}
-                  // onClick={() => {
-                  //   goToShelter(i.careRegNo);
-                  // }}
-                >
-                  <td>{item.orgNm}</td>
-                  <td>{item.careNm}</td>
-                  <td>{item.careTel}</td>
-                  <td>{item.divisionNm}</td>
-                </tr>
-              );
-            })} */}
-        </tbody>
-        {/* <tbody>
-                    <tr>
-                    <td>어디</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    </tr>
-                    <tr>
-                    <td>어디</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <td>어디</td>
-                    <td>어쩌고저쩌고</td>
-                    <td>Larry the Bird</td>
-                    <td>@twitter</td>
-                    </tr>
-          </tbody>*/}
+        <tbody>{onList()}</tbody>
       </table>
     </div>
   );
