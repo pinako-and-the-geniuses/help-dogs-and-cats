@@ -10,6 +10,7 @@ export default function GetSido({
   setRegionUrl,
   sidoData,
   setSidoData,
+  selected,
   setSelected,
 }) {
   // xml을 json으로 바꾸고 원하는 데이터 뽑아 저장하기
