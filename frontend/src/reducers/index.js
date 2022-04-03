@@ -9,7 +9,8 @@ import animalInfo from "./AnimalReducer";
 const persistConfig = {
   key: "root",
   storage: storageSession, // session저장소를 저장합니다.
-  whitelist: ["userInfo"], // reducer 중에 userInfo reducer만 localstorage에 저장합니다.
+  whitelist: ["userInfo", "animalInfo"],
+  // ??animalInfo등록안하면 새로고침시 store에서 사라진다.. reducer 중에 userInfo reducer만 localstorage에 저장합니다.
 };
 
 const rootReducer = combineReducers({
