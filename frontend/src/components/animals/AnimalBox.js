@@ -4,6 +4,7 @@ import { animalGetAction } from "actions/AnimalAction";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import loading from "public/img/loading.gif";
 
 export default function AnimalBox(props) {
   const listNum = 12;
@@ -77,7 +78,15 @@ export default function AnimalBox(props) {
           );
         })
       ) : (
-        <div>{/* <img src="/public/img/loading.gif" alt="로딩중" /> */}</div>
+        <>
+          <div> </div>
+          <div> </div>
+          <div>
+            <h2>
+              <img src={loading} alt="로딩중" />
+            </h2>
+          </div>
+        </>
       )}
     </>
   );

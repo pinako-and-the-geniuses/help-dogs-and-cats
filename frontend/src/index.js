@@ -7,17 +7,21 @@ import { createStore } from "redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import rootReducer from "./reducers/index";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const store = createStore(rootReducer);
 const persistor = persistStore(store);
+const client = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
+    <QueryClientProvider client={client}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
