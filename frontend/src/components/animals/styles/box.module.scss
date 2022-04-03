@@ -1,5 +1,7 @@
+$main-color: #b59d7c;
+
 .card {
-  border: 1px solid black;
+  border: 1px solid #999999;
   .cardText {
     margin: 10px 0;
     p {
@@ -12,14 +14,41 @@
       margin-right: 10px;
     }
   }
+
+
 }
 .cardImgTop {
   padding: 5px;
   height: 300px;
   object-fit: cover;
 }
+
 .detilaBtn {
-  margin: 8px 0;
   display: flex;
   justify-content: end;
+
+  .button {
+    border: 0;
+    color: white;
+    background-color: $main-color;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+}
+
+.processState {
+  display: inline;
+  border: 2px solid $main-color;
+  color: $main-color;
+  border-radius: 30px;
+  padding: 5px 10px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.loadingImg {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 50px;
 }

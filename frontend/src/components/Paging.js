@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 function Paging({ total, limit, page, setPage }) {
     const numPages = Math.ceil(total / limit);
+    console.log(numPages);
+    //numpages = 총 페이지 수
+    //한번에 보여줄 페이지 수........10개.....뭐...뭐요...아 짱나넼ㅋ
+    //numPages를...한 페이지에 보여줄 번호 수로 나눔
   
     return (
       <>

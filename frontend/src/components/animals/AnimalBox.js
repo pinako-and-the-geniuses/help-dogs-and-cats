@@ -7,13 +7,14 @@ import { useDispatch } from "react-redux";
 import loading from "public/img/loading.gif";
 
 export default function AnimalBox(props) {
-  const listNum = 12;
+  // const listNum = 12;
   const [list, setList] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     setList(props.list);
+    console.log(list); ////////////////////////
   }, [props.list]);
 
   const onGoDetail = (index) => {
@@ -29,17 +30,11 @@ export default function AnimalBox(props) {
           <div className="col" key={data[0].value}>
             <div className={cn(`${st.card}`, "card h-100")}>
               <img
-                src={data[1].value}
+                src={data[11].value}
                 className={st.cardImgTop}
-                alt="사진없음"
-                onClick={() => onGoDetail(index)}
-              />
-
-              {/* <CardItem
-                  src={data[1].value}
-                  path={`/animals/detail/${data[0].value}`}
-                /> */}
+                alt="사진없음"/>
               <div className="card-body">
+                <div className={st.processState}>{data[12].value}</div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <span className={st.title}>공고번호</span>
                   <span>{data[0].value}</span>
@@ -53,7 +48,7 @@ export default function AnimalBox(props) {
                 </div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <span className={st.title}>관할기관</span>
-                  <p className="mt-1 ms-5">{data[16].value}</p>
+                  <p className="mt-1">{data[16].value}</p>
                 </div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <div>
@@ -64,10 +59,7 @@ export default function AnimalBox(props) {
                   </div>
                 </div>
                 <div className={st.detilaBtn}>
-                  <button
-                    // href={`/animals/detail/${data[0].value}`}
-                    className="btn btn-primary"
-                  >
+                  <button className={st.button} onClick={() => onGoDetail(index)}>
                     자세히 보기
                   </button>
                 </div>
@@ -76,7 +68,7 @@ export default function AnimalBox(props) {
           </div>
         );
       });
-    } else if (list.length == []) {
+    } else if (list.length === []) {
       return (
         <>
           <div>
@@ -87,7 +79,7 @@ export default function AnimalBox(props) {
     } else {
       return (
         <>
-          <div>
+          <div className={st.loadingImg}>
             <h2>
               <img src={loading} alt="로딩중" />
             </h2>
