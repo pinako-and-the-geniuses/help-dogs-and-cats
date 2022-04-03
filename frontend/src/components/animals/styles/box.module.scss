@@ -15,12 +15,16 @@ $main-color: #b59d7c;
     }
   }
 
-
+  .cardBody {
+    padding: 10px 20px;
+  }
 }
+
 .cardImgTop {
   padding: 5px;
-  height: 300px;
-  object-fit: cover;
+  height: 400px;
+  object-fit: fill;
+  width: 100%;
 }
 
 .detilaBtn {
@@ -37,13 +41,13 @@ $main-color: #b59d7c;
 }
 
 .processState {
-  display: inline;
+  display: inline-block;
   border: 2px solid $main-color;
   color: $main-color;
   border-radius: 30px;
   padding: 5px 10px;
+  margin-bottom: 5px;
   font-weight: bold;
-  margin: 10px 0;
 }
 
 .loadingImg {
