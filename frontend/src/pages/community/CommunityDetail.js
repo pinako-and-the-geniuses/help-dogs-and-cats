@@ -7,7 +7,6 @@ import { URL } from "public/config";
 import CommunityComment from "components/Comment/CommunityComment";
 // import Comment from "./Comment";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import moment from "moment";
 import { useSelector } from "react-redux";
 import { render } from "@testing-library/react";
 export default function CommunityDetail() {
