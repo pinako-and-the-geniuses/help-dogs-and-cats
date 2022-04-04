@@ -10,7 +10,8 @@ $sub-color: #e8e8e8;
     box-shadow: 0px 0px 10px $sub-color;
     padding: 30px;
     //@at-root: 1px solid red;
-    height: 400px;
+    // height: 400px;
+    height: auto;
     margin: auto;   
     background: #ffffff;
     margin-bottom: 100px;
@@ -35,11 +36,11 @@ $sub-color: #e8e8e8;
     .content_div {
       display: block;
       width: 90%;
-      height: 200px;
-      //height: auto;
+      // height: 200px;
+      height: auto;
       margin: auto;
       margin-top: 20px;
-      border: 1px solid black;
+      // border: 1px solid black;
     }
     .contentbtn {
       width: 90%;

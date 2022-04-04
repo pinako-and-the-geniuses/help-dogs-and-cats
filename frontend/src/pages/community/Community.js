@@ -22,7 +22,7 @@ export default function Community() {
 
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   //const [arr, setArr] = useState();
-  console.log(page, totalcount, totalPageNumber);
+  //console.log(page, totalcount, totalPageNumber);
   // console.log("member", memberSeq);
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
@@ -86,13 +86,13 @@ export default function Community() {
   };
 
   const getSearch = (e) => {
-    console.log("search", e.target.value);
+    // console.log("search", e.target.value);
     setSearch(e.target.value);
   };
 
   const getKeyword = (e) => {
     const key = e.target.value;
-    console.log("keyword", key);
+    // console.log("keyword", key);
     setKeyword(key);
   };
   const paginate = (pageNumber) => setPage(pageNumber);
