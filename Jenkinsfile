@@ -31,8 +31,8 @@ pipeline {
     }
 
     stages {
-        stage('Backend Build') {
-            dir('backend') {
+        dir('backend') {
+            stage('Backend Build') {
                 steps {
                     sh 'pwd'
                     sh 'ls -l'
@@ -42,7 +42,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Backend Deploy') {
             steps {
