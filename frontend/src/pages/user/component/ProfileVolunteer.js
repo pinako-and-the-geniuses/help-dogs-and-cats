@@ -34,7 +34,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         })
         .then((res) => {
           const data = res.data.data;
-          console.log(data);
           setList(data.volunteers);
           setTotalPageNumber(data.totalPageNumber);
         })
@@ -278,32 +277,27 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
       return (
         <div name="인원유무에따라" className={st.input}>
           {modalData.participantInfos
-            ? modalData.participantInfos.map((data) => {
+            ? modalData.participantInfos.map((data, index) => {
                 return (
-                  <>
-                    <div key={data.id} className="form-check form-check-inline">
-                      <input
-                        id={data.memberSeq}
-                        type="checkbox"
-                        style={{
-                          width: "15px",
-                        }}
-                        onChange={(e) => {
-                          changeHandler(
-                            e.currentTarget.checked,
-                            data.memberSeq
-                          );
-                        }}
-                        checked={
-                          checkedInputs.includes(data.memberSeq) ? true : false
-                        }
-                      />
+                  <div key={index} className="form-check form-check-inline">
+                    <input
+                      id={data.memberSeq}
+                      type="checkbox"
+                      style={{
+                        width: "15px",
+                      }}
+                      onChange={(e) => {
+                        changeHandler(e.currentTarget.checked, data.memberSeq);
+                      }}
+                      checked={
+                        checkedInputs.includes(data.memberSeq) ? true : false
+                      }
+                    />
 
-                      <label className="form-check-label" htmlFor="memberCheck">
-                        {data.memberNickname}
-                      </label>
-                    </div>
-                  </>
+                    <label className="form-check-label" htmlFor="memberCheck">
+                      {data.memberNickname}
+                    </label>
+                  </div>
                 );
               })
             : "멤버없음"}
