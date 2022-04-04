@@ -229,11 +229,13 @@ function VolunteerDetail(){
     
     const onCommentChange = (value) => {
         setCommentContent(value);
-        console.log('댓글값', commentContent.trim.length);
     };
 
     const onClickEvent=()=>{
-        if (commentContent.trim.length === 0 ) return;
+        if (commentContent.trim.length === 0 ){
+            swal('입력값은 필수입니다');
+            return;
+        }
         volComment()
         .then(setCommentContent(""))
         .then(getPost());
