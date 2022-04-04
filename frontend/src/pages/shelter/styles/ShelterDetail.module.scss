@@ -1,43 +1,40 @@
 .shelter_container {
-    margin: 20px 180px;
+  margin: 20px auto;
+  min-height: 70vh;
 }
 
 section {
+  margin: 20px auto;
+  .main_info {
+    display: flex;
+    flex-direction: column;
 
-    .main_info {
-        display: flex;
-        flex-direction: column;
-    
+    .text_box {
+      display: flex;
+      flex-direction: row;
+      margin: 20px 0;
 
-        .text_box {
-            display: flex;
-            flex-direction: row;
-            margin: 20px 0;
-
-            p{
-                padding: 0;
-                margin: 0;
-                font-size: 18px;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .title {
-                font-weight: bold;
-                width: 130px;
-            }
-        }
-    }
-
-
-
-    .map{
-        display: flex;
+      p {
+        padding: 0;
+        margin: 0;
+        font-size: 18px;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
+      }
+
+      .title {
+        font-weight: bold;
+        width: 130px;
+      }
     }
+  }
+
+  .map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 1200px) {
-    
 }
