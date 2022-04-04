@@ -49,9 +49,7 @@ function VolunteerList(){
             method: "get",
         })
         .then((res)=>{
-            console.log(res.data.data);
             setVolunteers(res.data.data.volunteersForPage);
-            // setTotalPage(res.data.data.totalPageNumber);
             setTotalItemCount(res.data.data.totalCount);
         })
         .catch((err) => {
@@ -81,16 +79,6 @@ function VolunteerList(){
             swal('권한이 없습니다');
         }
     }
-
-    // const pageDownHandler=()=>{
-    //     if(page === 1) return;
-    //     else setPage(page-1);
-    // }
-
-    // const pageUpHandler=()=>{
-    //     if(page === totalPage) return;
-    //     else setPage(page+1);
-    // }
 
     //페이지 넘어갈때마다 새로 목록 불러오기
     useEffect(()=>{
@@ -191,7 +179,7 @@ function VolunteerList(){
                                         onClick={()=>{goToVolunteer(volunteer.seq)}}>
                                     <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate, volunteer.status)}</td>
                                     <td>{volunteer.title}</td>
-                                    <td>0/{volunteer.maxParticipantCount}</td>
+                                    <td>{volunteer.approveCount}/{volunteer.maxParticipantCount}</td>
                                     <td>{volunteer.nickname}</td>
                                     <td>{volunteer.createdDate.slice(0,10)}</td>
                                     </tr>

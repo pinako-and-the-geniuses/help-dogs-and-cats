@@ -9,6 +9,7 @@ import TeamManage from './TeamManage';
 import style from './styles/VolunteerDetail.module.scss';
 import { URL } from '../../public/config';
 import { useSelector } from 'react-redux';
+import VolunteerInfo from './VolunteerInfo';
 import Swal from 'sweetalert2';
 import swal from 'sweetalert';
 
@@ -107,11 +108,16 @@ function VolunteerDetail(){
     const testIsApply=()=>{
         // const isApply=participants.filter(p=>p.seq===memSeq);
     }
-    const isApply=()=>participants.filter(p=>p.seq===memSeq);
+    const isApply=participants.filter(p=>p.seq===memSeq);
     //알았따 ~~ 취소하면 목록에 없으니까 안불러와지는거임!
     //참여 신청 -> 참여자 목록 불러오기 -> 내가 있다 -> 참여취소버튼으로 바뀜
     //참여 취소 -> 참여자 목록 불러오기 -> 내가 없다 -> 참여취소버튼으로 바뀜
 
+    const setApplyBtn=(status, isApply)=>{
+        if(status !== "RECRUITING") return(<button>모집 종료</button>)
+        if(status === "RECURITING" && isApply.length === 0) return(<button>참여신청</button>)
+
+    }
     //일반: 참여 신청
     const apply=async()=>{
         await axios({
@@ -263,7 +269,6 @@ function VolunteerDetail(){
                 <p className={style.title}>{post.title}</p>
                 {
                     memSeq === post.writerSeq
-                    // DONE 상태 추가!!!
                     ?{
                         "DONE": (
                             <button 
@@ -298,50 +303,49 @@ function VolunteerDetail(){
                         )
                     )
                 }
+                {/* {
+                    memSeq === post.writerSeq
+                    ?{
+                        "DONE": (
+                            <button 
+                                type='button' 
+                                className={`${style.joinBtn} ${style.joinXBtn}`}
+                                >봉사종료</button>
+                        ),
+                        "ONGOING": (
+                            <button 
+                                type='button' 
+                                className={`${style.joinBtn} ${style.joinXBtn}`}
+                                onClick={()=>{onChangeHandler("RECRUITING");}}>모집시작</button>),
+                        "RECRUITING": (
+                            <button 
+                                type='button' 
+                                className={style.joinBtn}
+                                onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
+                    }[post.status]
+                    :{
+
+                    }( //
+                        isApply.length !== 0 //참여신청을 이미 했다면?
+                        ?(
+                            <button 
+                                type='button' 
+                                onClick={()=>{cancleBtn()}} 
+                                className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                        )
+                        :(
+                            <button 
+                                type='button' 
+                                onClick={()=>{applyBtn()}} 
+                                className={`${style.joinBtn}`}>참여신청</button>
+                        )
+                    )
+                } */}
             </div>
 
-            <div className={style.infoBox}>
-                <ul>
-                    <li className={style.first}>
-                        <p>활동 지역: {post.activityArea}</p>
-                        <p>마감 날짜: {post.endDate}</p>
-                    </li>
-                    <li>
-                        인증 봉사시간 : {
-                            post.authTime !== '0'
-                            ? <span>{post.authTime}시간</span>
-                            : <span>인증 불가</span> //멘트....
-                        }
-                    </li>
-                    <li className={style.people}>
-                        <p>모집 인원: {post.approvedCount}명 / {post.maxParticipantCount}명</p>
-                        {
-                            memSeq === post.writerSeq
-                            ? <button type="button" className={style.btn1} data-bs-toggle="modal" data-bs-target="#teamManagement">인원관리</button>
-                            : null
-                        }
-                        {/* 모달 */}
-                        <div className="modal fade" id="teamManagement" tabIndex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
-                            <div className="modal-dialog">
-                                <div className="modal-content">
-                                    <div className="modal-header">
-                                        <h5 className="modal-title" id="exampleModalLabel">봉사활동 인원 관리</h5>
-                                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div className="modal-body">
-                                        <TeamManage/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {/* 모달 */}
-                    </li>
-                    <li className={style.last}>
-                        <p className={style.contact}>연락방법: {post.contact}</p>
-                        <p className={style.writer}>작성자&nbsp;&nbsp;{post.writerNickname}</p>
-                    </li>
-                </ul>
-            </div>
+            <VolunteerInfo
+                post={post}
+                memSeq={memSeq}/>
 
             <div className={style.mainBox}>
                 <div dangerouslySetInnerHTML={{__html:post.content}}></div>

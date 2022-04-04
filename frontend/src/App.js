@@ -27,7 +27,13 @@ import {
   VolunteerWrite,
   VolunteerUpdate,
 } from "./pages/volunteer";
-import { ManageMain, VolunteerManage, AdoptManage, AdoptManageDetail, VolunteerManageDetail } from "./pages/manager";
+import {
+  ManageMain,
+  VolunteerManage,
+  AdoptManage,
+  AdoptManageDetail,
+  VolunteerManageDetail,
+} from "./pages/manager";
 import { Guide } from "pages/guide";
 import Footer from "components/Footer";
 
@@ -75,7 +81,7 @@ function App() {
           />
         </>
         <>
-          <Route path="/shelter/detail/:id" element={<ShelterDetail />} />
+          <Route path="/shelter/detail" element={<ShelterDetail />} />
           <Route path="/shelter/list" element={<ShelterList />} />
         </>
         <>
@@ -97,9 +103,15 @@ function App() {
         <>
           <Route path="/manage" element={<ManageMain />}></Route>
           <Route path="/volunteermanage" element={<VolunteerManage />}></Route>
-          <Route path="/volunteermanage/detail" element={<VolunteerManageDetail />}></Route>
+          <Route
+            path="/volunteermanage/detail"
+            element={<VolunteerManageDetail />}
+          ></Route>
           <Route path="/adoptmanage" element={<AdoptManage />}></Route>
-          <Route path="/adoptmanage/detail" element={<AdoptManageDetail />}></Route>
+          <Route
+            path="/adoptmanage/detail"
+            element={<AdoptManageDetail />}
+          ></Route>
         </>
       </Routes>
       <Footer></Footer>

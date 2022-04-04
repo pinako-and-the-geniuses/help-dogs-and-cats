@@ -4,18 +4,20 @@ import { persistReducer } from "redux-persist";
 import storageSession from "redux-persist/lib/storage/session";
 import userInfo from "./UserReducer";
 import animalInfo from "./AnimalReducer";
+import shelterInfo from "./ShelterReducer";
 
 // 새로고침해도 기존 정보 유지하도록!
 const persistConfig = {
   key: "root",
   storage: storageSession, // session저장소를 저장합니다.
-  whitelist: ["userInfo", "animalInfo"],
+  whitelist: ["userInfo", "animalInfo", "shelterInfo"],
   // ??animalInfo등록안하면 새로고침시 store에서 사라진다.. reducer 중에 userInfo reducer만 localstorage에 저장합니다.
 };
 
 const rootReducer = combineReducers({
   userInfo,
   animalInfo,
+  shelterInfo,
 });
 
 export default persistReducer(persistConfig, rootReducer);
