@@ -56,19 +56,21 @@ export default function CommunityCreate(api) {
         if (res.status === 200) {
           // alert("수정 완료");
           // navi(`/community/communitydetail/${seq}`);
-          Swal.fire({ icon: "success", title: "게시글을 수정하였습니다." }).then(
-            function () {
-              navi(`/community/communitydetail/${seq}`);
-            }
-          );
+          Swal.fire({
+            icon: "success",
+            title: "게시글을 수정하였습니다.",
+          }).then(function () {
+            navi(`/community/communitydetail/${seq}`);
+          });
         }
       })
       .catch((err) => {
-        Swal.fire({ icon: "error", title: "게시글을 수정하지 못했습니다." }).then(
-          function () {
-            navi(`/community/communitydetail/${seq}`);
-          }
-        );
+        Swal.fire({
+          icon: "error",
+          title: "게시글을 수정하지 못했습니다.",
+        }).then(function () {
+          navi(`/community/communitydetail/${seq}`);
+        });
       });
   };
   return (
@@ -97,14 +99,30 @@ export default function CommunityCreate(api) {
           />
         </div>
       </div>
-      <div className={st.Editorheight}>
-        <Editor
-          id="content"
-          height={"90%"}
-          value={content || ""}
-          onChange={onEditorChange}
-          placeholder={""}
-        ></Editor>
+      {/* <div className={st.quill}>
+          <QuillEditor
+            quillRef={quillRef}
+            htmlcontent={htmlcontent}
+            setHtmlContent={setHtmlContent}
+            onChange={(event) => setHtmlContent(event.target.value)}
+            api={api}
+          />
+        </div> */}
+      {/* <div>
+        <label htmlFor="content">
+          <span>내용</span>
+        </label>
+      </div> */}
+      <div className={cn(`${st.Editorheight}`, "col-sm-12 col-md-10")}>
+        <div className={st.editorBox}>
+          <Editor
+            id="content"
+            height={"90%"}
+            value={content}
+            onChange={onEditorChange}
+            placeholder={""}
+          ></Editor>
+        </div>
       </div>
       <div className={st.createbuttonContent}>
         <button
