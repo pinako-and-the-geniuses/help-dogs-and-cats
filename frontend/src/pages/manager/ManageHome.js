@@ -1,23 +1,53 @@
 import st from "./styles/Home.module.scss";
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { URL } from "public/config";
 
-function ManageHome({tab, setTab}) {
+function ManageHome({ setTab }) {
+  const jwt = sessionStorage.getItem("jwt");
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    axios({
+      url: `${URL}/admins/auth-request-count`,
+      method: "GET",
+      headers: { Authorization: `Bearer ${jwt}` },
+    })
+      .then((res) => {
+        console.log(res.data.data);
+        const temp = res.data.data;
+        setData({ adopt: temp.adoptAuthCount, volun: temp.volunteerAuthCount });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  console.log(data);
   return (
     <div className={st.adimincontainer}>
-        <span className={st.left} onClick={()=>{setTab(1)}}> 
-        {/* <Link to="/volunteermanage"> */}
-            <h3 className={st.managetext}>봉사 현황</h3>
-            <span><img src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" class="img-thumbnail" alt="봉사 현황"></img></span>
-        {/* </Link> */}
+      <div className={st.left}>
+        <h3 className={st.managetext}>봉사 현황</h3>
+        <div
+          className={st.leftbox}
+          onClick={() => {
+            setTab(1);
+          }}
+        >
+          <h3>미인증 : {data.volun}</h3>
+        </div>
+      </div>
 
-        </span>
-        <span className={st.right} onClick={()=>{setTab(2)}}>
-        {/* <Link to="/adoptmanage">   */}
-            <h3 className={st.managetext}>입양 현황</h3>
-            <img src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" class="img-thumbnail" alt="입양 현황"></img>
-        {/* </Link>   */}
-        </span>
+      <div className={st.right}>
+        <h3 className={st.managetext}>입양 현황</h3>
+        <div
+          className={st.leftbox}
+          onClick={() => {
+            setTab(2);
+          }}
+        >
+          <h3>미인증 : {data.adopt}</h3>
+        </div>
+      </div>
     </div>
   );
 }

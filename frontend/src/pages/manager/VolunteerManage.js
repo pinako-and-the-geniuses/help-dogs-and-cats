@@ -1,93 +1,102 @@
-import st from "./styles/VolunteerManage.module.scss";
+import st from "./styles/AdoptManage.module.scss";
 import React, { useEffect, useState } from "react";
 import cn from "classnames";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import { URL } from "public/config";
-function VolunteerManage(){
-    const navigate = useNavigate();
-    const jwt = sessionStorage.getItem("jwt");
-    const [page, setPage] = useState(1);
-    const [totalcount, setTotalcount] = useState("");
-    const [search, setSearch] = useState("");
-    const [volunteers, setVolunteers] = useState("");
-    const size = 10;
-  
+function VolunteerManage({ setTab, setVolunSeq }) {
+  const [word, setWord] = useState("");
+  const jwt = sessionStorage.getItem("jwt");
+  const [page, setPage] = useState(1);
+  const [totalcount, setTotalcount] = useState("");
+  const [search, setSearch] = useState("all");
+  const [volunteers, setVolunteers] = useState("");
+  const size = 10;
+
+  const getData = () => {
+    axios({
+      url: `${URL}/admins/volunteers/auth?page=${page}&size=${size}&search=${search}`,
+      method: "GET",
+      headers: { Authorization: `Bearer ${jwt}` },
+    })
+      .then((res) => {
+        console.log("res", res.data.data);
+        const temp = res.data.data.volunteerAuthForPages;
+        setPage(res.data.data.currentPageNumber);
+        setTotalcount(res.data.data.totalCount);
+        if (word) {
+          const result = temp.filter((item) => item.title.includes(word));
+          setVolunteers(result);
+          console.log("검색어 있음", word, search, result);
+        } else {
+          setVolunteers(temp);
+        }
+      })
+      .catch((err) => console.log("err", err));
+  };
   useEffect(() => {
-    // console.log(search, size, page);
-      axios({
-        url: `${URL}/admins/volunteer/auth?page=${page}&size=${size}&search=${search}`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${jwt}` },
-      })
-      .then((response) => {
-        console.log(response.data.data);
-        setVolunteers(response.data.data.volunteerAuthForPages);
-        // setPage(response.data.data.currentPageNumber);
-        // setTotalcount(response.data.data.totalCount);
-      })
-      .catch((err) => console.log(err));
+    getData();
   }, []); //한번만 해줄때 []넣는다
 
-  const getRead = (e) => {
-    axios
-      .get(
-        `${URL}/admins/volunteers/auth?page=${page}&size=${size}&search=${search}`,
-        { headers: { Authorization: `Bearer ${jwt}` } }
-      )
-      .then((response) => {
-        setVolunteers(response.data.data.volunteerAuthForPages);
-        // setPage(response.data.data.currentPageNumber);
-        // setTotalcount(response.data.data.totalCount);
-        console.log(response.data);
-      })
-      .catch((err) => console.log(err));
-  };
-  const getSeq = (volunteerAuthSeq) => {
-    navigate(`/volunteermanage/detail/${volunteerAuthSeq}`);
-  };
-  const getSearch = (e) => {
-    console.log("search", e.target.value);
-    setSearch(e.target.value);
-  };
   return (
-    <div className={st.VolunteerManage_container}>
-      <header className={st.VolunteerManagehead}>
-        <h2>봉사 인증 목록</h2>
+    <div className={st.AdoptManage_container}>
+      <header>
+        <h1 className={st.AdoptManagehead}>봉사 인증 목록</h1>
       </header>
-      <div className={st.VolunteerManage_search_bar}>
+      <div className={st.AdoptManage_search_bar}>
         <div className={st.search_input}>
-
-          <select defaultValue="" name="searchCgg" onChange={getSearch}>
+          <select
+            defaultValue="all"
+            name="searchCgg"
+            onChange={(e) => setSearch(e.target.value)}
+          >
             <option value="all">전체</option>
             <option value="auth">인증</option>
             <option value="not-auth">미인증</option>
           </select>
           <div>
-            <input className={st.input} type="text" />
-            <button onClick={getRead}>조회</button>
+            <input
+              className={st.input}
+              type="text"
+              value={word}
+              onChange={(e) => {
+                setWord(e.target.value);
+              }}
+            />
+            <button onClick={getData}>조회</button>
           </div>
         </div>
       </div>
       <table className={cn("table table-hover", st.my_table)}>
         <thead>
           <tr>
-            <th scope="col" style={{ width: "10rem" }}>처리상태</th>
-            <th scope="col" colSpan="3">제목</th>
+            <th scope="col" style={{ width: "10rem" }}>
+              처리상태
+            </th>
+            <th scope="col" colSpan="3">
+              제목
+            </th>
           </tr>
         </thead>
-        {volunteers ? (
-        <tbody>
-          {volunteers.map((volunteer) => (
-          <tr key={volunteer.seq} onClick={() => getSeq(volunteer.volunteerAuthSeq)}>
-            {volunteer.status === "REQUEST" ? <td>미인증</td> : ""}
-            {volunteer.status === "REJECT" ? <td>거부</td> : ""}
-            {volunteer.status === "DONE" ? <td>인증</td> : ""}
-            <td colSpan="3">{volunteer.title}</td>
-          </tr>
-          ))}
-        </tbody>
-        ) : (
+        {volunteers && (
+          <tbody>
+            {volunteers.map((volunteer, index) => (
+              <tr
+                key={index}
+                onClick={() => {
+                  setTab(2);
+                  setVolunSeq(volunteer.volunteerAuthSeq);
+                }}
+              >
+                {volunteer.status === "REQUEST" ? <td>미인증</td> : ""}
+                {volunteer.status === "REJECT" ? <td>거부</td> : ""}
+                {volunteer.status === "DONE" ? <td>인증</td> : ""}
+                <td colSpan="3">{volunteer.title}</td>
+              </tr>
+            ))}
+          </tbody>
+        )}
+        {!volunteers && (
           <tbody>
             <td colSpan="4">작성된 글이 없습니다.</td>
           </tbody>
