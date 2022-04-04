@@ -178,7 +178,6 @@ function VolunteerDetail(){
 
     //댓글 작성
     const volComment=async()=>{
-        if (commentContent === "") return;
         await axios({
             url: `${URL}/volunteers/${id}/comments`,
             method: "post",
@@ -230,10 +229,11 @@ function VolunteerDetail(){
     
     const onCommentChange = (value) => {
         setCommentContent(value);
+        console.log('댓글값', commentContent.trim.length);
     };
 
     const onClickEvent=()=>{
-        // if(commentContent.length < 1) return;
+        if (commentContent.trim.length === 0 ) return;
         volComment()
         .then(setCommentContent(""))
         .then(getPost());
