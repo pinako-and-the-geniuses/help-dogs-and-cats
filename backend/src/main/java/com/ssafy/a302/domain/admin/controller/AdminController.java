@@ -71,7 +71,7 @@ public class AdminController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/volunteer/auth/{volunteerSeq}")
+    @GetMapping("/volunteers/auth/{volunteerSeq}")
     public BaseResponseDto<?> volunteerAuthDetail(@PathVariable Long volunteerSeq) {
         log.info("봉사활동 식별키 = {}", volunteerSeq);
 
@@ -104,7 +104,7 @@ public class AdminController {
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/volunteer/auth/{volunteerSeq}")
+    @PatchMapping("/volunteers/auth/{volunteerSeq}")
     public BaseResponseDto<?> changeVolunteerAuthStatus(@RequestBody VolunteerAuthRequestDto.StatusInfo statusInfo,
                                                         @PathVariable Long volunteerSeq) {
         log.info("상태 정보 = {}", statusInfo);
