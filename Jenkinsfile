@@ -23,7 +23,15 @@ pipeline {
             }
         }
 
-        dir('backend') {
+        stage('Frontend Finish') {
+            steps{
+                sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
+            }
+        }
+    }
+
+    dir('backend') {
+        stages {
             stage('Backend Build') {
                 steps {
                     sh 'pwd'
@@ -33,18 +41,19 @@ pipeline {
                     sh 'docker build -t backend .'
                 }
             }
-        }
 
-        stage('Backend Deploy') {
-            steps {
-                sh 'docker ps -q --filter name=backend | grep -q . && docker stop backend && docker rm backend'
-                sh 'docker run -v /var/tmp/springboot/files:/var/tmp/springboot/files -d -it -p 8080:8080 --name backend backend'
+
+            stage('Backend Deploy') {
+                steps {
+                    sh 'docker ps -q --filter name=backend | grep -q . && docker stop backend && docker rm backend'
+                    sh 'docker run -v /var/tmp/springboot/files:/var/tmp/springboot/files -d -it -p 8080:8080 --name backend backend'
+                }
             }
-        }
 
-        stage('Finish') {
-            steps{
-                sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
+            stage('Backend Finish') {
+                steps{
+                    sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
+                }
             }
         }
     }
