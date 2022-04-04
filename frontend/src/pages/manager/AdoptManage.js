@@ -4,7 +4,8 @@ import cn from "classnames";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
-function AdoptManage() {
+
+function AdoptManage({ setTab, setAdoptSeq }) {
   const [word, setWord] = useState("");
   const [adopts, setAdopts] = useState("");
   const [page, setPage] = useState(1);
@@ -23,15 +24,15 @@ function AdoptManage() {
       )
       .then((res) => {
         console.log("res", res.data.data);
-        setAdopts(res.data.data.adoptAuthForPages);
+        const temp = res.data.data.adoptAuthForPages;
         setPage(res.data.data.currentPageNumber);
         setTotalcount(res.data.data.totalCount);
-      })
-      .then(() => {
         if (word) {
-          const result = adopts.filter((item) => item.title.includes(word));
+          const result = temp.filter((item) => item.title.includes(word));
           setAdopts(result);
           console.log("검색어 있음", word, search, result);
+        } else {
+          setAdopts(temp);
         }
       })
       .catch((err) => console.log("err", err));
@@ -42,14 +43,10 @@ function AdoptManage() {
     getData();
   }, []);
 
-  const onGoToDetail = (adoptAuthSeq) => {
-    navigate(`/adoptmanage/detail/${adoptAuthSeq}`);
-  };
-
   return (
     <div className={st.AdoptManage_container}>
-      <header className={st.AdoptManagehead}>
-        <h2>입양 인증 목록</h2>
+      <header>
+        <h1 className={st.AdoptManagehead}>입양 인증 목록</h1>
       </header>
       <div className={st.AdoptManage_search_bar}>
         <div className={st.search_input}>
@@ -71,7 +68,7 @@ function AdoptManage() {
                 setWord(e.target.value);
               }}
             />
-            <button onClick={() => getData()}>조회</button>
+            <button onClick={getData}>조회</button>
           </div>
         </div>
       </div>
@@ -89,7 +86,13 @@ function AdoptManage() {
         {adopts && (
           <tbody>
             {adopts.map((adopt, index) => (
-              <tr key={index} onClick={() => onGoToDetail(adopt.adoptAuthSeq)}>
+              <tr
+                key={index}
+                onClick={() => {
+                  setTab(4);
+                  setAdoptSeq(adopt.adoptAuthSeq);
+                }}
+              >
                 {adopt.status === "REQUEST" ? <td>미인증</td> : ""}
                 {adopt.status === "REJECT" ? <td>거부</td> : ""}
                 {adopt.status === "DONE" ? <td>인증</td> : ""}

@@ -1,0 +1,57 @@
+$main-text: #292929;
+$mid-text: #333333;
+$sub-text: #999999;
+$main-color: #b59d7c;
+$sub-color: #e8e8e8;
+
+.manageHome {
+  display: flex;
+  min-height: 100vh;
+  height: 100%;
+  .menus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: $main-color;
+    color: $mid-text;
+    text-decoration: none;
+    list-style: none;
+    width: 200px;
+    padding-top: 30px;
+    margin-bottom: 0px;
+  }
+
+  li {
+    font-size: larger;
+    margin: 30px 0;
+    cursor: pointer;
+    &:hover {
+      color: white;
+    }
+  }
+
+  .on {
+    color: white;
+    font-weight: 800;
+  }
+}
+
+.home {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    color: $main-text;
+    font-size: 25px;
+    margin: 0;
+  }
+
+  .box {
+    border: 0;
+    background-color: $sub-color;
+    border-radius: 15px;
+    padding: 20px;
+  }
+}

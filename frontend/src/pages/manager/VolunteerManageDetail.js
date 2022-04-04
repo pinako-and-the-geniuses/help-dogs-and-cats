@@ -1,21 +1,16 @@
-import st from "./styles/VolunteerManageDetail.module.scss";
+import st from "./styles/AdoptManageDetail.module.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-import { useParams, useNavigate } from "react-router-dom";
 
-function VolunteerManageDetail() {
+function VolunteerManageDetail({ volunSeq, setTab }) {
   const [volunteerManageDetail, setVolunteerManageDetail] = useState("");
   const [stateChanged, setStateChanged] = useState("REQUEST");
   const jwt = sessionStorage.getItem("jwt");
-  const { volunteerSeq } = useParams();
-  const navigate = useNavigate();
-  const getlist = () => {
-    navigate(`/volunteermanage`);
-  };
+
   useEffect(() => {
     axios({
-      url: `${URL}/admins/volunteers/auth/${volunteerSeq}`,
+      url: `${URL}/admins/volunteers/auth/${volunSeq}`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
     })
@@ -28,7 +23,7 @@ function VolunteerManageDetail() {
 
   const getApproval = async (approve) => {
     await axios({
-      url: `${URL}/admins/volunteers/auth/${volunteerSeq}`,
+      url: `${URL}/admins/volunteers/auth/${volunSeq}`,
       method: "patch",
       data: {
         status: approve,
@@ -49,9 +44,9 @@ function VolunteerManageDetail() {
       .catch((err) => console.log(err));
   };
   return (
-    <div className={st.volunteer_commentBox}>
+    <div className={st.adopt_commentBox}>
       <header>
-        <h2>봉사 인증 상세</h2>
+        <h1 className={st.header}>봉사 인증 상세</h1>
       </header>
       <section className={st.topContent}>
         {volunteerManageDetail ? (
@@ -73,18 +68,25 @@ function VolunteerManageDetail() {
               }}
             ></div>
             <div className={st.contentbtn}>
-              <button className={st.listbutton} onClick={() => getlist()}>
-                목록으로
-              </button>
-              <button
-                onClick={() => getApproval("REJECT")}
-                className={st.deletebutton}
-              >
-                반려
-              </button>
-              <button onClick={() => getApproval("DONE")} className={st.button}>
-                인증
-              </button>
+              <div>
+                <button className={st.listbutton} onClick={() => setTab(3)}>
+                  목록으로
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={() => getApproval("REJECT")}
+                  className={st.deletebutton}
+                >
+                  반려
+                </button>
+                <button
+                  onClick={() => getApproval("DONE")}
+                  className={st.button}
+                >
+                  인증
+                </button>
+              </div>
             </div>
           </>
         ) : (

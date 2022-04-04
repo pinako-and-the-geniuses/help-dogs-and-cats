@@ -1,19 +1,12 @@
 import st from "./styles/AdoptManageDetail.module.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
 import { URL } from "public/config";
 
-export default function AdoptManageDetail() {
+export default function AdoptManageDetail({ adoptSeq, setTab }) {
   const [adoptManageDetail, setAdoptManageDetail] = useState("");
   const [stateChanged, setStateChanged] = useState("REQUEST");
   const jwt = sessionStorage.getItem("jwt");
-  const navigate = useNavigate();
-  const { adoptSeq } = useParams();
-
-  const getlist = () => {
-    navigate(`/manage`);
-  };
 
   useEffect(() => {
     axios({
@@ -54,13 +47,22 @@ export default function AdoptManageDetail() {
   return (
     <div className={st.adopt_commentBox}>
       <header>
-        <h2>입양 인증 상세</h2>
+        <h1 className={st.header}>입양 인증 상세</h1>
       </header>
-      <section className={st.topContent}>
+      <div className={st.topContent}>
         {adoptManageDetail ? (
           <>
             <div className={st.alltitle}>
-              <p className={st.tag_p}>상태</p>
+              {adoptManageDetail.data.status === "REQUEST" && (
+                <p className={st.tag_p}>미인증</p>
+              )}
+              {adoptManageDetail.data.status === "REJECT" && (
+                <p className={st.tag_p}>거부</p>
+              )}
+              {adoptManageDetail.data.status === "DONE" && (
+                <p className={st.tag_p}>인증</p>
+              )}
+
               <p className={st.title_p}>
                 제목 : {adoptManageDetail.data.title}
               </p>
@@ -72,27 +74,31 @@ export default function AdoptManageDetail() {
               }}
             ></div>
             <div className={st.contentbtn}>
-              <button
-                className={st.listbutton}
-                onClick={() => getlist("adopts")}
-              >
-                목록으로
-              </button>
-              <button
-                onClick={() => getApproval("REJECT")}
-                className={st.deletebutton}
-              >
-                반려
-              </button>
-              <button onClick={() => getApproval("DONE")} className={st.button}>
-                인증
-              </button>
+              <div>
+                <button className={st.listbutton} onClick={() => setTab(3)}>
+                  목록으로
+                </button>
+              </div>
+              <div>
+                <button
+                  onClick={() => getApproval("REJECT")}
+                  className={st.deletebutton}
+                >
+                  반려
+                </button>
+                <button
+                  onClick={() => getApproval("DONE")}
+                  className={st.button}
+                >
+                  인증
+                </button>
+              </div>
             </div>
           </>
         ) : (
           "로딩 중"
         )}
-      </section>
+      </div>
     </div>
   );
 }
