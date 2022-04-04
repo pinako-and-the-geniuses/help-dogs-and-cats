@@ -27,7 +27,13 @@ import {
   VolunteerWrite,
   VolunteerUpdate,
 } from "./pages/volunteer";
-import { ManageMain, VolunteerManage, AdoptManage, AdoptManageDetail, VolunteerManageDetail } from "./pages/manager";
+import {
+  ManageMain,
+  VolunteerManage,
+  AdoptManage,
+  AdoptManageDetail,
+  VolunteerManageDetail,
+} from "./pages/manager";
 import { Guide } from "pages/guide";
 import Footer from "components/Footer";
 
@@ -75,7 +81,7 @@ function App() {
           />
         </>
         <>
-          <Route path="/shelter/detail/:id" element={<ShelterDetail />} />
+          <Route path="/shelter/detail" element={<ShelterDetail />} />
           <Route path="/shelter/list" element={<ShelterList />} />
         </>
         <>
