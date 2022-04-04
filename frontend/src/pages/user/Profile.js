@@ -1,10 +1,8 @@
 import ProfileInfo from "./component/ProfileInfo";
 import ProfileList from "./component/ProfileList";
-
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-
 import cn from "classnames";
 import st from "./styles/profile.module.scss";
 import { CgMoreVerticalAlt } from "react-icons/cg";

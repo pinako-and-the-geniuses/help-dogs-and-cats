@@ -69,11 +69,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     }
   };
 
-  // 에디터 부분 변경
-  const onEditorChange = (value) => {
-    setContent(value);
-  };
-
   // 인증 요청
   const onVolunAuth = (props) => {
     const method = props[0];
@@ -95,7 +90,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         .then((res) => {
           onhandleClose();
           console.log("봉사인증요청성공", res);
-          alert("요청 성공");
           getData();
         })
         .catch((err) => {
@@ -139,7 +133,8 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     setModalData(el);
     setModal(true);
   };
-  // 인증상태별 인증요청 버튼 이름 다르게 출력
+
+  // 인증요청 버튼
   const onModal = (item) => {
     // 처음 인증 신청할때
     if (item.authStatus === null) {
@@ -199,7 +194,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     }
   };
 
-  // 인증상태별 모달 하단 버튼(수정/ 등록/ 닫기/ 취소) 다르게 출력
+  // 모달 하단 버튼(수정/ 등록/ 닫기/ 취소)
   const onBottomBtn = (item) => {
     if (item === null) {
       return (
@@ -270,7 +265,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     }
   };
 
-  // 인증상태별 인원관리 다르게 출력
+  // 인원관리
   const onMemberCheck = () => {
     // 처음 신청 할때 또는 수정할때
     if (modalData.authStatus === null || modalData.authStatus === "REJECT") {
@@ -322,6 +317,12 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     }
   };
 
+  // 에디터 부분 변경
+  const onEditorChange = (value) => {
+    console.log(value);
+    setContent(value);
+  };
+
   return (
     <div>
       <div className={st.listBox}>
@@ -364,102 +365,91 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                               type="button"
                               className="btn"
                               style={{ backgroundColor: "#d0a96c" }}
-                              data-bs-toggle="modal"
-                              data-bs-target="#volunteerModal"
-                              onClick={() => {
-                                onClickModal(item);
-                              }}
                             >
                               &nbsp; 참여자 &nbsp;
                             </button>
                           )}
-                          {modal ? (
-                            <div
-                              className="modal fade"
-                              id="volunteerModal"
-                              tabIndex="-1"
-                              aria-labelledby="volunteerModalLabel"
-                              aria-hidden="true"
-                            >
-                              <div className="modal-dialog modal-dialog-centered">
-                                <div className="modal-content">
-                                  <div className="modal-header">
-                                    <h5
-                                      className="modal-title"
-                                      id="volunteerModalLabel"
-                                    >
-                                      봉사 인증 요청서
-                                    </h5>
-                                    <button
-                                      ref={closeRef}
-                                      type="button"
-                                      className="btn-close"
-                                      data-bs-dismiss="modal"
-                                      aria-label="Close"
-                                    ></button>
-                                  </div>
-                                  <div
-                                    className={cn(`${st.body}`, "modal-body")}
+
+                          <div
+                            className="modal fade"
+                            id="volunteerModal"
+                            tabIndex="-1"
+                            aria-labelledby="volunteerModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div className="modal-dialog modal-dialog-centered">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5
+                                    className="modal-title"
+                                    id="volunteerModalLabel"
                                   >
-                                    <div name="봉사제목" className={st.name}>
-                                      <div className={st.label}>
-                                        <label htmlFor="모집제목">
-                                          <span>제목</span>
-                                        </label>
-                                      </div>
-                                      <div className={st.input}>
-                                        {modalData.title}
-                                      </div>
+                                    봉사 인증 요청서
+                                  </h5>
+                                  <button
+                                    ref={closeRef}
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                  ></button>
+                                </div>
+                                <div className={cn(`${st.body}`, "modal-body")}>
+                                  <div name="봉사제목" className={st.name}>
+                                    <div className={st.label}>
+                                      <label htmlFor="모집제목">
+                                        <span>제목</span>
+                                      </label>
                                     </div>
-
-                                    <div name="인원관리" className={st.name}>
-                                      <div className={st.label}>
-                                        <label htmlFor="인원관리">
-                                          <span>참가인원</span>
-                                        </label>
-                                      </div>
-
-                                      {onMemberCheck()}
-                                    </div>
-
-                                    <div name="내용" className={st.content}>
-                                      <div className={st.label}>
-                                        <label htmlFor="content">
-                                          <span>내용</span>
-                                        </label>
-                                      </div>
-
-                                      <div className={st.editor}>
-                                        {modalData.authStatus === null ||
-                                        modalData.authStatus === "REJECT" ? (
-                                          <Editor
-                                            id="content"
-                                            height={"90%"}
-                                            value={content || ""}
-                                            onChange={onEditorChange}
-                                            placeholder={""}
-                                          />
-                                        ) : (
-                                          <div
-                                            className={st.htmlDiv}
-                                            dangerouslySetInnerHTML={{
-                                              __html: content,
-                                            }}
-                                          ></div>
-                                        )}
-                                      </div>
+                                    <div className={st.input}>
+                                      {modalData.title}
                                     </div>
                                   </div>
 
-                                  <div name="하단버튼" className="modal-footer">
-                                    {onBottomBtn(modalData.authStatus)}
+                                  <div name="인원관리" className={st.name}>
+                                    <div className={st.label}>
+                                      <label htmlFor="인원관리">
+                                        <span>참가인원</span>
+                                      </label>
+                                    </div>
+                                    {onMemberCheck()}
                                   </div>
+
+                                  <div name="내용" className={st.content}>
+                                    <div className={st.label}>
+                                      <label htmlFor="content">
+                                        <span>내용</span>
+                                      </label>
+                                    </div>
+                                    <div className={st.editor}>
+                                      {modalData.authStatus === null ||
+                                      modalData.authStatus === "REJECT" ? (
+                                        <Editor
+                                          id="content"
+                                          height={"83%"}
+                                          value={content || ""}
+                                          onChange={onEditorChange}
+                                          placeholder={""}
+                                          // className={st.classEditor}
+                                        />
+                                      ) : (
+                                        <div
+                                          className={st.htmlDiv}
+                                          dangerouslySetInnerHTML={{
+                                            __html: content,
+                                          }}
+                                        ></div>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div name="하단버튼" className="modal-footer">
+                                  {onBottomBtn(modalData.authStatus)}
                                 </div>
                               </div>
                             </div>
-                          ) : (
-                            ""
-                          )}
+                          </div>
                         </div>
                       </>
                     ) : (

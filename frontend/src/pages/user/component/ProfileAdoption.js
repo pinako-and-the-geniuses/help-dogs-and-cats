@@ -171,7 +171,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                           <div className={st.editor}>
                             <Editor
                               id="content"
-                              height={"90%"}
+                              height={"83%"}
                               value={content}
                               onChange={onEditorChange}
                               placeholder={""}
