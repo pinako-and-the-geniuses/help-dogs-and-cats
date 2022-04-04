@@ -20,7 +20,11 @@ export default function CommunityDetail() {
 
   const getComment = () => {
     if (!isLogin) {
-      alert("로그인 해주세요.");
+      swal({
+        title: "권한이 없습니다. ",
+        icon: "error",
+        closeOnClickOutside: false,
+      });
       navigate("/login", { replace: true });
     } else {
       axios({

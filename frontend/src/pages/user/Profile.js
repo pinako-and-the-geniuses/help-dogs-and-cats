@@ -21,10 +21,8 @@ export default function Profile() {
         title: "권한이 없습니다. ",
         icon: "error",
         closeOnClickOutside: false,
-      }).then(() => {
-        console.log("ekerl");
-        navigate("/login");
       });
+      navigate("/login", { replace: true });
     }
   }, []);
 
