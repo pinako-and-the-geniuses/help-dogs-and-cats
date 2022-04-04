@@ -60,15 +60,7 @@ export default function AdoptManageDetail() {
         {adoptManageDetail ? (
           <>
             <div className={st.alltitle}>
-<<<<<<< HEAD
-              <p className={st.tag_p}>
-                {adoptManageDetail.data.status === "REQUEST" ? "미인증" : ""}
-                {adoptManageDetail.data.status === "REJECT" ? "거부" : ""}
-                {adoptManageDetail.data.status === "DONE" ? "인증" : ""}
-              </p>
-=======
               <p className={st.tag_p}>상태</p>
->>>>>>> front/fix/admin/list/#S06P22A302-176
               <p className={st.title_p}>
                 제목 : {adoptManageDetail.data.title}
               </p>
@@ -80,14 +72,10 @@ export default function AdoptManageDetail() {
               }}
             ></div>
             <div className={st.contentbtn}>
-<<<<<<< HEAD
-              <button className={st.listbutton} onClick={() => getlist()}>
-=======
               <button
                 className={st.listbutton}
                 onClick={() => getlist("adopts")}
               >
->>>>>>> front/fix/admin/list/#S06P22A302-176
                 목록으로
               </button>
               <button
