@@ -28,9 +28,7 @@ pipeline {
                 sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
             }
         }
-    }
 
-    stages {
         stage('Backend Build') {
             steps {
                 sh 'pwd'
@@ -42,7 +40,6 @@ pipeline {
                 sh 'docker build -t backend ./backend/'
             }
         }
-
 
         stage('Backend Deploy') {
             steps {
