@@ -46,7 +46,7 @@ function Comment(props){
         })
         .then((res)=>{
             console.log('삭제완료');
-            
+            props.getPost();    
         })
         .catch((err) =>{
             console.log(err);
