@@ -31,17 +31,18 @@ pipeline {
     }
 
     stages {
-        dir('backend') {
-            stage('Backend Build') {
-                steps {
-                    sh 'pwd'
-                    sh 'ls -l'
-                    sh 'chmod u+x ./gradlew'
+        stage('Backend Build') {
+            steps {
+                sh 'pwd'
+                sh 'ls -l'
+                sh 'chmod u+x ./backend/gradlew'
+                dir('backend') {
                     sh 'sh ./gradlew build'
-                    sh 'docker build -t backend .'
                 }
+                sh 'docker build -t backend ./backend/'
             }
         }
+
 
         stage('Backend Deploy') {
             steps {
