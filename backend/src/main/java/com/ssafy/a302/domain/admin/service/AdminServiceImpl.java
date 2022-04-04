@@ -13,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -89,5 +91,15 @@ public class AdminServiceImpl implements AdminService {
                 .adoptAuthForPages(adoptAuthForPages)
                 .currentPageNumber(pageable.getPageNumber())
                 .build();
+    }
+
+    @Override
+    public Map<String, Integer> getAuthRequestCount() {
+        Map<String, Integer> authRequestCount = new HashMap<>();
+
+        authRequestCount.put("volunteerAuthCount", volunteerAuthRepository.countAllByStatusEqRequest());
+        authRequestCount.put("adoptAuthCount", adoptAuthRepository.countAllByStatusEqRequest());
+
+        return authRequestCount;
     }
 }
