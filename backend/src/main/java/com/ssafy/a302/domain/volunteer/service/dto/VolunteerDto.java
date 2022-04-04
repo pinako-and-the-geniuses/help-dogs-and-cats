@@ -98,6 +98,8 @@ public class VolunteerDto {
 
         private Long memberSeq;
 
+        private Integer approveCount;
+
         private LocalDate endDate;
 
         private LocalDate createdDate;
@@ -113,9 +115,11 @@ public class VolunteerDto {
             this.endDate = endDate;
             this.createdDate = createdDate.toLocalDate();
         }
+
+        public void addApproveCount(int approveCount) {
+            this.approveCount = approveCount;
+        }
     }
-
-
 
     @Getter
     @ToString(of = {"seq", "title", "content", "authTime", "contact", "endDate", "activityArea", "minParticipantCount", "maxParticipantCount"})

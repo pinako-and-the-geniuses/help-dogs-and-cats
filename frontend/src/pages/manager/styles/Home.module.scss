@@ -1,0 +1,25 @@
+.adimincontainer{
+    // border: 1px solid red;
+    margin: auto;
+    img {
+        width: 400px;
+        height: 300px;
+        object-fit: cover;
+      }
+    .left{
+      display: inline-block;
+      // border: 1px solid black;
+      .managetext{
+        text-align: center;
+      }
+    } 
+    .right{
+      display: inline-block;
+      margin-left: 50px;
+      // border: 1px solid blue;
+      .managetext{
+        text-align: center;
+      }
+    } 
+
+}

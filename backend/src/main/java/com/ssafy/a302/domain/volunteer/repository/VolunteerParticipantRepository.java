@@ -22,4 +22,7 @@ public interface VolunteerParticipantRepository extends JpaRepository<VolunteerP
 
     @Query("SELECT vp.member.seq FROM VolunteerParticipant vp WHERE vp.volunteer.seq = :volunteerSeq")
     Optional<List<Long>> findParticipantSeqAllByVolunteerSeq(@Param(value = "volunteerSeq") Long  volunteerSeq);
+
+    @Query("SELECT COUNT(vp) FROM VolunteerParticipant vp WHERE vp.volunteer.seq = :volunteerSeq AND vp.approve = True")
+    Integer countAllByVolunteerSeqAndApproveEqTrue(@Param(value = "volunteerSeq") Long volunteerSeq);
 }
