@@ -28,7 +28,7 @@ public class AdoptAuthDto {
         this.status = status;
     }
     @Getter
-    @ToString(of = {"seq", "content", "content", "memberSeq"})
+    @ToString(of = {"seq", "title", "content", "memberSeq"})
     public static class Response {
 
         @Schema(name = "seq", title = "입양인증 기본키", description = "입양인증이 가지고 있는 고유 식별키입니다.")
