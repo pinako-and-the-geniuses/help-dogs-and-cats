@@ -24,7 +24,6 @@ function Comment(props){
     }
 
     const deleteHandler=(commentSeq)=>{
-        console.log('11',commentSeq);
         swal("댓글을 삭제합니다",{
             buttons: ['취소', '확인']
         })
@@ -45,16 +44,16 @@ function Comment(props){
             }
         })
         .then((res)=>{
-            console.log('삭제완료');
-            
+            props.getPost();    
         })
         .catch((err) =>{
             console.log(err);
         })
     }
 
-    const enterKey=()=>{
-        if(window.event.keyCode === 13) props.eventHandler();;
+    const enterKey=(e)=>{
+        e.preventDefault();
+        if(window.event.keyCode === 13) props.eventHandler();
     }
 
     return(

@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-import XMLParser from "react-xml-parser";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import style from "./styles/Community.module.scss";
 import cn from "classnames";
-import "./styles/Paging.module.scss";
 import { useSelector } from "react-redux";
-import Paging from 'components/Paging';
+import Paging from "components/Paging";
 
 export default function Community() {
   const [communitys, setCommunity] = useState("");
-  //const [size, setSize] = useState("");
   const [page, setPage] = useState(1);
   const [totalcount, setTotalcount] = useState("");
   const [totalPageNumber, setTotalPageNumber] = useState("");
@@ -22,8 +19,6 @@ export default function Community() {
 
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   //const [arr, setArr] = useState();
-  console.log(page, totalcount, totalPageNumber);
-  // console.log("member", memberSeq);
   useEffect(() => {
     //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     axios
@@ -42,8 +37,6 @@ export default function Community() {
   }, []); //한번만 해줄때 []넣는다
 
   const getRead = (e) => {
-    // console.log(category, search, keyword, size, page);
-    // console.log("read", e.target.value);
     axios
       .get(
         `${URL}/communities?page=${page}&size=${size}&category=${category}&search=${search}&keyword=${keyword}`
@@ -68,12 +61,12 @@ export default function Community() {
   for (let i = 1; i <= totalPageNumber; i++) {
     items.push(i);
   }
+  const paginate = (pageNumber) => setPage(pageNumber);
   //
 
   const navigate = useNavigate();
 
   const getSeq = (seq) => {
-    //console.log(seq);
     navigate(`/community/communitydetail/${seq}`);
   };
 
@@ -86,24 +79,21 @@ export default function Community() {
   };
 
   const getSearch = (e) => {
-    console.log("search", e.target.value);
+    // console.log("search", e.target.value);
     setSearch(e.target.value);
   };
 
   const getKeyword = (e) => {
     const key = e.target.value;
-    console.log("keyword", key);
+    // console.log("keyword", key);
     setKeyword(key);
   };
-  const paginate = (pageNumber) => setPage(pageNumber);
 
-  //console.log( category, search, keyword, size, page);
   return (
     <div className={style.cummunity_container}>
       <header className={style.communhead}>
         <h2>Community</h2>
       </header>
-
       <div className={style.community_search_bar}>
         <div className={style.search_input}>
           <select defaultValue="" name="searchCd" onChange={getCategory}>
@@ -112,7 +102,6 @@ export default function Community() {
             <option value="general">잡담</option>
             <option value="review">후기</option>
           </select>
-
           <select defaultValue="" name="searchCgg" onChange={getSearch}>
             <option value="all">전체</option>
             <option value="title">글 제목</option>
@@ -135,7 +124,6 @@ export default function Community() {
           </button>
         </div>
       ) : null}
-      {/* <table className="table table-bordered table-hover"> */}
       <table className={cn("table table-hover", style.my_table)}>
         <thead>
           <tr>
@@ -166,12 +154,7 @@ export default function Community() {
         )}
       </table>
 
-      <Paging
-        total={totalcount}
-        limit={10}
-        page={page}
-        setPage={setPage}
-      />  
+      <Paging total={totalcount} limit={10} page={page} setPage={setPage} />
     </div>
   );
 }

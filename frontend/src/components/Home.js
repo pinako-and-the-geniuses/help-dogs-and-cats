@@ -27,13 +27,8 @@ function Home() {
       <div id="hero" className="home">
         <div className="container">
           <div className="hero-content">
-            <h1>
-              I'm <span className="typed">안녕</span>
-            </h1>
-            <p>
-              도와주개냥은 <br />
-              유기동물입양과 봉사활동의 활성화를 위한 문화공간입니다.
-            </p>
+            <p><strong>도와주개냥</strong>은</p>
+            <p>유기동물입양과 봉사활동의 활성화를 위한 문화공간입니다</p>
           </div>
         </div>
       </div>

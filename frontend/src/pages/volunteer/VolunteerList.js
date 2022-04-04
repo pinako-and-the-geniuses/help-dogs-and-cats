@@ -39,7 +39,7 @@ function VolunteerList(){
     const workStatus=(workStatus)=>{
         if(workStatus === "RECRUITING") return "모집중";
         else if(workStatus === "ONGOING") return "모집마감";
-        else if(workStatus === "DONE") return "봉사종료"; //수정필요
+        else if(workStatus === "DONE") return "모집완료"; 
     }
 
     //봉사활동 목록 받아오기

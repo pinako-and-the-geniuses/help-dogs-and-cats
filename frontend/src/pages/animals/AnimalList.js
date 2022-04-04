@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
+import Paging from '../../components/Paging';
 
 const ANIMAL =
   "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
@@ -29,19 +30,22 @@ export default function AnimalList() {
   const [regionUrl, setRegionUrl] = useState("");
   const [kindUrl, setKindUrl] = useState("");
   const [stateUrl, setStateUrl] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalItemCount, setTotalItemCount] = useState(0);
+  const [limit, setLimit] = useState(12);
 
   // 원하는 데이터 뽑아 저장하기
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
+    setTotalItemCount(arr.children[3].value);
     setList(listData);
   };
 
   const onGetList = () => {
-    console.log(`${regionUrl}${kindUrl}${stateUrl}`);
     axios
-      .get(
-        `${ANIMAL}?pageNo=1&numOfRows=12${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
+    .get(
+      `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
       )
       .then((res) => {
         const dataSet = res.data;
@@ -54,7 +58,7 @@ export default function AnimalList() {
 
   useEffect(() => {
     onGetList("");
-  }, []);
+  }, [page]);
 
   return (
     <div className={st.div}>
@@ -90,11 +94,6 @@ export default function AnimalList() {
                 setSelected={setSelected}
               />
             </div>
-            {/* <div name="날짜" className="ms-5">
-              <span>
-                <input type="date" />
-              </span>
-            </div> */}
           </div>
 
           <div name="조건2줄" className={st.secondCon}>
@@ -159,6 +158,13 @@ export default function AnimalList() {
       <div className="row row-cols-1 row-cols-md-4 g-5">
         <AnimalBox list={list} />
       </div>
+
+      <Paging
+        total={totalItemCount}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 }

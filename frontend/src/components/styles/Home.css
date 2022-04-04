@@ -44,24 +44,22 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-}
-
-.hero-content h1 {
-  font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  color: #fff;
+  padding-bottom: 150px; /*글자 위치 조정*/
 }
 
 .hero-content p {
   font-size: 13px;
   letter-spacing: 3px;
   margin-top: 0;
-  margin-bottom: 30px;
+  margin-bottom: 0;
   text-transform: capitalize;
   color: #fff;
   font-weight: 500;
+  font-size: 1rem;
+}
+
+.hero-content strong {
+  font-size: 2.5rem;
 }
 
 .hero-content .list-social li {

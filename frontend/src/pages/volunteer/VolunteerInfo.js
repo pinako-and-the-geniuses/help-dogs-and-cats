@@ -32,7 +32,10 @@ function VolunteerInfo({post, memSeq}){
                                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div className="modal-body">
-                                <TeamManage/>
+                                <TeamManage 
+                                    approvedCount={post.approvedCount}
+                                    maxParticipantCount={post.maxParticipantCount}
+                                    />
                             </div>
                         </div>
                     </div>

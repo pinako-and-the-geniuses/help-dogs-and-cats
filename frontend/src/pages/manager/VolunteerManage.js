@@ -1,56 +1,106 @@
-import st from "./styles/VolunteerManage.module.scss";
+import st from "./styles/AdoptManage.module.scss";
 import React, { useEffect, useState } from "react";
 import cn from "classnames";
-import { useNavigate } from "react-router-dom";
 
-function VolunteerManage(){
-    const navigate = useNavigate();
-  const getSeq = () => {
-    //console.log(seq);
-    navigate(`/volunteermanage/detail/`);
+import axios from "axios";
+import { URL } from "public/config";
+function VolunteerManage({ setTab, setVolunSeq }) {
+  const [word, setWord] = useState("");
+  const jwt = sessionStorage.getItem("jwt");
+  const [page, setPage] = useState(1);
+  const [totalcount, setTotalcount] = useState("");
+  const [search, setSearch] = useState("all");
+  const [volunteers, setVolunteers] = useState("");
+  const size = 10;
+
+  const getData = () => {
+    axios({
+      url: `${URL}/admins/volunteers/auth?page=${page}&size=${size}&search=${search}`,
+      method: "GET",
+      headers: { Authorization: `Bearer ${jwt}` },
+    })
+      .then((res) => {
+        console.log("res", res.data.data);
+        const temp = res.data.data.volunteerAuthForPages;
+        setPage(res.data.data.currentPageNumber);
+        setTotalcount(res.data.data.totalCount);
+        if (word) {
+          const result = temp.filter((item) => item.title.includes(word));
+          setVolunteers(result);
+          console.log("검색어 있음", word, search, result);
+        } else {
+          setVolunteers(temp);
+        }
+      })
+      .catch((err) => console.log("err", err));
   };
-  return (
-    <div className={st.VolunteerManage_container}>
-      <header className={st.VolunteerManagehead}>
-        <h2>봉사 인증 목록</h2>
-      </header>
-      <div className={st.VolunteerManage_search_bar}>
-        <div className={st.search_input}>
+  useEffect(() => {
+    getData();
+  }, []); //한번만 해줄때 []넣는다
 
-          <select defaultValue="" name="searchCgg" >
+  return (
+    <div className={st.AdoptManage_container}>
+      <header>
+        <h1 className={st.AdoptManagehead}>봉사 인증 목록</h1>
+      </header>
+      <div className={st.AdoptManage_search_bar}>
+        <div className={st.search_input}>
+          <select
+            defaultValue="all"
+            name="searchCgg"
+            onChange={(e) => setSearch(e.target.value)}
+          >
             <option value="all">전체</option>
-            <option value="title">인증</option>
-            <option value="writer">미인증</option>
+            <option value="auth">인증</option>
+            <option value="not-auth">미인증</option>
           </select>
           <div>
-            <input className={st.input} type="text" />
-            <button>조회</button>
-            {/* <button onClick={getRead}>조회</button> */}
+            <input
+              className={st.input}
+              type="text"
+              value={word}
+              onChange={(e) => {
+                setWord(e.target.value);
+              }}
+            />
+            <button onClick={getData}>조회</button>
           </div>
         </div>
       </div>
       <table className={cn("table table-hover", st.my_table)}>
         <thead>
           <tr>
-            <th scope="col" style={{ width: "10rem" }}>처리상태</th>
-            <th scope="col" colSpan="3">제목</th>
-
+            <th scope="col" style={{ width: "10rem" }}>
+              처리상태
+            </th>
+            <th scope="col" colSpan="3">
+              제목
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr onClick={() => getSeq()}>
-            <th scope="row">인증</th>
-            <td colSpan="3">Mark</td>
-          </tr>
-          <tr>
-            <th scope="row">미인증</th>
-            <td colSpan="3">Jacob</td>
-          </tr>
-          <tr>
-            <th scope="row">미인증</th>
-            <td colspan="3">Larry the Bird</td>
-          </tr>
-        </tbody>
+        {volunteers && (
+          <tbody>
+            {volunteers.map((volunteer, index) => (
+              <tr
+                key={index}
+                onClick={() => {
+                  setTab(2);
+                  setVolunSeq(volunteer.volunteerAuthSeq);
+                }}
+              >
+                {volunteer.status === "REQUEST" ? <td>미인증</td> : ""}
+                {volunteer.status === "REJECT" ? <td>거부</td> : ""}
+                {volunteer.status === "DONE" ? <td>인증</td> : ""}
+                <td colSpan="3">{volunteer.title}</td>
+              </tr>
+            ))}
+          </tbody>
+        )}
+        {!volunteers && (
+          <tbody>
+            <td colSpan="4">작성된 글이 없습니다.</td>
+          </tbody>
+        )}
       </table>
     </div>
   );

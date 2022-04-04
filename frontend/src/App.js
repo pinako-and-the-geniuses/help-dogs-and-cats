@@ -102,16 +102,6 @@ function App() {
         </>
         <>
           <Route path="/manage" element={<ManageMain />}></Route>
-          <Route path="/volunteermanage" element={<VolunteerManage />}></Route>
-          <Route
-            path="/volunteermanage/detail"
-            element={<VolunteerManageDetail />}
-          ></Route>
-          <Route path="/adoptmanage" element={<AdoptManage />}></Route>
-          <Route
-            path="/adoptmanage/detail"
-            element={<AdoptManageDetail />}
-          ></Route>
         </>
       </Routes>
       <Footer></Footer>
