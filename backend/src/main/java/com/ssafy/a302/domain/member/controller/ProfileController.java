@@ -56,7 +56,7 @@ public class ProfileController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "프로필 커뮤니티 활동 조회 API",
             description = "회원 식별키, 페이지 번호, 커뮤니티 활동 게시글 개수를 전달받고 커뮤니티 활동 이력을 반환합니다.",
@@ -91,7 +91,7 @@ public class ProfileController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "프로필 입양 이력 조회 API",
             description = "회원 식별키, 페이지 번호, 입양 이력 게시글 개수를 전달받고 입양 이력을 반환합니다.",
@@ -126,7 +126,7 @@ public class ProfileController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "프로필 봉사활동 조회 API",
             description = "회원 식별키, 페이지 번호, 봉사활동 게시글 개수를 전달받고 봉사활동 이력을 반환합니다.",

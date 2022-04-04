@@ -66,7 +66,7 @@ public class VolunteerCommentDto {
             this.createdDate = createdDate;
             this.writerSeq = writerSeq;
             this.writerNickname = writerNickname;
-            this.writerProfileImagePath = Path.PROFILE_IMAGE_ACCESS_PATH + "/" + writerProfileImageFilename;
+            this.writerProfileImagePath = writerProfileImageFilename == null ? null : Path.PROFILE_IMAGE_ACCESS_PATH + "/" + writerProfileImageFilename;
             this.parentSeq = parentSeq;
             this.children = children;
         }
