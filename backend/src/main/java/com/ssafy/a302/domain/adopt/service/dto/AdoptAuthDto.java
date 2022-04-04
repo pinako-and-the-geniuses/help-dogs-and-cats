@@ -40,14 +40,18 @@ public class AdoptAuthDto {
         @Schema(name = "content", title = "내용", description = "내용입니다.")
         private final String content;
 
+        @Schema(title = "인증 상태", description = "인증 상태입니다.")
+        private final Status status;
+
         @Schema(name = "memberSeq", title = "작성자 Seq", description = "작성자 Seq입니다.")
         private final Long memberSeq;
 
         @Builder
-        public Response(Long seq, String title, String content, Long memberSeq) {
+        public Response(Long seq, String title, String content, Status status, Long memberSeq) {
             this.seq = seq;
             this.title = title;
             this.content = content;
+            this.status = status;
             this.memberSeq = memberSeq;
         }
     }

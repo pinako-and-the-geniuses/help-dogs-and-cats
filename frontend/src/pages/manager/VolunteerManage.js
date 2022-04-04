@@ -14,20 +14,15 @@ function VolunteerManage(){
     const size = 10;
   
   useEffect(() => {
-    console.log(search, size, page);
-    axios
-      .get(
-        `${URL}/admins/volunteers/auth?page=1&size=${size}&search=${search}`,
-        { headers: { Authorization: `Bearer ${jwt}` } }
-      )
-      // axios({
-      //   url: `${URL}/admins/volunteer/auth?page=${page}&size=${size}&search=${search}`,
-      //   method: "GET",
-      //   headers: { Authorization: `Bearer ${jwt}` },
-      // })
+    // console.log(search, size, page);
+      axios({
+        url: `${URL}/admins/volunteer/auth?page=${page}&size=${size}&search=${search}`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
       .then((response) => {
-        console.log(response.data);
-        setVolunteers(response.data);
+        console.log(response.data.data);
+        setVolunteers(response.data.data.volunteerAuthForPages);
         // setPage(response.data.data.currentPageNumber);
         // setTotalcount(response.data.data.totalCount);
       })
@@ -41,16 +36,15 @@ function VolunteerManage(){
         { headers: { Authorization: `Bearer ${jwt}` } }
       )
       .then((response) => {
-        setVolunteers(response.data);
+        setVolunteers(response.data.data.volunteerAuthForPages);
         // setPage(response.data.data.currentPageNumber);
         // setTotalcount(response.data.data.totalCount);
         console.log(response.data);
       })
       .catch((err) => console.log(err));
   };
-  const getSeq = () => {
-    //console.log(seq);
-    navigate(`/volunteermanage/detail/`);
+  const getSeq = (volunteerAuthSeq) => {
+    navigate(`/volunteermanage/detail/${volunteerAuthSeq}`);
   };
   const getSearch = (e) => {
     console.log("search", e.target.value);
@@ -71,7 +65,6 @@ function VolunteerManage(){
           </select>
           <div>
             <input className={st.input} type="text" />
-            {/* <button >조회</button> */}
             <button onClick={getRead}>조회</button>
           </div>
         </div>
@@ -83,13 +76,22 @@ function VolunteerManage(){
             <th scope="col" colSpan="3">제목</th>
           </tr>
         </thead>
+        {volunteers ? (
         <tbody>
-
-          <tr onClick={() => getSeq()}>
-            <th scope="row">인증</th>
-            <td colSpan="3">Mark</td>
+          {volunteers.map((volunteer) => (
+          <tr key={volunteer.seq} onClick={() => getSeq(volunteer.volunteerAuthSeq)}>
+            {volunteer.status === "REQUEST" ? <td>미인증</td> : ""}
+            {volunteer.status === "REJECT" ? <td>거부</td> : ""}
+            {volunteer.status === "DONE" ? <td>인증</td> : ""}
+            <td colSpan="3">{volunteer.title}</td>
           </tr>
+          ))}
         </tbody>
+        ) : (
+          <tbody>
+            <td colSpan="4">작성된 글이 없습니다.</td>
+          </tbody>
+        )}
       </table>
     </div>
   );

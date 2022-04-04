@@ -69,6 +69,7 @@ public class AdoptAuth extends BaseLastModifiedEntity {
                 .seq(seq)
                 .title(title)
                 .content(content)
+                .status(status)
                 .memberSeq(member.getSeq())
                 .build();
     }

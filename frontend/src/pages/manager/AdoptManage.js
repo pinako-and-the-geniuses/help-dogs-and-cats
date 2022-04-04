@@ -13,7 +13,7 @@ function AdoptManage() {
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
   useEffect(() => {
-    console.log(search, size, page);
+    // console.log(search, size, page);
     axios
       .get(
         `${URL}/admins/adopts/auth?page=${page}&size=${size}&search=${search}`,
@@ -66,7 +66,6 @@ function AdoptManage() {
           <div>
             <input className={st.input} type="text" />
             <button onClick={getRead}>조회</button>
-            {/* <button onClick={getRead}>조회</button> */}
           </div>
         </div>
       </div>
@@ -85,7 +84,6 @@ function AdoptManage() {
           <tbody>
             {adopts.map((adopt) => (
               <tr key={adopt.seq} onClick={() => getSeq(adopt.adoptAuthSeq)}>
-                {/* <td>{adopt.status}</td> */}
                 {adopt.status === "REQUEST" ? <td>미인증</td> : ""}
                 {adopt.status === "REJECT" ? <td>거부</td> : ""}
                 {adopt.status === "DONE" ? <td>인증</td> : ""}

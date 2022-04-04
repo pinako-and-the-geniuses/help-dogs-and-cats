@@ -36,16 +36,24 @@ public class VolunteerAuthDto {
         @Schema(name = "seq", title = "봉사활동인증 기본키", description = "봉사활동인증이 가지고 있는 고유 식별키입니다.")
         private final Long seq;
 
+        @Schema(title = "제목", description = "제목입니다.")
+        private final String title;
+
         @Schema(name = "content", title = "내용", description = "내용입니다.")
         private final String content;
+
+        @Schema(title = "인증 상태", description = "인증 상태입니다.")
+        private final Status status;
 
         @Schema(name = "lastModifiedDate", title = "최종수정일", description = "최종수정일입니다.")
         private final LocalDateTime lastModifiedDate;
 
         @Builder
-        public Response(Long seq, String content, LocalDateTime lastModifiedDate) {
+        public Response(Long seq, String title, String content, Status status, LocalDateTime lastModifiedDate) {
             this.seq = seq;
+            this.title = title;
             this.content = content;
+            this.status = status;
             this.lastModifiedDate = lastModifiedDate;
         }
     }
