@@ -49,11 +49,11 @@ export default function GetSido({
 
   return (
     <select
-      defaultValue="0"
+      defaultValue=""
       className={animal.textBox}
       aria-label="시도"
       onChange={(e) => {
-        setRegionUrl(`&upr_cd=${e.target.value}`);
+        setRegionUrl(`&upr_cd=${e.target.value}&org_cd=`);
         setSelected({
           sidoCode: e.target.value,
           sigunguCode: "",
@@ -61,7 +61,7 @@ export default function GetSido({
         });
       }}
     >
-      <option value="0">시도</option>
+      <option value="">시도</option>
 
       {sidoData ? (
         sidoData.map((item) => {

@@ -50,23 +50,21 @@ function ShelterList() {
     onSetPage();
   }, []);
 
-  // 보호센터명 입력 (지역리셋)
+  // 보호센터명 입력
   const setNameSearch = (value) => {
     setName(value);
   };
 
   //조건별 보호소 목록 가져오기
   const onGetList = () => {
-    setFind(true);
-    // 보호센터명 검색
-    if (name.length > 1) {
-      console.log("이름검색들어옴", name);
+    // 보호센터명만 검색       console.log("이름검색들어옴", name);
+    if (name.length > 1 && regionUrl.length < 15) {
       axios
         .get(
           `${SHELTER}/shelterInfo?numOfRows=10&pageNo=1&serviceKey=${SHELTER_KEY}&_type=JSON&care_nm=${name}`
         )
         .then((res) => {
-          console.log("이름조회결과", res.data);
+          // console.log("이름조회결과", res.data);
           const temp = res.data.response.body.items;
           if (temp.item) {
             temp.item.map((item) => {
@@ -78,53 +76,146 @@ function ShelterList() {
           console.log("이름조회에러", err);
           alert("이름 조회에 실패했습니다.");
         });
-    } // 지역검색
-    else if (!name && regionUrl.length >= 15) {
+    } else if (name.length < 1 && regionUrl.length >= 15) {
+      console.log("지역만검색들어옴", regionUrl);
+      console.log("지역만검색들어옴", regionUrl.length);
+
+      if (selected.sidoCode) {
+        // 시도 + 시군구
+        if (regionUrl.length > 24) {
+          axios
+            .get(
+              `${ANIMAL}/abandonmentPublicSrvc/shelter?serviceKey=${ANIMAL_KEY}&_type=JSON&${regionUrl}`
+            )
+            .then((res) => {
+              if (res.data.response.body.items.item) {
+                const data = res.data.response.body.items.item;
+                console.log("시도+시군구 검색 결과", res.data.response);
+                if (data) {
+                  data.map((item) => {
+                    axios
+                      .get(
+                        `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}&_type=JSON`
+                      )
+                      .then((res) => {
+                        if (res.data.response.body.items) {
+                          const temp = res.data.response.body.items;
+                          console.log(temp);
+                          if (temp.item) {
+                            const data = temp.item;
+                            setNewList((newList) => [...newList, data]);
+                          }
+                        }
+                      })
+                      .catch((err) => {
+                        console.log("지역만결과-상세정보-서버 에러 발생", err);
+                        alert("네트워크 에러가 발생했습니다.");
+                      });
+                  });
+                }
+              }
+            })
+            .catch((err) => {
+              console.log("err", err);
+              alert("네트워크 에러가 발생했습니다.");
+            });
+        }
+        // 시도만 선택
+        else {
+          if (sigungu) {
+            sigungu.map((item) => {
+              console.log(item);
+              axios
+                .get(
+                  `${ANIMAL}/abandonmentPublicSrvc/shelter?serviceKey=${ANIMAL_KEY}&_type=JSON&${regionUrl}${item.code} `
+                )
+                .then((res) => {
+                  const data = res.data.response.body.items.item;
+                  console.log("시도만 검색 결과", res.data.response.body);
+                  if (data) {
+                    data.map((item) => {
+                      console.log(item);
+                      axios
+                        .get(
+                          `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}&_type=JSON`
+                        )
+                        .then((res) => {
+                          if (res.data.response) {
+                            const temp = res.data.response.body.items;
+                            console.log("지역안에서 상세 정보있는경우", temp);
+                            if (temp.item) {
+                              const data = temp.item;
+                              setNewList((newList) => [...newList, data]);
+                            }
+                          }
+                        })
+                        .catch((err) => {
+                          console.log(
+                            "지역만결과-상세정보-서버 에러 발생",
+                            err
+                          );
+                          alert("네트워크 에러가 발생했습니다.");
+                        });
+                    });
+                  }
+                })
+                .catch((err) => {
+                  console.log("err", err);
+                  alert("네트워크 에러가 발생했습니다.");
+                });
+            });
+          }
+        }
+      } else {
+        alert("시군구를 선택하세요.");
+      }
+    } //      console.log("지역+검색어조회", name, "===", regionUrl);
+    else if (name.length > 1 && regionUrl.length >= 15) {
       if (selected.sigunguCode) {
         axios
           .get(
             `${ANIMAL}/abandonmentPublicSrvc/shelter?serviceKey=${ANIMAL_KEY}&_type=JSON${regionUrl}`
           )
           .then((res) => {
-            console.log("res", res.data.response);
             const data = res.data.response.body.items.item;
-            console.log(data);
+            console.log("지역+검색어조회-지역검색 결과", data);
+
             if (data) {
-              data.map((item) => {
-                axios
-                  .get(
-                    `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}&_type=JSON`
-                  )
-                  .then((res) => {
-                    console.log(res.data.response.body);
-                    const temp = res.data.response.body.items;
-                    // 정보있는경우
-                    if (temp.item) {
-                      const data = temp.item;
-                      console.log(data);
-                      setNewList((newList) => [...newList, data]);
-                    } else {
-                      console.log("정보없음", newList);
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    alert("서버 에러 발생");
-                  });
+              const result = data.filter((item) => {
+                return item.careNm.includes(name);
               });
-            } else {
-              setList("");
+              console.log(
+                "지역+검색어조회-지역검색결과에서 검색어 추리기",
+                result
+              );
+              if (result) {
+                result.map((item) => {
+                  axios
+                    .get(
+                      `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}&_type=JSON`
+                    )
+                    .then((res) => {
+                      const temp = res.data.response.body.items;
+                      console.log("지역+검색어조회-이름조회결과", temp);
+
+                      if (temp.item) {
+                        temp.item.map((item) => {
+                          setNewList((newList) => [...newList, [item]]);
+                        });
+                      }
+                    })
+                    .catch((err) => {
+                      console.log("이름조회에러", err);
+                      alert("이름 조회에 실패했습니다.");
+                    });
+                });
+              }
             }
-          })
-          .catch((err) => {
-            console.log("err", err);
-            alert("네트워크 에러가 발생했습니다.");
           });
       } else {
         alert("시군구를 선택하세요.");
       }
     } else {
-      console.log(regionUrl);
       alert("검색 조건을 확인하세요.");
     }
   };
@@ -137,9 +228,8 @@ function ShelterList() {
 
   // 상태에 따라 목록화면 조절
   const onList = () => {
-    // console.log("조회 했는데 리스트 없는상태");
     if (!newList && find) {
-      console.log("조회 했는데 리스트 없는상태");
+      // console.log("조회 했는데 리스트 없는상태");
       return (
         <>
           {newList &&
@@ -151,6 +241,7 @@ function ShelterList() {
                     onGoDetail(item);
                   }}
                 >
+                  <td>{item.orgNm}</td>
                   <td>{item.careNm}</td>
                   <td>{item.careTel}</td>
                   <td>
@@ -162,14 +253,12 @@ function ShelterList() {
             })}
         </>
       );
-    } //      console.log("조회리스트있는 상태", newList);
-    else if (newList && find) {
-      console.log("조회리스트있는 상태", newList);
+    } else if (newList && find) {
+      //      console.log("조회리스트있는 상태", newList);
       return (
         <>
           {newList &&
             newList.map((item, index) => {
-              console.log("newList.map.item", item);
               return (
                 <tr
                   key={index}
@@ -177,6 +266,7 @@ function ShelterList() {
                     onGoDetail(item[0]);
                   }}
                 >
+                  <td>{item[0].orgNm}</td>
                   <td>{item[0].careNm}</td>
                   <td>{item[0].careTel}</td>
                   <td>
@@ -189,7 +279,7 @@ function ShelterList() {
         </>
       );
     } else {
-      console.log("전체리스트 출력");
+      // console.log("전체리스트 출력");
       return (
         <>
           {list &&
@@ -201,6 +291,7 @@ function ShelterList() {
                     onGoDetail(item);
                   }}
                 >
+                  <td>{item.orgNm}</td>
                   <td>{item.careNm}</td>
                   <td>{item.careTel}</td>
                   <td>
@@ -251,14 +342,12 @@ function ShelterList() {
           />
         </div>
         <div>[ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ] </div>
-        <div>[ 정확한 보호센터명을 입력해주세요. ] </div>
-        <div>[ 지역 조회 또는 보호센터명 조회 가능합니다. ] </div>
-
         <button
           type="submit"
           onClick={() => {
             setNewList("");
             onGetList();
+            setFind(true);
           }}
         >
           조회
@@ -278,6 +367,8 @@ function ShelterList() {
       <table className={cn("table table-bordered table-hover", style.my_table)}>
         <thead>
           <tr>
+            <th scope="col">관할구역</th>
+
             <th scope="col">보호센터명</th>
             <th scope="col">전화번호</th>
             <th scope="col">영업시간</th>
