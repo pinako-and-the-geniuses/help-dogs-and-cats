@@ -232,6 +232,10 @@ function VolunteerDetail(){
     };
 
     const onClickEvent=()=>{
+        if (commentContent.trim.length === 0 ){
+            swal('입력값은 필수입니다');
+            return;
+        }
         volComment()
         .then(setCommentContent(""))
         .then(getPost());
@@ -263,10 +267,6 @@ function VolunteerDetail(){
         getParticipants();
     }, [changed, stateChanged]); //댓글, 모집, 
 
-    // useEffect(()=>{
-    //     // getParticipants();
-    // }, [join]);
-    
     useEffect(()=>{
         testIsApply();
     }, [participants]);
@@ -343,6 +343,7 @@ function VolunteerDetail(){
                 onChange={onCommentChange}
                 eventHandler={onClickEvent}
                 comments={comments}
+                getPost={getPost}
                 />
             <button 
                 className={style.listBtn}
