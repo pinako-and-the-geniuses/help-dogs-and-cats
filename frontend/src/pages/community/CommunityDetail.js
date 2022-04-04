@@ -20,8 +20,11 @@ export default function CommunityDetail() {
 
   const getComment = () => {
     if (!isLogin) {
-      alert("로그인 해주세요.");
-      navigate("/login", { replace: true });
+      Swal.fire({ icon: "warning", title: "로그인해주세요" }).then(
+        function () {
+          navigate("/login");
+        }
+      );
     } else {
       axios({
         url: `${URL}/communities/${seq}`,
