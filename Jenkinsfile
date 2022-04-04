@@ -33,8 +33,6 @@ pipeline {
             steps {
                 sh 'chmod u+x ./backend/gradlew'
                 dir('backend') {
-                    sh 'pwd'
-                    sh 'ls -l'
                     sh 'sh ./gradlew build'
                 }
                 sh 'docker build -t backend ./backend/'
