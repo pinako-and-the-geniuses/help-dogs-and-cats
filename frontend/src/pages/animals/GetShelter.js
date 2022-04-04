@@ -12,6 +12,7 @@ export default function GetShelter({
   setShelter,
   selected,
   setSelected,
+  setRegionUrl,
 }) {
   // 원하는 데이터 뽑아 저장하기
   const parseStr = (dataSet) => {
@@ -63,18 +64,21 @@ export default function GetShelter({
 
   return (
     <select
-      defaultValue="0"
+      defaultValue=""
       className={animal.textBox}
       aria-label="보호소"
-      onChange={(e) =>
+      onChange={(e) => {
         setSelected({
           sidoCode: selected.sidoCode,
           sigunguCode: selected.sigunguCode,
           shelterCode: e.target.value,
-        })
-      }
+        });
+        setRegionUrl(
+          `&upr_cd=${selected.sidoCode}&org_cd=${selected.sigunguCode}&care_reg_no=${e.target.value}`
+        );
+      }}
     >
-      <option value="0">보호소</option>
+      <option value="">보호소 전체</option>
       {shelter.length > 1 ? (
         shelter.map((item) => {
           return (

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
-import Paging from '../../components/Paging';
+import Paging from "../../components/Paging";
 
 const ANIMAL =
   "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
@@ -38,17 +38,21 @@ export default function AnimalList() {
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
+    console.log("조회결과", listData);
     setTotalItemCount(arr.children[3].value);
     setList(listData);
   };
 
   const onGetList = () => {
+    console.log("regionURl", regionUrl);
+
     axios
-    .get(
-      `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
+      .get(
+        `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
       )
       .then((res) => {
         const dataSet = res.data;
+
         parseStr(dataSet);
       })
       .catch((err) => {
@@ -92,6 +96,7 @@ export default function AnimalList() {
                 setShelter={setShelter}
                 selected={selected}
                 setSelected={setSelected}
+                setRegionUrl={setRegionUrl}
               />
             </div>
           </div>
