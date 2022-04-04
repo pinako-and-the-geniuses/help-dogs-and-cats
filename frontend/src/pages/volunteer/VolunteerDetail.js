@@ -113,11 +113,28 @@ function VolunteerDetail(){
     //참여 신청 -> 참여자 목록 불러오기 -> 내가 있다 -> 참여취소버튼으로 바뀜
     //참여 취소 -> 참여자 목록 불러오기 -> 내가 없다 -> 참여취소버튼으로 바뀜
 
-    const setApplyBtn=(status, isApply)=>{
-        if(status !== "RECRUITING") return(<button>모집 종료</button>)
-        if(status === "RECURITING" && isApply.length === 0) return(<button>참여신청</button>)
+    const setApplyBtn=(status)=>{
+        console.log(status);
+        if (status !== "RECRUITING") return(<button className={`${style.joinBtn} ${style.joinXBtn}`}>모집완료</button>)
+        else {
+            if (isApply.length === 0){ //내가 신청이 안된 상태
+                return ( 
+                    <button
+                        onClick={()=>{applyBtn()}}
+                        className={style.joinBtn}>참여신청</button>
+                )
+            }
+            else { //내가 신청이 된 상태
+                return ( 
+                    <button
+                        onClick={()=>{cancleBtn()}}
+                        className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                )
+            }
+        }
 
     }
+
     //일반: 참여 신청
     const apply=async()=>{
         await axios({
@@ -128,7 +145,7 @@ function VolunteerDetail(){
             }
         })
         .then((res)=>{
-            console.log('참여신청완료');
+            swal("참여 신청 되었습니다");
             getParticipants();
         })
         .catch((err) =>{
@@ -267,7 +284,7 @@ function VolunteerDetail(){
 
                 }
                 <p className={style.title}>{post.title}</p>
-                {
+                {/* {
                     memSeq === post.writerSeq
                     ?{
                         "DONE": (
@@ -302,8 +319,8 @@ function VolunteerDetail(){
                                 className={`${style.joinBtn}`}>참여신청</button>
                         )
                     )
-                }
-                {/* {
+                } */}
+                {
                     memSeq === post.writerSeq
                     ?{
                         "DONE": (
@@ -323,24 +340,8 @@ function VolunteerDetail(){
                                 className={style.joinBtn}
                                 onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
                     }[post.status]
-                    :{
-
-                    }( //
-                        isApply.length !== 0 //참여신청을 이미 했다면?
-                        ?(
-                            <button 
-                                type='button' 
-                                onClick={()=>{cancleBtn()}} 
-                                className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                        )
-                        :(
-                            <button 
-                                type='button' 
-                                onClick={()=>{applyBtn()}} 
-                                className={`${style.joinBtn}`}>참여신청</button>
-                        )
-                    )
-                } */}
+                    : setApplyBtn(post.status)
+                }
             </div>
 
             <VolunteerInfo
@@ -372,7 +373,7 @@ function VolunteerDetail(){
                 />
             <button 
                 className={style.listBtn}
-                onClick={()=>{navigate(-1)}}>목록</button>
+                onClick={()=>{navigate('/volunteer/list')}}>목록</button>
         </div>
     )
 }
