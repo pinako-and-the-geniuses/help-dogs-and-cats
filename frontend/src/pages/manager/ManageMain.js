@@ -4,11 +4,11 @@ import VolunteerManage from './VolunteerManage';
 import AdoptManage from './AdoptManage';
 import style from './manager.module.scss';
 
-function MoveTab({tab}){
+function MoveTab({tab, setTab}){
     if( tab === 0 ){
         return (
             <>
-                <ManageHome />
+                <ManageHome tab={tab} setTab={setTab}/>
             </>
         )
     }
@@ -45,7 +45,7 @@ function ManageMain() {
                     onClick={()=>{setTab(2)}}>입양 관리</li>
             </ul>
 
-            <MoveTab tab={tab}/>
+            <MoveTab tab={tab} setTab={setTab}/>
         </div>
     ) 
 }
