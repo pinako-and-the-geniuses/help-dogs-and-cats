@@ -1,10 +1,8 @@
 import st from "./styles/AdoptManageDetail.module.scss";
-import cn from "classnames";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { URL } from "public/config";
-import { useSelector } from "react-redux";
 
 export default function AdoptManageDetail() {
   const [adoptManageDetail, setAdoptManageDetail] = useState("");
@@ -13,7 +11,6 @@ export default function AdoptManageDetail() {
   const navigate = useNavigate();
   const { adoptSeq } = useParams();
   const getlist = () => {
-    //console.log(seq);
     navigate(`/adoptmanage`);
   };
   useEffect(() => {
@@ -30,30 +27,30 @@ export default function AdoptManageDetail() {
   }, []);
 
   const getApproval = async (approve) => {
-      await axios({
-        url: `${URL}/admins/adopts/auth/${adoptSeq}`,
-        method: "patch",
-        data: {
-          status: approve,
-        },
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
+    await axios({
+      url: `${URL}/admins/adopts/auth/${adoptSeq}`,
+      method: "patch",
+      data: {
+        status: approve,
+      },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
       .then((res) => {
-        console.log("변경 완료")
+        console.log("변경 완료");
         console.log(res);
-        if(stateChanged==="REQUEST"||stateChanged==="REJECT"){
-          setStateChanged(stateChanged==="DONE");
-        }else if(stateChanged==="REQUEST"||stateChanged==="DONE"){
-          setStateChanged(stateChanged==="REJECT");
+        if (stateChanged === "REQUEST" || stateChanged === "REJECT") {
+          setStateChanged(stateChanged === "DONE");
+        } else if (stateChanged === "REQUEST" || stateChanged === "DONE") {
+          setStateChanged(stateChanged === "REJECT");
         }
       })
       .catch((err) => console.log(err));
   };
 
-    return(
-        <div className={st.adopt_commentBox}>
+  return (
+    <div className={st.adopt_commentBox}>
       <header>
         <h2>입양 인증 상세</h2>
       </header>
@@ -62,10 +59,13 @@ export default function AdoptManageDetail() {
           <>
             <div className={st.alltitle}>
               <p className={st.tag_p}>
-
-                상태
+                {adoptManageDetail.data.status === "REQUEST" ? "미인증" : ""}
+                {adoptManageDetail.data.status === "REJECT" ? "거부" : ""}
+                {adoptManageDetail.data.status === "DONE" ? "인증" : ""}
               </p>
-              <p className={st.title_p}>제목 : {adoptManageDetail.data.title}</p>
+              <p className={st.title_p}>
+                제목 : {adoptManageDetail.data.title}
+              </p>
             </div>
             <div
               className={st.content_div}
@@ -74,10 +74,13 @@ export default function AdoptManageDetail() {
               }}
             ></div>
             <div className={st.contentbtn}>
-              <button  className={st.listbutton} onClick={() => getlist()}>
+              <button className={st.listbutton} onClick={() => getlist()}>
                 목록으로
               </button>
-              <button onClick={() => getApproval("REJECT")} className={st.deletebutton}>
+              <button
+                onClick={() => getApproval("REJECT")}
+                className={st.deletebutton}
+              >
                 반려
               </button>
               <button onClick={() => getApproval("DONE")} className={st.button}>
@@ -85,9 +88,10 @@ export default function AdoptManageDetail() {
               </button>
             </div>
           </>
-        ) : ( "로딩 중")}
+        ) : (
+          "로딩 중"
+        )}
       </section>
-
     </div>
-    );
+  );
 }
