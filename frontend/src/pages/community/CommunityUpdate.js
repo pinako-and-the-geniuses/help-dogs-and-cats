@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityUpdate.module.scss";
 import cn from "classnames";
 import { URL } from "public/config";
@@ -11,7 +10,6 @@ export default function CommunityCreate(api) {
   const communitySeq = useParams();
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
-  // const [htmlcontent, setHtmlContent] = useState("");
   const [content, setContent] = useState("");
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const navi = useNavigate();
@@ -115,14 +113,16 @@ export default function CommunityCreate(api) {
           <span>내용</span>
         </label>
       </div> */}
-      <div className={st.Editorheight}>
-        <Editor
-          id="content"
-          height={"90%"}
-          value={content}
-          onChange={onEditorChange}
-          placeholder={""}
-        ></Editor>
+      <div className={cn(`${st.Editorheight}`, "col-sm-12 col-md-10")}>
+        <div className={st.editorBox}>
+          <Editor
+            id="content"
+            height={"90%"}
+            value={content}
+            onChange={onEditorChange}
+            placeholder={""}
+          ></Editor>
+        </div>
       </div>
       <div className={st.createbuttonContent}>
         <button

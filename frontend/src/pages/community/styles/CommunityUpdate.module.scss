@@ -6,7 +6,7 @@ $sub-color: #999999;
   //border: 1px solid red;
   margin: 20px 200px;
   margin-top: 100px;
-  .commuhead{
+  .commuhead {
     margin-bottom: 60px;
   }
   .createtopContent {
@@ -59,12 +59,11 @@ $sub-color: #999999;
     // margin: auto;
     height: 400px;
   }
-  .Editorheight{
-    //border: 1px solid red;
-    height: 400px;
+  .Editorheight {
+    width: 100%;
+    min-height: 30vh;
   }
   .createbuttonContent {
-    //border: 1px solid red;
     display: flex;
     justify-content: end;
     margin-top: 70px;

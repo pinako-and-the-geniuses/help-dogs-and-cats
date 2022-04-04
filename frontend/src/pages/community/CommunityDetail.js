@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityDetail.module.scss";
-import cn from "classnames";
 import { URL } from "public/config";
 import CommunityComment from "components/Comment/CommunityComment";
 // import Comment from "./Comment";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { render } from "@testing-library/react";
+
 export default function CommunityDetail() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
@@ -23,27 +21,26 @@ export default function CommunityDetail() {
   const jwt = sessionStorage.getItem("jwt");
 
   const getComment = () => {
-    
     if (!isLogin) {
       alert("로그인 해주세요.");
       navigate("/login", { replace: true });
     } else {
-        axios({
-          url: `${URL}/communities/${seq}`,
-          method: "GET",
-          headers: { Authorization: `Bearer ${jwt}` },
-        })
-          .then((response) => {
-            console.log(response.data);
-            setWriterSeq(response.data.data.writerSeq);
-            setCommunityDetail(response.data);
-            setComments(response.data.data.comments);
-          }) //엑시오스 보낸 결과
-          .catch((err) => console.log(err));
+      axios({
+        url: `${URL}/communities/${seq}`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+        .then((response) => {
+          console.log(response.data);
+          setWriterSeq(response.data.data.writerSeq);
+          setCommunityDetail(response.data);
+          setComments(response.data.data.comments);
+        }) //엑시오스 보낸 결과
+        .catch((err) => console.log(err));
     }
-  }
+  };
   useEffect(() => {
-  //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
+    //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     getComment();
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
   const onCommentChange = (value) => {
@@ -89,7 +86,7 @@ export default function CommunityDetail() {
         // console.log(res.data);
         console.log(commentContent);
         getComment();
-        setCommentContent('');
+        setCommentContent("");
       })
       .catch((err) => {
         console.log(err);
@@ -100,63 +97,59 @@ export default function CommunityDetail() {
     navigate(`/community/communityupdate/${seq}`);
   };
 
-  // useEffect(() => {
-  //   getPost();
-  //   setCommentContent("")
-  // }, [changed]);
-
-  // useEffect(() => {
-  //   console.log(post);
-  //   console.log(comments);
-  //   setCommentContent("")
-  // }, [post, changed]);
   return (
     <div className={st.community_commentBox}>
       <header>
         <h2>Community</h2>
       </header>
-      <section className={st.topContent}>
-        {communityDetail ? (
-          <>
-            <div className={st.alltitle}>
-              {/* <p className={st.tag_p}>{communityDetail.data.category}</p> */}
-              <p className={st.tag_p}>
-                {communityDetail.data.category === "REPORT" ? "제보" : ""}
-                {communityDetail.data.category === "REVIEW" ? "후기" : ""}
-                {communityDetail.data.category === "GENERAL" ? "잡담" : ""}
-              </p>
-              <p className={st.title_p}>제목 : {communityDetail.data.title}</p>
-              <p className={st.read_p}>
-                조회수 : {communityDetail.data.viewCount}
-              </p>
-              <p className={st.date_p}>{communityDetail.data.createdDate}</p>
-              <p className={st.author_p}>
-                {communityDetail.data.writerNickname}
-              </p>
+      <div className={st.topContent}>
+        <div>
+          {communityDetail ? (
+            <div className={st.mainDiv}>
+              <div className={st.alltitle}>
+                <div>
+                  <p className={st.tag_p}>
+                    {communityDetail.data.category === "REPORT" ? "제보" : ""}
+                    {communityDetail.data.category === "REVIEW" ? "후기" : ""}
+                    {communityDetail.data.category === "GENERAL" ? "잡담" : ""}
+                  </p>
+                  <p className={st.title_p}>
+                    제목 : {communityDetail.data.title}
+                  </p>
+                </div>
+                <div className={st.rightInfo}>
+                  <p className={st.p}>
+                    조회수 : {communityDetail.data.viewCount}
+                  </p>
+                  <p className={st.p}> | </p>
+                  <p className={st.p}>{communityDetail.data.createdDate} </p>
+                  <p className={st.p}> | </p>
+                  <p className={st.p}>{communityDetail.data.writerNickname} </p>
+                </div>
+              </div>
+              <div
+                className={st.content_div}
+                dangerouslySetInnerHTML={{
+                  __html: communityDetail.data.content,
+                }}
+              ></div>
             </div>
-            <div
-              className={st.content_div}
-              dangerouslySetInnerHTML={{
-                __html: communityDetail.data.content,
-              }}
-            ></div>
-          </>
-        ) : (
-          "로딩중"
-        )}
+          ) : (
+            "로딩중"
+          )}
+        </div>
+
         {writerSeq === memberSeq ? (
-          <>
-            <div className={st.contentbtn}>
-              <button onClick={getDelete} className={st.deletebutton}>
-                삭제
-              </button>
-              <button onClick={GotoEdit} className={st.button}>
-                수정
-              </button>
-            </div>
-          </>
+          <div className={st.contentbtn}>
+            <button onClick={getDelete} className={st.deletebutton}>
+              삭제
+            </button>
+            <button onClick={GotoEdit} className={st.button}>
+              수정
+            </button>
+          </div>
         ) : null}
-      </section>
+      </div>
       <CommunityComment
         id={seq}
         commentContent={commentContent}
