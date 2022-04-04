@@ -108,7 +108,7 @@ export default function Community() {
             <option value="writer">작성자</option>
           </select>
           <div>
-            <input className={style.input} type="text" onChange={getKeyword} />
+            <input className={style.input} type="text"  onChange={getKeyword} />
             <button onClick={getRead}>조회</button>
           </div>
         </div>

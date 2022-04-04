@@ -1,22 +1,26 @@
 $main-color: #b59d7c;
 $sub-color: #e8e8e8;
+$main-text: #292929;
+$sub-text: #999999;
 .community_commentBox {
-  background-color: white;
-  box-shadow: 0px 0px 10px $sub-color;
-  padding: 30px;
-  margin: 100px;
+  // background-color: white;
+  // box-shadow: 0px 0px 10px $sub-color;
+  // padding: 30px;
+  width: 75%;
+  margin: auto;
+  .communitydetailheader {
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
   .topContent {
-    background-color: white;
-    box-shadow: 0px 0px 10px $sub-color;
-    padding: 30px;
-    // height: 400px;
-    height: auto;
-    margin: auto;
-    background: #ffffff;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
     .alltitle {
       display: block;
       margin: auto;
+      margin: 10px 0;
+      padding: 20px 0;
+      background-color: #f2f2f2;
+      color: $main-text;
       //border: 1px solid blue;
       .tag_p {
         display: inline-block;
@@ -54,38 +58,62 @@ $sub-color: #e8e8e8;
         //border: 1px solid black;
       }
     }
-
-    .content_div {
-      display: block;
-      width: 90%;
-      // height: 200px;
+    .commudetailbox {
+      background-color: white;
+      box-shadow: 0px 0px 10px $sub-color;
+      padding: 30px;
+      // height: 400px;
       height: auto;
       margin: auto;
-      margin-top: 20px;
-      border: 1px solid black;
-    }
-    .contentbtn {
-      width: 90%;
-      //border: 1px solid black;
-      margin: auto;
-      .button {
-        background-color: $main-color;
-        padding: 5px 13px;
-        margin-top: 30px;
-        border-radius: 5px;
-        border: 0;
-        color: white;
-        float: right;
+      background: #ffffff;
+
+      .content_div {
+        display: block;
+        width: 90%;
+        // height: 200px;
+        height: auto;
+        margin: auto;
+        margin-top: 20px;
+        // border: 1px solid black;
       }
-      .deletebutton {
-        background-color: $main-color;
-        padding: 5px 13px;
-        margin-top: 30px;
-        margin-left: 10px;
-        border-radius: 5px;
-        border: 0;
-        color: white;
-        float: right;
+      // .contentbtn {
+      //   width: 90%;
+      //   // border: 1px solid black;
+      //   margin: auto;
+      //   height: 70px;
+      //   .button {
+      //     background-color: $main-color;
+      //     padding: 5px 13px;
+      //     margin-top: 20px;
+      //     border-radius: 5px;
+      //     border: 0;
+      //     color: white;
+      //     float: right;
+      //   }
+      //   .deletebutton {
+      //     background-color: $main-color;
+      //     padding: 5px 13px;
+      //     margin-top: 20px;
+      //     margin-left: 10px;
+      //     border-radius: 5px;
+      //     border: 0;
+      //     color: white;
+      //     float: right;
+      //   }
+      // }
+    }
+    .commueditPost {
+      text-align: end;
+      right: 30px;
+      padding: 10px 0;
+      p {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        color: $sub-text;
+        &:hover {
+          color: $main-text;
+          cursor: pointer;
+        }
       }
     }
   }

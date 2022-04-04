@@ -105,7 +105,7 @@ export default function CommunityDetail() {
 
   return (
     <div className={st.community_commentBox}>
-      <header>
+      <header className={st.communitydetailheader}>
         <h2>Community</h2>
       </header>
       <section className={st.topContent}>
@@ -126,25 +126,23 @@ export default function CommunityDetail() {
                 {communityDetail.data.writerNickname}
               </p>
             </div>
-            <div
-              className={st.content_div}
-              dangerouslySetInnerHTML={{
-                __html: communityDetail.data.content,
-              }}
-            ></div>
+            <div className={st.commudetailbox}>
+              <div
+                className={st.content_div}
+                dangerouslySetInnerHTML={{
+                  __html: communityDetail.data.content,
+                }}
+              ></div>
+            </div>
           </>
         ) : (
           "로딩중"
         )}
         {writerSeq === memberSeq ? (
           <>
-            <div className={st.contentbtn}>
-              <button onClick={deleteHandler} className={st.deletebutton}>
-                삭제
-              </button>
-              <button onClick={GotoEdit} className={st.button}>
-                수정
-              </button>
+            <div className={st.commueditPost}>
+              <p onClick={GotoEdit}>수정</p>
+              <p onClick={deleteHandler}>삭제</p>
             </div>
           </>
         ) : null}
