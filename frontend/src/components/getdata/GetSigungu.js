@@ -53,7 +53,7 @@ export default function GetSigunguList({
 
   return (
     <select
-      defaultValue="0"
+      defaultValue=""
       className={animal.textBox}
       aria-label="시군구"
       onChange={(e) => {
@@ -65,7 +65,7 @@ export default function GetSigunguList({
         });
       }}
     >
-      <option value="0">시군구</option>
+      <option value="">시군구</option>
 
       {sigunguData
         ? sigunguData.map((item) => {
