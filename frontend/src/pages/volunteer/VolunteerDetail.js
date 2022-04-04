@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import axios from 'axios';
 import Comment from 'components/Comment/Comment';
-import TeamManage from './TeamManage';
 import style from './styles/VolunteerDetail.module.scss';
 import { URL } from '../../public/config';
 import { useSelector } from 'react-redux';
@@ -105,19 +104,45 @@ function VolunteerDetail(){
         })
     }
 
-    const testIsApply=()=>{
+    const testIsApply0=()=>{
         // const isApply=participants.filter(p=>p.seq===memSeq);
+        const AmI = isApply();
+        console.log('test1', participants);
+        console.log('test2', AmI);
+    }
+    // const isApply=participants.filter(p=>p.seq===memSeq);
+    const isApply0=()=>participants.filter(p=>p.seq===memSeq);
+    //알았따 ~~ 취소하면 목록에 없으니까 안불러와지는거임!
+    //내가 있을때를 하지 말고 없을때를 할까?
+
+    //원래했던내용
+    const testIsApply=()=>{
+        const isApply=participants.filter(p=>p.seq===memSeq);
     }
     const isApply=participants.filter(p=>p.seq===memSeq);
-    //알았따 ~~ 취소하면 목록에 없으니까 안불러와지는거임!
-    //참여 신청 -> 참여자 목록 불러오기 -> 내가 있다 -> 참여취소버튼으로 바뀜
-    //참여 취소 -> 참여자 목록 불러오기 -> 내가 없다 -> 참여취소버튼으로 바뀜
 
-    const setApplyBtn=(status, isApply)=>{
-        if(status !== "RECRUITING") return(<button>모집 종료</button>)
-        if(status === "RECURITING" && isApply.length === 0) return(<button>참여신청</button>)
+    //참여자 상태에 따른 버튼 표시
+    const setApplyBtn=(status)=>{
+        if (status !== "RECRUITING") return(<button className={`${style.joinBtn} ${style.joinXBtn}`}>모집완료</button>)
+        else {
+            if (isApply.length === 0){ //내가 신청이 안된 상태
+                return ( 
+                    <button
+                        onClick={()=>{applyBtn()}}
+                        className={style.joinBtn}>참여신청</button>
+                )
+            }
+            else { //내가 신청이 된 상태
+                return ( 
+                    <button
+                        onClick={()=>{cancleBtn()}}
+                        className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
+                )
+            }
+        }
 
     }
+
     //일반: 참여 신청
     const apply=async()=>{
         await axios({
@@ -128,7 +153,7 @@ function VolunteerDetail(){
             }
         })
         .then((res)=>{
-            console.log('참여신청완료');
+            swal("참여 신청 되었습니다");
             getParticipants();
         })
         .catch((err) =>{
@@ -143,7 +168,7 @@ function VolunteerDetail(){
             headers: { Authorization: `Bearer ${jwt}`}
         })
         .then((res) =>{
-            console.log('참여취소완료')
+            swal("참여 취소 되었습니다");
             getParticipants();
         })
         .catch((err)=>{
@@ -274,7 +299,7 @@ function VolunteerDetail(){
                             <button 
                                 type='button' 
                                 className={`${style.joinBtn} ${style.joinXBtn}`}
-                                >봉사종료</button>
+                                >모집완료</button>
                         ),
                         "ONGOING": (
                             <button 
@@ -287,65 +312,14 @@ function VolunteerDetail(){
                                 className={style.joinBtn}
                                 onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
                     }[post.status]
-                    :( //
-                        isApply.length !== 0 //참여신청을 이미 했다면?
-                        ?(
-                            <button 
-                                type='button' 
-                                onClick={()=>{cancleBtn()}} 
-                                className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                        )
-                        :(
-                            <button 
-                                type='button' 
-                                onClick={()=>{applyBtn()}} 
-                                className={`${style.joinBtn}`}>참여신청</button>
-                        )
-                    )
+                    : setApplyBtn(post.status)
                 }
-                {/* {
-                    memSeq === post.writerSeq
-                    ?{
-                        "DONE": (
-                            <button 
-                                type='button' 
-                                className={`${style.joinBtn} ${style.joinXBtn}`}
-                                >봉사종료</button>
-                        ),
-                        "ONGOING": (
-                            <button 
-                                type='button' 
-                                className={`${style.joinBtn} ${style.joinXBtn}`}
-                                onClick={()=>{onChangeHandler("RECRUITING");}}>모집시작</button>),
-                        "RECRUITING": (
-                            <button 
-                                type='button' 
-                                className={style.joinBtn}
-                                onClick={()=>{onChangeHandler("ONGOING");}}>모집마감</button>)
-                    }[post.status]
-                    :{
-
-                    }( //
-                        isApply.length !== 0 //참여신청을 이미 했다면?
-                        ?(
-                            <button 
-                                type='button' 
-                                onClick={()=>{cancleBtn()}} 
-                                className={`${style.joinBtn} ${style.joinXBtn}`}>참여취소</button>
-                        )
-                        :(
-                            <button 
-                                type='button' 
-                                onClick={()=>{applyBtn()}} 
-                                className={`${style.joinBtn}`}>참여신청</button>
-                        )
-                    )
-                } */}
             </div>
 
             <VolunteerInfo
                 post={post}
-                memSeq={memSeq}/>
+                memSeq={memSeq}
+                />
 
             <div className={style.mainBox}>
                 <div dangerouslySetInnerHTML={{__html:post.content}}></div>
@@ -372,7 +346,7 @@ function VolunteerDetail(){
                 />
             <button 
                 className={style.listBtn}
-                onClick={()=>{navigate(-1)}}>목록</button>
+                onClick={()=>{navigate('/volunteer/list')}}>목록</button>
         </div>
     )
 }

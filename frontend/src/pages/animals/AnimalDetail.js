@@ -3,6 +3,7 @@ import Map from "components/Map";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { Guide } from "pages/guide";
 
 export default function AnimalDetails() {
   const info = useSelector((state) => state.animalInfo.info);
@@ -27,7 +28,7 @@ export default function AnimalDetails() {
                   style={{ width: "23rem" }}
                 >
                   <img
-                    src={data[1].value}
+                    src={data[11].value}
                     className="card-img-top"
                     alt="사진 없음"
                   />
@@ -79,51 +80,7 @@ export default function AnimalDetails() {
                             ></button>
                           </div>
                           <div className="modal-body">
-                            안뇽하세요
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                          </div>
-                          <div className="modal-footer">
-                            <button
-                              type="button"
-                              className="btn btn-secondary"
-                              data-bs-dismiss="modal"
-                            >
-                              후원하기
-                            </button>
+                            <Guide />
                           </div>
                         </div>
                       </div>
@@ -146,7 +103,7 @@ export default function AnimalDetails() {
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">품종</th>
+                        <th scope="row" width="30%">품종</th>
                         <td colSpan="3">{data[4].value}</td>
                       </tr>
                       <tr>
@@ -190,7 +147,7 @@ export default function AnimalDetails() {
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">관할기관</th>
+                        <th scope="row" width="30%">관할기관</th>
                         <td colSpan="3">{data[19].value}</td>
                       </tr>
                       <tr>
@@ -210,9 +167,6 @@ export default function AnimalDetails() {
                 </div>
               </div>
             </section>
-            <div className={animaldetails.bottomContent}>
-              <Map></Map>
-            </div>
           </main>
         </div>
       ) : (
