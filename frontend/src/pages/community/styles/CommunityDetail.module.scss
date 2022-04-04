@@ -9,12 +9,11 @@ $sub-color: #e8e8e8;
     background-color: white;
     box-shadow: 0px 0px 10px $sub-color;
     padding: 30px;
-    //@at-root: 1px solid red;
-    height: 400px;
-    margin: auto;   
+    // height: 400px;
+    height: auto;
+    margin: auto;
     background: #ffffff;
     margin-bottom: 100px;
-    //grid-template-columns: 200px 200px 500px;
     .alltitle {
       display: block;
       margin: auto;
@@ -59,8 +58,8 @@ $sub-color: #e8e8e8;
     .content_div {
       display: block;
       width: 90%;
-      height: 200px;
-      //height: auto;
+      // height: 200px;
+      height: auto;
       margin: auto;
       margin-top: 20px;
       border: 1px solid black;
@@ -91,50 +90,3 @@ $sub-color: #e8e8e8;
     }
   }
 }
-
-// .middle_comment{
-//     margin-left: 70px;
-// }
-// .bottomContent{
-//     display:block;
-//     height: auto;
-//     width: 90%;
-//     margin: auto;
-//     background: #ffffff;
-//     .onecomment{
-//         border: 1px solid black;
-//         height: auto;
-//         .content_div{
-//             display:inline-block;
-//             width: 60%;
-//             height: auto;
-//             margin-top: 50px;
-//             margin-left: 50px;
-//             resize: none;
-//         }
-//         .author_p{
-//             display:inline-block;
-//             border: 1px solid black;
-//         }
-//         .button {
-//             display:inline-block;
-//             background-color: $main-color;
-//             padding: 5px 13px;
-//             margin-left: 30px; //끝으로 보낼거면 없애기
-//             margin-bottom: 40px;
-//             border-radius: 5px;
-//             border: 0;
-//             color: white;
-//         }
-
-//         .img_thumbnail{
-//             display:inline-block;
-//             //border: 1px solid black;
-//             width: 50px;
-//             height: 50px;
-//             margin-left: 50px;
-//             margin-bottom: 46px;
-//             border-radius: 70%;
-//         }
-//     }
-// }

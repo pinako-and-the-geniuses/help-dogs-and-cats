@@ -12,10 +12,6 @@ $sub-color: #999999;
   .createtopContent {
     //border: 1px solid red;
     display: flex;
-    //justify-content: space-around;
-    //justify-content: center;
-    //justify-content: space-between;
-
     //height: 500px; 높이 자동으로 하고 싶으면 사용
     // background: #ffffff;
     margin-bottom: 20px;
@@ -50,25 +46,16 @@ $sub-color: #999999;
       font-size: 16px;
     }
   }
-  .quill {
-    // background-color: white;
-    // box-shadow: 0px 0px 10px $sub-color;
-    // padding: 30px;
-    //border: 1px solid red;
-    display: block;
-    margin: auto;
-    height: 400px;
-  }
   .Editorheight{
     //border: 1px solid red;
     height: 400px;
   }
   .createbuttonContent {
-    //border: 1px solid red;
+    // border: 1px solid red;
     display: flex;
     justify-content: end;
     //margin-top: 70px;
-    margin-top: 100px;
+    margin-top: 20px;
     // width: 70%;
     .communitycreatebutton {
       background-color: $main-color;

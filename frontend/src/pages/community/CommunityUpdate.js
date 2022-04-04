@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import XMLParser from "react-xml-parser";
 import st from "./styles/CommunityUpdate.module.scss";
-import cn from "classnames";
 import { URL } from "public/config";
 import Editor from "components/Editor";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 export default function CommunityCreate(api) {
-  const communitySeq = useParams();
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
-  // const [htmlcontent, setHtmlContent] = useState("");
   const [content, setContent] = useState("");
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const navi = useNavigate();
@@ -24,14 +21,6 @@ export default function CommunityCreate(api) {
     if (!isLogin) {
       alert("로그인 해주세요.");
     } else {
-      // axios
-      //   .get(`${URL}/communities/${communitySeq}`)
-      //   .then((res) => {
-      //     const data = res.data.data;
-      //     setTitle(data.title);
-      //     setCategory(data.category);
-      //     setHtmlContent(data.htmlcontent);
-      //   })
       axios({
         url: `${URL}/communities/${seq}`,
         method: "GET",
@@ -50,8 +39,6 @@ export default function CommunityCreate(api) {
     }
   }, [isLogin]);
 
-  // console.log("data", title, category, content);
-
   const onSubmit = (event) => {
     event.preventDefault();
     axios({
@@ -67,12 +54,21 @@ export default function CommunityCreate(api) {
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          alert("수정 완료");
-          navi(`/community/communitydetail/${seq}`);
+          // alert("수정 완료");
+          // navi(`/community/communitydetail/${seq}`);
+          Swal.fire({ icon: "success", title: "게시글을 수정하였습니다." }).then(
+            function () {
+              navi(`/community/communitydetail/${seq}`);
+            }
+          );
         }
       })
       .catch((err) => {
-        alert("수정 실패");
+        Swal.fire({ icon: "error", title: "게시글을 수정하지 못했습니다." }).then(
+          function () {
+            navi(`/community/communitydetail/${seq}`);
+          }
+        );
       });
   };
   return (
@@ -101,25 +97,11 @@ export default function CommunityCreate(api) {
           />
         </div>
       </div>
-      {/* <div className={st.quill}>
-          <QuillEditor
-            quillRef={quillRef}
-            htmlcontent={htmlcontent}
-            setHtmlContent={setHtmlContent}
-            onChange={(event) => setHtmlContent(event.target.value)}
-            api={api}
-          />
-        </div> */}
-      {/* <div>
-        <label htmlFor="content">
-          <span>내용</span>
-        </label>
-      </div> */}
       <div className={st.Editorheight}>
         <Editor
           id="content"
           height={"90%"}
-          value={content}
+          value={content || ""}
           onChange={onEditorChange}
           placeholder={""}
         ></Editor>
@@ -131,9 +113,6 @@ export default function CommunityCreate(api) {
           className={st.communitycreatebutton}
         >
           수정
-        </button>
-        <button type="reset" className={st.communitycreatebutton}>
-          취소
         </button>
       </div>
     </div>
