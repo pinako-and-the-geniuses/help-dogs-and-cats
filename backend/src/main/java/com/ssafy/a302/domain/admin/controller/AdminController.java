@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -318,5 +319,35 @@ public class AdminController {
         } else {
             throw new IllegalArgumentException(ErrorMessage.PATTERN_BLANK);
         }
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @Operation(
+            summary = "괸리자 인증 요청 개수 조회 API",
+            description = "봉사활동, 입양 인증 요청 개수를 반환합니다.",
+            tags = {"member"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "API 요청에 성공하였습니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "토큰 검증에 실패하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @GetMapping("/auth-request-count")
+    public BaseResponseDto<?> getAuthRequestCount() {
+        Map<String, Integer> authRequestCount = adminService.getAuthRequestCount();
+
+        return BaseResponseDto.builder()
+                .message(Message.SUCCESS)
+                .data(authRequestCount)
+                .build();
     }
 }

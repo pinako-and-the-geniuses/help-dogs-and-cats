@@ -4,6 +4,8 @@ import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Map;
+
 public interface AdminService {
 
     VolunteerAuthDto.Response volunteerAuthDetail(Long volunteerSeq);
@@ -17,4 +19,6 @@ public interface AdminService {
     VolunteerAuthDto.VolunteerAuthPage getVolunteerAuthList(Pageable pageable, String search);
 
     AdoptAuthDto.AdoptAuthPage getAdoptAuthList(Pageable pageable, String search);
+
+    Map<String, Integer> getAuthRequestCount();
 }

@@ -15,4 +15,7 @@ public interface AdoptAuthRepository extends JpaRepository<AdoptAuth, Long>, Ado
 
     @Query("SELECT aa.member FROM AdoptAuth aa WHERE aa.seq = :adoptSeq")
     Optional<Member> findMemberByAdoptSeq(@Param(value = "adoptSeq") Long adoptSeq);
+
+    @Query("SELECT COUNT(aa) FROM AdoptAuth aa WHERE aa.status = 'REQUEST'")
+    Integer countAllByStatusEqRequest();
 }
