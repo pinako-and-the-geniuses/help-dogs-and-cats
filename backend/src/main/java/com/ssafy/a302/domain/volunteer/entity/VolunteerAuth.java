@@ -68,6 +68,7 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
     public VolunteerAuthDto.Response toResponseDto() {
         return VolunteerAuthDto.Response.builder()
                 .seq(seq)
+                .title(this.getVolunteer().getTitle())
                 .content(content)
                 .status(status)
                 .lastModifiedDate(getLastModifiedDate())
