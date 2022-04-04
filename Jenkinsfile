@@ -23,6 +23,21 @@ pipeline {
             }
         }
 
+        stage('Backend Build') {
+            steps {
+                sh 'chmod u+x ./backend/gradlew'
+                sh 'sh ./backend/gradlew build'
+                sh 'docker build -t backend ./backend/'
+            }
+        }
+
+        stage('Backend Deploy') {
+            steps {
+                sh 'docker ps -q --filter name=backend | grep -q . && docker stop backend && docker rm backend'
+                sh 'docker run -v /var/tmp/springboot/files:/var/tmp/springboot/files -d -it -p 8080:8080 --name backend backend'
+            }
+        }
+
         stage('Finish') {
             steps{
                 sh 'docker images -qf dangling=true | xargs -I{} docker rmi {}'
