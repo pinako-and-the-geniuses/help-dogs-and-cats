@@ -30,11 +30,13 @@ import {
 import { ManageMain } from "./pages/manager";
 import { Guide } from "pages/guide";
 import Footer from "components/Footer";
+import ScrollToTop from "components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
       <Header></Header>
+      <ScrollToTop />
       <Routes>
         <>
           <Route path="" element={<Home />} />
