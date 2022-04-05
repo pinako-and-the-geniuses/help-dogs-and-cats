@@ -32,9 +32,7 @@ export default function AnimalDetails() {
                     alt="사진 없음"
                   />
                   <div className="card-body">
-                    <span className="badge rounded-pill bg-secondary">
-                      Secondary
-                    </span>
+                    <div className={animaldetails.processState}>{data[12].value}</div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>공고번호</p>
                       <p>{data[0].value}</p>
@@ -52,7 +50,7 @@ export default function AnimalDetails() {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-secondary"
+                      className={animaldetails.button}
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                     >
