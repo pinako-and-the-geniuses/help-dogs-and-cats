@@ -41,7 +41,7 @@ public class CommunityController {
 
     private final BadgeService badgeService;
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "커뮤니티 등록 API",
             description = "제목, 본문, 카데고리를 전달받고 커뮤니티 게시글을 등록합니다.",
@@ -140,7 +140,7 @@ public class CommunityController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "커뮤니티 게시글 댓글 등록 API",
             description = "커뮤니티 게시글 식별키, 댓글 본문, 부모 댓글 식별키를 전달받고 커뮤니티 게시글 댓글을 등록합니다.",
@@ -176,7 +176,7 @@ public class CommunityController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "커뮤니티 게시글 댓글 삭제 API",
             description = "커뮤니티 게시글 식별키, 댓글 식별키, 회원 식별키를 전달받고 커뮤니티 게시글 댓글을 삭제합니다.",
@@ -217,7 +217,7 @@ public class CommunityController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "커뮤니티 게시글 삭제 API",
             description = "커뮤니티 게시글 식별키, 회원 식별키를 전달받고 커뮤니티 게시글을 삭제합니다.",
@@ -255,7 +255,7 @@ public class CommunityController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "커뮤니티 게시글 수정 API",
             description = "제목, 본문, 카데고리, 회원 식별키를 전달받고 커뮤니티 게시글을 수정합니다.",
@@ -299,9 +299,9 @@ public class CommunityController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
-            summary = "커뮤니티 게시글 조회 API",
+            summary = "커뮤니티 게시글 상세페이지 조회 API",
             description = "커뮤니티 식별키, 회원 식별키를 전달받고 커뮤니티 게시글을 조회합니다.",
             tags = {"community"}
     )

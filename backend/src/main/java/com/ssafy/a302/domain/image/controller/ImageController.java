@@ -31,7 +31,7 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "이미지 저장 API",
             description = "이미지 파일을 전달받고 이미지를 저장합니다.",
@@ -73,7 +73,7 @@ public class ImageController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "이미지 삭제 API",
             description = "이미지 파일이름을 전달받고 이미지를 저장합니다.",

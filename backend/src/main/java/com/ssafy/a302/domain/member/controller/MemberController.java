@@ -317,7 +317,7 @@ public class MemberController {
                 .build(), status);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "회원정보 수정 API",
             description = "회원 기본키, 비밀번호, 닉네임, 핸드폰 번호, 활동 지역을 전달받고 회원 정보를 수정합니다.",
@@ -432,7 +432,7 @@ public class MemberController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "프로필 이미지 수정 API",
             description = "회원 기본키, 프로필 이미지 파일을 전달받고 프로필 이미지를 수정합니다.",
@@ -487,7 +487,7 @@ public class MemberController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "프로필 이미지 삭제 API",
             description = "회원 기본키를 전달 받고 프로필 이미지를 삭제합니다.",
@@ -568,7 +568,7 @@ public class MemberController {
                 .build(), status);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "비밀번호 재설정",
             description = "주소 상단의 jwtToken과 회원이 재설정한 비밀번호를 통해 비밀번호를 변경합니다.",
@@ -669,7 +669,7 @@ public class MemberController {
                 .build(), status);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "회원 탈퇴 API",
             description = "회원 탈퇴 API 입니다.",

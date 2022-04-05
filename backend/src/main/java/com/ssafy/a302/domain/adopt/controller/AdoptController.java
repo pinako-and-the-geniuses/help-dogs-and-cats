@@ -32,7 +32,7 @@ public class AdoptController {
 
     private final AuthenticationUtil authenticationUtil;
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "입양 인증 요청 API",
             description = "회원 식별키, 입양 인증 제목, 입양 인증 내용을 전달받고 입양 인증 요청을 수행합니다.",
@@ -66,7 +66,7 @@ public class AdoptController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "입양 인증 수정 API",
             description = "회원 식별키, 입양 인증 식별키, 입양 인증 제목, 입양 인증 내용을 전달받고 입양 인증 수정을 수행합니다.",
@@ -102,7 +102,7 @@ public class AdoptController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "입양 인증 조회 API",
             description = "회원 식별키, 입양 인증 식별키를 전달받고 입양 인증 데이터를 반환합니다.",
