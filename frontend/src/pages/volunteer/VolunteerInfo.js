@@ -1,7 +1,7 @@
 import style from './styles/VolunteerDetail.module.scss';
 import TeamManage from './TeamManage';
 
-function VolunteerInfo({post, memSeq}){
+function VolunteerInfo({post, memSeq, getParticipants}){
     return(
         <div className={style.infoBox}>
         <ul>
@@ -29,7 +29,7 @@ function VolunteerInfo({post, memSeq}){
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLabel">봉사활동 인원 관리</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={()=>{getParticipants()}}></button>
                             </div>
                             <div className="modal-body">
                                 <TeamManage 
