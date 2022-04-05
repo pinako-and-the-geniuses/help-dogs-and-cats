@@ -27,6 +27,18 @@ function VolunteerDetail() {
   const endDate = new Date(post.endDate);
   const gap = endDate.getTime() - today.getTime();
   const leftdays = Math.ceil(gap / (1000 * 60 * 60 * 24));
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+
+  useEffect(() => {
+    if (!isLogin) {
+      swal({
+        title: "권한이 없습니다. ",
+        icon: "error",
+        closeOnClickOutside: false,
+      });
+      navigate("/login", { replace: true });
+    }
+  });
 
   function getYyyyMmDdToString(date) {
     var dd = date.getDate();
@@ -287,89 +299,93 @@ function VolunteerDetail() {
     console.log(post);
   }, [post, changed]);
 
-  return (
-    <div className={style.myContainer}>
-      <h1>봉사활동</h1>
+  if (isLogin) {
+    return (
+      <div className={style.myContainer}>
+        <h1>봉사활동</h1>
 
-      <div className={style.titleBox}>
-        {post.status === "RECRUITING" ? (
-          leftdays >= 0 ? (
-            <p className={style.leftdays}>D-{leftdays}</p>
+        <div className={style.titleBox}>
+          {post.status === "RECRUITING" ? (
+            leftdays >= 0 ? (
+              <p className={style.leftdays}>D-{leftdays}</p>
+            ) : (
+              <p className={style.leftdays}>마감</p>
+            )
           ) : (
             <p className={style.leftdays}>마감</p>
-          )
-        ) : (
-          <p className={style.leftdays}>마감</p>
-        )}
-        <p className={style.title}>{post.title}</p>
-        {memSeq === post.writerSeq
-          ? {
-              DONE: (
-                <button
-                  type="button"
-                  className={`${style.joinBtn} ${style.joinXBtn}`}
-                >
-                  모집완료
-                </button>
-              ),
-              ONGOING: (
-                <button
-                  type="button"
-                  className={`${style.joinBtn} ${style.joinXBtn}`}
-                  onClick={() => {
-                    onChangeHandler("RECRUITING");
-                  }}
-                >
-                  모집시작
-                </button>
-              ),
-              RECRUITING: (
-                <button
-                  type="button"
-                  className={style.joinBtn}
-                  onClick={() => {
-                    onChangeHandler("ONGOING");
-                  }}
-                >
-                  모집마감
-                </button>
-              ),
-            }[post.status]
-          : setApplyBtn(post.status)}
-      </div>
-
-      <VolunteerInfo post={post} memSeq={memSeq} />
-
-      <div className={style.mainBox}>
-        <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-      </div>
-
-      {memSeq === post.writerSeq ? (
-        <div className={style.editPost}>
-          <p onClick={goToEdit}>수정</p>
-          <p onClick={deleteHandler}>삭제</p>
+          )}
+          <p className={style.title}>{post.title}</p>
+          {memSeq === post.writerSeq
+            ? {
+                DONE: (
+                  <button
+                    type="button"
+                    className={`${style.joinBtn} ${style.joinXBtn}`}
+                  >
+                    모집완료
+                  </button>
+                ),
+                ONGOING: (
+                  <button
+                    type="button"
+                    className={`${style.joinBtn} ${style.joinXBtn}`}
+                    onClick={() => {
+                      onChangeHandler("RECRUITING");
+                    }}
+                  >
+                    모집시작
+                  </button>
+                ),
+                RECRUITING: (
+                  <button
+                    type="button"
+                    className={style.joinBtn}
+                    onClick={() => {
+                      onChangeHandler("ONGOING");
+                    }}
+                  >
+                    모집마감
+                  </button>
+                ),
+              }[post.status]
+            : setApplyBtn(post.status)}
         </div>
-      ) : null}
-      <br />
 
-      <Comment
-        id={id}
-        value={commentContent}
-        onChange={onCommentChange}
-        eventHandler={onClickEvent}
-        comments={comments}
-        getPost={getPost}
-      />
-      <button
-        className={style.listBtn}
-        onClick={() => {
-          navigate("/volunteer/list");
-        }}
-      >
-        목록
-      </button>
-    </div>
-  );
+        <VolunteerInfo post={post} memSeq={memSeq} />
+
+        <div className={style.mainBox}>
+          <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+        </div>
+
+        {memSeq === post.writerSeq ? (
+          <div className={style.editPost}>
+            <p onClick={goToEdit}>수정</p>
+            <p onClick={deleteHandler}>삭제</p>
+          </div>
+        ) : null}
+        <br />
+
+        <Comment
+          id={id}
+          value={commentContent}
+          onChange={onCommentChange}
+          eventHandler={onClickEvent}
+          comments={comments}
+          getPost={getPost}
+        />
+        <button
+          className={style.listBtn}
+          onClick={() => {
+            navigate("/volunteer/list");
+          }}
+        >
+          목록
+        </button>
+      </div>
+    );
+  } else {
+    return <></>;
+  }
 }
 
 export default VolunteerDetail;

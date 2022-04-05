@@ -1,5 +1,4 @@
 import animaldetails from "./styles/AnimalDetails.module.scss";
-import Map from "components/Map";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -103,7 +102,9 @@ export default function AnimalDetails() {
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row" width="30%">품종</th>
+                        <th scope="row" width="30%">
+                          품종
+                        </th>
                         <td colSpan="3">{data[4].value}</td>
                       </tr>
                       <tr>
@@ -147,7 +148,9 @@ export default function AnimalDetails() {
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row" width="30%">관할기관</th>
+                        <th scope="row" width="30%">
+                          관할기관
+                        </th>
                         <td colSpan="3">{data[19].value}</td>
                       </tr>
                       <tr>

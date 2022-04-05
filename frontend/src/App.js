@@ -27,13 +27,7 @@ import {
   VolunteerWrite,
   VolunteerUpdate,
 } from "./pages/volunteer";
-import {
-  ManageMain,
-  VolunteerManage,
-  AdoptManage,
-  AdoptManageDetail,
-  VolunteerManageDetail,
-} from "./pages/manager";
+import { ManageMain } from "./pages/manager";
 import { Guide } from "pages/guide";
 import Footer from "components/Footer";
 

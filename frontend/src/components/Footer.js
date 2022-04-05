@@ -9,6 +9,7 @@ const FooterMain = styled.footer`
   justify-content: space-evenly;
   flex-wrap: nowrap;
   bottom: 0;
+  position: relative;
 `;
 
 const FooterContentForm = styled.div`

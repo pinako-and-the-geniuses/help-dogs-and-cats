@@ -20,11 +20,9 @@ export default function CommunityDetail() {
 
   const getComment = () => {
     if (!isLogin) {
-      Swal.fire({ icon: "warning", title: "로그인해주세요" }).then(
-        function () {
-          navigate("/login");
-        }
-      );
+      Swal.fire({ icon: "warning", title: "로그인해주세요" }).then(function () {
+        navigate("/login");
+      });
     } else {
       axios({
         url: `${URL}/communities/${seq}`,
@@ -48,10 +46,10 @@ export default function CommunityDetail() {
     setCommentContent(value);
   };
   const onClickEvent = (value) => {
-    if (commentContent.length < 1){
+    if (commentContent.length < 1) {
       swal("입력값은 필수입니다");
       return;
-    } 
+    }
     CommuComment();
     // window.location.replace(`/community/communitydetail/${seq}`);
   };
@@ -119,49 +117,52 @@ export default function CommunityDetail() {
         <div>
           {communityDetail ? (
             <>
-            <div className={st.mainDiv}>
-              <div className={st.alltitle}>
-                <div>
-                  <p className={st.tag_p}>
-                    {communityDetail.data.category === "REPORT" ? "제보" : ""}
-                    {communityDetail.data.category === "REVIEW" ? "후기" : ""}
-                    {communityDetail.data.category === "GENERAL" ? "잡담" : ""}
-                  </p>
-                  <p className={st.title_p}>
-                    제목 : {communityDetail.data.title}
-                  </p>
-                </div>
-                <div className={st.rightInfo}>
-                  <p className={st.p}>
-                    조회수 : {communityDetail.data.viewCount}
-                  </p>
-                  <p className={st.p}> | </p>
-                  <p className={st.p}>{communityDetail.data.createdDate} </p>
-                  <p className={st.p}> | </p>
-                  <p className={st.p}>{communityDetail.data.writerNickname} </p>
+              <div className={st.mainDiv}>
+                <div className={st.alltitle}>
+                  <div>
+                    <p className={st.tag_p}>
+                      {communityDetail.data.category === "REPORT" ? "제보" : ""}
+                      {communityDetail.data.category === "REVIEW" ? "후기" : ""}
+                      {communityDetail.data.category === "GENERAL"
+                        ? "잡담"
+                        : ""}
+                    </p>
+                    <p className={st.title_p}>
+                      제목 : {communityDetail.data.title}
+                    </p>
+                  </div>
+                  <div className={st.rightInfo}>
+                    <p className={st.p}>
+                      조회수 : {communityDetail.data.viewCount}
+                    </p>
+                    <p className={st.p}> | </p>
+                    <p className={st.p}>{communityDetail.data.createdDate} </p>
+                    <p className={st.p}> | </p>
+                    <p className={st.p}>
+                      {communityDetail.data.writerNickname}{" "}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={st.commudetailbox}>
-              <div
-                className={st.content_div}
-                dangerouslySetInnerHTML={{
-                  __html: communityDetail.data.content,
-                }}
-              ></div>
-            </div>
-          </>
-        
-        ) : null}
-        </div> 
+              <div className={st.commudetailbox}>
+                <div
+                  className={st.content_div}
+                  dangerouslySetInnerHTML={{
+                    __html: communityDetail.data.content,
+                  }}
+                ></div>
+              </div>
+            </>
+          ) : null}
+        </div>
         {writerSeq === memberSeq ? (
           <div className={st.contentbtn}>
             <>
-            <div className={st.commueditPost}>
-              <p onClick={GotoEdit}>수정</p>
-              <p onClick={deleteHandler}>삭제</p>
-            </div>
-          </>
+              <div className={st.commueditPost}>
+                <p onClick={GotoEdit}>수정</p>
+                <p onClick={deleteHandler}>삭제</p>
+              </div>
+            </>
           </div>
         ) : null}
       </div>
