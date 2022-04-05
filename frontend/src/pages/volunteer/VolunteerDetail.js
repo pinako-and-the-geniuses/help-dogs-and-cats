@@ -25,6 +25,7 @@ function VolunteerDetail(){
     const [stateChanged, setStateChanged] = useState(true);
     const [participants, setParticipants] = useState([]);
     const [join, setJoin] = useState(false);
+    const [isParty, setIsParty] = useState(true);
 
     const today = new Date();
     const endDate = new Date(post.endDate);
@@ -98,6 +99,7 @@ function VolunteerDetail(){
         })
         .then((res) =>{
             setParticipants(res.data.data);
+            setIsParty(!isParty);
         })
         .catch((err)=>{
             console.log(err);
@@ -265,7 +267,7 @@ function VolunteerDetail(){
     useEffect(()=>{
         getPost();
         getParticipants();
-    }, [changed, stateChanged]); //댓글, 모집, 
+    }, [changed, stateChanged, isParty]); //댓글, 모집, 
 
     useEffect(()=>{
         testIsApply();
@@ -319,7 +321,7 @@ function VolunteerDetail(){
             <VolunteerInfo
                 post={post}
                 memSeq={memSeq}
-                />
+                getParticipants={getParticipants}/>
 
             <div className={style.mainBox}>
                 <div dangerouslySetInnerHTML={{__html:post.content}}></div>
