@@ -13,7 +13,7 @@ import {
 } from "./pages/user";
 import { One } from "./pages/statistics";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
-import { AnimalDetail, Animal, AnimalList } from "./pages/animals";
+import { AnimalDetail, AnimalList } from "./pages/animals";
 import {
   Community,
   CommunityDetail,
@@ -55,7 +55,6 @@ function App() {
           <Route path="/guide" element={<Guide />} />
         </>
         <>
-          <Route path="/animals/animal" element={<Animal />} />
           <Route path="/animals/list" element={<AnimalList />} />
           <Route path="/animals/detail" element={<AnimalDetail />} />
         </>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { FcLock } from "react-icons/fc";
 import st from "../styles/profile.module.scss";
+import swal from "sweetalert";
+
 const IMGURL = "http://j6a302.p.ssafy.io:8080";
 
 export default function ProfileBadge(badgesForProfile) {
@@ -9,7 +11,7 @@ export default function ProfileBadge(badgesForProfile) {
     if (badgesForProfile) {
       setBadges(badgesForProfile.badgesForProfile);
     } else {
-      alert("다시 접속해 주세요.");
+      swal("서버에러", "다시 접속해 주세요.", "error");
       console.log("실패");
     }
   }, [badgesForProfile]);

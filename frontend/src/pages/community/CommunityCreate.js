@@ -13,13 +13,7 @@ export default function CommunityCreate(api) {
   const onEditorChange = (value) => {
     setContent(value);
   };
-  // useEffect(() => {
-  //   if (!isLogin) {
-  //     alert("로그인 해주세요.");
-  //   } else {
 
-  //    }
-  // }, [isLogin]);
   const onSubmit = (event) => {
     event.preventDefault();
     const jwt = sessionStorage.getItem("jwt");
@@ -36,29 +30,29 @@ export default function CommunityCreate(api) {
       .then((res) => {
         console.log(res);
         if (res.status === 201) {
-          //alert("게시글 생성");
-          // navi("/community/community");
-          Swal.fire({ icon: "success", title: "게시글을 생성하였습니다." }).then(
-            function () {
-              navi("/community/community");
-            }
-          );
+          Swal.fire({
+            icon: "success",
+            title: "게시글을 생성하였습니다.",
+          }).then(function () {
+            navi("/community/community");
+          });
         }
       })
       .catch((err) => {
-        // alert("게시글 실패");
-        // console.log(err.response.status);
-        Swal.fire({ icon: "error", title: "게시글을 생성하지 못했습니다." }).then(
-          function () {
-            navi("/community/community");
-          }
-        );
+        Swal.fire({
+          icon: "error",
+          title: "게시글을 생성하지 못했습니다.",
+        }).then(function () {
+          navi("/community/community");
+        });
       });
   };
   return (
     <div className={st.commucreatemain}>
       <header className={st.commuhead}>
-        <h1>커뮤니티 <span> 글 작성</span></h1>
+        <h1>
+          커뮤니티 <span> 글 작성</span>
+        </h1>
       </header>
       <div className={st.createtopContent}>
         <select

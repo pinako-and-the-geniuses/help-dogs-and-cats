@@ -3,6 +3,7 @@ import defaultImg from "../../../public/img/default.png";
 import st from "../styles/userform.module.scss";
 import axios from "axios";
 import { IMGURL, URL } from "public/config";
+import swal from "sweetalert";
 // import ReactLoading from "react-loading";
 
 export default function EditImage({ seq, img, setImg }) {
@@ -57,9 +58,9 @@ export default function EditImage({ seq, img, setImg }) {
       .catch((err) => {
         const status = err.response.status;
         if (status === 500) {
-          alert("서버에러");
+          swal("서버에러", "", "error");
         } else {
-          alert("검증실패");
+          swal("검증실패", "", "error");
         }
       });
   };

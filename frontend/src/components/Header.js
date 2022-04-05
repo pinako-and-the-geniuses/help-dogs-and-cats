@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../actions/UserAction";
 import styled from "styled-components";
+import swal from "sweetalert";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -32,9 +33,8 @@ export default function Header() {
       dispatch(logoutAction());
       sessionStorage.removeItem("jwt");
       navi("/");
-      alert("로그아웃 성공!");
     } else {
-      alert("로그인 정보가 없습니다.");
+      swal("실패", "로그인정보가 없습니다.", "error");
     }
   };
 
@@ -97,10 +97,7 @@ export default function Header() {
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              <a
-                className="nav-link scrollto"
-                href="/#chart"
-              >
+              <a className="nav-link scrollto" href="/#chart">
                 유기동물현황
               </a>
               {/* <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel> */}

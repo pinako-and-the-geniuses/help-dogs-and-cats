@@ -46,7 +46,10 @@ export default function CommunityDetail() {
     setCommentContent(value);
   };
   const onClickEvent = () => {
-    if (commentContent.length < 1||commentContent.replace(/\s| /gi, "").length===0) {
+    if (
+      commentContent.length < 1 ||
+      commentContent.replace(/\s| /gi, "").length === 0
+    ) {
       swal("입력값은 필수입니다");
       return;
     }
@@ -62,7 +65,6 @@ export default function CommunityDetail() {
       .then((res) => {
         console.log(res);
         if (res.status === 204) {
-          // alert("게시글 삭제");
           navigate(`/community/community`);
         }
       })

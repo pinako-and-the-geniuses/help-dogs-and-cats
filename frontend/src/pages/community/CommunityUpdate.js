@@ -20,7 +20,10 @@ export default function CommunityCreate(api) {
   };
   useEffect(() => {
     if (!isLogin) {
-      alert("로그인 해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "로그인 필수",
+      });
     } else {
       axios({
         url: `${URL}/communities/${seq}`,

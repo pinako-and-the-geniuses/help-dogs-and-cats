@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import SmallPaging from "components/SmallPaging";
 import { useSelector } from "react-redux";
 import Editor from "components/Editor";
-
+import swal from "sweetalert";
 export default function ProfileVolunteer({ category, seq, isLogin }) {
   // 활동 목록
   const [list, setList] = useState("");
@@ -74,9 +74,9 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     const method = props[0];
     const volunteerSeq = props[1];
     if (checkedInputs.length < 1) {
-      alert("인원을 선택하세요");
+      swal("인원 필수", "인원을 선택하세요.", "info");
     } else if (content.length < 10) {
-      alert("내용을 확인해주세요");
+      swal("내용 부족", "내용을 확인하세요.", "info");
     } else {
       axios({
         url: `${URL}/volunteers/${volunteerSeq}/auth`,
@@ -94,8 +94,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         })
         .catch((err) => {
           console.log(err);
-
-          alert("요청에 실패했습니다.");
+          swal("서버에러", "요청에 실패했습니다.", "error");
         });
     }
   };
@@ -122,7 +121,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
       .then(console.log(content, "======", checkedInputs))
       .catch((err) => {
         console.log(err);
-        alert("요청에 실패했습니다.");
+        swal("서버에러", "요청에 실패했습니다.", "error");
       });
   };
 

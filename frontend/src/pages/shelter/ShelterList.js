@@ -9,6 +9,7 @@ import { shelterGetAction } from "actions/ShelterAction";
 import axios from "axios";
 import style from "./styles/ShelterList.module.scss";
 import cn from "classnames";
+import swal from "sweetalert";
 
 function ShelterList() {
   // 외부 요청 key
@@ -74,12 +75,9 @@ function ShelterList() {
         })
         .catch((err) => {
           console.log("이름조회에러", err);
-          alert("이름 조회에 실패했습니다.");
+          swal("조회 실패", "이름 조회에 실패했습니다.", "error");
         });
     } else if (name.length < 1 && regionUrl.length >= 15) {
-      console.log("지역만검색들어옴", regionUrl);
-      console.log("지역만검색들어옴", regionUrl.length);
-
       if (selected.sidoCode) {
         // 시도 + 시군구
         if (regionUrl.length > 24) {
@@ -109,7 +107,11 @@ function ShelterList() {
                       })
                       .catch((err) => {
                         console.log("지역만결과-상세정보-서버 에러 발생", err);
-                        alert("네트워크 에러가 발생했습니다.");
+                        swal(
+                          "서버에러",
+                          "네트워크 에러가 발생했습니다.",
+                          "error"
+                        );
                       });
                   });
                 }
@@ -117,7 +119,7 @@ function ShelterList() {
             })
             .catch((err) => {
               console.log("err", err);
-              alert("네트워크 에러가 발생했습니다.");
+              swal("서버에러", "네트워크 에러가 발생했습니다.", "error");
             });
         }
         // 시도만 선택
@@ -154,20 +156,24 @@ function ShelterList() {
                             "지역만결과-상세정보-서버 에러 발생",
                             err
                           );
-                          alert("네트워크 에러가 발생했습니다.");
+                          swal(
+                            "서버에러",
+                            "네트워크 에러가 발생했습니다.",
+                            "error"
+                          );
                         });
                     });
                   }
                 })
                 .catch((err) => {
                   console.log("err", err);
-                  alert("네트워크 에러가 발생했습니다.");
+                  swal("서버에러", "네트워크 에러가 발생했습니다.", "error");
                 });
             });
           }
         }
       } else {
-        alert("시군구를 선택하세요.");
+        swal("조건선택", "시군구를 선택하세요.", "info");
       }
     } //      console.log("지역+검색어조회", name, "===", regionUrl);
     else if (name.length > 1 && regionUrl.length >= 15) {
@@ -206,17 +212,17 @@ function ShelterList() {
                     })
                     .catch((err) => {
                       console.log("이름조회에러", err);
-                      alert("이름 조회에 실패했습니다.");
+                      swal("서버에러", "이름 조회에 실패했습니다.", "error");
                     });
                 });
               }
             }
           });
       } else {
-        alert("시군구를 선택하세요.");
+        swal("조건선택", "시군구를 선택하세요.", "info");
       }
     } else {
-      alert("검색 조건을 확인하세요.");
+      swal("조건선택", "검색조건을 확인하세요.", "info");
     }
   };
 
@@ -340,9 +346,9 @@ function ShelterList() {
               setNameSearch(e.target.value);
             }}
           />
-          <div className="ms-3">
+          {/* <div className="ms-3">
             [ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ]{" "}
-          </div>
+          </div> */}
         </div>
         <div>
           <button
