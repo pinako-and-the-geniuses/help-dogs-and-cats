@@ -159,13 +159,11 @@ class CommunityServiceTest {
     @Test
     @DisplayName("커뮤니티 페이지 조회 - 성공")
     void viewCommunityPageSuccess() {
-        PageRequest pageable = PageRequest.of(1, 10);
+        PageRequest pageable = PageRequest.of(1, 8);
         CommunityDto.CommunityListPage page0 = communityService.getPage(pageable, null, "", "");
         assertThat(page0.getTotalCount()).isEqualTo(0);
         assertThat(page0.getCurrentPageNumber()).isEqualTo(1);
         assertThat(page0.getTotalPageNumber()).isEqualTo(0);
-        assertThat(page0.getCommunitiesForPage()).isNull();
-        ;
 
         /**
          * 테스트 데이터 세팅
