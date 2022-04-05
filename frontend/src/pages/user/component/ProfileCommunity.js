@@ -74,12 +74,14 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
             ) : (
               <h4 className={st.comment}>작성한 글이 없습니다.</h4>
             )}
-            <SmallPaging
-              page={page}
-              setPage={setPage}
-              totalPageNumber={totalPageNumber}
-            />
           </div>
+        </div>
+        <div className={st.paging}>
+          <SmallPaging
+            page={page}
+            setPage={setPage}
+            totalPageNumber={totalPageNumber}
+          />
         </div>
       </div>
     </div>
