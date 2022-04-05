@@ -12,7 +12,7 @@ export default function Community() {
   const [page, setPage] = useState(1);
   const [totalcount, setTotalcount] = useState("");
   const [totalPageNumber, setTotalPageNumber] = useState("");
-  const size = 10;
+  const size = 8;
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [keyword, setKeyword] = useState("");
@@ -101,6 +101,7 @@ export default function Community() {
             <option value="report">제보</option>
             <option value="general">잡담</option>
             <option value="review">후기</option>
+            <option value="notice">공지</option>
           </select>
           <select defaultValue="" name="searchCgg" onChange={getSearch}>
             <option value="all">전체</option>
@@ -137,11 +138,32 @@ export default function Community() {
         {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
         {communitys ? (
           <tbody>
+            {/* {communitys.slice(0,2).map((community) => (
+              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                {community.category === "NOTICE" ? <td>공지</td> : ""}
+                <td>{community.title}</td>
+                <td>{community.memberNickname}</td>
+                <td>{community.createdDate}</td>
+                <td>{community.viewCount}</td>
+              </tr>
+            ))}
+            {communitys.slice(2,10).map((community) => (
+              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                {community.category === "REPORT" ? <td>제보</td> : ""}
+                {community.category === "REVIEW" ? <td>후기</td> : ""}
+                {community.category === "GENERAL" ? <td>잡담</td> : ""}
+                <td>{community.title}</td>
+                <td>{community.memberNickname}</td>
+                <td>{community.createdDate}</td>
+                <td>{community.viewCount}</td>
+              </tr>
+            ))} */}
             {communitys.map((community) => (
               <tr key={community.seq} onClick={() => getSeq(community.seq)}>
                 {community.category === "REPORT" ? <td>제보</td> : ""}
                 {community.category === "REVIEW" ? <td>후기</td> : ""}
                 {community.category === "GENERAL" ? <td>잡담</td> : ""}
+                {community.category === "NOTICE" ? <td>공지</td> : ""}
                 <td>{community.title}</td>
                 <td>{community.memberNickname}</td>
                 <td>{community.createdDate}</td>
