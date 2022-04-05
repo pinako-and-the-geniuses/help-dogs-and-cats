@@ -60,6 +60,7 @@ function TeamManage(props){
             headers:{ Authorization: `Bearer ${jwt}`}
         })
         .then((res)=>{
+            //getParticipants();
         })
         .catch((err)=>{
             console.log(err);
