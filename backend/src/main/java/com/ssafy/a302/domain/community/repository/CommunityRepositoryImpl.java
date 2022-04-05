@@ -110,7 +110,7 @@ public class CommunityRepositoryImpl implements CommunityRepositoryCustom {
     }
 
     private BooleanExpression categoryEq(Community.Category category) {
-        return category != null ? community.category.eq(category) : null;
+        return category != null ? community.category.eq(category) : community.category.in(Community.Category.REPORT, Community.Category.REVIEW, Community.Category.GENERAL);
     }
 
     private BooleanExpression searchEq(String search, String keyword) {
