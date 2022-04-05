@@ -111,7 +111,7 @@ export default function CommunityDetail() {
   return (
     <div className={st.community_commentBox}>
       <header className={st.communitydetailheader}>
-        <h2>Community</h2>
+        <h1>커뮤니티</h1>
       </header>
       <div className={st.topContent}>
         <div>

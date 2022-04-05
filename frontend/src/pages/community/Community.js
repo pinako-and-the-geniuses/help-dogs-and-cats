@@ -92,7 +92,7 @@ export default function Community() {
   return (
     <div className={style.cummunity_container}>
       <header className={style.communhead}>
-        <h2>Community</h2>
+        <h1>커뮤니티</h1>
       </header>
       <div className={style.community_search_bar}>
         <div className={style.search_input}>
@@ -120,18 +120,18 @@ export default function Community() {
             type="submit"
             onClick={getWrite}
           >
-            글쓰기
+            🖊 글쓰기
           </button>
         </div>
       ) : null}
       <table className={cn("table table-hover", style.my_table)}>
         <thead>
           <tr>
-            <th scope="col">태그</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">작성일</th>
-            <th scope="col">조회수</th>
+            <th scope="col" width="15%">태그</th>
+            <th scope="col" width="30%">제목</th>
+            <th scope="col" width="10%">작성자</th>
+            <th scope="col" width="10%">작성일</th>
+            <th scope="col" width="10%">조회수</th>
           </tr>
         </thead>
         {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
@@ -142,7 +142,7 @@ export default function Community() {
                 {community.category === "REPORT" ? <td>제보</td> : ""}
                 {community.category === "REVIEW" ? <td>후기</td> : ""}
                 {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                <td style={{ width: "20rem" }}>{community.title}</td>
+                <td>{community.title}</td>
                 <td>{community.memberNickname}</td>
                 <td>{community.createdDate}</td>
                 <td>{community.viewCount}</td>
