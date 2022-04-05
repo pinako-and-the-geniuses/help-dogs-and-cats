@@ -275,7 +275,7 @@ function VolunteerDetail() {
   };
 
   const onClickEvent = () => {
-    if (commentContent.trim.length === 0) {
+    if (commentContent.length < 1||commentContent.replace(/\s| /gi, "").length===0 ) {
       swal("입력값은 필수입니다");
       return;
     }
