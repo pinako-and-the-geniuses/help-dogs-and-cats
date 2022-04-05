@@ -3,7 +3,8 @@ $main-color: #b59d7c;
 $sub-color: #999999;
 
 .main_container {
-  margin: 50px 120px;
+  width: 75%;
+  margin: 50px auto;
   min-height: 60vh;
   header {
     margin: 40px 0;
@@ -34,7 +35,7 @@ $sub-color: #999999;
   border-radius: 5px;
   display: flex;
   justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
-  // justify-content: space-between;
+  align-items: center;
   padding: 20px 20px;
   margin: 10px 0;
 
