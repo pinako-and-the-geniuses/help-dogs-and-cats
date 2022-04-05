@@ -86,7 +86,7 @@ export default function AnimalDetails() {
                 </div>
 
                 <div className="tablebox mx-5">
-                  <table className="table table-hover">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th
@@ -132,7 +132,7 @@ export default function AnimalDetails() {
                     </tbody>
                   </table>
 
-                  <table className="table table-hover">
+                  <table className="table">
                     <thead>
                       <tr>
                         <th
@@ -173,6 +173,7 @@ export default function AnimalDetails() {
       ) : (
         "데이터가 없습니다."
       )}
+
     </>
   );
 }
