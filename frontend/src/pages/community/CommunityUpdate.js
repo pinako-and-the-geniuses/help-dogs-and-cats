@@ -15,6 +15,7 @@ export default function CommunityCreate(api) {
   const navi = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
   const { seq } = useParams();
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
   const onEditorChange = (value) => {
     setContent(value);
   };
@@ -85,7 +86,7 @@ export default function CommunityCreate(api) {
         </h1>
       </header>
       <div className={st.createtopContent}>
-        <select
+        {/* <select
           className="searchCd me-3"
           value={category}
           onChange={(event) => setCategory(event.target.value)}
@@ -94,7 +95,27 @@ export default function CommunityCreate(api) {
           <option value="report">제보</option>
           <option value="general">잡담</option>
           <option value="review">후기</option>
-        </select>
+          <option value="notice">공지</option>
+        </select> */}
+        {userInfo.role !== "ADMIN" ? (
+          <select
+            className="searchCd me-3"
+            onChange={(event) => setCategory(event.target.value)}
+          >
+            <option defaultValue>카테고리</option>
+            <option value="report">제보</option>
+            <option value="general">잡담</option>
+            <option value="review">후기</option>
+          </select>
+        ) : (
+          <select
+            className="searchCd me-3"
+            onChange={(event) => setCategory(event.target.value)}
+          >
+            <option defaultValue>카테고리</option>
+            <option value="notice">공지</option>
+          </select>
+        )}
         <div className={st.Title}>
           <input
             value={title}
