@@ -27,6 +27,11 @@ $main-color: #b59d7c;
     border-radius: 5px;
     padding: 10px;
   }
+  input,
+  label,
+  select {
+    cursor: pointer;
+  }
 }
 .couple {
   display: -webkit-inline-box;
