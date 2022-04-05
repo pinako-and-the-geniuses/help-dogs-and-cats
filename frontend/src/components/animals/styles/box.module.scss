@@ -1,12 +1,14 @@
 $main-color: #b59d7c;
 
 .card {
+  border-radius: 15px;
   border: 1px solid #999999;
   .cardText {
     margin: 10px 0;
     p {
       font-size: 15px;
       justify-content: space-evenly;
+      margin: 0;
     }
     .title {
       font-weight: 600;
@@ -30,13 +32,14 @@ $main-color: #b59d7c;
 .detilaBtn {
   display: flex;
   justify-content: end;
-
+  
   .button {
     border: 0;
     color: white;
     background-color: $main-color;
     border-radius: 5px;
     padding: 5px 10px;
+    margin: 5px 0;
   }
 }
 

@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
-import Paging from "../../components/Paging";
+import '../../components/styles/Paging.css';
+import Pagination from "react-js-pagination";
 
 const ANIMAL =
   "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
@@ -31,21 +32,18 @@ export default function AnimalList() {
   const [kindUrl, setKindUrl] = useState("");
   const [stateUrl, setStateUrl] = useState("");
   const [page, setPage] = useState(1);
-  const [totalItemCount, setTotalItemCount] = useState(0);
   const [limit, setLimit] = useState(12);
+  const [totalItemCount, setTotalItemCount] = useState(0);
 
   // 원하는 데이터 뽑아 저장하기
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
-    console.log("조회결과", listData);
     setTotalItemCount(arr.children[3].value);
     setList(listData);
   };
 
   const onGetList = () => {
-    console.log("regionURl", regionUrl);
-
     axios
       .get(
         `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
@@ -59,6 +57,7 @@ export default function AnimalList() {
         console.log("err", err);
       });
   };
+
 
   useEffect(() => {
     onGetList("");
@@ -164,12 +163,13 @@ export default function AnimalList() {
         <AnimalBox list={list} />
       </div>
 
-      <Paging
-        total={totalItemCount}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={limit}
+        totalItemsCount={totalItemCount}
+        pageRangeDisplayed={10}
+        onChange={setPage}
+        ></Pagination>
     </div>
   );
 }
