@@ -46,7 +46,7 @@ export default function CommunityDetail() {
     setCommentContent(value);
   };
   const onClickEvent = (value) => {
-    if (commentContent.length < 1) {
+    if (commentContent.length < 1||commentContent.replace(/\s| /gi, "").length===0) {
       swal("입력값은 필수입니다");
       return;
     }

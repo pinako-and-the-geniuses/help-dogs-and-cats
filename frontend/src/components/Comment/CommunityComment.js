@@ -55,7 +55,9 @@ function CommunityComment(props){
 
     const enterKey=(e)=>{
         e.preventDefault();
-        if(window.event.keyCode === 13) props.eventHandler();
+        if(window.event.keyCode === 13){
+            props.eventHandler();
+        }
     }
 
     return(
