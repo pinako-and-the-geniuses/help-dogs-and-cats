@@ -12,6 +12,8 @@ const AnnualBreedMain = styled.div`
 `;
 
 const AnnualBreedTitle = styled.div`
+  font-weight: bold;
+  text-align: center;
   font-size: 30px;
 `;
 const AnnualBreedSubTitle = styled.div`
@@ -20,6 +22,7 @@ const AnnualBreedSubTitle = styled.div`
   font-size: 20px;
 `;
 const AnnualBreedYears = styled.div`
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,9 +32,11 @@ const AnnualBreedYears = styled.div`
 const AnnualBreedInputBox = styled.div`
   margin-right: 15px;
 `;
-const ChartBox = styled.div``;
+const ChartBox = styled.div`
+  margin-right: 50px;
+`;
 const ChartMessage = styled.div`
-  margin-top: 30%;
+  margin-top: 60%;
   width: 100%;
   height: 100%;
   color: black;
@@ -44,8 +49,9 @@ const SpanBold = styled.span`
 `;
 
 const CustomLabel = styled.label`
+  color: #7e7d7d;
   &:hover {
-    color: blue;
+    color: #b8a07e;
     cursor: pointer;
   }
 `;
@@ -153,37 +159,37 @@ function AnnualBreed() {
     <>
       <AnnualBreedMain>
         <AnnualBreedTitle>연간 품종 마리수(%) - {index}년</AnnualBreedTitle>
+        <AnnualBreedYears>
+          <AnnualBreedInputBox>
+            <CustomLabel htmlFor="2017a" onClick={() => setIndex(2017)}>
+              2017
+            </CustomLabel>
+          </AnnualBreedInputBox>
+          <AnnualBreedInputBox>
+            <CustomLabel htmlFor="2018a" onClick={() => setIndex(2018)}>
+              2018
+            </CustomLabel>
+          </AnnualBreedInputBox>
+          <AnnualBreedInputBox>
+            <CustomLabel htmlFor="2019a" onClick={() => setIndex(2019)}>
+              2019
+            </CustomLabel>
+          </AnnualBreedInputBox>
+          <AnnualBreedInputBox>
+            <CustomLabel htmlFor="2020a" onClick={() => setIndex(2020)}>
+              2020
+            </CustomLabel>
+          </AnnualBreedInputBox>
+          <AnnualBreedInputBox>
+            <CustomLabel htmlFor="2021a" onClick={() => setIndex(2021)}>
+              2021
+            </CustomLabel>
+          </AnnualBreedInputBox>
+        </AnnualBreedYears>
         <Container>
           <Row>
             <Col xs={7}>
               <ChartBox>
-                <AnnualBreedYears>
-                  <AnnualBreedInputBox>
-                    <CustomLabel htmlFor="2017a" onClick={() => setIndex(2017)}>
-                      2017
-                    </CustomLabel>
-                  </AnnualBreedInputBox>
-                  <AnnualBreedInputBox>
-                    <CustomLabel htmlFor="2018a" onClick={() => setIndex(2018)}>
-                      2018
-                    </CustomLabel>
-                  </AnnualBreedInputBox>
-                  <AnnualBreedInputBox>
-                    <CustomLabel htmlFor="2019a" onClick={() => setIndex(2019)}>
-                      2019
-                    </CustomLabel>
-                  </AnnualBreedInputBox>
-                  <AnnualBreedInputBox>
-                    <CustomLabel htmlFor="2020a" onClick={() => setIndex(2020)}>
-                      2020
-                    </CustomLabel>
-                  </AnnualBreedInputBox>
-                  <AnnualBreedInputBox>
-                    <CustomLabel htmlFor="2021a" onClick={() => setIndex(2021)}>
-                      2021
-                    </CustomLabel>
-                  </AnnualBreedInputBox>
-                </AnnualBreedYears>
                 {isLoading ? (
                   <div>Loading...</div>
                 ) : (

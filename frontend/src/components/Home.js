@@ -12,6 +12,8 @@ import SpeciesNeutral from "./charts/SpeciesNeutral";
 import styled from "styled-components";
 
 const ChartMain = styled.div`
+  background-color: whitesmoke;
+  padding: 20px;
   width: 60%;
   margin: auto;
 `;
@@ -27,7 +29,9 @@ function Home() {
       <div id="hero" className="home">
         <div className="container">
           <div className="hero-content">
-            <p><strong>도와주개냥</strong>은</p>
+            <p>
+              <strong>도와주개냥</strong>은
+            </p>
             <p>유기동물입양과 봉사활동의 활성화를 위한 문화공간입니다</p>
           </div>
         </div>

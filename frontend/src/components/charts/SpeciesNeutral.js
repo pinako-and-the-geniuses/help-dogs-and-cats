@@ -8,7 +8,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Col, Container, Row } from "react-bootstrap";
 
 const SpeciesNeutralMain = styled.div`
-  margin-top: 70px;
+  margin-top: 120px;
 `;
 
 const SpeciesNeutralChart = styled.div`
@@ -21,6 +21,8 @@ const SpeciesNeutralChartBox = styled.div`
 `;
 
 const SpeciesNeutralTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
   font-size: 30px;
 `;
 const SpeciesNeutralSubTitle = styled.div`
@@ -30,6 +32,8 @@ const SpeciesNeutralSubTitle = styled.div`
   font-size: 20px;
 `;
 const SpeciesNeutralYears = styled.div`
+  margin-top: 50px;
+  margin-bottom: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +44,7 @@ const SpeciesNeutralInputBox = styled.div`
 `;
 const ChartMessage = styled.div`
   margin-top: 3%;
+  margin-bottom: 100px;
   width: 100%;
   height: 100%;
   color: black;
@@ -50,10 +55,17 @@ const SpanBold = styled.span`
   font-weight: bold;
 `;
 
+const SpanRedBold = styled.span`
+  color: red;
+  font-size: 25px;
+  font-weight: bold;
+`;
+
 const ChartBox = styled.div``;
 const CustomLabel = styled.label`
+  color: #7e7d7d;
   &:hover {
-    color: blue;
+    color: #b8a07e;
     cursor: pointer;
   }
 `;
@@ -194,26 +206,30 @@ function SpeciesNeutral() {
                   <div>Loading...</div>
                 ) : (
                   <SpeciesNeutralChartBox>
-                    <SpeciesNeutralSubTitle>강아지</SpeciesNeutralSubTitle>
-                    <SpeciesNeutralChart>
-                      <Bar
-                        data={dogChartData}
-                        width={600}
-                        height={200}
-                        options={options}
-                        plugins={plugins}
-                      />
-                    </SpeciesNeutralChart>
-                    <SpeciesNeutralSubTitle>고양이</SpeciesNeutralSubTitle>
-                    <SpeciesNeutralChart>
-                      <Bar
-                        data={catChartData}
-                        width={600}
-                        height={200}
-                        options={options}
-                        plugins={plugins}
-                      />
-                    </SpeciesNeutralChart>
+                    <Col xs={6}>
+                      <SpeciesNeutralSubTitle>강아지</SpeciesNeutralSubTitle>
+                      <SpeciesNeutralChart>
+                        <Bar
+                          data={dogChartData}
+                          width={600}
+                          height={200}
+                          options={options}
+                          plugins={plugins}
+                        />
+                      </SpeciesNeutralChart>
+                    </Col>
+                    <Col xs={6}>
+                      <SpeciesNeutralSubTitle>고양이</SpeciesNeutralSubTitle>
+                      <SpeciesNeutralChart>
+                        <Bar
+                          data={catChartData}
+                          width={600}
+                          height={200}
+                          options={options}
+                          plugins={plugins}
+                        />
+                      </SpeciesNeutralChart>
+                    </Col>
                   </SpeciesNeutralChartBox>
                 )}
               </ChartBox>
@@ -237,8 +253,12 @@ function SpeciesNeutral() {
                   <br />
                 </SpanBold>
                 즉,
-                <SpanBold> 유기동물이 유기동물을 만들게 되는 악순환</SpanBold>이
-                생기게 됩니다.
+                <SpanBold>
+                  {" "}
+                  유기동물이 유기동물을 만들게 되는{" "}
+                  <SpanRedBold>악순환</SpanRedBold>
+                </SpanBold>
+                이 생기게 됩니다.
                 <br /> 그리고 이러한
                 <SpanBold> 악순환이 어린 유기동물 개체수의 증가</SpanBold>를
                 가져옵니다.

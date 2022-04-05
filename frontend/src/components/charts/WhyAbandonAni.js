@@ -5,10 +5,12 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Col, Container, Row } from "react-bootstrap";
 
 const WhyAbandonAniMain = styled.div`
-  margin-top: 70px;
+  margin-top: 120px;
 `;
 
 const WhyAbandonAniTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
   font-size: 30px;
   margin-bottom: 20px;
 `;
@@ -34,7 +36,9 @@ const SpanBold = styled.span`
   font-weight: bold;
 `;
 
-const ChartBox = styled.div``;
+const ChartBox = styled.div`
+  margin-top: 50px;
+`;
 
 function WhyAbandonAni() {
   const options = {
@@ -105,7 +109,7 @@ function WhyAbandonAni() {
   return (
     <>
       <WhyAbandonAniMain>
-        <WhyAbandonAniTitle>동물을 유기하는 이유(%)</WhyAbandonAniTitle>
+        <WhyAbandonAniTitle>동물을 파양하는 이유(%)</WhyAbandonAniTitle>
         <Container>
           <Row>
             <Col xs={12}>
@@ -126,7 +130,8 @@ function WhyAbandonAni() {
                 1위는 동물의 배변, 짖음과 같은 <SpanBold>행동문제</SpanBold>
                 입니다. <br />
                 2~3위는 지출, 치료비와같은
-                <SpanBold> 금액적인 문제</SpanBold>입니다.
+                <SpanBold> 금전적인 문제</SpanBold>입니다.
+                <br />
                 <br />
                 <br />
                 <SpanBold>적절한 훈육</SpanBold>이 있다면 1위, 행동문제는 충분히
@@ -136,12 +141,14 @@ function WhyAbandonAni() {
                 했다면 2위, 3위와 같은 문제도 발생하지 않았을 것입니다.
                 <br />
                 <br />
+                <br />
                 훈육에대한 <SpanBold>책임 결여</SpanBold>와<br /> 반려동물에
                 관한
                 <SpanBold> 정보 미숙</SpanBold>, <br />
                 너무나 쉬운
                 <SpanBold> 믹스품종 분양 환경</SpanBold>은 <br />
                 높은 믹스동물 유기율의 원인이라 할 수 있습니다.
+                <br />
                 <br />
                 <br /> 이에 도와주개냥은 <br />
                 믹스동물의 유기율을 낮추기 위해

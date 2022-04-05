@@ -18,6 +18,7 @@ export default function Header() {
     }
   `;
   const goToUnder = () => {
+    navi("/");
     window.scrollTo(0, window.outerHeight);
   };
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
