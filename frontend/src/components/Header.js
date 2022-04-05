@@ -76,13 +76,14 @@ export default function Header() {
     <div id="header" className="fixed-top header-inner-pages">
       <div className="container d-flex align-items-center justify-content-between">
         <a href="/" className="logo">
-          LOGO
+          <img src="/favicon.png" alt="logo" />
+          도와주개냥
         </a>
 
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              <a className="nav-link scrollto active">
+              <a className="nav-link scrollto">
                 유기동물현황
               </a>
             </li>

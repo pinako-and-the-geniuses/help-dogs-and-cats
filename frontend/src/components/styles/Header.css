@@ -23,19 +23,29 @@ a {
   line-height: 1;
   font-weight: 600;
   letter-spacing: 1px;
-  font-family: "Playfair Display", sans-serif;
-  font-style: italic;
+  color: #b8a07e;
+  font-family: 'SBAggroB';
 }
 #header .logo a {
   color: #898989;
+  text-height: 30px;
 }
 #header .logo img {
   max-height: 40px;
+  margin-right: 10px;
 }
+
 @media (max-width: 992px) {
   #header {
     border: 0;
   }
+}
+
+@font-face {
+  font-family: 'SBAggroB';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 /*--------------------------------------------------------------
@@ -138,5 +148,9 @@ a {
 
 .user {
   cursor: pointer;
-  color: blue;
+  color: #b8a07e;
+}
+
+.user:hover {
+  color: #666666;
 }
