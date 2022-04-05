@@ -20,7 +20,10 @@ export default function CommunityCreate(api) {
   };
   useEffect(() => {
     if (!isLogin) {
-      alert("로그인 해주세요.");
+      Swal.fire({
+        icon: "error",
+        title: "로그인 필수",
+      });
     } else {
       axios({
         url: `${URL}/communities/${seq}`,
@@ -77,7 +80,9 @@ export default function CommunityCreate(api) {
   return (
     <div className={st.commuupdatemain}>
       <header className={st.commuhead}>
-      <h1>커뮤니티 <span> 글 수정</span></h1>
+        <h1>
+          커뮤니티 <span> 글 수정</span>
+        </h1>
       </header>
       <div className={st.createtopContent}>
         <select
