@@ -10,7 +10,7 @@ import axios from "axios";
 import style from "./styles/ShelterList.module.scss";
 import cn from "classnames";
 import swal from "sweetalert";
-import '../../components/styles/Paging.css';
+import "../../components/styles/Paging.css";
 import Pagination from "react-js-pagination";
 
 function ShelterList() {
@@ -359,9 +359,6 @@ function ShelterList() {
               setNameSearch(e.target.value);
             }}
           />
-          {/* <div className="ms-3">
-            [ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ]{" "}
-          </div> */}
         </div>
         <div>
           <button
@@ -408,7 +405,7 @@ function ShelterList() {
         totalItemsCount={totalItemCount}
         pageRangeDisplayed={10}
         onChange={setPage}
-        ></Pagination>
+      ></Pagination>
     </div>
   );
 }
