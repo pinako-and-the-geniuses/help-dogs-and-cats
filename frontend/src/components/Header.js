@@ -3,11 +3,23 @@ import "./styles/Header.css";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../actions/UserAction";
+import styled from "styled-components";
 
 export default function Header() {
   const dispatch = useDispatch();
   const navi = useNavigate();
 
+  const CustomLabel = styled.label`
+    font-size: 14px;
+    color: #7e7d7d;
+    &:hover {
+      color: #b8a07e;
+      cursor: pointer;
+    }
+  `;
+  const goToUnder = () => {
+    window.scrollTo(0, window.outerHeight);
+  };
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
   const nickname = useSelector((state) => state.userInfo.userInfo.nickname);
   const seq = useSelector((state) => state.userInfo.userInfo.seq);
@@ -84,9 +96,13 @@ export default function Header() {
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              <a className="nav-link scrollto">
+              {/* <a
+                className="nav-link scrollto active"
+                href="javascript:return false;"
+              >
                 유기동물현황
-              </a>
+              </a> */}
+              <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel>
             </li>
             <li className="dropdown">
               <a href="#">

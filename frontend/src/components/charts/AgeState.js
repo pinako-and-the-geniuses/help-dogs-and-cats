@@ -4,6 +4,7 @@ import Chart from "chart.js/auto";
 import { useQuery } from "react-query";
 import { apiTestAgeState } from "./api";
 import { useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 
 const AgeStateMain = styled.div`
   margin-top: 70px;
@@ -25,6 +26,25 @@ const AgeStateYears = styled.div`
 
 const AgeStateInputBox = styled.div`
   margin-right: 15px;
+`;
+const ChartMessage = styled.div`
+  margin-top: 3%;
+  width: 100%;
+  height: 100%;
+  color: black;
+  font-size: 20px;
+`;
+const SpanBold = styled.span`
+  font-size: 25px;
+  font-weight: bold;
+`;
+const ChartBox = styled.div``;
+
+const CustomLabel = styled.label`
+  &:hover {
+    color: blue;
+    cursor: pointer;
+  }
 `;
 
 function AgeState() {
@@ -68,37 +88,37 @@ function AgeState() {
       {
         label: "입양",
         data: data && labels.map((d) => data.data[index]["개"][d][0].count),
-        backgroundColor: "#ff6663",
+        backgroundColor: "rgba(255, 102, 99, 0.6)",
       },
       {
         label: "기부",
         data: data && labels.map((d) => data.data[index]["개"][d][1].count),
-        backgroundColor: "#feb144",
+        backgroundColor: "rgba(254, 177, 68, 0.6)",
       },
       {
         label: "방사",
         data: data && labels.map((d) => data.data[index]["개"][d][2].count),
-        backgroundColor: "#fdfd97",
+        backgroundColor: "rgba(253, 253, 151, 0.6)",
       },
       {
         label: "안락사",
         data: data && labels.map((d) => data.data[index]["개"][d][3].count),
-        backgroundColor: "#9ee09e",
+        backgroundColor: "rgba(158, 224, 158, 0.6)",
       },
       {
         label: "자연사",
         data: data && labels.map((d) => data.data[index]["개"][d][4].count),
-        backgroundColor: "#d0d0fe",
+        backgroundColor: "rgba(208, 208, 254, 0.6)",
       },
       {
         label: "보호중",
         data: data && labels.map((d) => data.data[index]["개"][d][5].count),
-        backgroundColor: "#9ec1cf",
+        backgroundColor: "rgba(158, 193, 207, 0.6)",
       },
       {
         label: "주인에게 반환",
         data: data && labels.map((d) => data.data[index]["개"][d][6].count),
-        backgroundColor: "#cc99c9",
+        backgroundColor: "rgba(204, 153, 201, 0.6)",
       },
     ],
   };
@@ -109,100 +129,116 @@ function AgeState() {
       {
         label: "입양",
         data: data && labels.map((d) => data.data[index]["고양이"][d][0].count),
-        backgroundColor: "#ff6663",
+        backgroundColor: "rgba(255, 102, 99, 0.6)",
       },
       {
         label: "기부",
         data: data && labels.map((d) => data.data[index]["고양이"][d][1].count),
-        backgroundColor: "#feb144",
+        backgroundColor: "rgba(254, 177, 68, 0.6)",
       },
       {
         label: "방사",
         data: data && labels.map((d) => data.data[index]["고양이"][d][2].count),
-        backgroundColor: "#fdfd97",
+        backgroundColor: "rgba(253, 253, 151, 0.6)",
       },
       {
         label: "안락사",
         data: data && labels.map((d) => data.data[index]["고양이"][d][3].count),
-        backgroundColor: "#9ee09e",
+        backgroundColor: "rgba(158, 224, 158, 0.6)",
       },
       {
         label: "자연사",
         data: data && labels.map((d) => data.data[index]["고양이"][d][4].count),
-        backgroundColor: "#d0d0fe",
+        backgroundColor: "rgba(208, 208, 254, 0.6)",
       },
       {
         label: "보호중",
         data: data && labels.map((d) => data.data[index]["고양이"][d][5].count),
-        backgroundColor: "#9ec1cf",
+        backgroundColor: "rgba(158, 193, 207, 0.6)",
       },
       {
         label: "주인에게 반환",
         data: data && labels.map((d) => data.data[index]["고양이"][d][6].count),
-        backgroundColor: "#cc99c9",
+        backgroundColor: "rgba(204, 153, 201, 0.6)",
       },
     ],
   };
   return (
     <>
       <AgeStateMain>
-        <AgeStateTitle>나이대 별 처리 현황(마릿수)</AgeStateTitle>
-        <AgeStateYears>
-          <AgeStateInputBox>
-            <input type="radio" id="2017c" name="c" />
-            <label htmlFor="2017c" onClick={() => setIndex(2017)}>
-              2017
-            </label>
-          </AgeStateInputBox>
-          <AgeStateInputBox>
-            <input type="radio" id="2018c" name="c" />
-            <label htmlFor="2018c" onClick={() => setIndex(2018)}>
-              2018
-            </label>
-          </AgeStateInputBox>
-          <AgeStateInputBox>
-            <input type="radio" id="2019c" name="c" />
-            <label htmlFor="2019c" onClick={() => setIndex(2019)}>
-              2019
-            </label>
-          </AgeStateInputBox>
-          <AgeStateInputBox>
-            <input type="radio" id="2020c" name="c" />
-            <label htmlFor="2020c" onClick={() => setIndex(2020)}>
-              2020
-            </label>
-          </AgeStateInputBox>
-          <AgeStateInputBox>
-            <input type="radio" id="2021c" name="c" />
-            <label htmlFor="2021c" onClick={() => setIndex(2021)}>
-              2021
-            </label>
-          </AgeStateInputBox>
-        </AgeStateYears>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <div>
-            <AgeStateSubTitle>강아지</AgeStateSubTitle>
-            <div>
-              <Bar
-                data={dogChartData}
-                width={50}
-                height={400}
-                options={options}
-              />
-            </div>
-            <AgeStateSubTitle>고양이</AgeStateSubTitle>
-            <div>
-              <Bar
-                data={catChartData}
-                width={50}
-                height={400}
-                options={options}
-              />
-            </div>
-          </div>
-        )}
+        <AgeStateTitle>나이대 별 처리 현황(마릿수) - {index}년</AgeStateTitle>
+        <Container>
+          <Row>
+            <Col xs={12}>
+              <ChartBox>
+                <AgeStateYears>
+                  <AgeStateInputBox>
+                    <CustomLabel htmlFor="2017c" onClick={() => setIndex(2017)}>
+                      2017
+                    </CustomLabel>
+                  </AgeStateInputBox>
+                  <AgeStateInputBox>
+                    <CustomLabel htmlFor="2018c" onClick={() => setIndex(2018)}>
+                      2018
+                    </CustomLabel>
+                  </AgeStateInputBox>
+                  <AgeStateInputBox>
+                    <CustomLabel htmlFor="2019c" onClick={() => setIndex(2019)}>
+                      2019
+                    </CustomLabel>
+                  </AgeStateInputBox>
+                  <AgeStateInputBox>
+                    <CustomLabel htmlFor="2020c" onClick={() => setIndex(2020)}>
+                      2020
+                    </CustomLabel>
+                  </AgeStateInputBox>
+                  <AgeStateInputBox>
+                    <CustomLabel htmlFor="2021c" onClick={() => setIndex(2021)}>
+                      2021
+                    </CustomLabel>
+                  </AgeStateInputBox>
+                </AgeStateYears>
+                {isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <div>
+                    <AgeStateSubTitle>강아지</AgeStateSubTitle>
+                    <div>
+                      <Bar
+                        data={dogChartData}
+                        width={50}
+                        height={350}
+                        options={options}
+                      />
+                    </div>
+                    <AgeStateSubTitle>고양이</AgeStateSubTitle>
+                    <div>
+                      <Bar
+                        data={catChartData}
+                        width={50}
+                        height={350}
+                        options={options}
+                      />
+                    </div>
+                  </div>
+                )}
+              </ChartBox>
+            </Col>
+            <Col xs={12}>
+              <ChartMessage>
+                유기동물 중 <SpanBold>0세~3세</SpanBold>의 비중이 가장 많은 것을
+                알 수 있습니다. <br />
+                특히, 관리가 많이 필요한 0세(1년 미만) 유기동물들의 많은
+                사망(자연사 + 안락사) 수 또한 확인 할 수 있습니다.
+                <br />
+                <br /> 왜 어린개체의 수가 이토록 많은 것일까요?? <br />
+                <br />
+                이는
+                <SpanBold> 중성화 여부</SpanBold>와 관련 있습니다.
+              </ChartMessage>
+            </Col>
+          </Row>
+        </Container>
       </AgeStateMain>
     </>
   );
