@@ -4,12 +4,14 @@ $sub-color: #999999;
 
 .cummunity_container {
   //border: 1px solid red;
-  margin: 100px;
+  width: 75%;
+  margin: auto;
   .communhead{
+    margin-top: 30px;
     margin-bottom: 40px;
   }
   .community_search_bar {
-    //border: 1px solid $sub-color;
+    border: 1px solid $sub-color;
     border-radius: 5px;
     display: flex;
     justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
@@ -34,6 +36,7 @@ $sub-color: #999999;
 
       input {
         padding-left: 8px;
+        width: 400px;
         &:focus {
           outline: none;
         }
@@ -41,6 +44,7 @@ $sub-color: #999999;
     }
 
     .search_input {
+      margin: auto;
       p {
         font-weight: bold;
       }

@@ -4,10 +4,11 @@ $sub-color: #999999;
 
 .commuupdatemain {
   //border: 1px solid red;
-  margin: 20px 200px;
-  margin-top: 100px;
+  width: 75%;
+  margin: auto;
   .commuhead {
-    margin-bottom: 60px;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
   .createtopContent {
     //border: 1px solid red;
@@ -45,12 +46,20 @@ $sub-color: #999999;
       font-size: 16px;
     }
   }
-  .Editorheight {
+  .quill {
+    // background-color: white;
+    // box-shadow: 0px 0px 10px $sub-color;
+    //padding: 30px;
     //border: 1px solid red;
+    // display: block;
+    // margin: auto;
     height: 400px;
   }
+  .Editorheight {
+    width: 100%;
+    min-height: 30vh;
+  }
   .createbuttonContent {
-    //border: 1px solid red;
     display: flex;
     justify-content: end;
     margin-top: 20px;
