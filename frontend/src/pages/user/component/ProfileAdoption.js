@@ -6,7 +6,7 @@ import axios from "axios";
 import { URL } from "public/config";
 import Editor from "components/Editor";
 import { useSelector } from "react-redux";
-
+import swal from "sweetalert";
 export default function ProfileAdoption({ category, seq, isLogin }) {
   const [detail, setDetail] = useState({
     title: "",
@@ -70,7 +70,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
           console.log(err);
         });
     } else {
-      alert("접근 권한이 없습니다.");
+      swal("권한없음", "접근 권한이 없습니다.", "error");
     }
   };
 
@@ -93,14 +93,14 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
       .then((res) => {
         console.log(res);
         onhandleClose();
-        alert("요청 성공");
+        swal("요청성공", "관리자의 인증을 기다려주세요", "success");
         setTitle("");
         setContent("");
         getData();
       })
       .catch((err) => {
         console.log(err);
-        alert("요청에 실패했습니다.");
+        swal("서버에러", "요청에 실패했습니다.", "error");
       });
   };
   // 에디터 부분 변경
