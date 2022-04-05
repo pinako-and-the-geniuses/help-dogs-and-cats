@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const FooterMain = styled.footer`
   width: 100%;
-  background-color: whitesmoke;
+  background-color: lightgray;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -27,8 +27,8 @@ const FooterContent = styled.span`
 `;
 
 const FooterLogo = styled.img`
-  width: 70px;
-  height: 65px;
+  width: 60px;
+  height: 60px;
   margin-bottom: 10px;
   border-radius: 5px;
 `;
@@ -67,7 +67,7 @@ function Footer() {
           <Col style={styles.col} xs={4}>
             <FooterContentForm>
               <FooterContentTitle>관리자 (24시간 접수 가능)</FooterContentTitle>
-              <FooterContent>admin@DogsAndCats.com</FooterContent>
+              <FooterContent>a302helpdogscats@gmail.com</FooterContent>
               <br />
               <FooterContentTitle>
                 도와주개냥은 유기동물입양과 봉사활동의 활성화를 위한
@@ -77,7 +77,7 @@ function Footer() {
           </Col>
           <Col style={styles.col} xs={4}>
             <FooterContentForm>
-              <FooterLogo src="/Logos/FooterLogo.png" alt="momo-funding" />
+              <FooterLogo src="/favicon.png" alt="안영진" />
               <FooterContentTitle>도와주개냥(주)</FooterContentTitle>
               <FooterContentTitle>
                 서울시 강남구 테헤란로 212

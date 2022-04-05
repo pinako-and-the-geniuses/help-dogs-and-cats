@@ -7,10 +7,12 @@ import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 const AgeStateMain = styled.div`
-  margin-top: 70px;
+  margin-top: 120px;
 `;
 
 const AgeStateTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
   font-size: 30px;
 `;
 const AgeStateSubTitle = styled.div`
@@ -19,6 +21,7 @@ const AgeStateSubTitle = styled.div`
   font-size: 20px;
 `;
 const AgeStateYears = styled.div`
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,8 +44,9 @@ const SpanBold = styled.span`
 const ChartBox = styled.div``;
 
 const CustomLabel = styled.label`
+  color: #7e7d7d;
   &:hover {
-    color: blue;
+    color: #b8a07e;
     cursor: pointer;
   }
 `;
@@ -228,8 +232,8 @@ function AgeState() {
               <ChartMessage>
                 유기동물 중 <SpanBold>0세~3세</SpanBold>의 비중이 가장 많은 것을
                 알 수 있습니다. <br />
-                특히, 관리가 많이 필요한 0세(1년 미만) 유기동물들의 많은
-                사망(자연사 + 안락사) 수 또한 확인 할 수 있습니다.
+                특히, 관리가 많이 필요한 0세 유기동물들의 많은 사망(자연사 +
+                안락사) 수 또한 확인 할 수 있습니다.
                 <br />
                 <br /> 왜 어린개체의 수가 이토록 많은 것일까요?? <br />
                 <br />
