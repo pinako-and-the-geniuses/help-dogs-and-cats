@@ -22,6 +22,7 @@ export default function Header() {
     window.scrollTo(0, window.outerHeight);
   };
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const nickname = useSelector((state) => state.userInfo.userInfo.nickname);
   const seq = useSelector((state) => state.userInfo.userInfo.seq);
   const role = useSelector((state) => state.userInfo.userInfo.role);
 
@@ -66,7 +67,7 @@ export default function Header() {
             로그아웃
           </a>
           <a className="user" onClick={() => navi(`/user/profile/${seq}`)}>
-            MY
+            {nickname}
           </a>
         </div>
       );
@@ -89,19 +90,20 @@ export default function Header() {
     <div id="header" className="fixed-top header-inner-pages">
       <div className="container d-flex align-items-center justify-content-between">
         <a href="/" className="logo">
-          LOGO
+          <img src="/favicon.png" alt="logo" />
+          도와주개냥
         </a>
 
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              {/* <a
-                className="nav-link scrollto active"
-                href="javascript:return false;"
+              <a
+                className="nav-link scrollto"
+                href="/#chart"
               >
                 유기동물현황
-              </a> */}
-              <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel>
+              </a>
+              {/* <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel> */}
             </li>
             <li className="dropdown">
               <a href="#">

@@ -322,12 +322,14 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
             ) : (
               <h4 className={st.comment}>입양 활동이 없습니다.</h4>
             )}
-            <SmallPaging
-              page={page}
-              setPage={setPage}
-              totalPageNumber={totalPageNumber}
-            />
           </div>
+        </div>
+        <div className={st.paging}>
+          <SmallPaging
+            page={page}
+            setPage={setPage}
+            totalPageNumber={totalPageNumber}
+          />
         </div>
       </div>
     </div>
