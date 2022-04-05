@@ -11,6 +11,7 @@ import com.ssafy.a302.domain.member.repository.MemberRepository;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,18 @@ public class CommunityServiceImpl implements CommunityService {
         Integer totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
         List<CommunityDto.ForPage> communitiesForPage = communityRepository.findCommunitiesForPage(pageable, category, search, keyword)
                 .orElse(null);
+
+        if (communitiesForPage == null) {
+            communitiesForPage = new ArrayList<>();
+        }
+        List<CommunityDto.ForPage> noticesForPage = communityRepository.findCommunitiesForPage(PageRequest.of(1, 2), Community.Category.NOTICE, null, null)
+                .orElse(null);
+
+        if (noticesForPage != null) {
+            System.out.println("communitiesForPage.size() = " + communitiesForPage.size());
+            communitiesForPage.addAll(0, noticesForPage);
+            System.out.println("communitiesForPage.size() = " + communitiesForPage.size());
+        }
 
         return CommunityDto.CommunityListPage.builder()
                 .totalCount(totalCount)
