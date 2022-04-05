@@ -61,7 +61,7 @@ public class VolunteerController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BaseResponseDto<?> register(@Validated @RequestBody VolunteerRequestDto.RegisterInfo registerInfo, Authentication authentication) {
@@ -147,7 +147,7 @@ public class VolunteerController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}")
     public BaseResponseDto<VolunteerDto.Detail> volunteerDetail(@PathVariable Long volunteerSeq) {
@@ -160,7 +160,6 @@ public class VolunteerController {
                 .data(detail)
                 .build();
     }
-
 
     // 봉사활동 상세페이지 수정
     @Operation(
@@ -178,7 +177,7 @@ public class VolunteerController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{volunteerSeq}")
     public BaseResponseDto<?> updateVolunteerDetail(@Validated @RequestBody VolunteerRequestDto.UpdateInfo updateInfo,
@@ -197,7 +196,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 진행상태 수정
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{volunteerSeq}/status")
     public BaseResponseDto<?> changeVolunteerStatus(@Validated @RequestBody VolunteerRequestDto.StatusInfo statusInfo, 
@@ -236,7 +235,7 @@ public class VolunteerController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{volunteerSeq}")
     public BaseResponseDto<?> deleteVolunteer(@PathVariable Long volunteerSeq,
@@ -252,7 +251,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 신청
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{volunteerSeq}/apply")
     public BaseResponseDto<?> applyVolunteer(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
@@ -266,7 +265,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 취소 => 만약에 개설자가 봉사활동을 취소한다면?
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/apply")
     public BaseResponseDto<?> cancelVolunteer(@PathVariable Long volunteerSeq, Authentication authentication) {
@@ -280,7 +279,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 참여자 목록 조회
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{volunteerSeq}/participants")
     public BaseResponseDto<?> getVolunteerParticipantList(@Validated @PathVariable Long volunteerSeq, Authentication authentication) {
@@ -295,7 +294,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 참여자 참석여부 수정
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{volunteerSeq}/participants/{memberSeq}")
     public BaseResponseDto<?> changeParticipantIsApprove(@Validated @PathVariable Long volunteerSeq, 
@@ -316,7 +315,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 참여자 참석여부 삭제
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{volunteerSeq}/participants/{memberSeq}")
     public BaseResponseDto<?> deleteVolunteerParticipant(@Validated @PathVariable Long volunteerSeq, 
@@ -354,7 +353,7 @@ public class VolunteerController {
                     description = "서버에 문제가 발생하였습니다.",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
     })
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{volunteerSeq}/comments")
     public BaseResponseDto<?> registerVolunteerComment(@PathVariable Long volunteerSeq,
@@ -373,7 +372,7 @@ public class VolunteerController {
     }
 
     // 봉사활동 댓글 삭제
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "봉사활동 게시글 댓글 삭제 API",
             description = "봉사활동 게시글 식별키, 댓글 식별키를 전달받고 봉사활동 게시글 댓글을 삭제합니다.",
@@ -396,7 +395,7 @@ public class VolunteerController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "봉사활동 인증 요청 API",
             description = "봉사활동 게시글 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수행합니다.",
@@ -432,7 +431,7 @@ public class VolunteerController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "봉사활동 인증 수정 API",
             description = "봉사활동 게시글 식별키, 봉사활동 인증 내용, 인증 인원의 식별키를 전달받고 입양 인증 요청을 수정합니다.",
@@ -468,7 +467,7 @@ public class VolunteerController {
                 .build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
     @Operation(
             summary = "봉사활동 인증 조회 API",
             description = "봉사활동 게시글 식별키를 전달받고 입양 인증 조회를 수정합니다.",

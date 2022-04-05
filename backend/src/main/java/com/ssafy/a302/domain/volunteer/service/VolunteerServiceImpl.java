@@ -58,6 +58,8 @@ public class VolunteerServiceImpl implements VolunteerService {
 
         volunteerParticipantRepository.save(volunteerParticipant);
 
+        findMember.getDetail().incrementExp(5);
+
         return savedVolunteer.getSeq();
     }
 
@@ -86,6 +88,8 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
 
         findVolunteer.delete();
+
+        findVolunteer.getMember().getDetail().decrementExp(5);
     }
 
     @Transactional
@@ -117,12 +121,12 @@ public class VolunteerServiceImpl implements VolunteerService {
 
         List<VolunteerParticipant> findVolunteerParticipantList = volunteerParticipantRepository.countParticipantNumber(volunteerSeq)
                 .orElse(null);
-        Integer approvedCount = 0;
+        int approvedCount = 0;
         if (findVolunteerParticipantList != null){
             approvedCount = findVolunteerParticipantList.size();
         }
 
-        List<VolunteerCommentDto.ForDetail> commentsForDetail = convertNestedStructure((volunteerComments));
+        List<VolunteerCommentDto.ForDetail> commentsForDetail = convertNestedStructure(volunteerComments);
 
         return VolunteerDto.Detail.create(findVolunteer, writer, approvedCount,commentsForDetail);
     }
