@@ -55,7 +55,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[0].howToGet}</div>
-                    <div className="modal-body">{badges[0].content}</div>
+                    {badges[0].achieve == true && (
+                      <div className={st.modalBody}>{badges[0].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -91,7 +93,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[0].howToGet}</div>
-                    <div className={st.modalBody}>{badges[0].content}</div>
+                    {badges[0].achieve == true && (
+                      <div className={st.modalBody}>{badges[0].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -132,7 +136,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[1].howToGet}</div>
-                    <div className="modal-body">{badges[1].content}</div>
+                    {badges[1].achieve == true && (
+                      <div className={st.modalBody}>{badges[1].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -168,7 +174,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[1].howToGet}</div>
-                    <div className={st.modalBody}>{badges[1].content}</div>
+                    {badges[1].achieve == true && (
+                      <div className={st.modalBody}>{badges[1].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -209,7 +217,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[2].howToGet}</div>
-                    <div className={st.modalBody}>{badges[2].content}</div>
+                    {badges[2].achieve == true && (
+                      <div className={st.modalBody}>{badges[2].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -245,7 +255,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[2].howToGet}</div>
-                    <div className={st.modalBody}>{badges[2].content}</div>
+                    {badges[2].achieve == true && (
+                      <div className={st.modalBody}>{badges[2].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -286,7 +298,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[3].howToGet}</div>
-                    <div className={st.modalBody}>{badges[3].content}</div>
+                    {badges[3].achieve == true && (
+                      <div className={st.modalBody}>{badges[3].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -322,7 +336,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[3].howToGet}</div>
-                    <div className={st.modalBody}>{badges[3].content}</div>
+                    {badges[3].achieve == true && (
+                      <div className={st.modalBody}>{badges[3].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -363,7 +379,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[4].howToGet}</div>
-                    <div className={st.modalBody}>{badges[4].content}</div>
+                    {badges[4].achieve == true && (
+                      <div className={st.modalBody}>{badges[4].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -399,7 +417,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[4].howToGet}</div>
-                    <div className="modal-body">{badges[4].content}</div>
+                    {badges[4].achieve == true && (
+                      <div className={st.modalBody}>{badges[4].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -443,7 +463,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[5].howToGet}</div>
-                    <div className={st.modalBody}>{badges[5].content}</div>
+                    {badges[5].achieve == true && (
+                      <div className={st.modalBody}>{badges[5].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -479,7 +501,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[5].howToGet}</div>
-                    <div className={st.modalBody}>{badges[5].content}</div>
+                    {badges[5].achieve == true && (
+                      <div className={st.modalBody}>{badges[5].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -520,7 +544,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[6].howToGet}</div>
-                    <div className={st.modalBody}>{badges[6].content}</div>
+                    {badges[6].achieve == true && (
+                      <div className={st.modalBody}>{badges[6].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -556,7 +582,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[6].howToGet}</div>
-                    <div className={st.modalBody}>{badges[6].content}</div>
+                    {badges[6].achieve == true && (
+                      <div className={st.modalBody}>{badges[6].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -597,7 +625,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[7].howToGet}</div>
-                    <div className={st.modalBody}>{badges[7].content}</div>
+                    {badges[7].achieve == true && (
+                      <div className={st.modalBody}>{badges[7].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -633,7 +663,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[7].howToGet}</div>
-                    <div className={st.modalBody}>{badges[7].content}</div>
+                    {badges[7].achieve == true && (
+                      <div className={st.modalBody}>{badges[7].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -674,7 +706,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[8].howToGet}</div>
-                    <div className={st.modalBody}>{badges[8].content}</div>
+                    {badges[8].achieve == true && (
+                      <div className={st.modalBody}>{badges[8].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -710,7 +744,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[8].howToGet}</div>
-                    <div className={st.modalBody}>{badges[8].content}</div>
+                    {badges[8].achieve == true && (
+                      <div className={st.modalBody}>{badges[8].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -751,7 +787,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[9].howToGet}</div>
-                    <div className={st.modalBody}>{badges[9].content}</div>
+                    {badges[9].achieve == true && (
+                      <div className={st.modalBody}>{badges[9].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -787,7 +825,9 @@ export default function ProfileBadge(badgesForProfile) {
                       ></button>
                     </div>
                     <div className={st.modalBody}>{badges[9].howToGet}</div>
-                    <div className={st.modalBody}>{badges[9].content}</div>
+                    {badges[9].achieve == true && (
+                      <div className={st.modalBody}>{badges[9].content}</div>
+                    )}
                   </div>
                 </div>
               </div>
