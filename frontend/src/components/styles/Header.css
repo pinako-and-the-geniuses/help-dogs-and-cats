@@ -148,9 +148,9 @@ a {
 
 .user {
   cursor: pointer;
-  color: #b8a07e;
+  color: #a77d42;
 }
 
 .user:hover {
-  color: #666666;
+  color: #333333;
 }
