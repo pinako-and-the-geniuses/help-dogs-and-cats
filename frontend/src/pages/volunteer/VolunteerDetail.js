@@ -22,6 +22,7 @@ function VolunteerDetail() {
   const [stateChanged, setStateChanged] = useState(true);
   const [participants, setParticipants] = useState([]);
   const [join, setJoin] = useState(false);
+  const [isParty, setIsParty] = useState(true);
 
   const today = new Date();
   const endDate = new Date(post.endDate);
@@ -64,6 +65,22 @@ function VolunteerDetail() {
     navigate(`/volunteer/update/${id}`);
   };
 
+    //신청자 조회
+    const getParticipants=async()=>{
+        await axios({
+            url:`${URL}/volunteers/${id}/participants`,
+            method: "get",
+            headers: { Authorization : `Bearer ${jwt}`}
+        })
+        .then((res) =>{
+            setParticipants(res.data.data);
+            setIsParty(!isParty);
+        })
+        .catch((err)=>{
+            console.log(err);
+        })
+    }
+    
   //게시글 정보 가져오기
   const getPost = async () => {
     await axios({
@@ -102,20 +119,20 @@ function VolunteerDetail() {
       });
   };
 
-  //신청자 조회
-  const getParticipants = async () => {
-    await axios({
-      url: `${URL}/volunteers/${id}/participants`,
-      method: "get",
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        setParticipants(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+//   //신청자 조회
+//   const getParticipants = async () => {
+//     await axios({
+//       url: `${URL}/volunteers/${id}/participants`,
+//       method: "get",
+//       headers: { Authorization: `Bearer ${jwt}` },
+//     })
+//       .then((res) => {
+//         setParticipants(res.data.data);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       });
+//   };
 
   const testIsApply0 = () => {
     // const isApply=participants.filter(p=>p.seq===memSeq);
@@ -288,7 +305,7 @@ function VolunteerDetail() {
   useEffect(() => {
     getPost();
     getParticipants();
-  }, [changed, stateChanged]); //댓글, 모집,
+  }, [changed, stateChanged, isParty]); //댓글, 모집,
 
   useEffect(() => {
     testIsApply();
@@ -305,63 +322,66 @@ function VolunteerDetail() {
         <h1>봉사활동</h1>
 
         <div className={style.titleBox}>
-          {post.status === "RECRUITING" ? (
+        {post.status === "RECRUITING" ? (
             leftdays >= 0 ? (
-              <p className={style.leftdays}>D-{leftdays}</p>
+            <p className={style.leftdays}>D-{leftdays}</p>
             ) : (
-              <p className={style.leftdays}>마감</p>
-            )
-          ) : (
             <p className={style.leftdays}>마감</p>
-          )}
-          <p className={style.title}>{post.title}</p>
-          {memSeq === post.writerSeq
+            )
+        ) : (
+            <p className={style.leftdays}>마감</p>
+        )}
+        <p className={style.title}>{post.title}</p>
+        {memSeq === post.writerSeq
             ? {
                 DONE: (
-                  <button
+                <button
                     type="button"
                     className={`${style.joinBtn} ${style.joinXBtn}`}
-                  >
+                >
                     모집완료
-                  </button>
+                </button>
                 ),
                 ONGOING: (
-                  <button
+                <button
                     type="button"
                     className={`${style.joinBtn} ${style.joinXBtn}`}
                     onClick={() => {
-                      onChangeHandler("RECRUITING");
+                    onChangeHandler("RECRUITING");
                     }}
-                  >
+                >
                     모집시작
-                  </button>
+                </button>
                 ),
                 RECRUITING: (
-                  <button
+                <button
                     type="button"
                     className={style.joinBtn}
                     onClick={() => {
-                      onChangeHandler("ONGOING");
+                    onChangeHandler("ONGOING");
                     }}
-                  >
+                >
                     모집마감
-                  </button>
+                </button>
                 ),
-              }[post.status]
+            }[post.status]
             : setApplyBtn(post.status)}
         </div>
 
-        <VolunteerInfo post={post} memSeq={memSeq} />
-
+        <VolunteerInfo
+        post={post}
+        memSeq={memSeq}
+        getParticipants={getParticipants}/>
+        
         <div className={style.mainBox}>
-          <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+        <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
         </div>
 
         {memSeq === post.writerSeq ? (
-          <div className={style.editPost}>
+        <div className={style.editPost}>
             <p onClick={goToEdit}>수정</p>
             <p onClick={deleteHandler}>삭제</p>
-          </div>
+        </div>
         ) : null}
         <br />
 
