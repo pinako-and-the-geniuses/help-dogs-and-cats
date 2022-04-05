@@ -58,7 +58,7 @@ export default function CommunityCreate(api) {
   return (
     <div className={st.commucreatemain}>
       <header className={st.commuhead}>
-        <h2>Community</h2>
+        <h1>커뮤니티 <span> 글 작성</span></h1>
       </header>
       <div className={st.createtopContent}>
         <select
