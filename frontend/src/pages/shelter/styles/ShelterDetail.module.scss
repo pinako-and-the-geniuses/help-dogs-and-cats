@@ -1,14 +1,37 @@
+$sub-color: #e8e8e8;
 .shelter_container {
-  margin: 20px auto;
+  width: 75%;
+  margin: 50px auto;
   min-height: 70vh;
+  justify-content: center;
+  align-items: center;
 }
-
+.detailmain {
+  //border: 1px solid violet;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // width: 80%;
+}
+.topContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0px 0px 10px $sub-color;
+  padding: 30px;
+  margin: 30px auto 50px;
+  width: 80%;
+}
+.row {
+  display: flex;
+}
 section {
-  margin: 20px auto;
   .main_info {
     display: flex;
     flex-direction: column;
-
+    margin-right: 50px;
     .text_box {
       display: flex;
       flex-direction: row;

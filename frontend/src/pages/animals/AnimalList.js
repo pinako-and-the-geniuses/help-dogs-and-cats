@@ -65,13 +65,14 @@ export default function AnimalList() {
 
   return (
     <div className={st.div}>
-      <div name="페이지이름">
+      <header name="페이지이름">
         <h2>유기동물 조회</h2>
-      </div>
+      </header>
       <div name="상세조회Box" className={st.inquiry}>
         <div name="조건box" className={st.condition}>
           <div name="조건1줄" className={st.firstCon}>
-            <div name="시도">
+            <div name="시도" className={st.couple}>
+              <p>시도</p>
               <GetSido
                 sidoData={sidoData}
                 selected={selected}
@@ -80,7 +81,8 @@ export default function AnimalList() {
                 setRegionUrl={setRegionUrl}
               />
             </div>
-            <div name="시군구">
+            <div name="시군구" className={st.couple}>
+              <p>시군구</p>
               <GetSigungu
                 sigunguData={sigunguData}
                 setSigunguData={setSigunguData}
@@ -89,7 +91,8 @@ export default function AnimalList() {
                 setRegionUrl={setRegionUrl}
               />
             </div>
-            <div name="보호소">
+            <div name="보호소" className={st.couple}>
+              <p>보호소</p>
               <GetShelter
                 shelter={shelter}
                 setShelter={setShelter}
@@ -101,7 +104,8 @@ export default function AnimalList() {
           </div>
 
           <div name="조건2줄" className={st.secondCon}>
-            <div name="축종">
+            <div name="축종" className={st.couple}>
+              <p>축종</p>
               <GetKind setKind={setKind} setKindUrl={setKindUrl} />
             </div>
             <div name="상태" className="ms-4">

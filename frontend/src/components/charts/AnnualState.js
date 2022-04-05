@@ -9,10 +9,12 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Col, Container, Row } from "react-bootstrap";
 
 const AnnualStateMain = styled.div`
-  margin-top: 70px;
+  margin-top: 120px;
 `;
 
 const AnnualStateTitle = styled.div`
+  text-align: center;
+  font-weight: bold;
   font-size: 30px;
 `;
 const AnnualStateSubTitle = styled.div`
@@ -22,6 +24,7 @@ const AnnualStateSubTitle = styled.div`
   font-size: 20px;
 `;
 const AnnualStateYears = styled.div`
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,7 +35,7 @@ const AnnualStateInputBox = styled.div`
 `;
 
 const ChartMessage = styled.div`
-  margin-top: 30%;
+  margin-top: 90%;
   width: 100%;
   height: 100%;
   color: black;
@@ -45,8 +48,9 @@ const SpanBold = styled.span`
   font-weight: bold;
 `;
 const CustomLabel = styled.label`
+  color: #7e7d7d;
   &:hover {
-    color: blue;
+    color: #b8a07e;
     cursor: pointer;
   }
 `;
@@ -167,37 +171,37 @@ function AnnualState() {
         <AnnualStateTitle>
           유기동물 연간 처리 현황(%) - {index}년
         </AnnualStateTitle>
+        <AnnualStateYears>
+          <AnnualStateInputBox>
+            <CustomLabel htmlFor="2017b" onClick={() => setIndex(2017)}>
+              2017
+            </CustomLabel>
+          </AnnualStateInputBox>
+          <AnnualStateInputBox>
+            <CustomLabel htmlFor="2018b" onClick={() => setIndex(2018)}>
+              2018
+            </CustomLabel>
+          </AnnualStateInputBox>
+          <AnnualStateInputBox>
+            <CustomLabel htmlFor="2019b" onClick={() => setIndex(2019)}>
+              2019
+            </CustomLabel>
+          </AnnualStateInputBox>
+          <AnnualStateInputBox>
+            <CustomLabel htmlFor="2020b" onClick={() => setIndex(2020)}>
+              2020
+            </CustomLabel>
+          </AnnualStateInputBox>
+          <AnnualStateInputBox>
+            <CustomLabel htmlFor="2021b" onClick={() => setIndex(2021)}>
+              2021
+            </CustomLabel>
+          </AnnualStateInputBox>
+        </AnnualStateYears>
         <Container>
           <Row>
             <Col xs={7}>
               <ChartBox>
-                <AnnualStateYears>
-                  <AnnualStateInputBox>
-                    <CustomLabel htmlFor="2017b" onClick={() => setIndex(2017)}>
-                      2017
-                    </CustomLabel>
-                  </AnnualStateInputBox>
-                  <AnnualStateInputBox>
-                    <CustomLabel htmlFor="2018b" onClick={() => setIndex(2018)}>
-                      2018
-                    </CustomLabel>
-                  </AnnualStateInputBox>
-                  <AnnualStateInputBox>
-                    <CustomLabel htmlFor="2019b" onClick={() => setIndex(2019)}>
-                      2019
-                    </CustomLabel>
-                  </AnnualStateInputBox>
-                  <AnnualStateInputBox>
-                    <CustomLabel htmlFor="2020b" onClick={() => setIndex(2020)}>
-                      2020
-                    </CustomLabel>
-                  </AnnualStateInputBox>
-                  <AnnualStateInputBox>
-                    <CustomLabel htmlFor="2021b" onClick={() => setIndex(2021)}>
-                      2021
-                    </CustomLabel>
-                  </AnnualStateInputBox>
-                </AnnualStateYears>
                 {isLoading ? (
                   <div>Loading...</div>
                 ) : (

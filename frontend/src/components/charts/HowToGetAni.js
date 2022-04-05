@@ -5,10 +5,12 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Container, Row, Col } from "react-bootstrap";
 
 const HowToGetAniMain = styled.div`
-  margin-top: 70px;
+  margin-top: 120px;
 `;
 
 const HowToGetAniTitle = styled.div`
+  font-weight: bold;
+  text-align: center;
   font-size: 30px;
   margin-bottom: 20px;
 `;
@@ -25,8 +27,18 @@ const SpanBold = styled.span`
   font-weight: bold;
 `;
 
-const ChartBox = styled.div``;
+const ChartBox = styled.div`
+  margin-top: 50px;
+`;
 const ChartMessage = styled.div`
+  margin-top: 35%;
+  width: 100%;
+  height: 100%;
+  color: black;
+  font-size: 20px;
+`;
+
+const ChartUnderMessage = styled.div`
   margin-top: 5%;
   width: 100%;
   height: 100%;
@@ -125,14 +137,14 @@ function HowToGetAni() {
               </ChartMessage>
             </Col>
             <Col xs={12}>
-              <ChartMessage>
+              <ChartUnderMessage>
                 <SpanBold>문제점</SpanBold>은 친척, 지인을 통한 분양에는
                 <br /> 입양 전
                 <SpanBold> 사전교육, 반려동물 등록, 중성화 수술 동의</SpanBold>
                 와 같은 과정 없이 분양이 이루어진다는 점입니다.
                 <br /> 게다가 가격까지 무료에 가까우니
                 <SpanBold> 쉽고 빈번하게 분양이되죠.</SpanBold>
-              </ChartMessage>
+              </ChartUnderMessage>
             </Col>
           </Row>
         </Container>

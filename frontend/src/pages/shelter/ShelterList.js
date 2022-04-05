@@ -340,28 +340,32 @@ function ShelterList() {
               setNameSearch(e.target.value);
             }}
           />
+          <div className="ms-3">
+            [ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ]{" "}
+          </div>
         </div>
-        <div>[ 시도 선택시 시군구까지 모두 선택해야 조회 가능합니다. ] </div>
-        <button
-          type="submit"
-          onClick={() => {
-            setNewList("");
-            onGetList();
-            setFind(true);
-          }}
-        >
-          조회
-        </button>
-        <button
-          type="submit"
-          onClick={() => {
-            setNewList("");
-            onSetPage();
-            setFind(false);
-          }}
-        >
-          전체보기
-        </button>
+        <div>
+          <button
+            type="submit"
+            onClick={() => {
+              setNewList("");
+              onGetList();
+              setFind(true);
+            }}
+          >
+            조회
+          </button>
+          {/* <button
+            type="submit"
+            onClick={() => {
+              setNewList("");
+              onSetPage();
+              setFind(false);
+            }}
+          >
+            전체보기
+          </button> */}
+        </div>
       </div>
 
       <table className={cn("table table-bordered table-hover", style.my_table)}>

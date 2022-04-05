@@ -461,13 +461,14 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
             ) : (
               <h4 className={st.comment}>봉사 활동이 없습니다.</h4>
             )}
-
-            <SmallPaging
-              page={page}
-              setPage={setPage}
-              totalPageNumber={totalPageNumber}
-            />
           </div>
+        </div>
+        <div className={st.paging}>
+          <SmallPaging
+            page={page}
+            setPage={setPage}
+            totalPageNumber={totalPageNumber}
+          />
         </div>
       </div>
     </div>
