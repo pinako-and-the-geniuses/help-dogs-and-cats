@@ -9,12 +9,9 @@ import { shelterGetAction } from "actions/ShelterAction";
 import axios from "axios";
 import style from "./styles/ShelterList.module.scss";
 import cn from "classnames";
-<<<<<<< HEAD
 import swal from "sweetalert";
-=======
 import '../../components/styles/Paging.css';
 import Pagination from "react-js-pagination";
->>>>>>> front/feature/volunteer/write/#S06P22A302-92
 
 function ShelterList() {
   // 외부 요청 key
