@@ -5,8 +5,10 @@ import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
 import com.ssafy.a302.domain.adopt.repository.AdoptAuthRepository;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerAuth;
+import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerAuthRepository;
 import com.ssafy.a302.global.constant.ErrorMessage;
+import com.ssafy.a302.global.enums.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +45,14 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER_AUTH));
 
         findVolunteerAuth.changeVolunteerAuthStatus(volunteerAuthDto.getStatus());
+
+        if (volunteerAuthDto.getStatus() == Status.DONE) {
+            for (VolunteerParticipant volunteerParticipant : findVolunteerAuth.getVolunteer().getVolunteerParticipants()) {
+                if (volunteerParticipant.getApprove()) {
+                    volunteerParticipant.getMember().getDetail().incrementExp(40);
+                }
+            }
+        }
     }
 
     @Override
@@ -61,6 +71,10 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_ADOPT_AUTH));
 
         findAdoptAuth.changeAdoptAuthStatus(adoptAuthDto.getStatus());
+
+        if (adoptAuthDto.getStatus() == Status.DONE) {
+            findAdoptAuth.getMember().getDetail().incrementExp(100);
+        }
     }
 
     @Override
