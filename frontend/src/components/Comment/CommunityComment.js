@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
 import Reply from './Reply';
-import style from './style/Comment.module.scss';
+import style from './style/CummuComment.module.scss';
 import swal from 'sweetalert';
 import axios from 'axios';
 import ProfileImage from 'pages/user/component/ProfileImage';

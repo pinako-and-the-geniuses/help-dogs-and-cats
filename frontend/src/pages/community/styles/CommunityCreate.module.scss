@@ -52,6 +52,7 @@ $sub-color: #999999;
   }
   .Editorheight{
     //border: 1px solid red;
+    min-height: 10vh;
     height: 400px;
   }
   .createbuttonContent {
@@ -67,6 +68,7 @@ $sub-color: #999999;
       margin-left: 10px; //끝으로 보낼거면 없애기
       border-radius: 5px;
       border: 0;
+      margin-bottom: 60px;
       color: white;
     }
   }

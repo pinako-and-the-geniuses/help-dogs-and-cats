@@ -49,18 +49,11 @@ $sub-color: #999999;
       font-size: 16px;
     }
   }
-  .quill {
-    // background-color: white;
-    // box-shadow: 0px 0px 10px $sub-color;
-    //padding: 30px;
-    //border: 1px solid red;
-    // display: block;
-    // margin: auto;
-    height: 400px;
-  }
+
   .Editorheight {
     width: 100%;
-    min-height: 30vh;
+    min-height: 10vh;
+    height: 400px;
   }
   .createbuttonContent {
     display: flex;
@@ -72,6 +65,7 @@ $sub-color: #999999;
       margin-left: 10px; //끝으로 보낼거면 없애기
       border-radius: 5px;
       border: 0;
+      margin-bottom: 60px;
       color: white;
     }
   }
