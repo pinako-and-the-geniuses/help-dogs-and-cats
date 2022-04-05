@@ -9,7 +9,12 @@ import { shelterGetAction } from "actions/ShelterAction";
 import axios from "axios";
 import style from "./styles/ShelterList.module.scss";
 import cn from "classnames";
+<<<<<<< HEAD
 import swal from "sweetalert";
+=======
+import '../../components/styles/Paging.css';
+import Pagination from "react-js-pagination";
+>>>>>>> front/feature/volunteer/write/#S06P22A302-92
 
 function ShelterList() {
   // 외부 요청 key
@@ -27,6 +32,9 @@ function ShelterList() {
     sigunguCode: "0",
     shelterName: "0",
   });
+  const [page, setPage] = useState(1);
+  const [totalItemCount, setTotalItemCount] = useState(0);
+
   // 조건별 요청 url
   const [regionUrl, setRegionUrl] = useState("");
   // 기타
@@ -37,11 +45,12 @@ function ShelterList() {
   const onSetPage = () => {
     axios
       .get(
-        `${SHELTER}/shelterInfo?numOfRows=10&pageNo=1&serviceKey=${SHELTER_KEY}&_type=JSON`
+        `${SHELTER}/shelterInfo?numOfRows=10&pageNo=${page}&serviceKey=${SHELTER_KEY}&_type=JSON`
       )
       .then((res) => {
         const data = res.data.response.body.items.item;
         setList(data);
+        setTotalItemCount(res.data.response.body.totalCount);
       })
       .catch((err) => {
         console.log(err);
@@ -49,7 +58,7 @@ function ShelterList() {
   };
   useEffect(() => {
     onSetPage();
-  }, []);
+  }, [page]);
 
   // 보호센터명 입력
   const setNameSearch = (value) => {
@@ -65,8 +74,9 @@ function ShelterList() {
           `${SHELTER}/shelterInfo?numOfRows=10&pageNo=1&serviceKey=${SHELTER_KEY}&_type=JSON&care_nm=${name}`
         )
         .then((res) => {
-          // console.log("이름조회결과", res.data);
+          console.log("이름조회결과", res.data.response.body);
           const temp = res.data.response.body.items;
+          setTotalItemCount(res.data.response.body.totalCount);
           if (temp.item) {
             temp.item.map((item) => {
               setNewList((newList) => [...newList, [item]]);
@@ -78,6 +88,10 @@ function ShelterList() {
           swal("조회 실패", "이름 조회에 실패했습니다.", "error");
         });
     } else if (name.length < 1 && regionUrl.length >= 15) {
+      console.log("지역만검색들어옴", regionUrl);
+      console.log("지역만검색들어옴", regionUrl.length);
+      setTotalItemCount(regionUrl.length);
+
       if (selected.sidoCode) {
         // 시도 + 시군구
         if (regionUrl.length > 24) {
@@ -88,6 +102,7 @@ function ShelterList() {
             .then((res) => {
               if (res.data.response.body.items.item) {
                 const data = res.data.response.body.items.item;
+                setTotalItemCount(res.data.response.body.totalCount);
                 console.log("시도+시군구 검색 결과", res.data.response);
                 if (data) {
                   data.map((item) => {
@@ -98,6 +113,7 @@ function ShelterList() {
                       .then((res) => {
                         if (res.data.response.body.items) {
                           const temp = res.data.response.body.items;
+                          setTotalItemCount(res.data.response.body.totalCount);
                           console.log(temp);
                           if (temp.item) {
                             const data = temp.item;
@@ -142,9 +158,9 @@ function ShelterList() {
                           `${SHELTER}/shelterInfo?&serviceKey=${SHELTER_KEY}&care_reg_no=${item.careRegNo}&_type=JSON`
                         )
                         .then((res) => {
+                          console.log(res.data.response.body);
                           if (res.data.response) {
                             const temp = res.data.response.body.items;
-                            console.log("지역안에서 상세 정보있는경우", temp);
                             if (temp.item) {
                               const data = temp.item;
                               setNewList((newList) => [...newList, data]);
@@ -357,6 +373,7 @@ function ShelterList() {
               setNewList("");
               onGetList();
               setFind(true);
+              setPage(1);
             }}
           >
             조회
@@ -387,6 +404,14 @@ function ShelterList() {
         </thead>
         <tbody>{onList()}</tbody>
       </table>
+
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={10}
+        totalItemsCount={totalItemCount}
+        pageRangeDisplayed={10}
+        onChange={setPage}
+        ></Pagination>
     </div>
   );
 }
