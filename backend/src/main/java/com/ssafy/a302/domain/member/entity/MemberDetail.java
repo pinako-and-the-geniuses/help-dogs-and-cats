@@ -72,4 +72,15 @@ public class MemberDetail {
 
         return removedFilename;
     }
+
+    public void incrementExp(int exp) {
+        this.exp += exp;
+    }
+
+    public void decrementExp(int exp) {
+        this.exp -= exp;
+        if (this.exp < 0) {
+            this.exp = 0;
+        }
+    }
 }

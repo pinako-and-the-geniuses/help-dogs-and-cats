@@ -58,6 +58,8 @@ public class VolunteerServiceImpl implements VolunteerService {
 
         volunteerParticipantRepository.save(volunteerParticipant);
 
+        findMember.getDetail().incrementExp(5);
+
         return savedVolunteer.getSeq();
     }
 
@@ -86,6 +88,8 @@ public class VolunteerServiceImpl implements VolunteerService {
         }
 
         findVolunteer.delete();
+
+        findVolunteer.getMember().getDetail().decrementExp(5);
     }
 
     @Transactional
