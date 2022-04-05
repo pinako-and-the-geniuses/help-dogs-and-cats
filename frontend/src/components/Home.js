@@ -33,7 +33,7 @@ function Home() {
         </div>
       </div>
 
-      <main>
+      <main id="chart">
         <ChartMain>
           <div>
             <AnnualBreed />

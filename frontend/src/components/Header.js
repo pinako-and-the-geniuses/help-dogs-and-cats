@@ -96,13 +96,13 @@ export default function Header() {
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              {/* <a
-                className="nav-link scrollto active"
-                href="javascript:return false;"
+              <a
+                className="nav-link scrollto"
+                href="/#chart"
               >
                 유기동물현황
-              </a> */}
-              <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel>
+              </a>
+              {/* <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel> */}
             </li>
             <li className="dropdown">
               <a href="#">
