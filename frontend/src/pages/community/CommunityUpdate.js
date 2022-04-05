@@ -77,7 +77,9 @@ export default function CommunityCreate(api) {
   return (
     <div className={st.commuupdatemain}>
       <header className={st.commuhead}>
-      <h1>커뮤니티 <span> 글 수정</span></h1>
+        <h1>
+          커뮤니티 <span> 글 수정</span>
+        </h1>
       </header>
       <div className={st.createtopContent}>
         <select
@@ -100,30 +102,14 @@ export default function CommunityCreate(api) {
           />
         </div>
       </div>
-      {/* <div className={st.quill}>
-          <QuillEditor
-            quillRef={quillRef}
-            htmlcontent={htmlcontent}
-            setHtmlContent={setHtmlContent}
-            onChange={(event) => setHtmlContent(event.target.value)}
-            api={api}
-          />
-        </div> */}
-      {/* <div>
-        <label htmlFor="content">
-          <span>내용</span>
-        </label>
-      </div> */}
       <div className={cn(`${st.Editorheight}`, "col-sm-12 col-md-10")}>
-        <div className={st.editorBox}>
-          <Editor
-            id="content"
-            height={"90%"}
-            value={content}
-            onChange={onEditorChange}
-            placeholder={""}
-          ></Editor>
-        </div>
+        <Editor
+          id="content"
+          height={"90%"}
+          value={content}
+          onChange={onEditorChange}
+          placeholder={""}
+        ></Editor>
       </div>
       <div className={st.createbuttonContent}>
         <button
