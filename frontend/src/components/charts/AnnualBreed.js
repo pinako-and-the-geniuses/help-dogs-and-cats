@@ -4,6 +4,8 @@ import Chart from "chart.js/auto";
 import { useQuery } from "react-query";
 import { apiTestAnnualBreed } from "./api";
 import { useState } from "react";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { Col, Container, Row } from "react-bootstrap";
 
 const AnnualBreedMain = styled.div`
   margin-top: 70px;
@@ -21,15 +23,37 @@ const AnnualBreedYears = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 20px;
 `;
 
 const AnnualBreedInputBox = styled.div`
   margin-right: 15px;
 `;
+const ChartBox = styled.div``;
+const ChartMessage = styled.div`
+  margin-top: 30%;
+  width: 100%;
+  height: 100%;
+  color: black;
+  font-size: 20px;
+`;
+
+const SpanBold = styled.span`
+  font-size: 25px;
+  font-weight: bold;
+`;
+
+const CustomLabel = styled.label`
+  &:hover {
+    color: blue;
+    cursor: pointer;
+  }
+`;
 
 function AnnualBreed() {
   const { isLoading, data } = useQuery(["key1"], () => apiTestAnnualBreed());
   const [index, setIndex] = useState(2021);
+  const plugins = [ChartDataLabels];
 
   const options = {
     plugins: {
@@ -65,18 +89,29 @@ function AnnualBreed() {
     labels: dogLabels,
     datasets: [
       {
+        datalabels: {
+          display: true,
+          color: "black",
+          labels: {
+            title: {
+              font: {
+                size: 18,
+              },
+            },
+          },
+        },
         data:
           data &&
           data.data[index]["개"].map((res) =>
             ((res.count / dogTotal) * 100).toFixed(1)
           ),
         backgroundColor: [
-          "#ff6663",
-          "#feb144",
-          "#fdfd97",
-          "#9ee09e",
-          "#9ec1cf",
-          "#cc99c9",
+          "rgba(255, 102, 99, 0.6)",
+          "rgba(254, 177, 68, 0.6)",
+          "rgba(253, 253, 151, 0.6)",
+          "rgba(158, 224, 158, 0.6)",
+          "rgba(158, 193, 207, 0.6)",
+          "rgba(204, 153, 201, 0.6)",
         ],
       },
     ],
@@ -87,18 +122,29 @@ function AnnualBreed() {
     labels: catLabels,
     datasets: [
       {
+        datalabels: {
+          display: true,
+          color: "black",
+          labels: {
+            title: {
+              font: {
+                size: 18,
+              },
+            },
+          },
+        },
         data:
           data &&
           data.data[index]["고양이"].map((res) =>
             ((res.count / catTotal) * 100).toFixed(1)
           ),
         backgroundColor: [
-          "#ff6663",
-          "#feb144",
-          "#fdfd97",
-          "#9ee09e",
-          "#9ec1cf",
-          "#cc99c9",
+          "rgba(255, 102, 99, 0.6)",
+          "rgba(254, 177, 68, 0.6)",
+          "rgba(253, 253, 151, 0.6)",
+          "rgba(158, 224, 158, 0.6)",
+          "rgba(158, 193, 207, 0.6)",
+          "rgba(204, 153, 201, 0.6)",
         ],
       },
     ],
@@ -106,63 +152,84 @@ function AnnualBreed() {
   return (
     <>
       <AnnualBreedMain>
-        <AnnualBreedTitle>연간 품종 마리수</AnnualBreedTitle>
-        <AnnualBreedYears>
-          <AnnualBreedInputBox>
-            <input type="radio" id="2017a" name="a" />
-            <label htmlFor="2017a" onClick={() => setIndex(2017)}>
-              2017
-            </label>
-          </AnnualBreedInputBox>
-          <AnnualBreedInputBox>
-            <input type="radio" id="2018a" name="a" />
-            <label htmlFor="2018a" onClick={() => setIndex(2018)}>
-              2018
-            </label>
-          </AnnualBreedInputBox>
-          <AnnualBreedInputBox>
-            <input type="radio" id="2019a" name="a" />
-            <label htmlFor="2019a" onClick={() => setIndex(2019)}>
-              2019
-            </label>
-          </AnnualBreedInputBox>
-          <AnnualBreedInputBox>
-            <input type="radio" id="2020a" name="a" />
-            <label htmlFor="2020a" onClick={() => setIndex(2020)}>
-              2020
-            </label>
-          </AnnualBreedInputBox>
-          <AnnualBreedInputBox>
-            <input type="radio" id="2021a" name="a" />
-            <label htmlFor="2021a" onClick={() => setIndex(2021)}>
-              2021
-            </label>
-          </AnnualBreedInputBox>
-        </AnnualBreedYears>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <div>
-            <AnnualBreedSubTitle>강아지</AnnualBreedSubTitle>
-            <div>
-              <Bar
-                data={dogChartData}
-                width={50}
-                height={350}
-                options={options}
-              />
-            </div>
-            <AnnualBreedSubTitle>고양이</AnnualBreedSubTitle>
-            <div>
-              <Bar
-                data={catChartData}
-                width={50}
-                height={350}
-                options={options}
-              />
-            </div>
-          </div>
-        )}
+        <AnnualBreedTitle>연간 품종 마리수(%) - {index}년</AnnualBreedTitle>
+        <Container>
+          <Row>
+            <Col xs={7}>
+              <ChartBox>
+                <AnnualBreedYears>
+                  <AnnualBreedInputBox>
+                    <CustomLabel htmlFor="2017a" onClick={() => setIndex(2017)}>
+                      2017
+                    </CustomLabel>
+                  </AnnualBreedInputBox>
+                  <AnnualBreedInputBox>
+                    <CustomLabel htmlFor="2018a" onClick={() => setIndex(2018)}>
+                      2018
+                    </CustomLabel>
+                  </AnnualBreedInputBox>
+                  <AnnualBreedInputBox>
+                    <CustomLabel htmlFor="2019a" onClick={() => setIndex(2019)}>
+                      2019
+                    </CustomLabel>
+                  </AnnualBreedInputBox>
+                  <AnnualBreedInputBox>
+                    <CustomLabel htmlFor="2020a" onClick={() => setIndex(2020)}>
+                      2020
+                    </CustomLabel>
+                  </AnnualBreedInputBox>
+                  <AnnualBreedInputBox>
+                    <CustomLabel htmlFor="2021a" onClick={() => setIndex(2021)}>
+                      2021
+                    </CustomLabel>
+                  </AnnualBreedInputBox>
+                </AnnualBreedYears>
+                {isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <div>
+                    <AnnualBreedSubTitle>강아지</AnnualBreedSubTitle>
+                    <div>
+                      <Bar
+                        data={dogChartData}
+                        width={50}
+                        height={350}
+                        options={options}
+                        plugins={plugins}
+                      />
+                    </div>
+                    <AnnualBreedSubTitle>고양이</AnnualBreedSubTitle>
+                    <div>
+                      <Bar
+                        data={catChartData}
+                        width={50}
+                        height={350}
+                        options={options}
+                        plugins={plugins}
+                      />
+                    </div>
+                  </div>
+                )}
+              </ChartBox>
+            </Col>
+            <Col xs={5}>
+              <ChartMessage>
+                <p>
+                  <SpanBold>믹스견</SpanBold>의 비율은
+                  <br />
+                  <SpanBold>평균 65.2%</SpanBold>
+                  <br />
+                  <br /> <SpanBold>믹스묘</SpanBold>의 비율은
+                  <br /> <SpanBold>평균 94.2%</SpanBold>
+                  <br />
+                  <br /> 타 품종에 비해
+                  <SpanBold> 믹스종</SpanBold>이<br />
+                  <SpanBold>훨씬 많은 이유</SpanBold>는 무엇일까요?
+                </p>
+              </ChartMessage>
+            </Col>
+          </Row>
+        </Container>
       </AnnualBreedMain>
     </>
   );
