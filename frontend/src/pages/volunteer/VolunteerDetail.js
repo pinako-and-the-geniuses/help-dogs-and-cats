@@ -119,33 +119,7 @@ function VolunteerDetail() {
       });
   };
 
-//   //신청자 조회
-//   const getParticipants = async () => {
-//     await axios({
-//       url: `${URL}/volunteers/${id}/participants`,
-//       method: "get",
-//       headers: { Authorization: `Bearer ${jwt}` },
-//     })
-//       .then((res) => {
-//         setParticipants(res.data.data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-
-  const testIsApply0 = () => {
-    // const isApply=participants.filter(p=>p.seq===memSeq);
-    const AmI = isApply();
-    console.log("test1", participants);
-    console.log("test2", AmI);
-  };
-  // const isApply=participants.filter(p=>p.seq===memSeq);
-  const isApply0 = () => participants.filter((p) => p.seq === memSeq);
-  //알았따 ~~ 취소하면 목록에 없으니까 안불러와지는거임!
-  //내가 있을때를 하지 말고 없을때를 할까?
-
-  //원래했던내용
+  ////
   const testIsApply = () => {
     const isApply = participants.filter((p) => p.seq === memSeq);
   };
