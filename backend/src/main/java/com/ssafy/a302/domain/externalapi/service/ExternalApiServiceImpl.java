@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.externalapi.service;
 
 import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
+import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
 import com.ssafy.a302.global.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     private String animalUrl;
 
     @Override
-    public List<SidoDto> getSido() throws IOException, ParseException {
+    public List<SidoDto> getSidoDtos() throws IOException, ParseException {
         StringBuilder urlBuilder = new StringBuilder(animalUrl.concat("/sido"));
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + animalKey);
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=17");
@@ -55,5 +56,33 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         }
 
         return sidos;
+    }
+
+    @Override
+    public List<SigunguDto> getSigunguDtos(String sidoCode) throws IOException, ParseException {
+        StringBuilder urlBuilder = new StringBuilder(animalUrl.concat("/sigungu"));
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + animalKey);
+        urlBuilder.append("&" + URLEncoder.encode("upr_cd", "UTF-8") + "=" + sidoCode);
+        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+        String result = httpUtil.getResult(urlBuilder.toString());
+
+        List<SigunguDto> sigunguDtos = new ArrayList<>();
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+        JSONArray jsonArray = (JSONArray) ((JSONObject) ((JSONObject) ((JSONObject) jsonObject.get("response")).get("body")).get("items")).get("item");
+        for (Object o : jsonArray) {
+            JSONObject obj = (JSONObject) o;
+            String findSidoCode = (String) obj.get("uprCd");
+            String sigunguCode = (String) obj.get("orgCd");
+            String name = (String) obj.get("orgdownNm");
+            sigunguDtos.add(SigunguDto.builder()
+                    .sidoCode(findSidoCode)
+                    .sigunguCode(sigunguCode)
+                    .name(name)
+                    .build());
+        }
+
+        return sigunguDtos;
     }
 }

@@ -5,6 +5,7 @@ import com.ssafy.a302.global.exception.DuplicateException;
 import com.ssafy.a302.global.constant.ErrorMessage;
 import com.ssafy.a302.global.constant.Message;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -125,7 +126,16 @@ public class GlobalControllerAdvice {
     public ErrorResponseDto<?> noSuchElementExceptionHandler(NoSuchElementException e) {
         logPrint(e);
         return ErrorResponseDto.builder()
-                .message(e.getMessage())
+                .message(ErrorMessage.UNAVAILABLE)
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(ParseException.class)
+    public ErrorResponseDto<Void> parseExceptionHandler(ParseException e) {
+        logPrint(e);
+        return ErrorResponseDto.<Void>builder()
+                .message(ErrorMessage.UNAVAILABLE)
                 .build();
     }
 
