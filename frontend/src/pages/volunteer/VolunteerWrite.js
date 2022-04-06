@@ -59,7 +59,7 @@ function VolunteerWrite() {
         content: content,
         activityArea: selectArea,
         authTime: time,
-        contact: contact,
+        contact: "https://open.kakao.com/o/gROTPK9d",
         endDate: endDate,
         minParticipantCount: 3,
         maxParticipantCount: party,
