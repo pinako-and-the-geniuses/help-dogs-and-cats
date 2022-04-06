@@ -13,7 +13,7 @@ import { URL } from "../../public/config/";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../../actions/UserAction";
-
+import swal from "sweetalert";
 export default function Editinfo() {
   // 입력정보
   const [img, setImg] = useState("");
@@ -39,7 +39,7 @@ export default function Editinfo() {
 
   useEffect(() => {
     if (!isLogin) {
-      alert("로그인 해주세요.");
+      swal("접근불가", "로그인해주세요", "error");
     } else {
       axios
         .get(`${URL}/members/${info.seq}`)
@@ -52,7 +52,7 @@ export default function Editinfo() {
           setRegion(data.activityArea);
         })
         .catch((err) => {
-          alert("정보를 가져오는데 실패했습니다.");
+          swal("에러", "정보를 가져오는데 실패했습니다.", "error");
           console.log(err);
         });
     }
@@ -67,11 +67,11 @@ export default function Editinfo() {
       activityArea: region,
     };
     if (!isPwd || !isPwdConfirm) {
-      alert("비밀번호를 확인해주세요");
+      swal("확인필요", "비밀번호를 확인해주세요.", "info");
     } else if (!isNickName) {
-      alert("닉네임 중복확인이 필요합니다.");
+      swal("확인필요", "닉네임 중복확인이 필요합니다.", "info");
     } else if (!isPhone) {
-      alert("핸드폰 번호 인증이 필요합니다.");
+      swal("확인필요", "핸드폰 번호 인증이 필요합니다.", "info");
     } else if (isPwd && isPwdConfirm && isNickName && isPhone) {
       axios({
         url: `${URL}/members/${info.seq}`,
@@ -81,7 +81,7 @@ export default function Editinfo() {
       })
         .then((res) => {
           if (res.status === 200) {
-            alert("수정 완료");
+            swal("수정완료", "", "success");
             const userInfo = {
               seq: info.seq,
               email: email,
@@ -93,11 +93,11 @@ export default function Editinfo() {
           }
         })
         .catch((err) => {
-          alert("수정 실패");
+          swal("수정실패", "", "error");
           navi("/NotFound");
         });
     } else {
-      alert("형식을 다시 확인해 입력해주세요");
+      swal("형식오류", "형식을 다시 확인해 입력해주세요.", "info");
     }
   };
 

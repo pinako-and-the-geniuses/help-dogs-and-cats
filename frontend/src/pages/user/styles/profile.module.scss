@@ -145,6 +145,7 @@
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   margin-bottom: 20px;
   border-radius: 1rem;
+  border: 0px;
   display: flex;
 }
 .listItem:hover {
@@ -214,15 +215,16 @@
       width: 80%;
       height: 100%;
       padding: 10px;
+      overflow: hidden;
     }
     .label {
       width: 20%;
       padding: 10px;
       border-right: 1px solid #dee2e6;
     }
-    // .classEditor {
-
-    // }
+    .classEditor {
+      overflow: hidden;
+    }
   }
   .listItem {
     box-sizing: content-box;

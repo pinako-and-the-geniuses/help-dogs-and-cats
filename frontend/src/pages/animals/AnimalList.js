@@ -45,7 +45,6 @@ export default function AnimalList() {
   };
 
   const onGetList = () => {
-    console.log("regionUrl", regionUrl.length);
     if (regionUrl.length === 23) {
       swal("시군구 선택 필수", "시도 선택시 시군구 필수입니다.", "info");
     } else {
@@ -169,7 +168,7 @@ export default function AnimalList() {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-5">
-        <AnimalBox list={list} />
+        {list && <AnimalBox list={list} />}
       </div>
 
       <Pagination
