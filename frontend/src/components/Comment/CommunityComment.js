@@ -3,10 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { URL } from '../../public/config';
 import Reply from './Reply';
-import style from './style/Comment.module.scss';
+import style from './style/CummuComment.module.scss';
 import swal from 'sweetalert';
 import axios from 'axios';
-
+import ProfileImage from 'pages/user/component/ProfileImage';
 function CommunityComment(props){
     const jwt = sessionStorage.getItem('jwt');
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
@@ -53,6 +53,13 @@ function CommunityComment(props){
         })
     }
 
+    const enterKey=(e)=>{
+        e.preventDefault();
+        if(window.event.keyCode === 13){
+            props.eventHandler();
+        }
+    }
+
     return(
         <div className={style.commentBox}>
             {
@@ -61,7 +68,7 @@ function CommunityComment(props){
                         <>
                         <div key={comment.commments} className={style.comment}>
                             {/* 이미지 수정 필요 */}
-                            <img src={comment.writerProfileImagePath} />
+                            <ProfileImage profileImageFilePath={comment.writerProfileImagePath} />
                             <div className={style.content}>
                                 <div className={style.top}>
                                     <div className={style.left}>
@@ -104,6 +111,7 @@ function CommunityComment(props){
                     cols="30" rows="3"
                     value={props.commentContent}
                     onChange={(e)=>props.onChange(e.target.value)}
+                    onKeyUp={enterKey}
                     ></textarea>
                 <button type="submit" onClick={()=>{props.eventHandler();}}>댓글 작성</button>
             </div>

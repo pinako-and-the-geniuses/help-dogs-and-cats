@@ -13,7 +13,7 @@ import {
 } from "./pages/user";
 import { One } from "./pages/statistics";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
-import { AnimalDetail, Animal, AnimalList } from "./pages/animals";
+import { AnimalDetail, AnimalList } from "./pages/animals";
 import {
   Community,
   CommunityDetail,
@@ -27,20 +27,16 @@ import {
   VolunteerWrite,
   VolunteerUpdate,
 } from "./pages/volunteer";
-import {
-  ManageMain,
-  VolunteerManage,
-  AdoptManage,
-  AdoptManageDetail,
-  VolunteerManageDetail,
-} from "./pages/manager";
+import { ManageMain } from "./pages/manager";
 import { Guide } from "pages/guide";
 import Footer from "components/Footer";
+import ScrollToTop from "components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
       <Header></Header>
+      <ScrollToTop />
       <Routes>
         <>
           <Route path="" element={<Home />} />
@@ -61,7 +57,6 @@ function App() {
           <Route path="/guide" element={<Guide />} />
         </>
         <>
-          <Route path="/animals/animal" element={<Animal />} />
           <Route path="/animals/list" element={<AnimalList />} />
           <Route path="/animals/detail" element={<AnimalDetail />} />
         </>

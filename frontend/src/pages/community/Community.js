@@ -6,13 +6,13 @@ import style from "./styles/Community.module.scss";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import Paging from "components/Paging";
-
+import swal from 'sweetalert';
 export default function Community() {
   const [communitys, setCommunity] = useState("");
   const [page, setPage] = useState(1);
   const [totalcount, setTotalcount] = useState("");
   const [totalPageNumber, setTotalPageNumber] = useState("");
-  const size = 10;
+  const size = 8;
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [keyword, setKeyword] = useState("");
@@ -67,7 +67,14 @@ export default function Community() {
   const navigate = useNavigate();
 
   const getSeq = (seq) => {
-    navigate(`/community/communitydetail/${seq}`);
+    if(isLogin){
+      if(seq !== 0) navigate(`/community/communitydetail/${seq}`);
+    }
+    else{
+      //회원만 글을 읽을 수 있음
+      swal('권한이 없습니다');
+    }
+    // navigate(`/community/communitydetail/${seq}`);
   };
 
   const getWrite = () => {
@@ -92,7 +99,7 @@ export default function Community() {
   return (
     <div className={style.cummunity_container}>
       <header className={style.communhead}>
-        <h2>Community</h2>
+        <h1>커뮤니티</h1>
       </header>
       <div className={style.community_search_bar}>
         <div className={style.search_input}>
@@ -101,6 +108,7 @@ export default function Community() {
             <option value="report">제보</option>
             <option value="general">잡담</option>
             <option value="review">후기</option>
+            <option value="notice">공지</option>
           </select>
           <select defaultValue="" name="searchCgg" onChange={getSearch}>
             <option value="all">전체</option>
@@ -108,7 +116,7 @@ export default function Community() {
             <option value="writer">작성자</option>
           </select>
           <div>
-            <input className={style.input} type="text" onChange={getKeyword} />
+            <input className={style.input} type="text"  onChange={getKeyword} />
             <button onClick={getRead}>조회</button>
           </div>
         </div>
@@ -120,29 +128,50 @@ export default function Community() {
             type="submit"
             onClick={getWrite}
           >
-            글쓰기
+            🖊 글쓰기
           </button>
         </div>
       ) : null}
       <table className={cn("table table-hover", style.my_table)}>
         <thead>
           <tr>
-            <th scope="col">태그</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">작성일</th>
-            <th scope="col">조회수</th>
+            <th scope="col" width="15%">태그</th>
+            <th scope="col" width="30%">제목</th>
+            <th scope="col" width="10%">작성자</th>
+            <th scope="col" width="10%">작성일</th>
+            <th scope="col" width="10%">조회수</th>
           </tr>
         </thead>
         {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
         {communitys ? (
           <tbody>
+            {/* {communitys.slice(0,2).map((community) => (
+              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                {community.category === "NOTICE" ? <td>공지</td> : ""}
+                <td>{community.title}</td>
+                <td>{community.memberNickname}</td>
+                <td>{community.createdDate}</td>
+                <td>{community.viewCount}</td>
+              </tr>
+            ))}
+            {communitys.slice(2,10).map((community) => (
+              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                {community.category === "REPORT" ? <td>제보</td> : ""}
+                {community.category === "REVIEW" ? <td>후기</td> : ""}
+                {community.category === "GENERAL" ? <td>잡담</td> : ""}
+                <td>{community.title}</td>
+                <td>{community.memberNickname}</td>
+                <td>{community.createdDate}</td>
+                <td>{community.viewCount}</td>
+              </tr>
+            ))} */}
             {communitys.map((community) => (
               <tr key={community.seq} onClick={() => getSeq(community.seq)}>
                 {community.category === "REPORT" ? <td>제보</td> : ""}
                 {community.category === "REVIEW" ? <td>후기</td> : ""}
                 {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                <td style={{ width: "20rem" }}>{community.title}</td>
+                {community.category === "NOTICE" ? <td>공지</td> : ""}
+                <td>{community.title}</td>
                 <td>{community.memberNickname}</td>
                 <td>{community.createdDate}</td>
                 <td>{community.viewCount}</td>

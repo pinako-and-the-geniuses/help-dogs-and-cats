@@ -20,8 +20,9 @@ export default function CommunityDetail() {
 
   const getComment = () => {
     if (!isLogin) {
-      alert("로그인 해주세요.");
-      navigate("/login", { replace: true });
+      Swal.fire({ icon: "warning", title: "로그인해주세요" }).then(function () {
+        navigate("/login");
+      });
     } else {
       axios({
         url: `${URL}/communities/${seq}`,
@@ -38,13 +39,20 @@ export default function CommunityDetail() {
     }
   };
   useEffect(() => {
+    //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     getComment();
   }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
   const onCommentChange = (value) => {
     setCommentContent(value);
   };
-  const onClickEvent = (value) => {
-    if (commentContent.length < 1) return;
+  const onClickEvent = () => {
+    if (
+      commentContent.length < 1 ||
+      commentContent.replace(/\s| /gi, "").length === 0
+    ) {
+      swal("입력값은 필수입니다");
+      return;
+    }
     CommuComment();
     // window.location.replace(`/community/communitydetail/${seq}`);
   };
@@ -57,7 +65,6 @@ export default function CommunityDetail() {
       .then((res) => {
         console.log(res);
         if (res.status === 204) {
-          // alert("게시글 삭제");
           navigate(`/community/community`);
         }
       })
@@ -105,50 +112,60 @@ export default function CommunityDetail() {
 
   return (
     <div className={st.community_commentBox}>
-      <header>
-        <h2>Community</h2>
+      <header className={st.communitydetailheader}>
+        <h1>커뮤니티</h1>
       </header>
-      <section className={st.topContent}>
-        {communityDetail ? (
-          <>
-            <div className={st.alltitle}>
-              <p className={st.tag_p}>
-                {communityDetail.data.category === "REPORT" ? "제보" : ""}
-                {communityDetail.data.category === "REVIEW" ? "후기" : ""}
-                {communityDetail.data.category === "GENERAL" ? "잡담" : ""}
-              </p>
-              <p className={st.title_p}>제목 : {communityDetail.data.title}</p>
-              <p className={st.read_p}>
-                조회수 : {communityDetail.data.viewCount}
-              </p>
-              <p className={st.date_p}>{communityDetail.data.createdDate}</p>
-              <p className={st.author_p}>
-                {communityDetail.data.writerNickname}
-              </p>
-            </div>
-            <div
-              className={st.content_div}
-              dangerouslySetInnerHTML={{
-                __html: communityDetail.data.content,
-              }}
-            ></div>
-          </>
-        ) : (
-          "로딩중"
-        )}
+      <div className={st.topContent}>
+        <div>
+          {communityDetail ? (
+            <>
+              <div className={st.mainDiv}>
+                <div className={st.alltitle}>
+                  <div>
+                    <p className={st.tag_p}>
+                      {communityDetail.data.category === "REPORT" ? "제보" : ""}
+                      {communityDetail.data.category === "REVIEW" ? "후기" : ""}
+                      {communityDetail.data.category === "GENERAL"? "잡담" : ""}
+                    </p>
+                    <p className={st.title_p}>
+                      제목 : {communityDetail.data.title}
+                    </p>
+                  </div>
+                  <div className={st.rightInfo}>
+                    <p className={st.p}>
+                      조회수 : {communityDetail.data.viewCount}
+                    </p>
+                    <p className={st.p}> | </p>
+                    <p className={st.p}>{communityDetail.data.createdDate} </p>
+                    <p className={st.p}> | </p>
+                    <p className={st.p}>
+                      {communityDetail.data.writerNickname}{" "}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className={st.commudetailbox}>
+                <div
+                  className={st.content_div}
+                  dangerouslySetInnerHTML={{
+                    __html: communityDetail.data.content,
+                  }}
+                ></div>
+              </div>
+            </>
+          ) : null}
+        </div>
         {writerSeq === memberSeq ? (
-          <>
-            <div className={st.contentbtn}>
-              <button onClick={deleteHandler} className={st.deletebutton}>
-                삭제
-              </button>
-              <button onClick={GotoEdit} className={st.button}>
-                수정
-              </button>
-            </div>
-          </>
+          <div className={st.contentbtn}>
+            <>
+              <div className={st.commueditPost}>
+                <p onClick={GotoEdit}>수정</p>
+                <p onClick={deleteHandler}>삭제</p>
+              </div>
+            </>
+          </div>
         ) : null}
-      </section>
+      </div>
       <CommunityComment
         id={seq}
         commentContent={commentContent}

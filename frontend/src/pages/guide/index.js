@@ -1,3 +1,4 @@
 import Guide from "./Guide";
+import SubGuide from "./SubGuide";
 
-export { Guide };
+export { Guide, SubGuide };

@@ -7,6 +7,9 @@ import AdoptManage from "./AdoptManage";
 import AdoptManageDetail from "./AdoptManageDetail";
 
 import style from "./styles/manager.module.scss";
+import { useSelector } from "react-redux";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 function MoveTab({ tab, setTab }) {
   const [adoptSeq, setAdoptSeq] = useState();
@@ -31,7 +34,13 @@ function MoveTab({ tab, setTab }) {
 
 function ManageMain() {
   const [tab, setTab] = useState(0);
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
+  const navigate = useNavigate();
 
+  if (userInfo.role !== "ADMIN") {
+    swal("권한이 없습니다.");
+    navigate("/");
+  }
   return (
     <div className={style.manageHome}>
       <ul className={style.menus}>

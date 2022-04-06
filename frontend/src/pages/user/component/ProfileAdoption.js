@@ -6,7 +6,7 @@ import axios from "axios";
 import { URL } from "public/config";
 import Editor from "components/Editor";
 import { useSelector } from "react-redux";
-
+import swal from "sweetalert";
 export default function ProfileAdoption({ category, seq, isLogin }) {
   const [detail, setDetail] = useState({
     title: "",
@@ -51,7 +51,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
   };
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, seq]);
 
   //해당 내용 클릭시 본인만 상세 내용 볼 수 있음
   const onGoToDetail = (itemSeq) => {
@@ -70,7 +70,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
           console.log(err);
         });
     } else {
-      alert("접근 권한이 없습니다.");
+      swal("권한없음", "접근 권한이 없습니다.", "error");
     }
   };
 
@@ -93,14 +93,14 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
       .then((res) => {
         console.log(res);
         onhandleClose();
-        alert("요청 성공");
+        swal("요청성공", "관리자의 인증을 기다려주세요", "success");
         setTitle("");
         setContent("");
         getData();
       })
       .catch((err) => {
         console.log(err);
-        alert("요청에 실패했습니다.");
+        swal("서버에러", "요청에 실패했습니다.", "error");
       });
   };
   // 에디터 부분 변경
@@ -171,7 +171,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
                           <div className={st.editor}>
                             <Editor
                               id="content"
-                              height={"90%"}
+                              height={"83%"}
                               value={content}
                               onChange={onEditorChange}
                               placeholder={""}
@@ -322,12 +322,14 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
             ) : (
               <h4 className={st.comment}>입양 활동이 없습니다.</h4>
             )}
-            <SmallPaging
-              page={page}
-              setPage={setPage}
-              totalPageNumber={totalPageNumber}
-            />
           </div>
+        </div>
+        <div className={st.paging}>
+          <SmallPaging
+            page={page}
+            setPage={setPage}
+            totalPageNumber={totalPageNumber}
+          />
         </div>
       </div>
     </div>

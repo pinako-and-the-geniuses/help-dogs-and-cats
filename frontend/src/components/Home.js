@@ -11,7 +11,9 @@ import AgeState from "./charts/AgeState";
 import SpeciesNeutral from "./charts/SpeciesNeutral";
 import styled from "styled-components";
 
+// background-color: whitesmoke;
 const ChartMain = styled.div`
+  padding: 20px;
   width: 60%;
   margin: auto;
 `;
@@ -27,13 +29,18 @@ function Home() {
       <div id="hero" className="home">
         <div className="container">
           <div className="hero-content">
-            <p><strong>도와주개냥</strong>은</p>
-            <p>유기동물입양과 봉사활동의 활성화를 위한 문화공간입니다</p>
+            <p>
+              <span>도와주개냥</span>은
+            </p>
+            <p>
+              유기동물<strong>입양</strong>과 <strong>봉사활동</strong>의
+              활성화를 위한 문화공간입니다
+            </p>
           </div>
         </div>
       </div>
 
-      <main>
+      <main id="chart">
         <ChartMain>
           <div>
             <AnnualBreed />

@@ -58,8 +58,9 @@
   font-size: 1rem;
 }
 
-.hero-content strong {
+.hero-content span{
   font-size: 2.5rem;
+  font-weight: bold;
 }
 
 .hero-content .list-social li {
