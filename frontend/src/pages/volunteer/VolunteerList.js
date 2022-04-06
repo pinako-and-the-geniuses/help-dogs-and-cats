@@ -161,7 +161,8 @@ function VolunteerList(){
                 : null
             }
 
-            <table className={cn("table table-hover")}>
+            <div style={{ "min-height": "50vh" }}>
+                <table className={cn("table table-hover")}>
                 <thead>
                     <tr>
                         <th scope="col" width="15%">상태</th>
@@ -195,7 +196,8 @@ function VolunteerList(){
                         )
                     }
                 </tbody>
-            </table>
+                </table>
+            </div>
             
             <Paging
                 total={totalItemCount}
