@@ -11,8 +11,8 @@ function TeamManage(props){
     const jwt = sessionStorage.getItem('jwt');
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
     const [participants, setParticipants] = useState([]);
-    const [change, setChange] = useState(true);
-
+    const [change, setChange] = useState(false);
+    let cnt = 0;
     //신청자 조회
     const getParticipants=async()=>{
         await axios({
@@ -22,6 +22,13 @@ function TeamManage(props){
         })
         .then((res) =>{
             setParticipants(res.data.data);
+            // console.log('모달', participants);
+            // console.log(participants.map((i)=>{
+            //     if(i.approve===true){
+            //         cnt++;
+            //     }
+            // }))
+            // .then(console.log(cnt));
         })
         .catch((err)=>{
             console.log(err);
@@ -41,7 +48,7 @@ function TeamManage(props){
         }
         })
         .then((res) =>{
-
+            setChange(true);
         })
         .catch((err)=>{
             console.log(err);

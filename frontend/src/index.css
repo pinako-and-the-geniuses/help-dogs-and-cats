@@ -12,6 +12,19 @@ code {
     monospace;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #D3D3D3;
+  border-radius: 10px;
+  /* background-clip: padding-box; */
+  border: 2px solid transparent;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 @font-face {
   font-family: 'MinSans-Medium';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
