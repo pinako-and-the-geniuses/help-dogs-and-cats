@@ -8,9 +8,9 @@ import lombok.ToString;
 @ToString(of = {"sidoCode", "name"})
 public class SidoDto {
 
-    private String sidoCode;
+    private final String sidoCode;
 
-    private String name;
+    private final String name;
 
     @Builder
     public SidoDto(String sidoCode, String name) {
