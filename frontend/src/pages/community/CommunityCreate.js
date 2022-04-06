@@ -41,14 +41,36 @@ export default function CommunityCreate(api) {
         }
       })
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "게시글을 생성하지 못했습니다.",
-        }).then(function () {
-          navi("/community/community");
-        });
+        if (category === "") {
+          Swal.fire({
+            icon: "warning",
+            title: "카테고리를 선택해주세요.",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else if(title === ""){
+          Swal.fire({
+            icon: "warning",
+            title: "제목을 써주세요",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else if(content === ""){
+          Swal.fire({
+            icon: "warning",
+            title: "내용을 써주세요",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "게시글을 생성하지 못했습니다.",
+            confirmButtonColor: `#b59d7c`,
+          }).then(function () {
+            navi("/community/community");
+          });
+        }
       });
   };
+
   return (
     <div className={st.commucreatemain}>
       <header className={st.commuhead}>
@@ -62,7 +84,7 @@ export default function CommunityCreate(api) {
             className="searchCd me-3"
             onChange={(event) => setCategory(event.target.value)}
           >
-            <option defaultValue>카테고리</option>
+            <option value="">카테고리</option>
             <option value="report">제보</option>
             <option value="general">잡담</option>
             <option value="review">후기</option>

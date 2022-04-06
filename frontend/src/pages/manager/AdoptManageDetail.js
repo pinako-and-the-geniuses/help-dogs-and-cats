@@ -2,13 +2,14 @@ import st from "./styles/AdoptManageDetail.module.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 export default function AdoptManageDetail({ adoptSeq, setTab }) {
   const [adoptManageDetail, setAdoptManageDetail] = useState("");
   const [stateChanged, setStateChanged] = useState("REQUEST");
   const jwt = sessionStorage.getItem("jwt");
-
-  useEffect(() => {
+  const navi = useNavigate();
+  const read = () => {
     axios({
       url: `${URL}/admins/adopts/auth/${adoptSeq}`,
       method: "GET",
@@ -19,8 +20,32 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
         setAdoptManageDetail(response.data);
       }) //엑시오스 보낸 결과
       .catch((err) => console.log(err));
+  }
+  useEffect(() => {
+    read();
   }, []);
 
+  // const alert = () => {
+  //   if (setStateChanged(stateChanged === "REQUEST" || stateChanged === "REJECT")) {
+  //     Swal.fire({
+  //       title: "인증 하시겠습니까?",
+  //       icon: "success",
+  //       confirmButtonColor: `#b59d7c`,
+  //       showCancelButton: true,
+  //     }).then((res) => {
+  //       setStateChanged(stateChanged === "DONE");
+  //     });
+  //   }else if(setStateChanged(stateChanged === "REQUEST" || stateChanged === "DONE")){
+  //     Swal.fire({
+  //       title: "반려 하시겠습니까?",
+  //       icon: "warning",
+  //       confirmButtonColor: `#b59d7c`,
+  //       showCancelButton: true,
+  //     }).then((res) => {
+  //       setStateChanged(stateChanged === "REJECT");
+  //     });
+  //   }
+  // };
   const getApproval = async (approve) => {
     await axios({
       url: `${URL}/admins/adopts/auth/${adoptSeq}`,
@@ -34,11 +59,27 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
     })
       .then((res) => {
         console.log("변경 완료");
-        console.log(res);
+        console.log(stateChanged);
+        console.log(res.data);
+        
         if (stateChanged === "REQUEST" || stateChanged === "REJECT") {
-          setStateChanged(stateChanged === "DONE");
+          console.log(stateChanged);
+          Swal.fire({
+            icon: "success",
+            title: "인증되었습니다.",
+          }).then((res) => {
+            setStateChanged(stateChanged === "DONE");  
+          });
+          // setStateChanged(stateChanged === "DONE");   
         } else if (stateChanged === "REQUEST" || stateChanged === "DONE") {
-          setStateChanged(stateChanged === "REJECT");
+          Swal.fire({
+            icon: "warning",
+            title: "반려되었습니다.",
+          })
+          .then((res) => {
+            setStateChanged(stateChanged === "REJECT");
+          });
+          // setStateChanged(stateChanged === "REJECT");
         }
       })
       .catch((err) => console.log(err));
