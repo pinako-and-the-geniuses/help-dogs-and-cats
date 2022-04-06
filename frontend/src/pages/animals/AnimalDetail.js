@@ -2,7 +2,7 @@ import animaldetails from "./styles/AnimalDetails.module.scss";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Guide } from "pages/guide";
+import { SubGuide } from "pages/guide";
 
 export default function AnimalDetails() {
   const info = useSelector((state) => state.animalInfo.info);
@@ -77,7 +77,7 @@ export default function AnimalDetails() {
                             ></button>
                           </div>
                           <div className="modal-body">
-                            <Guide />
+                            <SubGuide />
                           </div>
                         </div>
                       </div>
