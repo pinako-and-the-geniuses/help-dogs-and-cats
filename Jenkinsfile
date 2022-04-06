@@ -19,7 +19,7 @@ pipeline {
         stage('Frontend Deploy') {
             steps {
                 sh 'docker ps -q --filter name=frontend | grep -q . && docker stop frontend && docker rm frontend'
-                sh 'docker run -v "/var/tmp/certbot/conf:/etc/letsencrypt/" -v "/var/tmp/certbot/www:/var/www/certbot" -d -p 80:80 -p 443:443 -u root --name frontend frontend'
+                sh 'docker run -d -p 80:80 -u root --name frontend frontend'
             }
         }
 

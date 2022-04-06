@@ -18,5 +18,4 @@ COPY conf /etc/nginx
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 
 EXPOSE 80
-EXPOSE 443
 CMD ["nginx", "-g", "daemon off;"]
