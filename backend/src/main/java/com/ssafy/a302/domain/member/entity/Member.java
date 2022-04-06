@@ -50,37 +50,37 @@ public class Member extends BaseLastModifiedEntity {
     private Role role;
 
     @PrimaryKeyJoinColumn
-    @OneToOne(mappedBy = "member", fetch = EAGER, cascade = ALL)
+    @OneToOne(mappedBy = "member", fetch = EAGER, cascade = ALL, orphanRemoval = true)
     private MemberDetail detail;
 
     @Column(nullable = false, columnDefinition = "TINYINT")
     private boolean isDeleted;
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL ,orphanRemoval = true)
     private List<SupportHistory> supportHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<Community> communities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<CommunityLike> communityLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private final List<CommunityComment> communityComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<MemberBadge> memberBadges = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<Volunteer> volunteers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<VolunteerComment> volunteerComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<VolunteerParticipant> volunteerParticipants = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
+    @OneToMany(mappedBy = "member", cascade = ALL, orphanRemoval = true)
     private List<AdoptAuth> adoptAuths = new ArrayList<>();
 
     @Builder

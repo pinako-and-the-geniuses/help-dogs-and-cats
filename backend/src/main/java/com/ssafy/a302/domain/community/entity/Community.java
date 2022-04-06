@@ -47,10 +47,10 @@ public class Community extends BaseLastModifiedEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @OneToMany(mappedBy = "community", cascade = ALL)
+    @OneToMany(mappedBy = "community", cascade = ALL, orphanRemoval = true)
     private List<CommunityLike> communityLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "community", cascade = ALL)
+    @OneToMany(mappedBy = "community", cascade = ALL, orphanRemoval = true)
     private List<CommunityComment> communityComments = new ArrayList<>();
 
     @Builder
