@@ -72,9 +72,9 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0 10px 30px;
+  padding: 10px 0 10px 40px;
   font-family: "Poppins", sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
   color: #7e7d7d;
   white-space: nowrap;
@@ -147,6 +147,7 @@ a {
 }
 
 .user {
+  font-size: 18px;
   cursor: pointer;
   color: #a77d42;
 }

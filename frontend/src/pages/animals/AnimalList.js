@@ -40,7 +40,7 @@ export default function AnimalList() {
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
-    setTotalItemCount(arr.children[3].value);
+    setTotalItemCount(Number(arr.children[3].value));
     setList(listData);
   };
 

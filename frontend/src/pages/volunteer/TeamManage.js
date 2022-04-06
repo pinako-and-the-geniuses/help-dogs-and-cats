@@ -12,8 +12,6 @@ function TeamManage(props){
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
     const [participants, setParticipants] = useState([]);
     const [change, setChange] = useState(true);
-    console.log(props.approvedCount);
-    console.log(props.maxParticipantCount);
 
     //신청자 조회
     const getParticipants=async()=>{
@@ -43,9 +41,7 @@ function TeamManage(props){
         }
         })
         .then((res) =>{
-            // setParticipants();
-            console.log('버튼누름 승인인원',props.approvedCount);
-            console.log('버튼누름 최대인원',props.maxParticipantCount);
+
         })
         .catch((err)=>{
             console.log(err);
@@ -68,7 +64,7 @@ function TeamManage(props){
     }
 
     const getApprove=async(seq)=>{
-        if(props.approvedCount >= props.maxParticipantCount){ //'=' 이 들어가는게 맞나?
+        if(props.approvedCount >= props.maxParticipantCount){
             swal('모집인원을 초과했습니다');
             return;
         }
@@ -90,6 +86,7 @@ function TeamManage(props){
         .then((willDelete)=>{
             if(willDelete){
                 partyDelete(memSeq);
+                getParticipants();
             }else{
 
             }

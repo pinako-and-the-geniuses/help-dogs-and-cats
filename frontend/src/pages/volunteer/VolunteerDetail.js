@@ -314,7 +314,7 @@ function VolunteerDetail() {
   //얘는 확인용이니까 나중에 지우기
   useEffect(() => {
     console.log(post);
-  }, [post, changed]);
+  }, [changed]);
 
   if (isLogin) {
     return (
