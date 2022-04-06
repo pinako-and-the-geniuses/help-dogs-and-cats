@@ -64,18 +64,40 @@ export default function CommunityCreate(api) {
           Swal.fire({
             icon: "success",
             title: "게시글을 수정하였습니다.",
+            confirmButtonColor: `#b59d7c`,
           }).then(function () {
             navi(`/community/communitydetail/${seq}`);
           });
         }
       })
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "게시글을 수정하지 못했습니다.",
-        }).then(function () {
-          navi(`/community/communitydetail/${seq}`);
-        });
+        if (category === "") {
+          Swal.fire({
+            icon: "warning",
+            title: "카테고리를 선택해주세요.",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else if (title === "") {
+          Swal.fire({
+            icon: "warning",
+            title: "제목을 써주세요",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else if (content === "") {
+          Swal.fire({
+            icon: "warning",
+            title: "내용을 써주세요",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "게시글을 수정하지 못했습니다.",
+            confirmButtonColor: `#b59d7c`,
+          }).then(function () {
+            navi(`/community/communitydetail/${seq}`);
+          });
+        }
       });
   };
   return (
@@ -102,7 +124,11 @@ export default function CommunityCreate(api) {
             className="searchCd me-3"
             onChange={(event) => setCategory(event.target.value)}
           >
-            <option defaultValue>카테고리</option>
+            <option defaultValue>
+              {category === "REPORT" ? "제보" : ""}
+              {category === "REVIEW" ? "후기" : ""}
+              {category === "GENERAL" ? "잡담" : ""}
+            </option>
             <option value="report">제보</option>
             <option value="general">잡담</option>
             <option value="review">후기</option>
@@ -112,7 +138,7 @@ export default function CommunityCreate(api) {
             className="searchCd me-3"
             onChange={(event) => setCategory(event.target.value)}
           >
-            <option defaultValue>카테고리</option>
+            {/* <option defaultValue>카테고리</option> */}
             <option value="notice">공지</option>
           </select>
         )}
