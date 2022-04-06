@@ -1,4 +1,3 @@
-// import VolunteerModal from "../component/ProfileVolunteerModal";
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
 import { useEffect, useState, useRef } from "react";
@@ -18,7 +17,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const [totalPageNumber, setTotalPageNumber] = useState(1);
   const size = 4;
   // 모달 정보
-  const [modal, setModal] = useState(false);
   const [modalData, setModalData] = useState({});
   const [content, setContent] = useState();
   const [checkedInputs, setCheckedInputs] = useState("");
@@ -27,8 +25,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const userSeq = useSelector((state) => state.userInfo.userInfo.seq);
   // 기능
   const closeRef = useRef(null);
-  const hereRef = useRef(null);
-
   const navigator = useNavigate();
 
   const getData = () => {
@@ -48,13 +44,14 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
 
   useEffect(() => {
     getData();
-  }, [page, seq]);
+  }, [page]);
 
   // 요청 완료되면 모달 자동으로 닫히게
   const onhandleClose = () => {
     closeRef.current.click();
-    hereRef.current.click();
-    console.log("close");
+    // setCheckedInputs("");
+    // setContent("");
+    console.log("닫혀라");
   };
 
   // 해당 모집 상세페이지로
@@ -92,24 +89,14 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         },
       })
         .then((res) => {
-          onhandleClose();
-          setContent("");
+          // onhandleClose();
+          closeRef.current.click();
+          console.log("봉사인증요청성공", res);
           getData();
-          console.log("성공");
         })
-        .then(() => swal("요청완료", "", "success"))
         .catch((err) => {
-          console.log(err.response.status);
-          if (err.response.status) {
-            if (err.response.status === 400) {
-              // onhandleClose();
-              onhandleClose();
-              // hereRef.current.click();
-              swal("중복에러", "이미 요청된 글입니다.", "error");
-            }
-          } else {
-            swal("서버에러", "요청에 실패했습니다.", "error");
-          }
+          console.log(err);
+          swal("서버에러", "요청에 실패했습니다.", "error");
         });
     }
   };
@@ -142,14 +129,14 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
 
   // 모달에 데이터 보내기
   const onClickModal = (el) => {
-    // setContent("");
+    setContent("");
     setCheckedInputs("");
     setModalData(el);
-    setModal(true);
   };
 
   // 인증요청 버튼
   const onModal = (item) => {
+    console.log(item);
     // 처음 인증 신청할때
     if (item.authStatus === null) {
       return (
@@ -336,14 +323,86 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
     setContent(value);
   };
 
+  const inputModal = () => {
+    return (
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title" id="volunteerModalLabel">
+              봉사 인증 요청서
+            </h5>
+            <button
+              ref={closeRef}
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className={cn(`${st.body}`, "modal-body")}>
+            <div name="봉사제목" className={st.name}>
+              <div className={st.label}>
+                <label htmlFor="모집제목">
+                  <span>제목</span>
+                </label>
+              </div>
+              <div className={st.input}>{modalData.title}</div>
+            </div>
+
+            <div name="인원관리" className={st.name}>
+              <div className={st.label}>
+                <label htmlFor="인원관리">
+                  <span>참가인원</span>
+                </label>
+              </div>
+              {onMemberCheck()}
+            </div>
+
+            <div name="내용" className={st.content}>
+              <div className={st.label}>
+                <label htmlFor="content">
+                  <span>내용</span>
+                </label>
+              </div>
+              <div className={st.editor}>
+                {modalData.authStatus === null ||
+                modalData.authStatus === "REJECT" ? (
+                  <Editor
+                    id="content"
+                    height={"83%"}
+                    value={content || ""}
+                    onChange={onEditorChange}
+                    placeholder={""}
+                  />
+                ) : (
+                  <div
+                    className={st.htmlDiv}
+                    dangerouslySetInnerHTML={{
+                      __html: content,
+                    }}
+                  ></div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div name="하단버튼" className="modal-footer">
+            {onBottomBtn(modalData.authStatus)}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
-      <div className={st.listBox} ref={hereRef}>
+      <div className={st.listBox}>
         <div className={st.activity}>
           <div name="글 목록" className={st.list}>
             <div></div>
             {list ? (
               list.map((item, index) => {
+                console.log("item", item);
                 return (
                   <div key={index} className={st.listItemDiv}>
                     <button
@@ -388,79 +447,8 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
                             tabIndex="-1"
                             aria-labelledby="volunteerModalLabel"
                             aria-hidden="true"
-                          >
-                            <div className="modal-dialog modal-dialog-centered">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <h5
-                                    className="modal-title"
-                                    id="volunteerModalLabel"
-                                  >
-                                    봉사 인증 요청서
-                                  </h5>
-                                  <button
-                                    ref={closeRef}
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                  ></button>
-                                </div>
-                                <div className={cn(`${st.body}`, "modal-body")}>
-                                  <div name="봉사제목" className={st.name}>
-                                    <div className={st.label}>
-                                      <label htmlFor="모집제목">
-                                        <span>제목</span>
-                                      </label>
-                                    </div>
-                                    <div className={st.input}>
-                                      {modalData.title}
-                                    </div>
-                                  </div>
-
-                                  <div name="인원관리" className={st.name}>
-                                    <div className={st.label}>
-                                      <label htmlFor="인원관리">
-                                        <span>참가인원</span>
-                                      </label>
-                                    </div>
-                                    {onMemberCheck()}
-                                  </div>
-
-                                  <div name="내용" className={st.content}>
-                                    <div className={st.label}>
-                                      <label htmlFor="content">
-                                        <span>내용</span>
-                                      </label>
-                                    </div>
-                                    <div className={st.editor}>
-                                      {modalData.authStatus === null ||
-                                      modalData.authStatus === "REJECT" ? (
-                                        <Editor
-                                          id="content"
-                                          height={"83%"}
-                                          value={content || ""}
-                                          onChange={onEditorChange}
-                                          placeholder={""}
-                                        />
-                                      ) : (
-                                        <div
-                                          className={st.htmlDiv}
-                                          dangerouslySetInnerHTML={{
-                                            __html: content,
-                                          }}
-                                        ></div>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-
-                                <div name="하단버튼" className="modal-footer">
-                                  {onBottomBtn(modalData.authStatus)}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                            onClick={() => inputModal()}
+                          ></div>
                         </div>
                       </>
                     ) : (

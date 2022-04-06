@@ -11,7 +11,6 @@ import {
   EditInfo,
   Profile,
 } from "./pages/user";
-import { One } from "./pages/statistics";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetail, AnimalList } from "./pages/animals";
 import {
@@ -30,15 +29,16 @@ import {
 import { ManageMain } from "./pages/manager";
 import { Guide } from "pages/guide";
 import Footer from "components/Footer";
+import ScrollToTop from "components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
       <Header></Header>
+      <ScrollToTop />
       <Routes>
         <>
           <Route path="" element={<Home />} />
-          <Route path="/" element={<One />} />
         </>
         <>
           <Route path="/signup" element={<Signup />} />

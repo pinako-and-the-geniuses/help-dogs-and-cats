@@ -23,22 +23,19 @@ $sub-color: #e8e8e8;
     padding: 30px;
     margin: 30px auto 50px;
     .mainInfo {
-      //border: 1px solid darkblue;
       display: flex;
       .detailscard {
         margin-top: 20px;
-        border: 1px solid darkblue;
+        border: 1px solid #999999;
+        border-radius: 15px;
+        img {
+          border-radius: 15px 15px 0 0;
+        }
       }
     }
-    // .box{
-    //   border: 1px solid black;
-    //   display: flex;
-    //   flex-direction: column;
-    // }
     .textBox {
       display: flex;
       flex-direction: row;
-      //border: 1px solid blue;
       margin: 10px 0;
       p {
         //border: 1px solid salmon;
@@ -77,4 +74,23 @@ $sub-color: #e8e8e8;
   .bottomContent {
     //border: 1px solid salmon;
   }
+}
+
+.processState {
+  display: inline-block;
+  border: 2px solid $main-color;
+  color: $main-color;
+  border-radius: 30px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.button {
+  border: 0;
+  color: white;
+  background-color: $main-color;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 5px 0;
 }

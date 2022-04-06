@@ -4,12 +4,14 @@ import { URL } from "public/config";
 import st from "./styles/CommunityCreate.module.scss";
 import Editor from "components/Editor";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 export default function CommunityCreate(api) {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navi = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo.userInfo);
   const onEditorChange = (value) => {
     setContent(value);
   };
@@ -39,14 +41,36 @@ export default function CommunityCreate(api) {
         }
       })
       .catch((err) => {
-        Swal.fire({
-          icon: "error",
-          title: "게시글을 생성하지 못했습니다.",
-        }).then(function () {
-          navi("/community/community");
-        });
+        if (category === "") {
+          Swal.fire({
+            icon: "warning",
+            title: "카테고리를 선택해주세요.",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else if(title === ""){
+          Swal.fire({
+            icon: "warning",
+            title: "제목을 써주세요",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else if(content === ""){
+          Swal.fire({
+            icon: "warning",
+            title: "내용을 써주세요",
+            confirmButtonColor: `#b59d7c`,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "게시글을 생성하지 못했습니다.",
+            confirmButtonColor: `#b59d7c`,
+          }).then(function () {
+            navi("/community/community");
+          });
+        }
       });
   };
+
   return (
     <div className={st.commucreatemain}>
       <header className={st.commuhead}>
@@ -55,15 +79,26 @@ export default function CommunityCreate(api) {
         </h1>
       </header>
       <div className={st.createtopContent}>
-        <select
-          className="searchCd me-3"
-          onChange={(event) => setCategory(event.target.value)}
-        >
-          <option defaultValue>카테고리</option>
-          <option value="report">제보</option>
-          <option value="general">잡담</option>
-          <option value="review">후기</option>
-        </select>
+        {userInfo.role !== "ADMIN" ? (
+          <select
+            className="searchCd me-3"
+            onChange={(event) => setCategory(event.target.value)}
+          >
+            <option value="">카테고리</option>
+            <option value="report">제보</option>
+            <option value="general">잡담</option>
+            <option value="review">후기</option>
+          </select>
+        ) : (
+          <select
+            className="searchCd me-3"
+            onChange={(event) => setCategory(event.target.value)}
+          >
+            <option defaultValue>카테고리</option>
+            <option value="notice">공지</option>
+          </select>
+        )}
+
         <div className={st.Title}>
           <input
             type="text"

@@ -11,8 +11,8 @@ import AgeState from "./charts/AgeState";
 import SpeciesNeutral from "./charts/SpeciesNeutral";
 import styled from "styled-components";
 
+// background-color: whitesmoke;
 const ChartMain = styled.div`
-  background-color: whitesmoke;
   padding: 20px;
   width: 60%;
   margin: auto;

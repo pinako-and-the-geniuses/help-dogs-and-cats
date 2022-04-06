@@ -125,9 +125,7 @@ export default function CommunityDetail() {
                     <p className={st.tag_p}>
                       {communityDetail.data.category === "REPORT" ? "제보" : ""}
                       {communityDetail.data.category === "REVIEW" ? "후기" : ""}
-                      {communityDetail.data.category === "GENERAL"
-                        ? "잡담"
-                        : ""}
+                      {communityDetail.data.category === "GENERAL"? "잡담" : ""}
                     </p>
                     <p className={st.title_p}>
                       제목 : {communityDetail.data.title}

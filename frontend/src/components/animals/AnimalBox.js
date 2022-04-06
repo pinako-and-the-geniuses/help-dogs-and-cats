@@ -14,7 +14,6 @@ export default function AnimalBox(props) {
 
   useEffect(() => {
     setList(props.list);
-    console.log("animalBox - list", list); ////////////////////////
   }, [props.list]);
 
   const onGoDetail = (index) => {

@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
-import '../../components/styles/Paging.css';
+import "../../components/styles/Paging.css";
 import Pagination from "react-js-pagination";
+import swal from "sweetalert";
 
 const ANIMAL =
   "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
@@ -39,25 +40,27 @@ export default function AnimalList() {
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
-    setTotalItemCount(arr.children[3].value);
+    setTotalItemCount(Number(arr.children[3].value));
     setList(listData);
   };
 
   const onGetList = () => {
-    axios
-      .get(
-        `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
-      )
-      .then((res) => {
-        const dataSet = res.data;
-
-        parseStr(dataSet);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    if (regionUrl.length === 23) {
+      swal("시군구 선택 필수", "시도 선택시 시군구 필수입니다.", "info");
+    } else {
+      axios
+        .get(
+          `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
+        )
+        .then((res) => {
+          const dataSet = res.data;
+          parseStr(dataSet);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
   };
-
 
   useEffect(() => {
     onGetList("");
@@ -102,6 +105,7 @@ export default function AnimalList() {
               />
             </div>
           </div>
+          <div className="mb-3">[ 시도 선택시 시군구 필수 선택입니다. ]</div>
 
           <div name="조건2줄" className={st.secondCon}>
             <div name="축종" className={st.couple}>
@@ -164,7 +168,7 @@ export default function AnimalList() {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-5">
-        <AnimalBox list={list} />
+        {list && <AnimalBox list={list} />}
       </div>
 
       <Pagination
@@ -173,7 +177,7 @@ export default function AnimalList() {
         totalItemsCount={totalItemCount}
         pageRangeDisplayed={10}
         onChange={setPage}
-        ></Pagination>
+      ></Pagination>
     </div>
   );
 }

@@ -85,6 +85,8 @@ function VolunteerList(){
         getList();
     }, [page]);
 
+    // console.log(volunteers);
+
     return(
         <div className={style.myContainer}>
             <h1>봉사활동</h1>
@@ -149,7 +151,7 @@ function VolunteerList(){
                             onChange={(e)=>setKeyword(e.target.value)} />
                     </div>
 
-                    <button className={style.searchBtn} onClick={getList}>조회</button>
+                    <button className={style.searchBtn} onClick={()=>{setPage(1); getList();}}>조회</button>
                 </div>
             </div>
 
@@ -159,7 +161,8 @@ function VolunteerList(){
                 : null
             }
 
-            <table className={cn("table table-hover")}>
+            <div style={{ "min-height": "50vh" }}>
+                <table className={cn("table table-hover")}>
                 <thead>
                     <tr>
                         <th scope="col" width="15%">상태</th>
@@ -193,7 +196,8 @@ function VolunteerList(){
                         )
                     }
                 </tbody>
-            </table>
+                </table>
+            </div>
             
             <Paging
                 total={totalItemCount}

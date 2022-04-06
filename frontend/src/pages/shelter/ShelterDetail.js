@@ -21,7 +21,7 @@ function ShelterDetail() {
         </header>
         <section className={style.topContent}>
           <div className={style.row}>
-            <div className={cn(style.main_info, "col-6")}>
+            <div className={cn(style.main_info)}>
               <div className={style.text_box}>
                 <p className={style.title}>보호센터명</p>
                 <p>{data.careNm}</p>
@@ -53,10 +53,11 @@ function ShelterDetail() {
                 <p>{data.saveTrgtAnimal}</p>
               </div>
             </div>
-
-            <div className={cn(style.map, "col-6")}>
-              {data.lat && data.lng && <Map lat={data.lat} lng={data.lng} />}
-            </div>
+            {data.lat && data.lng && (
+              <div className={cn(style.map, "col-6")}>
+                <Map lat={data.lat} lng={data.lng} />
+              </div>
+            )}
           </div>
         </section>
       </main>

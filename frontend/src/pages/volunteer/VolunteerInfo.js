@@ -35,7 +35,7 @@ function VolunteerInfo({post, memSeq, getParticipants}){
                                 <TeamManage 
                                     approvedCount={post.approvedCount}
                                     maxParticipantCount={post.maxParticipantCount}
-                                    />
+                                />
                             </div>
                         </div>
                     </div>

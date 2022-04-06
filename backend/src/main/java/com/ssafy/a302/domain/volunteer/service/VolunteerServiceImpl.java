@@ -69,11 +69,11 @@ public class VolunteerServiceImpl implements VolunteerService {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if (!findVolunteer.getMember().getSeq().equals(memberSeq)){
+        if (!findVolunteer.getMember().getSeq().equals(memberSeq)) {
             throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
-            findVolunteer.modify(volunteerDto);
-            return findVolunteer.getSeq();
+        findVolunteer.modify(volunteerDto);
+        return findVolunteer.getSeq();
     }
 
 
@@ -83,7 +83,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if(!findVolunteer.getMember().getSeq().equals(memberSeq)){
+        if (!findVolunteer.getMember().getSeq().equals(memberSeq)) {
             throw new AccessDeniedException(ErrorMessage.FORBIDDEN);
         }
 
@@ -98,9 +98,9 @@ public class VolunteerServiceImpl implements VolunteerService {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
 
-        if(findVolunteer.getMember().getSeq().equals(memberSeq)){
+        if (findVolunteer.getMember().getSeq().equals(memberSeq)) {
             findVolunteer.changeVolunteerStatus(volunteerDto.getStatus());
-        }else{
+        } else {
             throw new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER);
         }
         return findVolunteer;
@@ -112,23 +112,19 @@ public class VolunteerServiceImpl implements VolunteerService {
     public VolunteerDto.Detail volunteerDetail(Long volunteerSeq) {
         Volunteer findVolunteer = volunteerRepository.findBySeq(volunteerSeq)
                 .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.INVALID_VOLUNTEER));
-
         findVolunteer.incrementViewCount();
 
         Member writer = findVolunteer.getMember();
+
+        List<VolunteerParticipant> findVolunteerParticipants = volunteerParticipantRepository.findAllByVolunteerSeq(volunteerSeq)
+                .orElse(null);
+        int approvedCount = findVolunteerParticipants != null ? findVolunteerParticipants.size() : 0;
+
         List<VolunteerComment> volunteerComments = volunteerCommentRepository.findCommentsByVolunteerSeq(volunteerSeq)
                 .orElse(null);
-
-        List<VolunteerParticipant> findVolunteerParticipantList = volunteerParticipantRepository.countParticipantNumber(volunteerSeq)
-                .orElse(null);
-        int approvedCount = 0;
-        if (findVolunteerParticipantList != null){
-            approvedCount = findVolunteerParticipantList.size();
-        }
-
         List<VolunteerCommentDto.ForDetail> commentsForDetail = convertNestedStructure(volunteerComments);
 
-        return VolunteerDto.Detail.create(findVolunteer, writer, approvedCount,commentsForDetail);
+        return VolunteerDto.Detail.create(findVolunteer, writer, approvedCount, commentsForDetail);
     }
 
     private List<VolunteerCommentDto.ForDetail> convertNestedStructure(List<VolunteerComment> comments) {

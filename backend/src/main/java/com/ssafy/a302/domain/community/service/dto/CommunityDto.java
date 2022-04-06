@@ -51,7 +51,7 @@ public class CommunityDto {
         return Community.builder()
                 .title(title)
                 .content(content)
-                .category(category)
+                .category(writer.getRole() == Member.Role.ADMIN ? Community.Category.NOTICE : category)
                 .member(writer)
                 .build();
     }

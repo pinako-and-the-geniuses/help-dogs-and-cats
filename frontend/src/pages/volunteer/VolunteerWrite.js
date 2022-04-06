@@ -10,9 +10,9 @@ import swal from "sweetalert";
 function VolunteerWrite() {
   const navigate = useNavigate();
   const jwt = sessionStorage.getItem("jwt");
-  const placeholder = [
-    "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시",
-  ];
+  const placeholder = (
+    "자세한 내용을 적어주세요\n ex)\n - 활동 장소: 000보호소\n - 활동 기간/시간: 두달간 매주 토요일 오후 2시"
+  );
   const [title, setTitle] = useState("");
   const [selectArea, setSelectArea] = useState("전체");
   const [time, setTime] = useState(0);
@@ -21,6 +21,27 @@ function VolunteerWrite() {
   const [endDate, setEndDate] = useState("");
   const [content, setContent] = useState("");
   const [areas, setAreas] = useState(Area);
+  const today = new Date();
+
+  function getYyyyMmDdToString(date) {
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1; //January is 0!
+
+    var yyyy = date.getFullYear();
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    yyyy = yyyy.toString();
+    mm = mm.toString();
+    dd = dd.toString();
+
+    var s1 = yyyy + "-" + mm + "-" + dd;
+    return s1;
+  }
 
   const onTitleHandler = (e) => {
     setTitle(e.target.value);
@@ -84,6 +105,10 @@ function VolunteerWrite() {
     }
     if (endDate === "") {
       swal("마감일은 필수입니다.");
+      return;
+    }
+    if (getYyyyMmDdToString(today) > endDate){
+      swal("마감일을 확인해주세요");
       return;
     }
     if (content.length < 15) {

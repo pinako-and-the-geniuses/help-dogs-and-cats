@@ -8,7 +8,7 @@ const FooterMain = styled.footer`
   align-items: center;
   justify-content: space-evenly;
   flex-wrap: nowrap;
-  bottom: 0;
+  bottom: 0px;
   position: relative;
 `;
 

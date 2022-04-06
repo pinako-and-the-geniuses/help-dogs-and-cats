@@ -12,7 +12,6 @@ export default function DeleteUser() {
   //회원정보
   const userSeq = useSelector((state) => state.userInfo.userInfo.seq);
   const jwt = sessionStorage.getItem("jwt");
-  console.log(`${URL}/members/${userSeq}`);
   //탈퇴요청
   const onDeleteUser = () => {
     axios({
@@ -32,7 +31,6 @@ export default function DeleteUser() {
         }
       })
       .catch((err) => {
-        console.log(err);
         swal("", "다시 확인해주세요", "error");
       });
   };
