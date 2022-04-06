@@ -4,10 +4,14 @@ $sub-color: #999999;
 
 .commuupdatemain {
   //border: 1px solid red;
-  margin: 20px 200px;
-  margin-top: 100px;
+  width: 75%;
+  margin: auto;
   .commuhead {
-    margin-bottom: 60px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    span {
+      color: $main-color;
+    }
   }
   .createtopContent {
     //border: 1px solid red;
@@ -45,12 +49,13 @@ $sub-color: #999999;
       font-size: 16px;
     }
   }
+
   .Editorheight {
-    //border: 1px solid red;
-    height: 400px;
+    width: 100%;
+    min-height: 10vh;
+    height: auto;
   }
   .createbuttonContent {
-    //border: 1px solid red;
     display: flex;
     justify-content: end;
     margin-top: 20px;
@@ -60,6 +65,7 @@ $sub-color: #999999;
       margin-left: 10px; //끝으로 보낼거면 없애기
       border-radius: 5px;
       border: 0;
+      margin-bottom: 60px;
       color: white;
     }
   }

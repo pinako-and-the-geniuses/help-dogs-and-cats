@@ -1,11 +1,12 @@
 import ProfileImage from "./ProfileImage";
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../../../public/config/index";
 import st from "../styles/profile.module.scss";
 import ProfileBadge from "./ProfileBadge";
+import swal from "sweetalert";
+
 export default function ProfileInfo({ isLogin, seq }) {
   const navi = useNavigate();
   const [inputs, setInputs] = useState({
@@ -28,7 +29,7 @@ export default function ProfileInfo({ isLogin, seq }) {
   useEffect(() => {
     // 로그인 안한 사람은 누구 프로필도 볼 수 없음.
     if (!isLogin) {
-      alert("로그인 해주세요");
+      swal("로그인 필요", "로그인시 가능한 서비스입니다.", "error");
       navi("/login");
     } else if (seq) {
       axios
@@ -60,7 +61,7 @@ export default function ProfileInfo({ isLogin, seq }) {
           console.log(err);
         });
     }
-  }, []);
+  }, [seq]);
   return (
     <>
       <ProfileImage profileImageFilePath={profileImageFilePath} />

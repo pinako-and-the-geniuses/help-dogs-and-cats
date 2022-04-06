@@ -3,12 +3,27 @@ import "./styles/Header.css";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../actions/UserAction";
+import styled from "styled-components";
+import swal from "sweetalert";
 
 export default function Header() {
   const dispatch = useDispatch();
   const navi = useNavigate();
 
+  const CustomLabel = styled.label`
+    font-size: 14px;
+    color: #7e7d7d;
+    &:hover {
+      color: #b8a07e;
+      cursor: pointer;
+    }
+  `;
+  const goToUnder = () => {
+    navi("/");
+    window.scrollTo(0, window.outerHeight);
+  };
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const nickname = useSelector((state) => state.userInfo.userInfo.nickname);
   const seq = useSelector((state) => state.userInfo.userInfo.seq);
   const role = useSelector((state) => state.userInfo.userInfo.role);
 
@@ -18,9 +33,8 @@ export default function Header() {
       dispatch(logoutAction());
       sessionStorage.removeItem("jwt");
       navi("/");
-      alert("로그아웃 성공!");
     } else {
-      alert("로그인 정보가 없습니다.");
+      swal("실패", "로그인정보가 없습니다.", "error");
     }
   };
 
@@ -53,7 +67,7 @@ export default function Header() {
             로그아웃
           </a>
           <a className="user" onClick={() => navi(`/user/profile/${seq}`)}>
-            MY
+            {nickname}
           </a>
         </div>
       );
@@ -76,15 +90,17 @@ export default function Header() {
     <div id="header" className="fixed-top header-inner-pages">
       <div className="container d-flex align-items-center justify-content-between">
         <a href="/" className="logo">
-          LOGO
+          <img src="/favicon.png" alt="logo" />
+          도와주개냥
         </a>
 
         <nav id="navbar" className="navbar">
           <ul>
             <li>
-              <a className="nav-link scrollto active">
+              <a className="nav-link scrollto" href="/#chart">
                 유기동물현황
               </a>
+              {/* <CustomLabel onClick={goToUnder}>유기동물현황</CustomLabel> */}
             </li>
             <li className="dropdown">
               <a href="#">

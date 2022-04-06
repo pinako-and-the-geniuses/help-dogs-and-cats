@@ -8,11 +8,9 @@ Quill.register("modules/ImageResize", ImageResize);
 
 export default function Editor(props) {
   const quillRef = useRef();
-
   const jwt = sessionStorage.getItem("jwt");
-  const imageHandler = () => {
-    console.log("에디터에서 이미지 버튼 클릭");
 
+  const imageHandler = () => {
     // 이미지를 저장할 input type=file DOM 을 만든다
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -107,7 +105,9 @@ export default function Editor(props) {
       theme="snow"
       placeholder={props.placeholder}
       value={props.value}
-      onChange={(content, source, delta, editor) => props.onChange(editor.getHTML())}
+      onChange={(content, source, delta, editor) =>
+        props.onChange(editor.getHTML())
+      }
       modules={modules}
       formats={formats}
     />

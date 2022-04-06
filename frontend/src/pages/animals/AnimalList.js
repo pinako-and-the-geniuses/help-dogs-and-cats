@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
-import Paging from '../../components/Paging';
+import "../../components/styles/Paging.css";
+import Pagination from "react-js-pagination";
+import swal from "sweetalert";
 
 const ANIMAL =
   "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
@@ -31,29 +33,33 @@ export default function AnimalList() {
   const [kindUrl, setKindUrl] = useState("");
   const [stateUrl, setStateUrl] = useState("");
   const [page, setPage] = useState(1);
-  const [totalItemCount, setTotalItemCount] = useState(0);
   const [limit, setLimit] = useState(12);
+  const [totalItemCount, setTotalItemCount] = useState(0);
 
   // 원하는 데이터 뽑아 저장하기
   const parseStr = (dataSet) => {
     const arr = new XMLParser().parseFromString(dataSet).children[1];
     const listData = arr.children[0].children;
-    setTotalItemCount(arr.children[3].value);
+    setTotalItemCount(Number(arr.children[3].value));
     setList(listData);
   };
 
   const onGetList = () => {
-    axios
-    .get(
-      `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
-      )
-      .then((res) => {
-        const dataSet = res.data;
-        parseStr(dataSet);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    if (regionUrl.length === 23) {
+      swal("시군구 선택 필수", "시도 선택시 시군구 필수입니다.", "info");
+    } else {
+      axios
+        .get(
+          `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
+        )
+        .then((res) => {
+          const dataSet = res.data;
+          parseStr(dataSet);
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
   };
 
   useEffect(() => {
@@ -62,13 +68,14 @@ export default function AnimalList() {
 
   return (
     <div className={st.div}>
-      <div name="페이지이름">
+      <header name="페이지이름">
         <h2>유기동물 조회</h2>
-      </div>
+      </header>
       <div name="상세조회Box" className={st.inquiry}>
         <div name="조건box" className={st.condition}>
           <div name="조건1줄" className={st.firstCon}>
-            <div name="시도">
+            <div name="시도" className={st.couple}>
+              <p>시도</p>
               <GetSido
                 sidoData={sidoData}
                 selected={selected}
@@ -77,7 +84,8 @@ export default function AnimalList() {
                 setRegionUrl={setRegionUrl}
               />
             </div>
-            <div name="시군구">
+            <div name="시군구" className={st.couple}>
+              <p>시군구</p>
               <GetSigungu
                 sigunguData={sigunguData}
                 setSigunguData={setSigunguData}
@@ -86,18 +94,22 @@ export default function AnimalList() {
                 setRegionUrl={setRegionUrl}
               />
             </div>
-            <div name="보호소">
+            <div name="보호소" className={st.couple}>
+              <p>보호소</p>
               <GetShelter
                 shelter={shelter}
                 setShelter={setShelter}
                 selected={selected}
                 setSelected={setSelected}
+                setRegionUrl={setRegionUrl}
               />
             </div>
           </div>
+          <div className="mb-3">[ 시도 선택시 시군구 필수 선택입니다. ]</div>
 
           <div name="조건2줄" className={st.secondCon}>
-            <div name="축종">
+            <div name="축종" className={st.couple}>
+              <p>축종</p>
               <GetKind setKind={setKind} setKindUrl={setKindUrl} />
             </div>
             <div name="상태" className="ms-4">
@@ -156,15 +168,16 @@ export default function AnimalList() {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-5">
-        <AnimalBox list={list} />
+        {list && <AnimalBox list={list} />}
       </div>
 
-      <Paging
-        total={totalItemCount}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
+      <Pagination
+        activePage={page}
+        itemsCountPerPage={limit}
+        totalItemsCount={totalItemCount}
+        pageRangeDisplayed={10}
+        onChange={setPage}
+      ></Pagination>
     </div>
   );
 }

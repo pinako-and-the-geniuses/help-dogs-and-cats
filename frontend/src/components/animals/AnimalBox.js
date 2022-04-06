@@ -14,7 +14,6 @@ export default function AnimalBox(props) {
 
   useEffect(() => {
     setList(props.list);
-    console.log(list); ////////////////////////
   }, [props.list]);
 
   const onGoDetail = (index) => {
@@ -32,7 +31,8 @@ export default function AnimalBox(props) {
               <img
                 src={data[11].value}
                 className={st.cardImgTop}
-                alt="사진없음"/>
+                alt="사진없음"
+              />
               <div className={st.cardBody}>
                 <div className={st.processState}>{data[12].value}</div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
@@ -59,7 +59,10 @@ export default function AnimalBox(props) {
                   </div>
                 </div>
                 <div className={st.detilaBtn}>
-                  <button className={st.button} onClick={() => onGoDetail(index)}>
+                  <button
+                    className={st.button}
+                    onClick={() => onGoDetail(index)}
+                  >
                     자세히 보기
                   </button>
                 </div>
@@ -68,11 +71,11 @@ export default function AnimalBox(props) {
           </div>
         );
       });
-    } else if (list.length === []) {
+    } else if (list === [] || list.length === 0) {
       return (
         <>
-          <div>
-            <h2>데이터가 없습니다.</h2>
+          <div className={st.loadingImg}>
+            <h5> 데이터가 없습니다.</h5>
           </div>
         </>
       );
@@ -80,6 +83,7 @@ export default function AnimalBox(props) {
       return (
         <>
           <div className={st.loadingImg}>
+            <h5> 공공데이터 포털과 연결이 불안정합니다.</h5>
             <h2>
               <img src={loading} alt="로딩중" />
             </h2>
@@ -89,9 +93,5 @@ export default function AnimalBox(props) {
     }
   };
 
-  return (
-    <>
-      {onReturn()}
-    </>
-  );
+  return <>{onReturn()}</>;
 }

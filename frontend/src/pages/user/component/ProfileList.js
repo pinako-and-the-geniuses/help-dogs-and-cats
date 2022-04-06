@@ -2,17 +2,11 @@ import ProfileCategory from "./ProfileCategory";
 import ProfileCommunity from "./ProfileCommunity";
 import ProfileVolunteer from "./ProfileVolunteer";
 import ProfileAdoption from "./ProfileAdoption";
-import st from "../styles/profile.module.scss";
-import cn from "classnames";
-import { useEffect, useState } from "react";
 
-import axios from "axios";
-import { URL } from "public/config";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function ProfileList(props) {
-  const [category, setCategory] = useState("communities");
-  const navigator = useNavigate();
+  const [category, setCategory] = useState("volunteers");
 
   const onNowCategory = () => {
     if (category === "communities") {
