@@ -121,4 +121,36 @@ public class ExternalApiController {
                 .data(shelterPageDto)
                 .build();
     }
+
+    @Operation(
+            summary = "보호소 일부 조회 API",
+            description = "보호소 일부 데이터를 페이징 처리 후에 반환합니다.",
+            tags = {"external-api"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "보호소 데이터를 반환합니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/shelters/part")
+    public BaseResponseDto<ShelterPageDto> shelterPart(Pageable pageable,
+                                                       @RequestParam String sidoCode,
+                                                       @RequestParam String sigunguCode) throws IOException, ParseException {
+        ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable, sidoCode, sigunguCode);
+
+        return BaseResponseDto.<ShelterPageDto>builder()
+                .message(Message.SUCCESS)
+                .data(shelterPageDto)
+                .build();
+    }
 }
