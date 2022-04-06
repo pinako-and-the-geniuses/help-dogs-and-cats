@@ -13,6 +13,7 @@ export default function Profile() {
   const mySeq = useSelector((state) => state.userInfo.userInfo.seq);
   const { seq } = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!isLogin) {
       swal({
