@@ -186,6 +186,29 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .build();
     }
 
+    @Override
+    public ShelterDto getShelterDto(String shelterName) throws IOException, ParseException {
+        StringBuilder urlBuilder = new StringBuilder(shelterUrl.concat("/shelterInfo"));
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + shelterKey);
+        urlBuilder.append("&" + URLEncoder.encode("care_nm", "UTF-8") + "=" + URLEncoder.encode(shelterName, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+        String result = httpUtil.getResult(urlBuilder.toString());
+        JSONArray jsonArray = getJsonArray(result);
+        JSONObject obj = (JSONObject) jsonArray.get(0);
+        return ShelterDto.builder()
+                .shelterName((String) obj.get("careNm"))
+                .organizationName((String) obj.get("orgNm"))
+                .saveTargetAnimal((String) obj.get("saveTrgtAnimal"))
+                .address((String) obj.get("careAddr"))
+                .jibunAddress((String) obj.get("jibunAddr"))
+                .closeDay((String) obj.get("closeDay"))
+                .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
+                .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
+                .tel((String) obj.get("careTel"))
+                .build();
+    }
+
     private static JSONArray getJsonArray(String result) throws ParseException {
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(result);

@@ -15,11 +15,14 @@ public class HttpUtil {
 
     public String getResult(String url) throws IOException {
         log.info("url={}", url);
+
         URL urlObj = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Content-type", "application/json");
         BufferedReader rd;
+
+        log.info("response code={}", conn.getResponseCode());
         if (200 <= conn.getResponseCode() && conn.getResponseCode() <= 300) {
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         } else {
@@ -34,6 +37,8 @@ public class HttpUtil {
 
         rd.close();
         conn.disconnect();
+
+        log.info("http response result={}", sb.toString());
 
         return sb.toString();
     }
