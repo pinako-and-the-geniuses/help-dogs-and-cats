@@ -6,7 +6,7 @@ import style from "./styles/Community.module.scss";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import Paging from "components/Paging";
-
+import swal from 'sweetalert';
 export default function Community() {
   const [communitys, setCommunity] = useState("");
   const [page, setPage] = useState(1);
@@ -67,7 +67,14 @@ export default function Community() {
   const navigate = useNavigate();
 
   const getSeq = (seq) => {
-    navigate(`/community/communitydetail/${seq}`);
+    if(isLogin){
+      if(seq !== 0) navigate(`/community/communitydetail/${seq}`);
+    }
+    else{
+      //회원만 글을 읽을 수 있음
+      swal('권한이 없습니다');
+    }
+    // navigate(`/community/communitydetail/${seq}`);
   };
 
   const getWrite = () => {
