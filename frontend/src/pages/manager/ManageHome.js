@@ -2,12 +2,24 @@ import st from "./styles/Home.module.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-
+import { useSelector } from "react-redux";
+import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 function ManageHome({ setTab }) {
   const jwt = sessionStorage.getItem("jwt");
   const [data, setData] = useState("");
+  const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isLogin) {
+      swal({
+        title: "권한이 없습니다. ",
+        icon: "error",
+        closeOnClickOutside: false,
+      });
+      navigate("/login", { replace: true });
+    }else{
     axios({
       url: `${URL}/admins/auth-request-count`,
       method: "GET",
@@ -21,7 +33,9 @@ function ManageHome({ setTab }) {
       .catch((err) => {
         console.log(err);
       });
+    }
   }, []);
+
   console.log(data);
   return (
     <div className={st.adimincontainer}>
@@ -42,7 +56,7 @@ function ManageHome({ setTab }) {
         <div
           className={st.leftbox}
           onClick={() => {
-            setTab(2);
+            setTab(3);
           }}
         >
           <h3>미인증 : {data.adopt}</h3>

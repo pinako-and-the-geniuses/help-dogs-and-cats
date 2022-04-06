@@ -2,7 +2,6 @@ import st from "./styles/AdoptManageDetail.module.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-
 function VolunteerManageDetail({ volunSeq, setTab }) {
   const [volunteerManageDetail, setVolunteerManageDetail] = useState("");
   const [stateChanged, setStateChanged] = useState("REQUEST");
@@ -69,7 +68,7 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
             ></div>
             <div className={st.contentbtn}>
               <div>
-                <button className={st.listbutton} onClick={() => setTab(3)}>
+                <button className={st.listbutton} onClick={() => setTab(1)}>
                   목록으로
                 </button>
               </div>

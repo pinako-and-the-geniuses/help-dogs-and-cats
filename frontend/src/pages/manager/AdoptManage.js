@@ -17,7 +17,7 @@ function AdoptManage({ setTab, setAdoptSeq }) {
 
   // 목록 불러오는 함수
   const getData = () => {
-    axios
+      axios
       .get(
         `${URL}/admins/adopts/auth?page=${page}&size=${size}&search=${search}`,
         { headers: { Authorization: `Bearer ${jwt}` } }
@@ -40,7 +40,7 @@ function AdoptManage({ setTab, setAdoptSeq }) {
 
   // 첫 화면에서 전체 목록 불러옴
   useEffect(() => {
-    getData();
+      getData();
   }, []);
 
   return (
