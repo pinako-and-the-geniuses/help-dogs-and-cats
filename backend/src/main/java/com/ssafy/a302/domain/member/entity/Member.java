@@ -6,7 +6,6 @@ import com.ssafy.a302.domain.community.entity.Community;
 import com.ssafy.a302.domain.community.entity.CommunityComment;
 import com.ssafy.a302.domain.community.entity.CommunityLike;
 import com.ssafy.a302.domain.member.service.dto.MemberDto;
-import com.ssafy.a302.domain.report.entity.CautionHistory;
 import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerComment;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
@@ -71,9 +70,6 @@ public class Member extends BaseLastModifiedEntity {
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<MemberBadge> memberBadges = new ArrayList<>();
-
-    @OneToMany(mappedBy = "respondent", cascade = ALL)
-    private List<CautionHistory> cautionHistories = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<Volunteer> volunteers = new ArrayList<>();
