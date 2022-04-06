@@ -20,32 +20,83 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
         setAdoptManageDetail(response.data);
       }) //엑시오스 보낸 결과
       .catch((err) => console.log(err));
-  }
+  };
   useEffect(() => {
     read();
   }, []);
 
-  // const alert = () => {
-  //   if (setStateChanged(stateChanged === "REQUEST" || stateChanged === "REJECT")) {
-  //     Swal.fire({
-  //       title: "인증 하시겠습니까?",
-  //       icon: "success",
-  //       confirmButtonColor: `#b59d7c`,
-  //       showCancelButton: true,
-  //     }).then((res) => {
-  //       setStateChanged(stateChanged === "DONE");
-  //     });
-  //   }else if(setStateChanged(stateChanged === "REQUEST" || stateChanged === "DONE")){
-  //     Swal.fire({
-  //       title: "반려 하시겠습니까?",
-  //       icon: "warning",
-  //       confirmButtonColor: `#b59d7c`,
-  //       showCancelButton: true,
-  //     }).then((res) => {
-  //       setStateChanged(stateChanged === "REJECT");
-  //     });
-  //   }
-  // };
+  // const getApproval = async (approve) => {
+  //   await axios({
+  //     url: `${URL}/admins/adopts/auth/${adoptSeq}`,
+  //     method: "patch",
+  //     data: {
+  //       status: approve,
+  //     },
+  //     headers: {
+  //       Authorization: `Bearer ${jwt}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (setStateChanged(stateChanged === "REQUEST" || stateChanged === "REJECT")) {
+  //         Swal.fire({
+  //           title: "인증 하시겠습니까?",
+  //           icon: "success",
+  //           confirmButtonColor: `#b59d7c`,
+  //           showCancelButton: true,
+  //         }).then((res) => {
+  //           setStateChanged(stateChanged === "DONE");
+  //         });
+  //       }else if(setStateChanged(stateChanged === "REQUEST" || stateChanged === "DONE")){
+  //         Swal.fire({
+  //           title: "반려 하시겠습니까?",
+  //           icon: "warning",
+  //           confirmButtonColor: `#b59d7c`,
+  //           showCancelButton: true,
+  //         }).then((res) => {
+  //           setStateChanged(stateChanged === "REJECT");
+  //         });
+  //       }
+  //     })
+  // }
+    
+
+  const getApproval2 = async (approve) => {
+    await axios({
+      url: `${URL}/admins/adopts/auth/${adoptSeq}`,
+      method: "patch",
+      data: {
+        status: approve,
+      },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+      .then((res) => {
+        console.log("변경 완료");
+        console.log(res.data);
+        if(setStateChanged(approve === "REQUEST")){
+        Swal.fire({
+          title: "인증 하시겠습니까?",
+          text: "인증하면 되돌릴 수 없습니다",
+          icon: "success",
+          confirmButtonColor: `#b59d7c`,
+          cancelButtonColor: "#999999",
+          showCancelButton: true,
+        }).then((res) => {
+          if (res.value) {
+            setStateChanged(approve === "DONE");
+            console.log(stateChanged);
+            navi(setTab(3));
+          } else if (res.dismiss === "cancel") {
+            setStateChanged(approve);
+            console.log(approve);
+          }
+        });
+      }
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getApproval = async (approve) => {
     await axios({
       url: `${URL}/admins/adopts/auth/${adoptSeq}`,
@@ -59,28 +110,24 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
     })
       .then((res) => {
         console.log("변경 완료");
-        console.log(stateChanged);
         console.log(res.data);
-        
-        if (stateChanged === "REQUEST" || stateChanged === "REJECT") {
-          console.log(stateChanged);
-          Swal.fire({
-            icon: "success",
-            title: "인증되었습니다.",
-          }).then((res) => {
-            setStateChanged(stateChanged === "DONE");  
-          });
-          // setStateChanged(stateChanged === "DONE");   
-        } else if (stateChanged === "REQUEST" || stateChanged === "DONE") {
-          Swal.fire({
-            icon: "warning",
-            title: "반려되었습니다.",
-          })
-          .then((res) => {
-            setStateChanged(stateChanged === "REJECT");
-          });
-          // setStateChanged(stateChanged === "REJECT");
-        }
+        if(setStateChanged(approve === "REQUEST")){
+        Swal.fire({
+          title: "반려 하시겠습니까?",
+          text: "반려하면 되돌릴 수 없습니다",
+          icon: "warning",
+          confirmButtonColor: `#b59d7c`,
+          cancelButtonColor: "#999999",
+          showCancelButton: true,
+        }).then((res) => {
+          if (res.value) {
+            setStateChanged(approve === "DONE");
+            navi(setTab(3));
+          } else if (res.dismiss === "cancel") {
+            setStateChanged(approve);
+          }
+        });
+      }
       })
       .catch((err) => console.log(err));
   };
@@ -120,20 +167,24 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
                   목록으로
                 </button>
               </div>
-              <div>
-                <button
-                  onClick={() => getApproval("REJECT")}
-                  className={st.deletebutton}
-                >
-                  반려
-                </button>
-                <button
-                  onClick={() => getApproval("DONE")}
-                  className={st.button}
-                >
-                  인증
-                </button>
-              </div>
+              {stateChanged === "REQUEST" ? (
+                <div>
+                  <button
+                    onClick={() => getApproval("REQUEST")}
+                    className={st.deletebutton}
+                  >
+                    반려
+                  </button>
+                  <button
+                    onClick={() => getApproval2("REQUEST")}
+                    className={st.button}
+                  >
+                    인증
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </>
         ) : (
