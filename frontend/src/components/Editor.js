@@ -101,7 +101,6 @@ export default function Editor(props) {
   return (
     <ReactQuill
       style={{ height: `${props.height}`, width: "100%" }}
-      className={props.className}
       ref={quillRef}
       theme="snow"
       placeholder={props.placeholder}

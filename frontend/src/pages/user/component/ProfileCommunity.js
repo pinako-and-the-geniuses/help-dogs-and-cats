@@ -32,7 +32,7 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
   };
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, seq]);
 
   const onGoToDetail = (itemSeq) => {
     console.log(itemSeq);

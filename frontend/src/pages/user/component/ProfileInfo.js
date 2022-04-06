@@ -61,7 +61,7 @@ export default function ProfileInfo({ isLogin, seq }) {
           console.log(err);
         });
     }
-  }, []);
+  }, [seq]);
   return (
     <>
       <ProfileImage profileImageFilePath={profileImageFilePath} />
