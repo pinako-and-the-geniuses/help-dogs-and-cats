@@ -138,30 +138,32 @@ export default function Community() {
           </button>
         </div>
       ) : null}
-      <table className={cn("table table-hover", style.my_table)}>
-        <thead>
-          <tr>
-            <th scope="col" width="15%">
-              태그
-            </th>
-            <th scope="col" width="30%">
-              제목
-            </th>
-            <th scope="col" width="10%">
-              작성자
-            </th>
-            <th scope="col" width="10%">
-              작성일
-            </th>
-            <th scope="col" width="10%">
-              조회수
-            </th>
-          </tr>
-        </thead>
-        {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
-        {communitys ? (
-          <tbody>
-            {/* {communitys.slice(0,2).map((community) => (
+      <div>
+        <div style={{ "min-height": "50vh" }}>
+          <table className={cn("table table-hover", style.my_table)}>
+            <thead>
+              <tr>
+                <th scope="col" width="15%">
+                  태그
+                </th>
+                <th scope="col" width="30%">
+                  제목
+                </th>
+                <th scope="col" width="10%">
+                  작성자
+                </th>
+                <th scope="col" width="10%">
+                  작성일
+                </th>
+                <th scope="col" width="10%">
+                  조회수
+                </th>
+              </tr>
+            </thead>
+            {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
+            {communitys ? (
+              <tbody>
+                {/* {communitys.slice(0,2).map((community) => (
               <tr key={community.seq} onClick={() => getSeq(community.seq)}>
                 {community.category === "NOTICE" ? <td>공지</td> : ""}
                 <td>{community.title}</td>
@@ -181,25 +183,26 @@ export default function Community() {
                 <td>{community.viewCount}</td>
               </tr>
             ))} */}
-            {communitys.map((community) => (
-              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
-                {community.category === "REPORT" ? <td>제보</td> : ""}
-                {community.category === "REVIEW" ? <td>후기</td> : ""}
-                {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                {community.category === "NOTICE" ? <td>공지</td> : ""}
-                <td>{community.title}</td>
-                <td>{community.memberNickname}</td>
-                <td>{community.createdDate}</td>
-                <td>{community.viewCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        ) : (
-          <td colSpan="5">작성 글이 없습니다.</td>
-        )}
-      </table>
-
-      <Paging total={totalcount} limit={10} page={page} setPage={setPage} />
+                {communitys.map((community) => (
+                  <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                    {community.category === "REPORT" ? <td>제보</td> : ""}
+                    {community.category === "REVIEW" ? <td>후기</td> : ""}
+                    {community.category === "GENERAL" ? <td>잡담</td> : ""}
+                    {community.category === "NOTICE" ? <td>공지</td> : ""}
+                    <td>{community.title}</td>
+                    <td>{community.memberNickname}</td>
+                    <td>{community.createdDate}</td>
+                    <td>{community.viewCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <td colSpan="5">작성 글이 없습니다.</td>
+            )}
+          </table>
+        </div>
+        <Paging total={totalcount} limit={10} page={page} setPage={setPage} />
+      </div>
     </div>
   );
 }
