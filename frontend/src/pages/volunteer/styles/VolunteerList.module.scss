@@ -2,137 +2,134 @@ $main-text: #292e3d;
 $main-color: #b59d7c;
 $sub-color: #999999;
 
-
 .myContainer {
-    width: 75%;
-    margin: auto;
-    // margin: 40px 180px;
-    h1 {
-        margin: 40px 0;
-    }
-    
-    .title{
-        font-weight: bold;
-        width: 100px;
-        padding: 0 10px;
-        margin: 0;
-        margin-left: 10px;
-        width: 100px;
-    }
+  width: 75%;
+  margin: auto;
+  min-height: 80vh;
+  // margin: 40px 180px;
+  h1 {
+    margin: 40px 0;
+  }
 
-    .searchBar {
-        // display: grid;
-        border: 1px solid $sub-color;
-        border-radius: 5px;
-        padding: 20px 20px;
-        margin: 10px 0; 
+  .title {
+    font-weight: bold;
+    width: 100px;
+    padding: 0 10px;
+    margin: 0;
+    margin-left: 10px;
+    width: 100px;
+  }
 
-        
-        .top {
-            display: flex;
-            align-items: center;
-            padding: 8px 0;
+  .searchBar {
+    // display: grid;
+    border: 1px solid $sub-color;
+    border-radius: 5px;
+    padding: 20px 20px;
+    margin: 10px 0;
 
-            .volunteer {
-                display: flex;
-                align-items: center;
-                width: 30%;
-            }
-    
-            .vol_time{
-                border: 1px solid $sub-color;
-                line-height: 18px;
-            }
+    .top {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
 
-            span{
-                margin: 0 5px 0 3px;
-            }
-
-
-            .endDate {
-                display: flex;
-
-                input {
-                    padding-left: 8px;
-                }
-            }
-        }
-
-        .bottom {
-            display: flex;
-            align-items: center;
-            padding: 8px 0;
-    
-            .areaBox {
-                display: flex;
-                width: 30%;
-
-                .area {
-                    margin: 0 5px 0 10px;
-                }
-
-                select { 
-                    height: fit-content;
-                    margin: 0;
-                }
-        
-            }
-
-            .titleBox {
-                display: flex;
-
-                input {
-                    padding-left: 8px;
-                    &:focus {
-                      outline: none;
-                    }
-                }
-            }
-        }
-
-        .searchBtn {
-            background-color: $main-color;
-            padding: 5px 13px;
-            margin-left: 30px; //끝으로 보낼거면 없애기
-            border-radius: 5px;
-            border: 0;
-            color: white;
-        }
-    }
-
-    .writeBtn {
-        display: inline;
-        float: right;
-        color: white;
-        cursor: pointer;
-        background-color: $main-color;
-        border: 0;
-        border-radius: 5px;
-        padding: 7px 10px;
-    };
-    
-    table {
-        margin-top: 30px;
-        border-top: 1px solid lightgrey;        
-        text-align: center;
-    }
-    
-    nav {
+      .volunteer {
         display: flex;
-        justify-content: center;
         align-items: center;
+        width: 30%;
+      }
 
-        a {
-            border-radius: 50%;
-            background-color: $main-color;
-            color: white;
-            margin: 7px;
-            border: none;
+      .vol_time {
+        border: 1px solid $sub-color;
+        line-height: 18px;
+      }
 
-            &:hover {
-                background-color: $sub-color;
-                color: white;
-            }
+      span {
+        margin: 0 5px 0 3px;
+      }
+
+      .endDate {
+        display: flex;
+
+        input {
+          padding-left: 8px;
         }
+      }
     }
+
+    .bottom {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+
+      .areaBox {
+        display: flex;
+        width: 30%;
+
+        .area {
+          margin: 0 5px 0 10px;
+        }
+
+        select {
+          height: fit-content;
+          margin: 0;
+        }
+      }
+
+      .titleBox {
+        display: flex;
+
+        input {
+          padding-left: 8px;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+
+    .searchBtn {
+      background-color: $main-color;
+      padding: 5px 13px;
+      margin-left: 30px; //끝으로 보낼거면 없애기
+      border-radius: 5px;
+      border: 0;
+      color: white;
+    }
+  }
+
+  .writeBtn {
+    display: inline;
+    float: right;
+    color: white;
+    cursor: pointer;
+    background-color: $main-color;
+    border: 0;
+    border-radius: 5px;
+    padding: 7px 10px;
+  }
+
+  table {
+    margin-top: 30px;
+    border-top: 1px solid lightgrey;
+    text-align: center;
+  }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      border-radius: 50%;
+      background-color: $main-color;
+      color: white;
+      margin: 7px;
+      border: none;
+
+      &:hover {
+        background-color: $sub-color;
+        color: white;
+      }
+    }
+  }
 }
