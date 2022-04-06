@@ -11,7 +11,6 @@ import {
   EditInfo,
   Profile,
 } from "./pages/user";
-import { One } from "./pages/statistics";
 import { ShelterList, ShelterDetail } from "./pages/shelter";
 import { AnimalDetail, AnimalList } from "./pages/animals";
 import {
@@ -40,7 +39,6 @@ function App() {
       <Routes>
         <>
           <Route path="" element={<Home />} />
-          <Route path="/" element={<One />} />
         </>
         <>
           <Route path="/signup" element={<Signup />} />

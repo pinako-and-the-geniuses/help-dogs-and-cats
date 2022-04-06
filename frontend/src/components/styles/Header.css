@@ -48,6 +48,13 @@ a {
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'MinSans-Medium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/MinSans-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -79,6 +86,7 @@ a {
   color: #7e7d7d;
   white-space: nowrap;
   transition: 0.3s;
+  font-family: 'MinSans-Medium';
 }
 .navbar a i,
 .navbar a:focus i {
@@ -154,4 +162,12 @@ a {
 
 .user:hover {
   color: #333333;
+}
+
+.user-space {
+  margin-left: 10px;
+}
+
+a.user {
+  margin-left: 10px;
 }
