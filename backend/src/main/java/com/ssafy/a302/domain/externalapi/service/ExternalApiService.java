@@ -1,5 +1,6 @@
 package com.ssafy.a302.domain.externalapi.service;
 
+import com.ssafy.a302.domain.externalapi.service.dto.ShelterDto;
 import com.ssafy.a302.domain.externalapi.service.dto.ShelterPageDto;
 import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
 import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
@@ -18,4 +19,6 @@ public interface ExternalApiService {
     ShelterPageDto getShelterPageDto(Pageable pageable) throws IOException, ParseException;
 
     ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode) throws IOException, ParseException;
+
+    ShelterDto getShelterDto(String shelterName) throws IOException, ParseException;
 }

@@ -1,6 +1,7 @@
 package com.ssafy.a302.domain.externalapi.controller;
 
 import com.ssafy.a302.domain.externalapi.service.ExternalApiService;
+import com.ssafy.a302.domain.externalapi.service.dto.ShelterDto;
 import com.ssafy.a302.domain.externalapi.service.dto.ShelterPageDto;
 import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
 import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
@@ -113,7 +114,7 @@ public class ExternalApiController {
     })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/shelters")
-    public BaseResponseDto<ShelterPageDto> shelter(Pageable pageable) throws IOException, ParseException {
+    public BaseResponseDto<ShelterPageDto> shelters(Pageable pageable) throws IOException, ParseException {
         ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable);
 
         return BaseResponseDto.<ShelterPageDto>builder()
@@ -151,6 +152,36 @@ public class ExternalApiController {
         return BaseResponseDto.<ShelterPageDto>builder()
                 .message(Message.SUCCESS)
                 .data(shelterPageDto)
+                .build();
+    }
+
+    @Operation(
+            summary = "보호소 상세 조회 API",
+            description = "보호소 상세 데이터를 반환합니다.",
+            tags = {"external-api"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "보호소 데이터를 반환합니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/shelters/{shelterName}")
+    public BaseResponseDto<ShelterDto> shelter(@PathVariable String shelterName) throws IOException, ParseException {
+        ShelterDto shelterDto = externalApiService.getShelterDto(shelterName);
+
+        return BaseResponseDto.<ShelterDto>builder()
+                .message(Message.SUCCESS)
+                .data(shelterDto)
                 .build();
     }
 }
