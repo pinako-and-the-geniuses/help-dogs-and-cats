@@ -16,7 +16,7 @@ public class FileUtil {
             return null;
         }
 
-        String originalFilename = file.getOriginalFilename();
+        String originalFilename = file.getOriginalFilename().toLowerCase();
         String storeFilename = createStoreFilename(originalFilename);
         file.transferTo(new File(getFullPath(storeFilename, path)));
 

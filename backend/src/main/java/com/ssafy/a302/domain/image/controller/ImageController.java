@@ -58,7 +58,7 @@ public class ImageController {
 
         String extRegx = "(.*?)\\.(png|jpeg|gif|jpg)$";
         String originalFilename = imageFile.getOriginalFilename();
-        if (!originalFilename.matches(extRegx)) {
+        if (!originalFilename.toLowerCase().matches(extRegx)) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_FILE_EXT);
         }
 
