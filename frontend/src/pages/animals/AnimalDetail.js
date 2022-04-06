@@ -32,21 +32,25 @@ export default function AnimalDetails() {
                     alt="사진 없음"
                   />
                   <div className="card-body">
-                    <div className={animaldetails.processState}>{data[12].value}</div>
+                    <div className={animaldetails.processState}>
+                      {data[12].value && data[12].value}
+                    </div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>공고번호</p>
-                      <p>{data[0].value}</p>
+                      {data[0].value && <p>{data[0].value}</p>}
                     </div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>접수일시</p>
-                      <p>
-                        {data[2].value.slice(0, 4)}-{data[2].value.slice(4, 6)}-
-                        {data[2].value.slice(6)}
-                      </p>
+                      {data[2].value && (
+                        <p>
+                          {data[2].value.slice(0, 4)}-
+                          {data[2].value.slice(4, 6)}-{data[2].value.slice(6)}
+                        </p>
+                      )}
                     </div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>발견장소</p>
-                      <p>{data[3].value}</p>
+                      {data[3].value && <p>{data[3].value}</p>}
                     </div>
                     <button
                       type="button"
@@ -103,31 +107,37 @@ export default function AnimalDetails() {
                         <th scope="row" width="30%">
                           품종
                         </th>
-                        <td colSpan="3">{data[4].value}</td>
+                        {data[4].value && <td colSpan="3">{data[4].value}</td>}
                       </tr>
                       <tr>
                         <th scope="row">연생</th>
-                        <td colSpan="3">{data[6].value}</td>
+                        {data[6].value && <td colSpan="3">{data[6].value}</td>}
                       </tr>
                       <tr>
                         <th scope="row">kg</th>
-                        <td colSpan="3">{data[7].value}</td>
+                        {data[7].value && <td colSpan="3">{data[7].value}</td>}
                       </tr>
                       <tr>
                         <th scope="row">성별</th>
-                        <td colSpan="3">{data[13].value}</td>
+                        {data[13].value && (
+                          <td colSpan="3">{data[13].value}</td>
+                        )}
                       </tr>
                       <tr>
                         <th scope="row">중성화여부</th>
-                        <td colSpan="3">{data[14].value}</td>
+                        {data[14].value && (
+                          <td colSpan="3">{data[14].value}</td>
+                        )}
                       </tr>
                       <tr>
                         <th scope="row">색상</th>
-                        <td colSpan="3">{data[5].value}</td>
+                        {data[5].value && <td colSpan="3">{data[5].value}</td>}
                       </tr>
                       <tr>
                         <th scope="row">특징</th>
-                        <td colSpan="3">{data[15].value}</td>
+                        {data[15].value && (
+                          <td colSpan="3">{data[15].value}</td>
+                        )}
                       </tr>
                     </tbody>
                   </table>
@@ -149,19 +159,27 @@ export default function AnimalDetails() {
                         <th scope="row" width="30%">
                           관할기관
                         </th>
-                        <td colSpan="3">{data[19].value}</td>
+                        {data[19].value && (
+                          <td colSpan="3">{data[19].value}</td>
+                        )}
                       </tr>
                       <tr>
                         <th scope="row">보호센터</th>
-                        <td colSpan="3">{data[16].value}</td>
+                        {data[16].value && (
+                          <td colSpan="3">{data[16].value}</td>
+                        )}
                       </tr>
                       <tr>
                         <th scope="row">보호소 주소</th>
-                        <td colSpan="3">{data[18].value}</td>
+                        {data[18].value && (
+                          <td colSpan="3">{data[18].value}</td>
+                        )}
                       </tr>
                       <tr>
                         <th scope="row">연락처</th>
-                        <td colSpan="3">{data[21].value}</td>
+                        {data[21].value && (
+                          <td colSpan="3">{data[21].value}</td>
+                        )}
                       </tr>
                     </tbody>
                   </table>
@@ -173,7 +191,6 @@ export default function AnimalDetails() {
       ) : (
         "데이터가 없습니다."
       )}
-
     </>
   );
 }
