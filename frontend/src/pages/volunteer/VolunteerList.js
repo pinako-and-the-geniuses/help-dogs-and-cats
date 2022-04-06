@@ -85,6 +85,8 @@ function VolunteerList(){
         getList();
     }, [page]);
 
+    // console.log(volunteers);
+
     return(
         <div className={style.myContainer}>
             <h1>봉사활동</h1>
@@ -149,7 +151,7 @@ function VolunteerList(){
                             onChange={(e)=>setKeyword(e.target.value)} />
                     </div>
 
-                    <button className={style.searchBtn} onClick={getList}>조회</button>
+                    <button className={style.searchBtn} onClick={()=>{setPage(1); getList();}}>조회</button>
                 </div>
             </div>
 
