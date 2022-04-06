@@ -1,5 +1,6 @@
 package com.ssafy.a302.global.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -8,10 +9,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Slf4j
 @Component
 public class HttpUtil {
 
     public String getResult(String url) throws IOException {
+        log.info("url={}", url);
         URL urlObj = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
         conn.setRequestMethod("GET");
