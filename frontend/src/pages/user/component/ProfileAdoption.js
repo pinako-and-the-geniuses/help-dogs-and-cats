@@ -51,7 +51,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
   };
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, seq]);
 
   //해당 내용 클릭시 본인만 상세 내용 볼 수 있음
   const onGoToDetail = (itemSeq) => {

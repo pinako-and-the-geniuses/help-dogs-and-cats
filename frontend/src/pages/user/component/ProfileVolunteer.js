@@ -48,7 +48,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, seq]);
 
   // 요청 완료되면 모달 자동으로 닫히게
   const onhandleClose = () => {
