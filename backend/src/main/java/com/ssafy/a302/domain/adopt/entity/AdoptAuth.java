@@ -1,6 +1,5 @@
 package com.ssafy.a302.domain.adopt.entity;
 
-import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptDto;
 import com.ssafy.a302.domain.member.entity.Member;
@@ -71,6 +70,8 @@ public class AdoptAuth extends BaseLastModifiedEntity {
                 .content(content)
                 .status(status)
                 .memberSeq(member.getSeq())
+                .nickname(member.getDetail().getNickname())
+                .createdDate(getCreatedDate().toLocalDate())
                 .build();
     }
 }

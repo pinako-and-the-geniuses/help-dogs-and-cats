@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class VolunteerAuthDto {
     }
 
     @Getter
-    @ToString(of = {"seq", "content", "lastModifiedDate"})
+    @ToString(of = {"seq", "content", "memberSeq", "nickname", "createdDate"})
     public static class Response {
 
         @Schema(name = "seq", title = "봉사활동인증 기본키", description = "봉사활동인증이 가지고 있는 고유 식별키입니다.")
@@ -45,16 +46,24 @@ public class VolunteerAuthDto {
         @Schema(title = "인증 상태", description = "인증 상태입니다.")
         private final Status status;
 
-        @Schema(name = "lastModifiedDate", title = "최종수정일", description = "최종수정일입니다.")
-        private final LocalDateTime lastModifiedDate;
+        @Schema(title = "작성자 식별키", description = "작성자 식별키입니다.")
+        private final Long memberSeq;
+
+        @Schema(title = "작성자 닉네임", description = "작성자 닉네임입니다.")
+        private final String nickname;
+
+        @Schema(title = "작성일", description = "작성일입니다.")
+        private final LocalDate createdDate;
 
         @Builder
-        public Response(Long seq, String title, String content, Status status, LocalDateTime lastModifiedDate) {
+        public Response(Long seq, String title, String content, Status status, Long memberSeq, String nickname, LocalDate createdDate) {
             this.seq = seq;
             this.title = title;
             this.content = content;
             this.status = status;
-            this.lastModifiedDate = lastModifiedDate;
+            this.memberSeq = memberSeq;
+            this.nickname = nickname;
+            this.createdDate = createdDate;
         }
     }
 
