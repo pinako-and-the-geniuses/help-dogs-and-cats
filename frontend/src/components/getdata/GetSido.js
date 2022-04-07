@@ -5,7 +5,6 @@ import animal from "pages/animals/styles/Animal.module.scss";
 
 // [시도 조회]
 export default function GetSido({
-  setRegionUrl,
   sidoData,
   setSidoData,
   selected,
@@ -35,7 +34,6 @@ export default function GetSido({
       className={animal.textBox}
       aria-label="시도"
       onChange={(e) => {
-        setRegionUrl(`&upr_cd=${e.target.value}&org_cd=`);
         setSelected({
           sidoCode: e.target.value,
           sigunguCode: "",

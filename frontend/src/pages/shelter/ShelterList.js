@@ -25,6 +25,7 @@ function ShelterList() {
   const [selected, setSelected] = useState({
     sidoCode: "",
     sigunguCode: "",
+    shelterName: "",
   });
   const [page, setPage] = useState(1);
   const [totalItemCount, setTotalItemCount] = useState(0);

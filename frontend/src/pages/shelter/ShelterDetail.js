@@ -60,6 +60,11 @@ function ShelterDetail() {
             )}
           </div>
         </section>
+        <div className={style.gotoList}>
+          <a type="button" className={style.button} href="/shelter/list">
+            목록으로
+          </a>
+        </div>
       </main>
     </div>
   );
