@@ -85,7 +85,6 @@ function VolunteerList(){
         getList();
     }, [page]);
 
-    // console.log(volunteers);
 
     return(
         <div className={style.myContainer}>
@@ -161,7 +160,7 @@ function VolunteerList(){
                 : null
             }
 
-            <div style={{ "min-height": "50vh" }}>
+            <div style={{"minHeight":"50vh"}}>
                 <table className={cn("table table-hover")}>
                 <thead>
                     <tr>

@@ -193,7 +193,7 @@ function VolunteerUpdate() {
       </div>
       <div className={style.editorBox}>
         <Editor
-          height={"100%"}
+          height={"55vh"}
           placeholder={placeholder}
           value={content || ""}
           onChange={onEditorChange}

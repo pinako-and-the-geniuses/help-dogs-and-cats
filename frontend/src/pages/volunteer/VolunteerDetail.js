@@ -75,10 +75,9 @@ function VolunteerDetail() {
       .then((res) =>{
           setParticipants(res.data.data);
           setIsParty(!isParty);
-          // console.log(9)
       })
       .catch((err)=>{
-          console.log(err);
+          // console.log(err);
       })
   }
     
@@ -94,10 +93,9 @@ function VolunteerDetail() {
       .then((res) => {
         setPost(res.data.data);
         setComments(res.data.data.comments);
-        // console.log(7)
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -115,26 +113,14 @@ function VolunteerDetail() {
     })
       .then((res) => {
         setStateChanged(!stateChanged);
-        // console.log(8)
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
-  ////
-  const testIsApply = () => {
-    const isApply = participants.filter((p) => p.seq === memSeq);
-  };
   const isApply = participants.filter((p) => p.seq === memSeq);
-  // const isApply =()=>participants.filter((p) => p.seq === memSeq);
-
-  // let isApply = [];
-  // const ApplyCheck=()=>{
-  //   isApply = participants.filter((p) => p.seq === memSeq);
-  //   console.log(isApply);
-  // }
-
+  
   //참여자 상태에 따른 버튼 표시
   const setApplyBtn = (status) => {
     if (status !== "RECRUITING")
@@ -156,7 +142,7 @@ function VolunteerDetail() {
             참여신청
           </button>
         );
-      } else {
+      } else if( isApply !== 0) {
         //내가 신청이 된 상태
         return (
           <button
@@ -186,7 +172,7 @@ function VolunteerDetail() {
         getParticipants();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
   //일반: 참여 취소
@@ -197,11 +183,13 @@ function VolunteerDetail() {
       headers: { Authorization: `Bearer ${jwt}` },
     })
       .then((res) => {
-        swal("참여 취소 되었습니다");
-        getParticipants();
+        swal("참여 취소 되었습니다")
+        .then((value)=>{
+          window.location.reload('/');
+        })
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -220,10 +208,9 @@ function VolunteerDetail() {
     })
       .then((res) => {
         setChanged(!changed);
-        // console.log(6)
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -235,7 +222,6 @@ function VolunteerDetail() {
       headers: { Authorization: `Bearer ${jwt}` },
     })
       .then((res) => {
-        // console.log('삭제성공');
         navigate("/volunteer/list");
       })
       .catch((err) => {
@@ -280,20 +266,17 @@ function VolunteerDetail() {
     apply();
     // isApply();
     setJoin(true);
-    // console.log(3)
   };
 
   const cancleBtn = () => {
     applyCancle();
     // isApply();
     setJoin(false);
-    // console.log(3)
   };
 
   useEffect(() => {
     getPost();
-    // console.log('d');
-  }, [changed, stateChanged, isParty]); //댓글, 모집, //여기 뭔가가 잘못됨
+  }, [changed, stateChanged, isParty]); //댓글, 모집, 참여자조회 //여기 뭔가가 잘못됨
 
   useEffect(()=>{
     getParticipants();
@@ -354,7 +337,8 @@ function VolunteerDetail() {
         <VolunteerInfo
         post={post}
         memSeq={memSeq}
-        getParticipants={getParticipants}/>
+        getParticipants={getParticipants}
+        getPost={getPost}/>
         
         <div className={style.mainBox}>
         <div dangerouslySetInnerHTML={{ __html: post.content }}></div>

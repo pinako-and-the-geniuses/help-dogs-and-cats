@@ -12,8 +12,10 @@ function TeamManage(props){
     const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
     const [participants, setParticipants] = useState([]);
     const [change, setChange] = useState(false);
-    let cnt = 0;
-    //신청자 조회
+
+    const [cnt, setCnt] = useState(0);
+
+    //    신청자 조회
     const getParticipants=async()=>{
         await axios({
             url:`${URL}/volunteers/${id}/participants`,
@@ -22,18 +24,28 @@ function TeamManage(props){
         })
         .then((res) =>{
             setParticipants(res.data.data);
-            // console.log('모달', participants);
-            // console.log(participants.map((i)=>{
-            //     if(i.approve===true){
-            //         cnt++;
-            //     }
-            // }))
-            // .then(console.log(cnt));
         })
+        .then(()=>{getPost()})
         .catch((err)=>{
-            console.log(err);
+            // console.log(err);
         })
     }
+
+    const getPost = async () => {
+        await axios({
+          url: `${URL}/volunteers/${id}`,
+          method: "get",
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
+          .then((res) => {
+            setCnt(res.data.data.approvedCount);
+          })
+          .catch((err) => {
+            // console.log(err);
+          });
+      };
 
     //참가자 승인.미승인
     const partyApprove=async(apv, memSeq)=>{
@@ -51,7 +63,7 @@ function TeamManage(props){
             setChange(true);
         })
         .catch((err)=>{
-            console.log(err);
+            // console.log(err);
         })
     }   
 
@@ -63,10 +75,10 @@ function TeamManage(props){
             headers:{ Authorization: `Bearer ${jwt}`}
         })
         .then((res)=>{
-            //getParticipants();
+            getParticipants();
         })
         .catch((err)=>{
-            console.log(err);
+            // console.log(err);
         })
     }
 
@@ -75,15 +87,21 @@ function TeamManage(props){
             swal('모집인원을 초과했습니다');
             return;
         }
+        if(cnt >= props.maxParticipantCount){
+            swal('모집인원을 초과했습니다');
+            return;
+        }
         partyApprove(true, seq)
         .then(getParticipants());
         getParticipants();
+        getPost();
     }
 
-    const cancleApprove=(seq)=>{
+    const cancleApprove=async(seq)=>{
         partyApprove(false, seq)
         .then(getParticipants());
         getParticipants();
+        getPost();
     }
 
     const deleteHandler=(memSeq)=>{
@@ -102,6 +120,7 @@ function TeamManage(props){
 
     useEffect(()=>{
         getParticipants();
+        getPost();
     }, [])
 
     return(
