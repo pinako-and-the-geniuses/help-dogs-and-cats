@@ -41,8 +41,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
           const data = res.data.data;
           setList(data.volunteers);
           setTotalPageNumber(data.totalPageNumber);
-        })
-        .catch((err) => console.log(err));
+        });
     }
   };
 
@@ -54,12 +53,10 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   const onhandleClose = () => {
     closeRef.current.click();
     hereRef.current.click();
-    console.log("close");
   };
 
   // 해당 모집 상세페이지로
   const onGoToDetail = (itemSeq) => {
-    console.log(itemSeq);
     navigator(`/volunteer/detail/${itemSeq}`);
   };
 
@@ -95,20 +92,14 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
           onhandleClose();
           setContent("");
           getData();
-          console.log("성공");
         })
         .then(() => swal("요청완료", "", "success"))
         .catch((err) => {
-          console.log(err.response.status);
           if (err.response.status) {
             if (err.response.status === 400) {
-              // onhandleClose();
               onhandleClose();
-              // hereRef.current.click();
               swal("중복에러", "이미 요청된 글입니다.", "error");
             }
-          } else {
-            swal("서버에러", "요청에 실패했습니다.", "error");
           }
         });
     }
@@ -121,28 +112,21 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
       url: `${URL}/volunteers/${volunteerSeq}/auth`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        setContent(res.data.data.content);
-        if (now !== "REJECT") {
-          var temp = res.data.data.participants.filter(function (n) {
-            if (n.approve) {
-              return n;
-            }
-          });
-          setCheckedInputs(temp);
-        }
-      })
-      .then(console.log(content, "======", checkedInputs))
-      .catch((err) => {
-        console.log(err);
-        swal("서버에러", "요청에 실패했습니다.", "error");
-      });
+    }).then((res) => {
+      setContent(res.data.data.content);
+      if (now !== "REJECT") {
+        var temp = res.data.data.participants.filter(function (n) {
+          if (n.approve) {
+            return n;
+          }
+        });
+        setCheckedInputs(temp);
+      }
+    });
   };
 
   // 모달에 데이터 보내기
   const onClickModal = (el) => {
-    // setContent("");
     setCheckedInputs("");
     setModalData(el);
     setModal(true);

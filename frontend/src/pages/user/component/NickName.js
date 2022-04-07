@@ -21,18 +21,20 @@ export default function NickName({
   //회원가입일 때 닉네임 중복확인 요청
   const onCheckNickName = (event) => {
     event.preventDefault();
-    axios
-      .get(`${URL}/members/nickname-duplicate-check/${nickName}`)
-      .then((res) => {
-        console.log(res);
-        setNickNameCheck(res.status);
-        isValid(res.status);
-      })
-      .catch((err) => {
-        console.log(err);
-        setNickNameCheck(err.response.status);
-        isValid(err.response.status);
-      });
+    if (nickName) {
+      axios
+        .get(`${URL}/members/nickname-duplicate-check/${nickName}`)
+        .then((res) => {
+          setNickNameCheck(res.status);
+          isValid(res.status);
+        })
+        .catch((err) => {
+          setNickNameCheck(err.response.status);
+          isValid(err.response.status);
+        });
+    } else {
+      setNickNameCheck(400);
+    }
   };
 
   const isValid = (res) => {

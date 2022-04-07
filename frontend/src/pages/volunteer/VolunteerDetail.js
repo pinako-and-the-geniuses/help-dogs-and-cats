@@ -66,21 +66,17 @@ function VolunteerDetail() {
   };
 
   //신청자 조회
-  const getParticipants=async()=>{
-      await axios({
-          url:`${URL}/volunteers/${id}/participants`,
-          method: "get",
-          headers: { Authorization : `Bearer ${jwt}`}
-      })
-      .then((res) =>{
-          setParticipants(res.data.data);
-          setIsParty(!isParty);
-      })
-      .catch((err)=>{
-          // console.log(err);
-      })
-  }
-    
+  const getParticipants = async () => {
+    await axios({
+      url: `${URL}/volunteers/${id}/participants`,
+      method: "get",
+      headers: { Authorization: `Bearer ${jwt}` },
+    }).then((res) => {
+      setParticipants(res.data.data);
+      setIsParty(!isParty);
+    });
+  };
+
   //게시글 정보 가져오기
   const getPost = async () => {
     await axios({
@@ -89,14 +85,10 @@ function VolunteerDetail() {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        setPost(res.data.data);
-        setComments(res.data.data.comments);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    }).then((res) => {
+      setPost(res.data.data);
+      setComments(res.data.data.comments);
+    });
   };
 
   //글 작성자: 모집 상태 변경
@@ -110,17 +102,16 @@ function VolunteerDetail() {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        setStateChanged(!stateChanged);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    }).then((res) => {
+      setStateChanged(!stateChanged);
+    });
   };
 
+  const testIsApply = () => {
+    const isApply = participants.filter((p) => p.seq === memSeq);
+  };
   const isApply = participants.filter((p) => p.seq === memSeq);
-  
+
   //참여자 상태에 따른 버튼 표시
   const setApplyBtn = (status) => {
     if (status !== "RECRUITING")
@@ -142,7 +133,7 @@ function VolunteerDetail() {
             참여신청
           </button>
         );
-      } else if( isApply !== 0) {
+      } else if (isApply !== 0) {
         //내가 신청이 된 상태
         return (
           <button
@@ -166,14 +157,10 @@ function VolunteerDetail() {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        swal("참여 신청 되었습니다");
-        getParticipants();
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    }).then((res) => {
+      swal("참여 신청 되었습니다");
+      getParticipants();
+    });
   };
   //일반: 참여 취소
   const applyCancle = async () => {
@@ -181,16 +168,10 @@ function VolunteerDetail() {
       url: `${URL}/volunteers/${id}/apply`,
       method: "delete",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        swal("참여 취소 되었습니다")
-        .then((value)=>{
-          window.location.reload('/');
-        })
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    }).then((res) => {
+      swal("참여 취소 되었습니다");
+      getParticipants();
+    });
   };
 
   //댓글 작성
@@ -205,13 +186,9 @@ function VolunteerDetail() {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        setChanged(!changed);
-      })
-      .catch((err) => {
-        // console.log(err);
-      });
+    }).then((res) => {
+      setChanged(!changed);
+    });
   };
 
   //게시글 삭제
@@ -220,13 +197,9 @@ function VolunteerDetail() {
       url: `${URL}/volunteers/${id}`,
       method: "delete",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        navigate("/volunteer/list");
-      })
-      .catch((err) => {
-        // console.log('삭제실패',err);
-      });
+    }).then((res) => {
+      navigate("/volunteer/list");
+    });
   };
 
   const deleteHandler = () => {
@@ -247,7 +220,10 @@ function VolunteerDetail() {
   };
 
   const onClickEvent = () => {
-    if (commentContent.length < 1||commentContent.replace(/\s| /gi, "").length===0 ) {
+    if (
+      commentContent.length < 1 ||
+      commentContent.replace(/\s| /gi, "").length === 0
+    ) {
       swal("입력값은 필수입니다");
       return;
     }
@@ -264,13 +240,13 @@ function VolunteerDetail() {
 
   const applyBtn = () => {
     apply();
-    // isApply();
+
     setJoin(true);
   };
 
   const cancleBtn = () => {
     applyCancle();
-    // isApply();
+
     setJoin(false);
   };
 
@@ -278,7 +254,7 @@ function VolunteerDetail() {
     getPost();
   }, [changed, stateChanged, isParty]); //댓글, 모집, 참여자조회 //여기 뭔가가 잘못됨
 
-  useEffect(()=>{
+  useEffect(() => {
     getParticipants();
   }, []);
 
@@ -288,67 +264,68 @@ function VolunteerDetail() {
         <h1>봉사활동</h1>
 
         <div className={style.titleBox}>
-        {post.status === "RECRUITING" ? (
+          {post.status === "RECRUITING" ? (
             leftdays >= 0 ? (
-            <p className={style.leftdays}>D-{leftdays}</p>
+              <p className={style.leftdays}>D-{leftdays}</p>
             ) : (
-            <p className={style.leftdays}>마감</p>
+              <p className={style.leftdays}>마감</p>
             )
-        ) : (
+          ) : (
             <p className={style.leftdays}>마감</p>
-        )}
-        <p className={style.title}>{post.title}</p>
-        {memSeq === post.writerSeq
+          )}
+          <p className={style.title}>{post.title}</p>
+          {memSeq === post.writerSeq
             ? {
                 DONE: (
-                <button
+                  <button
                     type="button"
                     className={`${style.joinBtn} ${style.joinXBtn}`}
-                >
+                  >
                     모집완료
-                </button>
+                  </button>
                 ),
                 ONGOING: (
-                <button
+                  <button
                     type="button"
                     className={`${style.joinBtn} ${style.joinXBtn}`}
                     onClick={() => {
-                    onChangeHandler("RECRUITING");
+                      onChangeHandler("RECRUITING");
                     }}
-                >
+                  >
                     모집시작
-                </button>
+                  </button>
                 ),
                 RECRUITING: (
-                <button
+                  <button
                     type="button"
                     className={style.joinBtn}
                     onClick={() => {
-                    onChangeHandler("ONGOING");
+                      onChangeHandler("ONGOING");
                     }}
-                >
+                  >
                     모집마감
-                </button>
+                  </button>
                 ),
-            }[post.status]
+              }[post.status]
             : setApplyBtn(post.status)}
         </div>
 
         <VolunteerInfo
-        post={post}
-        memSeq={memSeq}
-        getParticipants={getParticipants}
-        getPost={getPost}/>
-        
+          post={post}
+          memSeq={memSeq}
+          getParticipants={getParticipants}
+          getPost={getPost}
+        />
+
         <div className={style.mainBox}>
-        <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+          <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
         </div>
 
         {memSeq === post.writerSeq ? (
-        <div className={style.editPost}>
+          <div className={style.editPost}>
             <p onClick={goToEdit}>수정</p>
             <p onClick={deleteHandler}>삭제</p>
-        </div>
+          </div>
         ) : null}
         <br />
 

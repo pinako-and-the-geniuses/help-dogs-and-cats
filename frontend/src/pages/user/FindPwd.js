@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 export default function FindPwd() {
   const [email, setEmail] = useState("");
@@ -11,27 +12,25 @@ export default function FindPwd() {
 
   const onInputHandler = (e) => {
     const currentInput = e.target.value;
-    console.log(e.target.value);
     setEmail(currentInput);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    axios
-      .get(`${URL}/members/password-reset/${email}`)
-      .then((res) => {
+    if (email.length > 5) {
+      axios.get(`${URL}/members/password-reset/${email}`).then((res) => {
         const status = res.status;
         if (status === 200) {
-          alert("링크 전송 완료!");
+          swal("링크전송완료", "메일을 확인하세요.", "success");
           navigator("/");
         } else {
-          alert("이메일이 존재하지 않습니다.");
+          swal("", "이메일이 존재하지 않습니다.", "error");
           setEmail("");
         }
-      })
-      .catch((err) => {
-        alert("서버에러");
       });
+    } else {
+      swal("", "정보를 확인하세요.", "error");
+    }
   };
 
   return (

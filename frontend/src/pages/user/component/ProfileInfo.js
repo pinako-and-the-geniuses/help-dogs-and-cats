@@ -32,34 +32,28 @@ export default function ProfileInfo({ isLogin, seq }) {
       swal("로그인 필요", "로그인시 가능한 서비스입니다.", "error");
       navi("/login");
     } else if (seq) {
-      axios
-        .get(`${URL}/members/${seq}`)
-        .then((res) => {
-          if (res.status === 200) {
-            const {
-              nickname,
-              level,
-              activityArea,
-              badgesForProfile,
-              profileImageFilePath,
-            } = res.data.data;
-            const exp = res.data.data.exp % 100;
+      axios.get(`${URL}/members/${seq}`).then((res) => {
+        if (res.status === 200) {
+          const {
+            nickname,
+            level,
+            activityArea,
+            badgesForProfile,
+            profileImageFilePath,
+          } = res.data.data;
+          const exp = res.data.data.exp % 100;
 
-            setInputs({
-              ...inputs,
-              nickname,
-              level,
-              activityArea,
-              badgesForProfile,
-              exp,
-              profileImageFilePath,
-            });
-          }
-        })
-
-        .catch((err) => {
-          console.log(err);
-        });
+          setInputs({
+            ...inputs,
+            nickname,
+            level,
+            activityArea,
+            badgesForProfile,
+            exp,
+            profileImageFilePath,
+          });
+        }
+      });
     }
   }, [seq]);
   return (

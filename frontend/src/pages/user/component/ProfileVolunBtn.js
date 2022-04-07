@@ -17,7 +17,6 @@ export default function ProfileVolunBtn({ item }) {
     setCheckedInputs("");
     setData(item);
   };
-  console.log(data);
 
   return (
     <>

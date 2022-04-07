@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 export default function FindId() {
   const [tel, setTel] = useState("");
@@ -12,34 +13,30 @@ export default function FindId() {
 
   const onInputHandler = (e) => {
     const currentInput = e.target.value;
-    console.log(e.target.value);
     setTel(currentInput);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (tel.length < 11) {
-      alert("번호를 입력하세요");
+      swal("", "번호를 입력하세요", "error");
     } else {
       axios
         .get(`${URL}/members/find-email-by/${tel}`)
         .then((res) => {
           const status = res.status;
           if (status === 200) {
-            console.log(res.data.data.email);
             setFindId(res.data.data.email);
           } else {
-            alert("이메일이 존재하지 않습니다.");
+            swal("", "이메일이 존재하지 않습니다.", "error");
             setTel("");
           }
         })
         .catch((err) => {
           const status = err.response.status;
           if (status === 400) {
-            alert("번호 형식을 확인해주세요");
+            swal("", "번호 형식을 확인해주세요.", "error");
             setTel("");
-          } else {
-            alert("서버에러");
           }
         });
     }

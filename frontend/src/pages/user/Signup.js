@@ -39,7 +39,6 @@ export default function Signup() {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(email, pwd);
     if (!isEmail) {
       swal("확인필요", "이메일 중복확인이 필요합니다.", "info");
     } else if (!isPwd || !isPwdConfirm) {
@@ -68,26 +67,16 @@ export default function Signup() {
           tel: phone,
           activityArea: region,
         },
-      })
-        .then((res) => {
-          console.log(res);
-          if (res.status === 201) {
-            swal("반가워요", "", "success");
-            navi("/login", { replace: true });
-          }
-        })
-        .catch((err) => {
-          swal("Error", "다시 시도해주세요.", "Error");
-          // console.log(email, pwd, nickName, phone, region);
-          console.log(err.response.status);
-        });
+      }).then((res) => {
+        if (res.status === 201) {
+          swal("반가워요", "", "success");
+          navi("/login", { replace: true });
+        }
+      });
     } else {
       alert("형식을 다시 확인해 입력해주세요");
     }
   };
-
-  // console.log("mail,pwd,pwdconfirm", isEmail, isPwd, isPwdConfirm);
-  // console.log("nickname,phone,policy", isNickName, isPhone, policy);
 
   return (
     <div className="userform-page">

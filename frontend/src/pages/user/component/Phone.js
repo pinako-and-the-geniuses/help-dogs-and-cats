@@ -17,19 +17,21 @@ export default function Phone({ phone, isPhone, setPhone, setIsPhone }) {
   // 회원가입일때 폰번호 중복확인 요청
   const onCheckPhone = (event) => {
     event.preventDefault();
-    axios
-      .get(`${URL}/members/tel-duplicate-check/${phone}`)
+    if (phone) {
+      axios
+        .get(`${URL}/members/tel-duplicate-check/${phone}`)
 
-      .then((res) => {
-        console.log("핸드폰 중복 확인 요청결과", res);
-        setPhoneCheck(res.status);
-        isValid(res.status);
-      })
-      .catch((err) => {
-        console.log("핸드폰 중복 확인 요청결과", err.response.status);
-        setPhoneCheck(err.response.status);
-        isValid(err.response.status);
-      });
+        .then((res) => {
+          setPhoneCheck(res.status);
+          isValid(res.status);
+        })
+        .catch((err) => {
+          setPhoneCheck(err.response.status);
+          isValid(err.response.status);
+        });
+    } else {
+      setPhoneCheck(400);
+    }
   };
 
   // 중복확인 마친 후 재인증
@@ -49,7 +51,7 @@ export default function Phone({ phone, isPhone, setPhone, setIsPhone }) {
           id="phone"
           name="phone"
           type="tel"
-          defaultvalue={phone}
+          defaultValue={phone}
           pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
           placeholder="( - 포함 입력)"
           onChange={onPhoneHandler}
