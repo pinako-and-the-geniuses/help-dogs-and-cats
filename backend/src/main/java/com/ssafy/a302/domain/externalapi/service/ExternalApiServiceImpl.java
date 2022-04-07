@@ -107,23 +107,25 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         List<ShelterDto> shelterDtos = new ArrayList<>();
 
         JSONArray jsonArray = getJsonArray(result);
-        for (Object o : jsonArray) {
-            JSONObject obj = (JSONObject) o;
-            shelterDtos.add(ShelterDto.builder()
-                    .shelterName((String) obj.get("careNm"))
-                    .organizationName((String) obj.get("orgNm"))
-                    .saveTargetAnimal((String) obj.get("saveTrgtAnimal"))
-                    .address((String) obj.get("careAddr"))
-                    .jibunAddress((String) obj.get("jibunAddr"))
-                    .closeDay((String) obj.get("closeDay"))
-                    .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
-                    .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
-                    .tel((String) obj.get("careTel"))
-                    .weekOperationStartTime((String) obj.get("weekOprStime"))
-                    .weekOperationEndTime((String) obj.get("weekOprEtime"))
-                    .lat(String.valueOf(obj.get("lat")))
-                    .lng(String.valueOf(obj.get("lng")))
-                    .build());
+        if (jsonArray != null) {
+            for (Object o : jsonArray) {
+                JSONObject obj = (JSONObject) o;
+                shelterDtos.add(ShelterDto.builder()
+                        .shelterName((String) obj.get("careNm"))
+                        .organizationName((String) obj.get("orgNm"))
+                        .saveTargetAnimal((String) obj.get("saveTrgtAnimal"))
+                        .address((String) obj.get("careAddr"))
+                        .jibunAddress((String) obj.get("jibunAddr"))
+                        .closeDay((String) obj.get("closeDay"))
+                        .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
+                        .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
+                        .tel((String) obj.get("careTel"))
+                        .weekOperationStartTime((String) obj.get("weekOprStime"))
+                        .weekOperationEndTime((String) obj.get("weekOprEtime"))
+                        .lat(String.valueOf(obj.get("lat")))
+                        .lng(String.valueOf(obj.get("lng")))
+                        .build());
+            }
         }
 
         JSONParser jsonParser = new JSONParser();
