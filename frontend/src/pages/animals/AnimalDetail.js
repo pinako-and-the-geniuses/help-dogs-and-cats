@@ -9,7 +9,8 @@ export default function AnimalDetails() {
   const [data, setData] = useState("");
 
   useEffect(() => {
-    setData(info.children);
+    console.log(info);
+    setData(info);
   }, []);
 
   return (
@@ -27,32 +28,25 @@ export default function AnimalDetails() {
                   style={{ width: "23rem" }}
                 >
                   <img
-                    src={data[11].value}
+                    src={data.popfileImagePath}
                     className="card-img-top"
                     alt="사진 없음"
                   />
                   <div className="card-body">
                     <div className={animaldetails.processState}>
-                      {data[12].value ? data[12].value : <p></p>}
+                      {data.processState ? data.processState : <p></p>}
                     </div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>공고번호</p>
-                      {data[0].value ? <p>{data[0].value}</p> : <p></p>}
+                      {data.noticeNo ? <p>{data.noticeNo}</p> : <p></p>}
                     </div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>접수일시</p>
-                      {data[2].value ? (
-                        <p>
-                          {data[2].value.slice(0, 4)}-
-                          {data[2].value.slice(4, 6)}-{data[2].value.slice(6)}
-                        </p>
-                      ) : (
-                        <p></p>
-                      )}
+                      {data.happenDate ? <p>{data.happenDate}</p> : <p></p>}
                     </div>
                     <div className={animaldetails.cardText}>
                       <p className={animaldetails.title}>발견장소</p>
-                      {data[3].value ? <p>{data[3].value}</p> : <p></p>}
+                      {data.happenPlace ? <p>{data.happenPlace}</p> : <p></p>}
                     </div>
                     <button
                       type="button"
@@ -109,56 +103,56 @@ export default function AnimalDetails() {
                         <th scope="row" width="30%">
                           품종
                         </th>
-                        {data[4] ? (
-                          <td colSpan="3">{data[4].value}</td>
+                        {data.breedOfAnimal ? (
+                          <td colSpan="3">{data.breedOfAnimal}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">연생</th>
-                        {data[6] ? (
-                          <td colSpan="3">{data[6].value}</td>
+                        {data.age ? (
+                          <td colSpan="3">{data.age}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">kg</th>
-                        {data[7] ? (
-                          <td colSpan="3">{data[7].value}</td>
+                        {data.weight ? (
+                          <td colSpan="3">{data.weight}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">성별</th>
-                        {data[13] ? (
-                          <td colSpan="3">{data[13].value}</td>
+                        {data.sex ? (
+                          <td colSpan="3">{data.sex}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">중성화여부</th>
-                        {data[14] ? (
-                          <td colSpan="3">{data[14].value}</td>
+                        {data.neuterYn ? (
+                          <td colSpan="3">{data.neuterYn}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">색상</th>
-                        {data[5] ? (
-                          <td colSpan="3">{data[5].value}</td>
+                        {data.color ? (
+                          <td colSpan="3">{data.color}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">특징</th>
-                        {data[15] ? (
-                          <td colSpan="3">{data[15].value}</td>
+                        {data.specialMark ? (
+                          <td colSpan="3">{data.specialMark}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
@@ -183,16 +177,16 @@ export default function AnimalDetails() {
                         <th scope="row" width="30%">
                           관할기관
                         </th>
-                        {data[19] ? (
-                          <td colSpan="3">{data[19].value}</td>
+                        {data.organizationName ? (
+                          <td colSpan="3">{data.organizationName}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">보호센터</th>
-                        {data[16] ? (
-                          <td colSpan="3">{data[16].value}</td>
+                        {data.shelterName ? (
+                          <td colSpan="3">{data.shelterName}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
@@ -200,16 +194,16 @@ export default function AnimalDetails() {
 
                       <tr>
                         <th scope="row">보호소 주소</th>
-                        {data[18] ? (
-                          <td colSpan="3">{data[18].value}</td>
+                        {data.shleterAddress ? (
+                          <td colSpan="3">{data.shleterAddress}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}
                       </tr>
                       <tr>
                         <th scope="row">연락처</th>
-                        {data[21] ? (
-                          <td colSpan="3">{data[21].value}</td>
+                        {data.shelterTel ? (
+                          <td colSpan="3">{data.shelterTel}</td>
                         ) : (
                           <td colSpan="3"></td>
                         )}

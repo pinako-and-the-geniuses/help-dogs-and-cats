@@ -26,7 +26,7 @@ export default function GetSigunguList({
   // 먼저!
   useEffect(() => {
     setSigunguData("");
-    if (selected.sidoCode !== "0") {
+    if (selected.sidoCode) {
       getAPI();
     }
   }, [selected.sidoCode]);

@@ -16,7 +16,6 @@ export default function AnimalList() {
   const [sidoData, setSidoData] = useState("");
   const [sigunguData, setSigunguData] = useState("");
   const [shelter, setShelter] = useState("");
-
   // 선택 조건
   const [selected, setSelected] = useState({
     sidoCode: "",
@@ -25,24 +24,30 @@ export default function AnimalList() {
   });
   const [kind, setKind] = useState("");
   const [state, setState] = useState("");
-
+  const [postState, setPostState] = useState("");
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const limit = 12;
   const [totalItemCount, setTotalItemCount] = useState(0);
 
   const onGetList = () => {
-    if (selected.sidoCode && !selected.sigunguCode) {
-      swal("시군구 선택 필수", "시도 선택시 시군구 필수입니다.", "info");
-    } else {
-      axios
-        .get(`${URL}?pageNo=${page}&numOfRows=${limit}`)
-        .then((res) => {
-          const dataSet = res.data;
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    }
+    axios
+      .get(
+        `${URL}/external-api/animals?page=${page}&size=${limit}&sidoCode=${selected.sidoCode}&sigunguCode=${selected.sigunguCode}&shelterCode=${selected.shelterCode}&upkind=${kind}&state=${state}`
+      )
+      .then((res) => {
+        const data = res.data.data;
+        setList(data.animalDtos);
+        console.log(res.data.data);
+        if (state === "notice") {
+          setPostState("notice");
+        } else {
+          setPostState("");
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+        swal("", "조건을 확인하세요", "error");
+      });
   };
 
   useEffect(() => {
@@ -154,7 +159,7 @@ export default function AnimalList() {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-5">
-        {list && <AnimalBox list={list} />}
+        {list && <AnimalBox list={list} postState={postState} />}
       </div>
 
       <Pagination

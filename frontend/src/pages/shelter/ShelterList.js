@@ -25,9 +25,9 @@ function ShelterList() {
   const [sido, setSido] = useState("");
   const [sigungu, setSigungu] = useState("");
   const [selected, setSelected] = useState({
-    sidoCode: "0",
-    sigunguCode: "0",
-    shelterName: "0",
+    sidoCode: "",
+    sigunguCode: "",
+    shelterName: "",
   });
   const [page, setPage] = useState(1);
   const [totalItemCount, setTotalItemCount] = useState(0);

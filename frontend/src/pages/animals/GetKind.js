@@ -1,7 +1,7 @@
 import animal from "./styles/Animal.module.scss";
 
 // [축종 조회]
-export default function GetKind({ setKind, setKindUrl }) {
+export default function GetKind({ setKind }) {
   return (
     <select
       defaultValue="0"
@@ -9,7 +9,6 @@ export default function GetKind({ setKind, setKindUrl }) {
       aria-label="축종"
       onChange={(e) => {
         setKind(e.target.value);
-        setKindUrl(`&upkind=${e.target.value}`);
       }}
     >
       <option value="">축종</option>
