@@ -30,10 +30,7 @@ export default function Community() {
         setPage(response.data.data.currentPageNumber);
         setTotalcount(response.data.data.totalCount);
         setTotalPageNumber(response.data.data.totalPageNumber);
-        //setArr([response.data.data.currentPageNumber, response.data.data.totalCount, response.data.data.totalPageNumber])
-        console.log(response.data);
-      })
-      .catch((err) => console.log(err));
+      });
   }, []); //한번만 해줄때 []넣는다
 
   const getRead = (e) => {
@@ -46,9 +43,7 @@ export default function Community() {
         setPage(response.data.data.currentPageNumber);
         setTotalcount(response.data.data.totalCount);
         setTotalPageNumber(response.data.data.totalPageNumber);
-        console.log(response.data);
-      }) //콘솔에 있는 것에서 data를 한번 더 들어가려면 이렇게 쓰면 된다.
-      .catch((err) => console.log(err));
+      }); //콘솔에 있는 것에서 data를 한번 더 들어가려면 이렇게 쓰면 된다.
   };
 
   //페이지네이션
@@ -80,18 +75,16 @@ export default function Community() {
     navigate(`/community/communitycreate`);
   };
   const getCategory = (e) => {
-    //console.log("tag",e.target.value);
     setCategory(e.target.value);
   };
 
   const getSearch = (e) => {
-    // console.log("search", e.target.value);
     setSearch(e.target.value);
   };
 
   const getKeyword = (e) => {
     const key = e.target.value;
-    // console.log("keyword", key);
+
     setKeyword(key);
   };
 
