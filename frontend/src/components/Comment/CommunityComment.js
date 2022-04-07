@@ -11,16 +11,6 @@ function CommunityComment(props) {
   const jwt = sessionStorage.getItem("jwt");
   const memSeq = useSelector((state) => state.userInfo.userInfo.seq);
   const { seq } = useParams();
-  const [rereply, setRereply] = useState(false);
-  const [reply, setReply] = useState(false);
-  const navigate = useNavigate();
-  const openReply = () => {
-    setRereply(true);
-  };
-
-  const closeReply = () => {
-    setRereply(false);
-  };
 
   const deleteHandler = (commentSeq) => {
     swal("댓글을 삭제합니다", {
@@ -41,7 +31,6 @@ function CommunityComment(props) {
         Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => {
-      // window.location.replace(`/community/communitydetail/${seq}`);
       props.getComment();
     });
   };
@@ -56,11 +45,10 @@ function CommunityComment(props) {
   return (
     <div className={style.commentBox}>
       {props.comments &&
-        props.comments.map((comment) => {
+        props.comments.map((comment, index) => {
           return (
             <>
-              <div key={comment.commments} className={style.comment}>
-                {/* 이미지 수정 필요 */}
+              <div key={index} className={style.comment}>
                 <ProfileImage
                   profileImageFilePath={comment.writerProfileImagePath}
                 />
@@ -83,22 +71,9 @@ function CommunityComment(props) {
                       </p>
                     ) : null}
                   </div>
-                  <p onClick={openReply}>{comment.content}</p>
+                  <p>{comment.content}</p>
                 </div>
               </div>
-              {/* <Reply />
-                        {
-                            rereply
-                            ?(
-                                <div className={style.addReply}>
-                                    <div></div>
-                                    <textarea type="text"/>
-                                    <button type="submit" className={style.replyBtn}>등록</button>
-                                    <button className={style.XBtn} onClick={closeReply}>X</button>
-                                </div>
-                            )
-                            : ""
-                        } */}
               <hr />
             </>
           );

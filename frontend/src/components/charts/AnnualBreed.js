@@ -158,7 +158,7 @@ function AnnualBreed() {
   return (
     <>
       <AnnualBreedMain>
-        <AnnualBreedTitle>연간 품종 마리수(%) - {index}년</AnnualBreedTitle>
+        <AnnualBreedTitle>연간 품종 마릿수(%) - {index}년</AnnualBreedTitle>
         <AnnualBreedYears>
           <AnnualBreedInputBox>
             <CustomLabel htmlFor="2017a" onClick={() => setIndex(2017)}>
