@@ -1,9 +1,6 @@
 package com.ssafy.a302.domain.externalapi.service;
 
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterDto;
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterPageDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
+import com.ssafy.a302.domain.externalapi.service.dto.*;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Pageable;
 
@@ -16,9 +13,13 @@ public interface ExternalApiService {
 
     List<SigunguDto> getSigunguDtos(String sidoCode) throws IOException, ParseException;
 
-    ShelterPageDto getShelterPageDto(Pageable pageable) throws IOException, ParseException;
+    ShelterPageDto getShelterPageDto(Pageable pageable, String shelterName) throws IOException, ParseException;
 
-    ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode) throws IOException, ParseException;
+    ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode, String shelterName) throws IOException, ParseException;
 
     ShelterDto getShelterDto(String shelterName) throws IOException, ParseException;
+
+    List<ShelterMiniDto> getShelterMiniDtos(String sidoCdoe, String sigunguCode) throws IOException, ParseException;
+
+    AnimalPageDto getAnimalPageDto(Pageable pageable, String sidoCode, String sigunguCode, String shelterCode, String upkind, String state) throws IOException, ParseException;
 }

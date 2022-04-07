@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 @Getter
-@ToString(of = {"shelterName", "organizationName", "divisionName", "saveTargetAnimal", "address", "jibunAddress", "closeDay", "vetPersonCount", "specsPersonCount", "tel"})
+@ToString(of = {"shelterName", "organizationName", "divisionName", "saveTargetAnimal", "address", "jibunAddress", "closeDay", "vetPersonCount", "specsPersonCount", "tel", "weekOperationStartTime", "weekOperationEndTime", "lat", "lng"})
 public class ShelterDto {
 
     private final String shelterName;
@@ -28,8 +28,16 @@ public class ShelterDto {
 
     private final String tel;
 
+    private final String weekOperationStartTime;
+
+    private final String weekOperationEndTime;
+
+    private final String lat;
+
+    private final String lng;
+
     @Builder
-    public ShelterDto(String shelterName, String organizationName, String divisionName, String saveTargetAnimal, String address, String jibunAddress, String closeDay, Integer vetPersonCount, Integer specsPersonCount, String tel) {
+    public ShelterDto(String shelterName, String organizationName, String divisionName, String saveTargetAnimal, String address, String jibunAddress, String closeDay, Integer vetPersonCount, Integer specsPersonCount, String tel, String weekOperationStartTime, String weekOperationEndTime, String lat, String lng) {
         this.shelterName = shelterName;
         this.organizationName = organizationName;
         this.divisionName = divisionName;
@@ -40,5 +48,9 @@ public class ShelterDto {
         this.vetPersonCount = vetPersonCount;
         this.specsPersonCount = specsPersonCount;
         this.tel = tel;
+        this.weekOperationStartTime = weekOperationStartTime;
+        this.weekOperationEndTime = weekOperationEndTime;
+        this.lat = lat;
+        this.lng = lng;
     }
 }
