@@ -13,11 +13,9 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
       url: `${URL}/admins/volunteers/auth/${volunSeq}`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((response) => {
-        setVolunteerManageDetail(response.data);
-      }) //엑시오스 보낸 결과
-      .catch((err) => console.log(err));
+    }).then((response) => {
+      setVolunteerManageDetail(response.data);
+    }); //엑시오스 보낸 결과
   };
 
   useEffect(() => {
@@ -34,11 +32,9 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        onGetDetail();
-      })
-      .catch((err) => console.log(err));
+    }).then((res) => {
+      onGetDetail();
+    });
   };
 
   const onSwal = async (approve) => {
