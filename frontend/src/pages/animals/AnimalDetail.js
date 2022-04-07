@@ -9,7 +9,6 @@ export default function AnimalDetails() {
   const [data, setData] = useState("");
 
   useEffect(() => {
-    console.log(info);
     setData(info);
   }, []);
 
@@ -213,6 +212,15 @@ export default function AnimalDetails() {
                 </div>
               </div>
             </section>
+            <div className={animaldetails.gotoList}>
+              <a
+                type="button"
+                className={animaldetails.button}
+                href="/animals/list"
+              >
+                목록으로
+              </a>
+            </div>
           </main>
         </div>
       ) : (

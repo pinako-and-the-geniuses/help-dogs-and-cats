@@ -37,7 +37,6 @@ export default function AnimalList() {
       .then((res) => {
         const data = res.data.data;
         setList(data.animalDtos);
-        console.log(res.data.data);
         if (state === "notice") {
           setPostState("notice");
         } else {
