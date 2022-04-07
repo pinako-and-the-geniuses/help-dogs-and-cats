@@ -14,7 +14,11 @@ export default function GetSido({
   function getAPI() {
     axios({
       url: `${URL}/external-api/sido`,
+<<<<<<< HEAD
       method: "GET",
+=======
+      method: "get",
+>>>>>>> fe
     }).then((res) => {
       setSidoData(res.data.data);
     });
