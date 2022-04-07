@@ -82,6 +82,8 @@ public class ExternalApiController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/sigungu/{sidoCode}")
     public BaseResponseDto<List<SigunguDto>> sigungu(@PathVariable String sidoCode) throws IOException, ParseException {
+        log.info("시도 코드={}", sidoCode);
+
         List<SigunguDto> sigunguDtos = externalApiService.getSigunguDtos(sidoCode);
 
         return BaseResponseDto.<List<SigunguDto>>builder()
@@ -112,6 +114,8 @@ public class ExternalApiController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/shelters")
     public BaseResponseDto<ShelterPageDto> shelters(Pageable pageable) throws IOException, ParseException {
+        log.info("페이징 정보={}", pageable);
+
         ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable);
 
         return BaseResponseDto.<ShelterPageDto>builder()
@@ -144,6 +148,10 @@ public class ExternalApiController {
     public BaseResponseDto<ShelterPageDto> shelterPart(Pageable pageable,
                                                        @RequestParam String sidoCode,
                                                        @RequestParam String sigunguCode) throws IOException, ParseException {
+        log.info("페이징 정보={}", pageable);
+        log.info("시도 코드={}", sidoCode);
+        log.info("sigunguCode={}", sigunguCode);
+
         ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable, sidoCode, sigunguCode);
 
         return BaseResponseDto.<ShelterPageDto>builder()
@@ -174,6 +182,8 @@ public class ExternalApiController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/shelters/{shelterName}")
     public BaseResponseDto<ShelterDto> shelter(@PathVariable String shelterName) throws IOException, ParseException {
+        log.info("보호소 이름={}", shelterName);
+
         ShelterDto shelterDto = externalApiService.getShelterDto(shelterName);
 
         return BaseResponseDto.<ShelterDto>builder()
@@ -205,11 +215,56 @@ public class ExternalApiController {
     @GetMapping("/shelters/code-and-name")
     public BaseResponseDto<List<ShelterMiniDto>> shelterCodesAndNames(@RequestParam String sidoCode,
                                                                       @RequestParam String sigunguCode) throws IOException, ParseException {
+        log.info("시도 코드={}", sidoCode);
+        log.info("시군구 코드={}", sigunguCode);
+
         List<ShelterMiniDto> shelterMiniDtos = externalApiService.getShelterMiniDtos(sidoCode, sigunguCode);
 
         return BaseResponseDto.<List<ShelterMiniDto>>builder()
                 .message(Message.SUCCESS)
                 .data(shelterMiniDtos)
+                .build();
+    }
+
+    @Operation(
+            summary = "유기동물 목록 조회 API",
+            description = "유기동물 목록을 반환합니다.",
+            tags = {"external-api"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "유기동물 목록을 반환합니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/animals")
+    public BaseResponseDto<AnimalPageDto> animals(Pageable pageable,
+                                                  @RequestParam(required = false) String sidoCode,
+                                                  @RequestParam(required = false) String sigunguCode,
+                                                  @RequestParam(required = false) String shelterCode,
+                                                  @RequestParam(required = false) String upkind,
+                                                  @RequestParam(required = false) String state) throws IOException, ParseException {
+        log.info("페이징 정보={}", pageable);
+        log.info("시도 코드={}", sidoCode);
+        log.info("시군구 코드={}", sigunguCode);
+        log.info("보호소 코드={}", shelterCode);
+        log.info("축종 코드={}", upkind);
+        log.info("상태={}", state);
+
+        AnimalPageDto animalPageDto = externalApiService.getAnimalPageDto(pageable, sidoCode, sigunguCode, shelterCode, upkind, state);
+
+        return BaseResponseDto.<AnimalPageDto>builder()
+                .message(Message.SUCCESS)
+                .data(animalPageDto)
                 .build();
     }
 }

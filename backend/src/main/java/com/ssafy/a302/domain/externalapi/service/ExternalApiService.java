@@ -20,4 +20,6 @@ public interface ExternalApiService {
     ShelterDto getShelterDto(String shelterName) throws IOException, ParseException;
 
     List<ShelterMiniDto> getShelterMiniDtos(String sidoCdoe, String sigunguCode) throws IOException, ParseException;
+
+    AnimalPageDto getAnimalPageDto(Pageable pageable, String sidoCode, String sigunguCode, String shelterCode, String upkind, String state) throws IOException, ParseException;
 }
