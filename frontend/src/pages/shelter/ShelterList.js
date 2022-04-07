@@ -133,7 +133,6 @@ function ShelterList() {
             type="submit"
             onClick={() => {
               onGetList();
-
               setPage(1);
             }}
           >
@@ -146,7 +145,6 @@ function ShelterList() {
         <thead>
           <tr>
             <th scope="col">관할구역</th>
-
             <th scope="col">보호센터명</th>
             <th scope="col">전화번호</th>
             <th scope="col">영업시간</th>
@@ -154,7 +152,7 @@ function ShelterList() {
           </tr>
         </thead>
         <tbody>
-          {list &&
+          {list ? (
             list.map((item, index) => {
               return (
                 <tr
@@ -172,7 +170,12 @@ function ShelterList() {
                   <td>{item.address}</td>
                 </tr>
               );
-            })}
+            })
+          ) : (
+            <tr>
+              <td></td>
+            </tr>
+          )}
         </tbody>
       </table>
 
