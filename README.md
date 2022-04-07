@@ -54,36 +54,29 @@
 <hr>
 
 
-
 ## 서비스 주요기능
 
 #### 유기동물 관련 데이터 제공 (동물 조회 / 데이터 시각화)
 
-- 품종, 성별, 색상 등 다양한 조건들로 보호중인 유기동물 조회 가능
-- 2007년부터의 유기동물 관련 데이터를 분석해, 시각적인 정보로 제공
+- 축종, 지역, 보호소 등 다양한 조건들로 보호중인 유기동물 조회 가능
+- 2017년부터의 유기동물 관련 데이터를 분석해, 시각적인 정보로 제공
 
 #### 보호소 관련 데이터 제공
 
-- 지역별 혹은 현재 위치에서 가까운 보호소 정보 제공
+- 지역별 보호소 정보 제공
 
-#### 봉사 신청
+#### 봉사 활동
 
-- 유기동물 발생이 잦은 지역 또는 장소 정보 제공 -> 서비스 사용자들에게 소정의 혜택을 제공하며 해당지역 자발적 봉사참여 권유
-- 근처 or 특정 보호소 봉사
+- 유기동물 보호센터 관련 봉사 모집 글 게시 또는 참여 신청 가능
+
+#### 커뮤니티
+
+- 유기동물 관련 잡담, 제보, 후기 작성 가능
+- 도와주개냥 굿즈 이벤트 참여 가능
 
 #### 프로필 꾸미기
 
-- 봉사 or 입양 등 서비스내에서 제공하는 다양한 활동을 통해 꾸며진 프로필을 다른 사용자에게 드러내며 봉사의식 함양 및 성취감 증대
-
-#### 커뮤니티 기능
-
-- 봉사 인원 구하기, 주변 유기동물 신고 등 다양한 커뮤니티 활동 가능
-
-#### 추가될 수 있는 기능
-
-- 구조 동물 관련 데이터 분석 정보 제공
-- 애견 관련 서비스 정보 제공(병원, 약국, 카페 등등)
-- 분석 자료를 통해서 유기 확률이 높은 동물
+- 봉사활동 또는 입양 인증을 통해 다양한 뱃지 획득 또는 레벨업 가능
 
 <hr>
 
@@ -268,7 +261,7 @@
 
     ```dockerfile
     # Backend Dockerfile
-
+    
     FROM amazoncorretto:11
     EXPOSE 8080
     ARG JAR_FILE=build/libs/a302-0.0.1-SNAPSHOT.jar
@@ -280,25 +273,25 @@
   
     ```dockerfile
     # Frontend Dockerfile
-
+    
     FROM node:16.14.0 as builder
-
+    
     RUN mkdir /usr/src/app
     WORKDIR /usr/src/app
     ENV PATH /usr/src/app/node_modules/.bin:$PATH
     COPY package.json /usr/src/app/package.json
     RUN npm install --silent
-
+    
     COPY . /usr/src/app
     RUN npm run build
-
+    
     FROM nginx:latest
-
+    
     RUN rm -rf /etc/nginx/conf.d
     COPY conf /etc/nginx
-
+    
     COPY --from=builder /usr/src/app/build /usr/share/nginx/html
-
+    
     EXPOSE 80
     CMD ["nginx", "-g", "daemon off;"]
     ```
