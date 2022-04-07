@@ -6,17 +6,9 @@ export default function AdoptDetail({ seq }) {
   const jwt = sessionStorage.getItem("jwt");
 
   useEffect(() => {
-    console.log("sjadhdh");
-    axios
-      .get(`${URL}/adopts/auth/${seq}`, {
-        headers: { Authorization: `Bearer ${jwt}` },
-      })
-      .then((res) => {
-        console.log("모달상세", res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios.get(`${URL}/adopts/auth/${seq}`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
   }, []);
 
   return (

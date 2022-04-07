@@ -7,7 +7,6 @@ export default function ProfileVolunList({ item }) {
 
   // 해당 모집 상세페이지로
   const onGoToDetail = (itemSeq) => {
-    console.log(itemSeq);
     navigator(`/volunteer/detail/${itemSeq}`);
   };
 
@@ -27,7 +26,6 @@ export default function ProfileVolunList({ item }) {
             </div>
           </div>
           <div className="card-body">
-            {/* <h5 className={cn(st.cardTitle, "card-title")}>{item.title}</h5> */}
             <h5 className={cn(st.cardTitle, "card-title")}>{item.title}</h5>
           </div>
           <div className={st.cardEnd}>{item.createdDate}</div>

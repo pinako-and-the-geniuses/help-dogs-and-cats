@@ -4,11 +4,9 @@ import st from "../styles/userform.module.scss";
 import axios from "axios";
 import { IMGURL, URL } from "public/config";
 import swal from "sweetalert";
-// import ReactLoading from "react-loading";
 
 export default function EditImage({ seq, img, setImg }) {
   const [path, setPath] = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
   const jwt = sessionStorage.getItem("jwt");
   const profileImg = useRef();
 
@@ -26,7 +24,6 @@ export default function EditImage({ seq, img, setImg }) {
   const onEditImg = async (e) => {
     const formData = new FormData();
     formData.append("profileImageFile", e.target.files[0]);
-    // setIsLoading(true);
     await axios
       .put(`${URL}/members/${seq}/profile-image`, formData, {
         headers: {
@@ -37,9 +34,7 @@ export default function EditImage({ seq, img, setImg }) {
       .then((res) => {
         setPath(res.data.data.profileImagePath);
         setImg(res.data.data.profileImagePath);
-        // setIsLoading(false);
-      })
-      .catch((err) => console.log(err));
+      });
   };
 
   const onDeleteBtn = (e) => {
@@ -51,7 +46,6 @@ export default function EditImage({ seq, img, setImg }) {
         },
       })
       .then((res) => {
-        console.log(res);
         setPath("");
         setImg("");
       })
@@ -69,13 +63,6 @@ export default function EditImage({ seq, img, setImg }) {
       {img ? (
         <img alt="userImg" src={`${IMGURL}${path}`} />
       ) : (
-        // <>
-        //   {isLoading ? (
-        //     <ReactLoading style={{ width: "150px", height: "150px" }} />
-        //   ) : (
-        //     <img alt="userImg" src={`${IMGURL}${path}`} />
-        //   )}
-        // </>
         <img alt="defatultImg" src={defaultImg} />
       )}
 

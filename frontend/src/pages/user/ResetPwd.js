@@ -3,13 +3,13 @@ import cn from "classnames";
 import { useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 export default function ResetPwd() {
   const [newPwd, setNewPwd] = useState("");
   const [newPwdConfirm, setNewPwdConfirm] = useState("");
   const navigator = useNavigate();
-  const { jwt } = useParams();
 
   const onPasswordHandler = (e) => {
     const currentInput = e.target.value;
@@ -34,19 +34,13 @@ export default function ResetPwd() {
         data: {
           newPassword: newPwd,
         },
-      })
-        .then((res) => {
-          console.log(res);
-          const status = res.status;
-          if (status === 200) {
-            alert("비밀번호가 재설정 되었습니다. 로그인 화면으로 이동합니다.");
-            navigator("/login");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-          alert("에러가 발생했습니다.");
-        });
+      }).then((res) => {
+        const status = res.status;
+        if (status === 200) {
+          swal("재설정 완료", "로그인 화면으로 이동합니다.", "success");
+          navigator("/login");
+        }
+      });
     }
   };
 

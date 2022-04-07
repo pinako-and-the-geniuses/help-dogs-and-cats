@@ -5,6 +5,7 @@ import axios from "axios";
 import { URL } from "public/config";
 import { useNavigate } from "react-router-dom";
 import SmallPaging from "components/SmallPaging";
+import swal from "sweetalert";
 
 export default function ProfileCommunity({ category, seq, isLogin }) {
   const [list, setList] = useState();
@@ -26,8 +27,7 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
           const data = res.data.data;
           setList(data.communities);
           setTotalPageNumber(res.data.data.totalPageNumber);
-        })
-        .catch((err) => console.log(err));
+        });
     }
   };
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function ProfileCommunity({ category, seq, isLogin }) {
   }, [page, seq]);
 
   const onGoToDetail = (itemSeq) => {
-    console.log(itemSeq);
     navigator(`/community/communitydetail/${itemSeq}`);
   };
 

@@ -12,7 +12,6 @@ export default function ProfileBadge(badgesForProfile) {
       setBadges(badgesForProfile.badgesForProfile);
     } else {
       swal("서버에러", "다시 접속해 주세요.", "error");
-      console.log("실패");
     }
   }, [badgesForProfile]);
 

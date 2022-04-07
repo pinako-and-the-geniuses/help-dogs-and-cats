@@ -20,19 +20,14 @@ export default function DeleteUser() {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 204) {
-          dispatch(logoutAction());
-          sessionStorage.removeItem("jwt");
-          swal("회원 탈퇴", "다음에 만나요", "success");
-          navi("/");
-        }
-      })
-      .catch((err) => {
-        swal("", "다시 확인해주세요", "error");
-      });
+    }).then((res) => {
+      if (res.status === 204) {
+        dispatch(logoutAction());
+        sessionStorage.removeItem("jwt");
+        swal("회원 탈퇴", "다음에 만나요", "success");
+        navi("/");
+      }
+    });
   };
 
   return (

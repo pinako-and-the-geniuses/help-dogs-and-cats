@@ -19,18 +19,20 @@ export default function Email({ URL, email, setEmail, setIsEmail }) {
   // 이메일 중복확인 요청
   const onCheckEmail = (event) => {
     event.preventDefault();
-    axios
-      .get(`${URL}/members/email-duplicate-check/${email}`)
-      .then((res) => {
-        console.log("이메일 중복 확인 요청결과", res);
-        setEmailCheck(res.status);
-        isValid(res.status);
-      })
-      .catch((err) => {
-        console.log(err.response.status);
-        setEmailCheck(err.response.status);
-        isValid(err.response.status);
-      });
+    if (email) {
+      axios
+        .get(`${URL}/members/email-duplicate-check/${email}`)
+        .then((res) => {
+          setEmailCheck(res.status);
+          isValid(res.status);
+        })
+        .catch((err) => {
+          setEmailCheck(err.response.status);
+          isValid(err.response.status);
+        });
+    } else {
+      setEmailCheck(400);
+    }
   };
 
   // 중복확인 마친 후 재인증
