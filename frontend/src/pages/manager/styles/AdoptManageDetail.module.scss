@@ -14,10 +14,11 @@ $sub-color: #e8e8e8;
     padding: 30px;
     margin: 50px auto;
     .alltitle {
-      display: block;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin: auto;
-      font-size: large;
-      font-weight: bold;
+      align-items: flex-end;
       border-bottom: 3px solid hsl(36, 32%, 56%);
       .tag_p {
         display: inline-block;
@@ -25,9 +26,13 @@ $sub-color: #e8e8e8;
         padding: 20px;
         background-color: #b59d7c;
         border-radius: 40px;
+        font-weight: bold;
+        font-size: large;
       }
       .title_p {
         display: inline-block;
+        font-weight: bold;
+        font-size: large;
       }
     }
 
