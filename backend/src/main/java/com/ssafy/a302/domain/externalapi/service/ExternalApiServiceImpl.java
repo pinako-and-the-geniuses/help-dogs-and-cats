@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,8 +115,10 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                     .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
                     .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
                     .tel((String) obj.get("careTel"))
-                    .weekOperationStartTIme((String) obj.get("weekOprStime"))
+                    .weekOperationStartTime((String) obj.get("weekOprStime"))
                     .weekOperationEndTime((String) obj.get("weekOprEtime"))
+                    .lat(String.valueOf(obj.get("lat")))
+                    .lng(String.valueOf(obj.get("lng")))
                     .build());
         }
 
@@ -171,8 +175,10 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                             .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
                             .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
                             .tel((String) obj.get("careTel"))
-                            .weekOperationStartTIme((String) obj.get("weekOprStime"))
+                            .weekOperationStartTime((String) obj.get("weekOprStime"))
                             .weekOperationEndTime((String) obj.get("weekOprEtime"))
+                            .lat(String.valueOf(obj.get("lat")))
+                            .lng(String.valueOf(obj.get("lng")))
                             .build());
                 }
             }
@@ -207,8 +213,10 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
                 .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
                 .tel((String) obj.get("careTel"))
-                .weekOperationStartTIme((String) obj.get("weekOprStime"))
+                .weekOperationStartTime((String) obj.get("weekOprStime"))
                 .weekOperationEndTime((String) obj.get("weekOprEtime"))
+                .lat(String.valueOf(obj.get("lat")))
+                .lng(String.valueOf(obj.get("lng")))
                 .build();
     }
 
@@ -237,6 +245,71 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         }
 
         return shelterMiniDtos;
+    }
+
+    @Override
+    public AnimalPageDto getAnimalPageDto(Pageable pageable, String sidoCode, String sigunguCode, String shelterCode, String upkind, String state) throws IOException, ParseException {
+        StringBuilder urlBuilder = new StringBuilder(animalUrl.concat("/abandonmentPublic"));
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + animalKey);
+        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + pageable.getPageNumber());
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + pageable.getPageSize());
+        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+        if (StringUtils.hasText(sidoCode)) {
+            urlBuilder.append("&" + URLEncoder.encode("upr_cd", "UTF-8") + "=" + sidoCode);
+        }
+
+        if (StringUtils.hasText(sigunguCode)) {
+            urlBuilder.append("&" + URLEncoder.encode("org_cd", "UTF-8") + "=" + sigunguCode);
+        }
+
+        if (StringUtils.hasText(shelterCode)) {
+            urlBuilder.append("&" + URLEncoder.encode("care_reg_no", "UTF-8") + "=" + shelterCode);
+        }
+
+        if (StringUtils.hasText(upkind)) {
+            urlBuilder.append("&" + URLEncoder.encode("upkind", "UTF-8") + "=" + upkind);
+        }
+
+        if (StringUtils.hasText(state)) {
+            urlBuilder.append("&" + URLEncoder.encode("state", "UTF-8") + "=" + state);
+        }
+
+        String result = httpUtil.getResult(urlBuilder.toString());
+        JSONArray jsonArray = getJsonArray(result);
+
+        List<AnimalDtoForPage> animalDtoForPages = new ArrayList<>();
+
+        if (jsonArray != null) {
+            for (Object o : jsonArray) {
+                JSONObject obj = (JSONObject) o;
+
+                StringBuilder dateBuilder = new StringBuilder((String) obj.get("happenDt"));
+                dateBuilder.insert(6, "-");
+                dateBuilder.insert(4, "-");
+
+                animalDtoForPages.add(AnimalDtoForPage.builder()
+                        .processState((String) obj.get("processState"))
+                        .noticeNo((String) obj.get("noticeNo"))
+                        .happenDate(LocalDate.parse(dateBuilder.toString()))
+                        .organizationName((String) obj.get("orgNm"))
+                        .happenPlace((String) obj.get("happenPlace"))
+                        .popfileImagePath((String) obj.get("popfile"))
+                        .build());
+            }
+        }
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(result);
+        int totalCount = Integer.parseInt(String.valueOf(((JSONObject) ((JSONObject) jsonObject.get("response")).get("body")).get("totalCount")));
+        int totalPageNumber = (int) Math.ceil((double) totalCount / pageable.getPageSize());
+
+        return AnimalPageDto.builder()
+                .totalCount(totalCount)
+                .totalPageNumber(totalPageNumber)
+                .currentPageNumber(pageable.getPageNumber())
+                .animalDtoForPages(animalDtoForPages)
+                .build();
     }
 
     private static JSONArray getJsonArray(String result) throws ParseException {
