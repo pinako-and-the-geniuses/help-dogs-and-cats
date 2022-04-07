@@ -40,7 +40,7 @@ public class Badge extends BaseCreatedEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String imageFilename;
 
-    @OneToMany(mappedBy = "badge", cascade = ALL)
+    @OneToMany(mappedBy = "badge", cascade = ALL, orphanRemoval = true)
     private List<MemberBadge> memberBadges = new ArrayList<>();
 
     @Builder

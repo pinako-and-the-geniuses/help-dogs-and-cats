@@ -162,39 +162,39 @@ function VolunteerList(){
 
             <div style={{"minHeight":"50vh"}}>
                 <table className={cn("table table-hover")}>
-                <thead>
-                    <tr>
-                        <th scope="col" width="15%">상태</th>
-                        <th scope="col" width="30%">제목</th>
-                        <th scope="col" width="10%">모집인원</th>
-                        <th scope="col" width="10%">작성자</th>
-                        <th scope="col" width="10%">작성일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        volunteers
-                        ?(
-                            volunteers.map((volunteer)=>{
-                                return(
-                                    <tr key={volunteer.seq} 
-                                        onClick={()=>{goToVolunteer(volunteer.seq)}}>
-                                    <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate, volunteer.status)}</td>
-                                    <td>{volunteer.title}</td>
-                                    <td>{volunteer.approveCount}/{volunteer.maxParticipantCount}</td>
-                                    <td>{volunteer.nickname}</td>
-                                    <td>{volunteer.createdDate.slice(0,10)}</td>
-                                    </tr>
-                                )
-                            })
-                        )
-                        :(
-                            <tr>
-                                <td colSpan={5}>작성 글이 없습니다</td>
-                            </tr>
-                        )
-                    }
-                </tbody>
+                    <thead>
+                        <tr>
+                            <th scope="col" width="15%">상태</th>
+                            <th scope="col" width="30%">제목</th>
+                            <th scope="col" width="10%">모집인원</th>
+                            <th scope="col" width="10%">작성자</th>
+                            <th scope="col" width="10%">작성일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            volunteers
+                            ?(
+                                volunteers.map((volunteer)=>{
+                                    return(
+                                        <tr key={volunteer.seq} 
+                                            onClick={()=>{goToVolunteer(volunteer.seq)}}>
+                                        <td>{workStatus(volunteer.status)}&nbsp;{leftDays(volunteer.endDate, volunteer.status)}</td>
+                                        <td>{volunteer.title}</td>
+                                        <td>{volunteer.approveCount}/{volunteer.maxParticipantCount}</td>
+                                        <td>{volunteer.nickname}</td>
+                                        <td>{volunteer.createdDate.slice(0,10)}</td>
+                                        </tr>
+                                    )
+                                })
+                            )
+                            :(
+                                <tr>
+                                    <td colSpan={5}>작성 글이 없습니다</td>
+                                </tr>
+                            )
+                        }
+                    </tbody>
                 </table>
             </div>
             

@@ -162,7 +162,14 @@ export default function AnimalList() {
         </div>
 
         <div name="조회버튼">
-          <button type="button" className={st.btn} onClick={onGetList}>
+          <button
+            type="button"
+            className={st.btn}
+            onClick={() => {
+              onGetList();
+              setPage(1);
+            }}
+          >
             조회
           </button>
         </div>

@@ -66,14 +66,14 @@ public class Volunteer extends BaseLastModifiedEntity {
     @ManyToOne(fetch = LAZY)
     private Member member;
 
-    @OneToMany(mappedBy = "volunteer", cascade = ALL)
+    @OneToMany(mappedBy = "volunteer", cascade = ALL, orphanRemoval = true)
     private List<VolunteerComment> volunteerComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "volunteer", cascade = ALL)
+    @OneToMany(mappedBy = "volunteer", cascade = ALL, orphanRemoval = true)
     private List<VolunteerParticipant> volunteerParticipants = new ArrayList<>();
 
     @PrimaryKeyJoinColumn
-    @OneToOne(mappedBy = "volunteer", cascade = ALL)
+    @OneToOne(mappedBy = "volunteer", cascade = ALL, orphanRemoval = true)
     private VolunteerAuth volunteerAuth;
 
     @Builder

@@ -6,7 +6,7 @@ import style from "./styles/Community.module.scss";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import Paging from "components/Paging";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 export default function Community() {
   const [communitys, setCommunity] = useState("");
   const [page, setPage] = useState(1);
@@ -67,12 +67,11 @@ export default function Community() {
   const navigate = useNavigate();
 
   const getSeq = (seq) => {
-    if(isLogin){
-      if(seq !== 0) navigate(`/community/communitydetail/${seq}`);
-    }
-    else{
+    if (isLogin) {
+      if (seq !== 0) navigate(`/community/communitydetail/${seq}`);
+    } else {
       //회원만 글을 읽을 수 있음
-      swal('권한이 없습니다');
+      swal("권한이 없습니다");
     }
     // navigate(`/community/communitydetail/${seq}`);
   };
@@ -116,8 +115,15 @@ export default function Community() {
             <option value="writer">작성자</option>
           </select>
           <div>
-            <input className={style.input} type="text"  onChange={getKeyword} />
-            <button onClick={getRead}>조회</button>
+            <input className={style.input} type="text" onChange={getKeyword} />
+            <button
+              onClick={() => {
+                getRead();
+                setPage(1);
+              }}
+            >
+              조회
+            </button>
           </div>
         </div>
       </div>
@@ -132,20 +138,32 @@ export default function Community() {
           </button>
         </div>
       ) : null}
-      <table className={cn("table table-hover", style.my_table)}>
-        <thead>
-          <tr>
-            <th scope="col" width="15%">태그</th>
-            <th scope="col" width="30%">제목</th>
-            <th scope="col" width="10%">작성자</th>
-            <th scope="col" width="10%">작성일</th>
-            <th scope="col" width="10%">조회수</th>
-          </tr>
-        </thead>
-        {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
-        {communitys ? (
-          <tbody>
-            {/* {communitys.slice(0,2).map((community) => (
+      <div>
+        <div style={{ "min-height": "50vh" }}>
+          <table className={cn("table table-hover", style.my_table)}>
+            <thead>
+              <tr>
+                <th scope="col" width="15%">
+                  태그
+                </th>
+                <th scope="col" width="30%">
+                  제목
+                </th>
+                <th scope="col" width="10%">
+                  작성자
+                </th>
+                <th scope="col" width="10%">
+                  작성일
+                </th>
+                <th scope="col" width="10%">
+                  조회수
+                </th>
+              </tr>
+            </thead>
+            {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
+            {communitys ? (
+              <tbody>
+                {/* {communitys.slice(0,2).map((community) => (
               <tr key={community.seq} onClick={() => getSeq(community.seq)}>
                 {community.category === "NOTICE" ? <td>공지</td> : ""}
                 <td>{community.title}</td>
@@ -165,25 +183,26 @@ export default function Community() {
                 <td>{community.viewCount}</td>
               </tr>
             ))} */}
-            {communitys.map((community) => (
-              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
-                {community.category === "REPORT" ? <td>제보</td> : ""}
-                {community.category === "REVIEW" ? <td>후기</td> : ""}
-                {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                {community.category === "NOTICE" ? <td>공지</td> : ""}
-                <td>{community.title}</td>
-                <td>{community.memberNickname}</td>
-                <td>{community.createdDate}</td>
-                <td>{community.viewCount}</td>
-              </tr>
-            ))}
-          </tbody>
-        ) : (
-          <td colSpan="5">작성 글이 없습니다.</td>
-        )}
-      </table>
-
-      <Paging total={totalcount} limit={10} page={page} setPage={setPage} />
+                {communitys.map((community) => (
+                  <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                    {community.category === "REPORT" ? <td>제보</td> : ""}
+                    {community.category === "REVIEW" ? <td>후기</td> : ""}
+                    {community.category === "GENERAL" ? <td>잡담</td> : ""}
+                    {community.category === "NOTICE" ? <td>공지</td> : ""}
+                    <td>{community.title}</td>
+                    <td>{community.memberNickname}</td>
+                    <td>{community.createdDate}</td>
+                    <td>{community.viewCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <td colSpan="5">작성 글이 없습니다.</td>
+            )}
+          </table>
+        </div>
+        <Paging total={totalcount} limit={10} page={page} setPage={setPage} />
+      </div>
     </div>
   );
 }

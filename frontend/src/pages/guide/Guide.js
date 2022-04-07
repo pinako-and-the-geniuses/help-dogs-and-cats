@@ -92,7 +92,7 @@ function Guide() {
         <GuideBackground></GuideBackground>
         <GuideBannerText top="10%">
           <GuideBannerTop>
-            <GuideBannerSpan color="green">동물</GuideBannerSpan>을 입양한
+            <GuideBannerSpan color="#b8a07e">동물</GuideBannerSpan>을 입양한
             당신이
             <GuideBannerSpan color="skyblue">자랑</GuideBannerSpan>스럽습니다.
           </GuideBannerTop>

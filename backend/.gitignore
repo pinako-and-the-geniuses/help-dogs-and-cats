@@ -6,6 +6,8 @@ application-server.yml
 application-springdoc.yml
 application-mail.yml
 application-file.yml
+application-key.yml
+application-url.yml
 
 ##########
 
