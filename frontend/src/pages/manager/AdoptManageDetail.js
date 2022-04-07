@@ -3,22 +3,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+
 export default function AdoptManageDetail({ adoptSeq, setTab }) {
   const [adoptManageDetail, setAdoptManageDetail] = useState("");
   const jwt = sessionStorage.getItem("jwt");
-  const navi = useNavigate();
 
   const onGetDetail = () => {
     axios({
       url: `${URL}/admins/adopts/auth/${adoptSeq}`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((response) => {
-        setAdoptManageDetail(response.data);
-      }) //엑시오스 보낸 결과
-      .catch((err) => console.log(err));
+    }).then((response) => {
+      setAdoptManageDetail(response.data);
+      console.log(response.data);
+    }); //엑시오스 보낸 결과
   };
 
   useEffect(() => {
@@ -35,11 +33,9 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        onGetDetail();
-      })
-      .catch((err) => console.log(err));
+    }).then((res) => {
+      onGetDetail();
+    });
   };
 
   const onSwal = (approve) => {

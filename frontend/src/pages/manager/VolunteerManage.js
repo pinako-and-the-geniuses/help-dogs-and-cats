@@ -18,21 +18,17 @@ function VolunteerManage({ setTab, setVolunSeq }) {
       url: `${URL}/admins/volunteers/auth?page=${page}&size=${size}&search=${search}`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        console.log("res", res.data.data);
-        const temp = res.data.data.volunteerAuthForPages;
-        setPage(res.data.data.currentPageNumber);
-        setTotalcount(res.data.data.totalCount);
-        if (word) {
-          const result = temp.filter((item) => item.title.includes(word));
-          setVolunteers(result);
-          console.log("검색어 있음", word, search, result);
-        } else {
-          setVolunteers(temp);
-        }
-      })
-      .catch((err) => console.log("err", err));
+    }).then((res) => {
+      const temp = res.data.data.volunteerAuthForPages;
+      setPage(res.data.data.currentPageNumber);
+      setTotalcount(res.data.data.totalCount);
+      if (word) {
+        const result = temp.filter((item) => item.title.includes(word));
+        setVolunteers(result);
+      } else {
+        setVolunteers(temp);
+      }
+    });
   };
   useEffect(() => {
     getData();

@@ -45,8 +45,7 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
             totalPageNumber,
           });
           setTotalPageNumber(res.data.data.totalPageNumber);
-        })
-        .catch((err) => console.log(err));
+        });
     }
   };
   useEffect(() => {
@@ -64,10 +63,6 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
           const { title, content } = res.data.data;
 
           setDetail({ ...detail, title, content });
-          console.log(detail);
-        })
-        .catch((err) => {
-          console.log(err);
         });
     } else {
       swal("권한없음", "접근 권한이 없습니다.", "error");
@@ -89,19 +84,13 @@ export default function ProfileAdoption({ category, seq, isLogin }) {
         title: title,
         content: content,
       },
-    })
-      .then((res) => {
-        console.log(res);
-        onhandleClose();
-        swal("요청성공", "관리자의 인증을 기다려주세요", "success");
-        setTitle("");
-        setContent("");
-        getData();
-      })
-      .catch((err) => {
-        console.log(err);
-        swal("서버에러", "요청에 실패했습니다.", "error");
-      });
+    }).then((res) => {
+      onhandleClose();
+      swal("요청성공", "관리자의 인증을 기다려주세요", "success");
+      setTitle("");
+      setContent("");
+      getData();
+    });
   };
   // 에디터 부분 변경
   const onEditorChange = (value) => {

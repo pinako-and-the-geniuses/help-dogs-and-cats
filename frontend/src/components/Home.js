@@ -11,7 +11,6 @@ import AgeState from "./charts/AgeState";
 import SpeciesNeutral from "./charts/SpeciesNeutral";
 import styled from "styled-components";
 
-// background-color: whitesmoke;
 const ChartMain = styled.div`
   padding: 20px;
   width: 60%;
@@ -21,9 +20,6 @@ const ChartMain = styled.div`
 function Home() {
   const userInfo = useSelector((state) => state.userInfo);
 
-  useEffect(() => {
-    console.log(userInfo);
-  }, []);
   return (
     <>
       <div id="hero" className="home">

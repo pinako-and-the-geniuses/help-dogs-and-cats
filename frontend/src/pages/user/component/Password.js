@@ -1,5 +1,4 @@
 export default function Password({
-  URL,
   pwd,
   setPwd,
   pwdConfirm,

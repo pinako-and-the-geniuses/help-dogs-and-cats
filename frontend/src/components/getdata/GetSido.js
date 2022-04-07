@@ -15,13 +15,9 @@ export default function GetSido({
     axios({
       url: `${URL}/external-api/sido`,
       method: "GET",
-    })
-      .then((res) => {
-        setSidoData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      setSidoData(res.data.data);
+    });
   }
 
   useEffect(() => {

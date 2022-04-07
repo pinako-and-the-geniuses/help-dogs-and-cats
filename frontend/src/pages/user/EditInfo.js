@@ -41,20 +41,14 @@ export default function Editinfo() {
     if (!isLogin) {
       swal("접근불가", "로그인해주세요", "error");
     } else {
-      axios
-        .get(`${URL}/members/${info.seq}`)
-        .then((res) => {
-          const data = res.data.data;
-          setImg(data.profileImageFilePath);
-          setEmail(data.email);
-          setNickName(data.nickname);
-          setPhone(data.tel);
-          setRegion(data.activityArea);
-        })
-        .catch((err) => {
-          swal("에러", "정보를 가져오는데 실패했습니다.", "error");
-          console.log(err);
-        });
+      axios.get(`${URL}/members/${info.seq}`).then((res) => {
+        const data = res.data.data;
+        setImg(data.profileImageFilePath);
+        setEmail(data.email);
+        setNickName(data.nickname);
+        setPhone(data.tel);
+        setRegion(data.activityArea);
+      });
     }
   }, [isLogin]);
 
@@ -94,7 +88,6 @@ export default function Editinfo() {
         })
         .catch((err) => {
           swal("수정실패", "", "error");
-          navi("/NotFound");
         });
     } else {
       swal("형식오류", "형식을 다시 확인해 입력해주세요.", "info");

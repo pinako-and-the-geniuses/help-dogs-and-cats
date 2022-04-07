@@ -19,7 +19,6 @@ export default function EditNickName({
     const nickNameCurrent = e.target.value;
     setNickName(nickNameCurrent);
     if (defaultNickName === nickNameCurrent) {
-      console.log("같음");
       setNickNameCheck(true);
       setIsNickName(true);
     } else {
@@ -34,12 +33,10 @@ export default function EditNickName({
     axios
       .get(`${URL}/members/nickname-duplicate-check/${nickName}`)
       .then((res) => {
-        console.log(res);
         setNickNameCheck(res.status);
         isValid(res.status);
       })
       .catch((err) => {
-        console.log(err);
         setNickNameCheck(err.response.status);
         isValid(err.response.status);
       });

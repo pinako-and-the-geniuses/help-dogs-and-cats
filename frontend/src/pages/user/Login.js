@@ -7,20 +7,20 @@ import st from "./styles/userform.module.scss";
 import cn from "classnames";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false); // 로그인성공하고 useEffetct에 안걸리기 위한 값
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn); //로그인상태 불러오기
-  // const jwt = sessionStorage.getItem('jwt') - 로그인안되어있으면 null/undfinded
   const dispatch = useDispatch();
   const navi = useNavigate();
 
   useEffect(() => {
     if (isLogin) {
       if (!submitLoading) {
-        alert("로그인 완료된 상태입니다.");
+        swal("", "로그인 완료된 상태입니다.", "error");
       }
       navi("/");
     }
@@ -40,25 +40,26 @@ export default function Login() {
       email: email,
       password: password,
     };
-    axios
-      .post(`${URL}/members/login`, user)
-      .then((res) => {
-        if (res.status === 200) {
-          setSubmitLoading(true);
-          dispatch(loginAction(res.data.data.memberInfo));
-          sessionStorage.setItem("jwt", res.data.data.jwtToken);
-        } else if (res.status === 204) {
-          alert("이메일 또는 패스워드가 잘못 입력되었습니다.");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 400) {
-          alert("정보를 다시 확인해주세요.");
-        } else {
-          alert("잘못된 접근입니다.");
-        }
-      });
+    if (email && password) {
+      axios
+        .post(`${URL}/members/login`, user)
+        .then((res) => {
+          if (res.status === 200) {
+            setSubmitLoading(true);
+            dispatch(loginAction(res.data.data.memberInfo));
+            sessionStorage.setItem("jwt", res.data.data.jwtToken);
+          } else if (res.status === 204) {
+            swal("", "이메일 또는 패스워드가 잘못 입력되었습니다.", "error");
+          }
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            swal("", "정보를 확인해주세요.", "error");
+          }
+        });
+    } else {
+      swal("", "정보를 확인해주세요.", "error");
+    }
   };
 
   return (

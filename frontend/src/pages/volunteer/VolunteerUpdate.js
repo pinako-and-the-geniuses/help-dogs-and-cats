@@ -31,19 +31,15 @@ function VolunteerUpdate() {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        setTitle(res.data.data.title);
-        setSelectArea(res.data.data.activityArea);
-        setTime(res.data.data.authTime);
-        setParty(res.data.data.maxParticipantCount);
-        setContact(res.data.data.contact);
-        setEndDate(res.data.data.endDate);
-        setContent(res.data.data.content);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      setTitle(res.data.data.title);
+      setSelectArea(res.data.data.activityArea);
+      setTime(res.data.data.authTime);
+      setParty(res.data.data.maxParticipantCount);
+      setContact(res.data.data.contact);
+      setEndDate(res.data.data.endDate);
+      setContent(res.data.data.content);
+    });
   };
 
   //게시글 수정하기
@@ -62,13 +58,9 @@ function VolunteerUpdate() {
         maxParticipantCount: party,
       },
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        navigate(-1);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      navigate(-1);
+    });
   };
 
   const onTitleHandler = (e) => {

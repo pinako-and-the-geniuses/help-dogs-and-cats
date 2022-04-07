@@ -36,7 +36,7 @@ export default function AnimalList() {
       )
       .then((res) => {
         const data = res.data.data;
-        setTotalItemCount(res.data.data.totalCount)
+        setTotalItemCount(res.data.data.totalCount);
         setList(data.animalDtos);
         if (state === "notice") {
           setPostState("notice");
@@ -45,7 +45,6 @@ export default function AnimalList() {
         }
       })
       .catch((err) => {
-        console.log("err", err);
         swal("", "조건을 확인하세요", "error");
       });
   };

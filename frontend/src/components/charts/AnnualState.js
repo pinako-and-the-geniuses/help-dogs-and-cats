@@ -80,8 +80,6 @@ function AnnualState() {
   };
 
   const dogTotal = data2 && data2.data[index]["개Total"];
-  console.log(dogTotal);
-  // const dogLabels = data && data.data[index]["개"].map((res) => res.state);
   const dogChartData = {
     labels: [
       "입양",

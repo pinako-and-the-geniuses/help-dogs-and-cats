@@ -2,20 +2,18 @@ import React, { useState } from "react";
 import axios from "axios";
 import st from "../styles/userform.module.scss";
 import { URL } from "public/config";
+import { useSelector } from "react-redux";
 
 export default function EditPhone({ phone, isPhone, setPhone, setIsPhone }) {
   const [phoneCheck, setPhoneCheck] = useState("");
-  // const defaultPhone = useSelector(
-  //   (state) => state.userInfo.userInfo.phone
-  // );
 
-  const defaultPhone = "00"; ///// api 바뀌면 수정해야됌~!!!
+  const defaultPhone = useSelector((state) => state.userInfo.userInfo.tel);
 
   // 값입력
   const onPhoneHandler = (e) => {
     const phoneCurrent = e.target.value;
     setPhone(phoneCurrent);
-    if (defaultPhone === phone) {
+    if (defaultPhone == e.target.value) {
       setPhoneCheck(true);
       setIsPhone(true);
     } else {
@@ -31,12 +29,10 @@ export default function EditPhone({ phone, isPhone, setPhone, setIsPhone }) {
       .get(`${URL}/members/tel-duplicate-check/${phone}`)
 
       .then((res) => {
-        console.log("핸드폰 중복 확인 요청결과", res);
         setPhoneCheck(res.status);
         isValid(res.status);
       })
       .catch((err) => {
-        console.log("핸드폰 중복 확인 요청결과", err.response.status);
         setPhoneCheck(err.response.status);
         isValid(err.response.status);
       });

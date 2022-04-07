@@ -30,17 +30,12 @@ export default function CommunityCreate(api) {
         url: `${URL}/communities/${seq}`,
         method: "GET",
         headers: { Authorization: `Bearer ${jwt}` },
-      })
-        .then((res) => {
-          const data = res.data.data;
-          console.log(res.data);
-          setTitle(data.title);
-          setCategory(data.category);
-          setContent(data.content);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      }).then((res) => {
+        const data = res.data.data;
+        setTitle(data.title);
+        setCategory(data.category);
+        setContent(data.content);
+      });
     }
   }, [isLogin]);
 
@@ -57,7 +52,6 @@ export default function CommunityCreate(api) {
       },
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           // alert("수정 완료");
           // navi(`/community/communitydetail/${seq}`);

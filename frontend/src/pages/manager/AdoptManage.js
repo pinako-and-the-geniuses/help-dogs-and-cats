@@ -17,30 +17,27 @@ function AdoptManage({ setTab, setAdoptSeq }) {
 
   // 목록 불러오는 함수
   const getData = () => {
-      axios
+    axios
       .get(
         `${URL}/admins/adopts/auth?page=${page}&size=${size}&search=${search}`,
         { headers: { Authorization: `Bearer ${jwt}` } }
       )
       .then((res) => {
-        console.log("res", res.data.data);
         const temp = res.data.data.adoptAuthForPages;
         setPage(res.data.data.currentPageNumber);
         setTotalcount(res.data.data.totalCount);
         if (word) {
           const result = temp.filter((item) => item.title.includes(word));
           setAdopts(result);
-          console.log("검색어 있음", word, search, result);
         } else {
           setAdopts(temp);
         }
-      })
-      .catch((err) => console.log("err", err));
+      });
   };
 
   // 첫 화면에서 전체 목록 불러옴
   useEffect(() => {
-      getData();
+    getData();
   }, []);
 
   return (

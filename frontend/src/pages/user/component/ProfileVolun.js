@@ -37,8 +37,7 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
           const data = res.data.data;
           setList(data.volunteers);
           setTotalPageNumber(data.totalPageNumber);
-        })
-        .catch((err) => console.log(err));
+        });
     }
   };
 
@@ -49,14 +48,10 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
   // 요청 완료되면 모달 자동으로 닫히게
   const onhandleClose = () => {
     closeRef.current.click();
-    // setCheckedInputs("");
-    // setContent("");
-    console.log("닫혀라");
   };
 
   // 해당 모집 상세페이지로
   const onGoToDetail = (itemSeq) => {
-    console.log(itemSeq);
     navigator(`/volunteer/detail/${itemSeq}`);
   };
 
@@ -87,17 +82,11 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
           content: content,
           authenticatedParticipantSequences: checkedInputs,
         },
-      })
-        .then((res) => {
-          // onhandleClose();
-          closeRef.current.click();
-          console.log("봉사인증요청성공", res);
-          getData();
-        })
-        .catch((err) => {
-          console.log(err);
-          swal("서버에러", "요청에 실패했습니다.", "error");
-        });
+      }).then((res) => {
+        // onhandleClose();
+        closeRef.current.click();
+        getData();
+      });
     }
   };
   // 인증요청서 내용 가져오기
@@ -108,23 +97,17 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
       url: `${URL}/volunteers/${volunteerSeq}/auth`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        setContent(res.data.data.content);
-        if (now !== "REJECT") {
-          var temp = res.data.data.participants.filter(function (n) {
-            if (n.approve) {
-              return n;
-            }
-          });
-          setCheckedInputs(temp);
-        }
-      })
-      .then(console.log(content, "======", checkedInputs))
-      .catch((err) => {
-        console.log(err);
-        swal("서버에러", "요청에 실패했습니다.", "error");
-      });
+    }).then((res) => {
+      setContent(res.data.data.content);
+      if (now !== "REJECT") {
+        var temp = res.data.data.participants.filter(function (n) {
+          if (n.approve) {
+            return n;
+          }
+        });
+        setCheckedInputs(temp);
+      }
+    });
   };
 
   // 모달에 데이터 보내기
@@ -136,7 +119,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
 
   // 인증요청 버튼
   const onModal = (item) => {
-    console.log(item);
     // 처음 인증 신청할때
     if (item.authStatus === null) {
       return (
@@ -402,7 +384,6 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
             <div></div>
             {list ? (
               list.map((item, index) => {
-                console.log("item", item);
                 return (
                   <div key={index} className={st.listItemDiv}>
                     <button

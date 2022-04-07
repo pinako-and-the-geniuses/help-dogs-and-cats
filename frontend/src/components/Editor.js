@@ -44,9 +44,7 @@ export default function Editor(props) {
         // editor.root.innerHTML =
         //   editor.root.innerHTML + `<img src=${IMG_URL} /><br/>`; // 현재 있는 내용들 뒤에 써줘야한다.
         editor.insertEmbed(range.index, "image", IMG_URL);
-      } catch (err) {
-        console.log(err);
-      }
+      } catch (err) {}
     });
   };
 

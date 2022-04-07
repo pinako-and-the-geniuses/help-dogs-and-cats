@@ -1,5 +1,4 @@
 import axios from "axios";
-import XMLParser from "react-xml-parser";
 import { URL } from "public/config";
 import { useEffect } from "react";
 import animal from "./styles/Animal.module.scss";
@@ -17,13 +16,9 @@ export default function GetShelter({
       axios({
         url: `${URL}/external-api/shelters/code-and-name?sidoCode=${selected.sidoCode}&sigunguCode=${selected.sigunguCode}`,
         method: "GET",
-      })
-        .then((res) => {
-          setShelter(res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      }).then((res) => {
+        setShelter(res.data.data);
+      });
     }
   }
 
