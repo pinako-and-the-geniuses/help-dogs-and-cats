@@ -1,7 +1,7 @@
 import GetSido from "components/getdata/GetSido";
 import GetSigungu from "components/getdata/GetSigungu";
 import React, { useEffect, useState } from "react";
-import { ANIMAL, SHELTER, URL } from "public/config/index";
+import { URL } from "public/config/index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { shelterGetAction } from "actions/ShelterAction";
@@ -14,9 +14,6 @@ import "../../components/styles/Paging.css";
 import Pagination from "react-js-pagination";
 
 function ShelterList() {
-  // 외부 요청 key
-  const SHELTER_KEY = process.env.REACT_APP_SHELTER_KEY;
-  const ANIMAL_KEY = process.env.REACT_APP_ANIMAL_KEY;
   // 상태관리
   const [search, setSearch] = useState("");
   const [list, setList] = useState("");
@@ -25,27 +22,29 @@ function ShelterList() {
   const [selected, setSelected] = useState({
     sidoCode: "",
     sigunguCode: "",
-    shelterName: "",
   });
   const [page, setPage] = useState(1);
   const [totalItemCount, setTotalItemCount] = useState(0);
   const size = 12;
-  // 조건별 요청 url
-  const [regionUrl, setRegionUrl] = useState("");
+
   // 기타
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 첫 페이지 모든 목록 출력
+  // 첫 페이지 모든 목록 출력 + 보호소명 검색
   const onSetPage = () => {
+    console.log("search", search);
     axios
-      .get(`${URL}/external-api/shelters?page=${page}&size=${size}`)
+      .get(
+        `${URL}/external-api/shelters?page=${page}&size=${size}&shelterName=${search}`
+      )
       .then((res) => {
         setList(res.data.data.shelterDtos);
       })
       .catch((err) => {
         console.log(err);
       });
+    console.log(list);
   };
   useEffect(() => {
     onSetPage();
@@ -61,30 +60,29 @@ function ShelterList() {
         )
         .then((res) => {
           const data = res.data.data.shelterDtos;
-          // 검색어 필터링
-          if (search && data) {
-            const optionData = data.filter((item) => {
+          console.log("전체", data);
+
+          if (search) {
+            const temp = data.filter((item) => {
               return item.shelterName.includes(search);
             });
-            setList(optionData);
+            setList(temp);
+            console.log("시군구포함 조회 + 검색어", temp);
           } else {
             setList(data);
+            console.log("시군구포함 조회", data);
           }
         })
         .catch((err) => {
           swal("서버에러", "", "error");
           console.log(err);
         });
-    } // 시도로만 조회
-    else if (selected.sidoCode && selected.sigunguCode === "") {
-      swal("시군구코드", "시군구 코드를 선택해주세요", "info");
-    } // 시도 + 검색어 조회
-    else if (search && selected.sidoCode) {
-      swal("검색조회", "시도코드,검색어", "info");
-      console.log("시도+검색어", selected.sidoCode, search);
+    } // 시도만 선택했을때
+    else if (selected.sidoCode && !selected.sigunguCode) {
+      swal("", "시군구를 선택해주세요.", "info");
     } // 검색어로만 조회
     else if (search) {
-      console.log("검색어있음", search);
+      onSetPage();
     }
   };
 
@@ -108,7 +106,6 @@ function ShelterList() {
             selected={selected}
             setSidoData={setSido}
             setSelected={setSelected}
-            setRegionUrl={setRegionUrl}
           />
 
           <p>시군구</p>
@@ -117,7 +114,6 @@ function ShelterList() {
             setSigunguData={setSigungu}
             selected={selected}
             setSelected={setSelected}
-            setRegionUrl={setRegionUrl}
           />
 
           <p>보호센터명</p>
@@ -141,45 +137,48 @@ function ShelterList() {
           </button>
         </div>
       </div>
-
-      <table className={cn("table table-bordered table-hover", style.my_table)}>
-        <thead>
-          <tr>
-            <th scope="col">관할구역</th>
-            <th scope="col">보호센터명</th>
-            <th scope="col">전화번호</th>
-            <th scope="col">영업시간</th>
-            <th scope="col">주소</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list ? (
-            list.map((item, index) => {
-              return (
-                <tr
-                  key={index}
-                  onClick={() => {
-                    onGoDetail(item);
-                  }}
-                >
-                  <td>{item.organizationName}</td>
-                  <td>{item.shelterName}</td>
-                  <td>{item.tel}</td>
-                  <td>
-                    {item.weekOperationStartTIme} ~ {item.weekOperationEndTime}{" "}
-                  </td>
-                  <td>{item.address}</td>
-                </tr>
-              );
-            })
-          ) : (
+      <div style={{ minHeight: "40vh" }}>
+        <table
+          className={cn("table table-bordered table-hover", style.my_table)}
+        >
+          <thead>
             <tr>
-              <td></td>
+              <th scope="col">관할구역</th>
+              <th scope="col">보호센터명</th>
+              <th scope="col">전화번호</th>
+              <th scope="col">영업시간</th>
+              <th scope="col">주소</th>
             </tr>
-          )}
-        </tbody>
-      </table>
-
+          </thead>
+          <tbody>
+            {list ? (
+              list.map((item, index) => {
+                return (
+                  <tr
+                    key={index}
+                    onClick={() => {
+                      onGoDetail(item);
+                    }}
+                  >
+                    <td>{item.organizationName}</td>
+                    <td>{item.shelterName}</td>
+                    <td>{item.tel}</td>
+                    <td>
+                      {item.weekOperationStartTIme} ~{" "}
+                      {item.weekOperationEndTime}{" "}
+                    </td>
+                    <td>{item.address}</td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td></td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
       <Pagination
         activePage={page}
         itemsCountPerPage={10}
