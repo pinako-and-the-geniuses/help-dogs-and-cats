@@ -15,13 +15,9 @@ export default function GetSigunguList({
     axios({
       url: `${URL}/external-api/sigungu/${selected.sidoCode}`,
       method: "GET",
-    })
-      .then((res) => {
-        setSigunguData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      setSigunguData(res.data.data);
+    });
   }
   // 먼저!
   useEffect(() => {
