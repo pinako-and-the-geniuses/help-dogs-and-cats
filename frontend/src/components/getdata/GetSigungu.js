@@ -3,8 +3,6 @@ import { URL } from "public/config";
 import { useEffect } from "react";
 import animal from "pages/animals/styles/Animal.module.scss";
 
-const ANIMALKEY = process.env.REACT_APP_ANIMAL_KEY;
-
 // [시군구 조회]
 export default function GetSigunguList({
   sigunguData,
@@ -15,18 +13,16 @@ export default function GetSigunguList({
 }) {
   // 조회하기
   function getAPI() {
-    if (ANIMALKEY) {
-      axios({
-        url: `${URL}/external-api/sigungu/${selected.sidoCode}`,
-        method: "GET",
+    axios({
+      url: `${URL}/external-api/sigungu/${selected.sidoCode}`,
+      method: "GET",
+    })
+      .then((res) => {
+        setSigunguData(res.data.data);
       })
-        .then((res) => {
-          setSigunguData(res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      .catch((err) => {
+        console.log(err);
+      });
   }
   // 먼저!
   useEffect(() => {
