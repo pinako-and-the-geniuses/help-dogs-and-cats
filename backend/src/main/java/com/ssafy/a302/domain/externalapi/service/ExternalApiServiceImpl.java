@@ -278,7 +278,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
         String result = httpUtil.getResult(urlBuilder.toString());
         JSONArray jsonArray = getJsonArray(result);
 
-        List<AnimalDtoForPage> animalDtoForPages = new ArrayList<>();
+        List<animalDto> animalDtos = new ArrayList<>();
 
         if (jsonArray != null) {
             for (Object o : jsonArray) {
@@ -288,13 +288,23 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 dateBuilder.insert(6, "-");
                 dateBuilder.insert(4, "-");
 
-                animalDtoForPages.add(AnimalDtoForPage.builder()
+                animalDtos.add(animalDto.builder()
                         .processState((String) obj.get("processState"))
                         .noticeNo((String) obj.get("noticeNo"))
                         .happenDate(LocalDate.parse(dateBuilder.toString()))
                         .organizationName((String) obj.get("orgNm"))
                         .happenPlace((String) obj.get("happenPlace"))
                         .popfileImagePath((String) obj.get("popfile"))
+                        .breedOfAnimal((String) obj.get("kindCd"))
+                        .age((String) obj.get("age"))
+                        .weight((String) obj.get("weight"))
+                        .sex((String) obj.get("sexCd"))
+                        .neuterYn((String) obj.get("neuterYn"))
+                        .color((String) obj.get("colorCd"))
+                        .specialMark((String) obj.get("specialMark"))
+                        .shelterName((String) obj.get("careNm"))
+                        .shleterAddress((String) obj.get("careAddr"))
+                        .shelterTel((String) obj.get("careTel"))
                         .build());
             }
         }
@@ -308,7 +318,7 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .totalCount(totalCount)
                 .totalPageNumber(totalPageNumber)
                 .currentPageNumber(pageable.getPageNumber())
-                .animalDtoForPages(animalDtoForPages)
+                .animalDtos(animalDtos)
                 .build();
     }
 
