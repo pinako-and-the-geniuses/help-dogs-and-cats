@@ -1,9 +1,6 @@
 package com.ssafy.a302.domain.externalapi.service;
 
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterDto;
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterPageDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
+import com.ssafy.a302.domain.externalapi.service.dto.*;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Pageable;
 
@@ -21,4 +18,6 @@ public interface ExternalApiService {
     ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode) throws IOException, ParseException;
 
     ShelterDto getShelterDto(String shelterName) throws IOException, ParseException;
+
+    List<ShelterMiniDto> getShelterMiniDtos(String sidoCdoe, String sigunguCode) throws IOException, ParseException;
 }

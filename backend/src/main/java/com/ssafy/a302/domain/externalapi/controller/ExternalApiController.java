@@ -1,10 +1,7 @@
 package com.ssafy.a302.domain.externalapi.controller;
 
 import com.ssafy.a302.domain.externalapi.service.ExternalApiService;
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterDto;
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterPageDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
+import com.ssafy.a302.domain.externalapi.service.dto.*;
 import com.ssafy.a302.global.constant.Message;
 import com.ssafy.a302.global.dto.BaseResponseDto;
 import com.ssafy.a302.global.dto.ErrorResponseDto;
@@ -182,6 +179,37 @@ public class ExternalApiController {
         return BaseResponseDto.<ShelterDto>builder()
                 .message(Message.SUCCESS)
                 .data(shelterDto)
+                .build();
+    }
+
+    @Operation(
+            summary = "보호소 조회 API",
+            description = "보호소 코드와 이름을 반환합니다.",
+            tags = {"external-api"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "보호소 코드, 이름을 반환합니다.",
+                    content = @Content(schema = @Schema(implementation = BaseResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버에 문제가 발생하였습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+            @ApiResponse(
+                    responseCode = "503",
+                    description = "요청을 수행할 수 없습니다.",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/shelters/code-and-name")
+    public BaseResponseDto<List<ShelterMiniDto>> shelterCodesAndNames(@RequestParam String sidoCode,
+                                                                      @RequestParam String sigunguCode) throws IOException, ParseException {
+        List<ShelterMiniDto> shelterMiniDtos = externalApiService.getShelterMiniDtos(sidoCode, sigunguCode);
+
+        return BaseResponseDto.<List<ShelterMiniDto>>builder()
+                .message(Message.SUCCESS)
+                .data(shelterMiniDtos)
                 .build();
     }
 }
