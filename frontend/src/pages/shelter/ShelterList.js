@@ -40,9 +40,6 @@ function ShelterList() {
       .then((res) => {
         setList(res.data.data.shelterDtos);
         setTotalItemCount(res.data.data.totalCount);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   };
   useEffect(() => {
@@ -69,10 +66,6 @@ function ShelterList() {
             setList(data);
             setTotalItemCount(res.data.data.totalCount);
           }
-        })
-        .catch((err) => {
-          swal("서버에러", "", "error");
-          console.log(err);
         });
     } // 시도만 선택했을때
     else if (selected.sidoCode && !selected.sigunguCode) {
@@ -89,12 +82,12 @@ function ShelterList() {
     navigate(`/shelter/detail`);
   };
 
-  const enterKey=()=>{
-    if(window.event.keyCode === 13){
+  const enterKey = () => {
+    if (window.event.keyCode === 13) {
       onGetList();
       setPage(1);
-    } 
-}
+    }
+  };
 
   return (
     <div className={style.main_container}>
