@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.util.List;
 
 @Getter
-@ToString(of = {"totalCount", "currentPageNumber", "totalPageNumber", "animalDtoForPages"})
+@ToString(of = {"totalCount", "currentPageNumber", "totalPageNumber", "animalDtos"})
 public class AnimalPageDto {
 
     private final Integer totalCount;
@@ -16,13 +16,13 @@ public class AnimalPageDto {
 
     private final Integer totalPageNumber;
 
-    private final List<AnimalDtoForPage> animalDtoForPages;
+    private final List<animalDto> animalDtos;
 
     @Builder
-    public AnimalPageDto(Integer totalCount, Integer currentPageNumber, Integer totalPageNumber, List<AnimalDtoForPage> animalDtoForPages) {
+    public AnimalPageDto(Integer totalCount, Integer currentPageNumber, Integer totalPageNumber, List<animalDto> animalDtos) {
         this.totalCount = totalCount;
         this.currentPageNumber = currentPageNumber;
         this.totalPageNumber = totalPageNumber;
-        this.animalDtoForPages = animalDtoForPages;
+        this.animalDtos = animalDtos;
     }
 }
