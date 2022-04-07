@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -28,7 +29,7 @@ public class AdoptAuthDto {
         this.status = status;
     }
     @Getter
-    @ToString(of = {"seq", "title", "content", "memberSeq"})
+    @ToString(of = {"seq", "title", "content", "memberSeq", "nickname", "createdDate"})
     public static class Response {
 
         @Schema(name = "seq", title = "입양인증 기본키", description = "입양인증이 가지고 있는 고유 식별키입니다.")
@@ -43,16 +44,24 @@ public class AdoptAuthDto {
         @Schema(title = "인증 상태", description = "인증 상태입니다.")
         private final Status status;
 
-        @Schema(name = "memberSeq", title = "작성자 Seq", description = "작성자 Seq입니다.")
+        @Schema(title = "작성자 Seq", description = "작성자 Seq입니다.")
         private final Long memberSeq;
 
+        @Schema(title = "작성자 닉네임", description = "작성자 닉네임입니다.")
+        private final String nickname;
+
+        @Schema(title = "작성일", description = "작성일입니다.")
+        private final LocalDate createdDate;
+
         @Builder
-        public Response(Long seq, String title, String content, Status status, Long memberSeq) {
+        public Response(Long seq, String title, String content, Status status, Long memberSeq, String nickname, LocalDate createdDate) {
             this.seq = seq;
             this.title = title;
             this.content = content;
             this.status = status;
             this.memberSeq = memberSeq;
+            this.nickname = nickname;
+            this.createdDate = createdDate;
         }
     }
 
