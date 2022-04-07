@@ -16,52 +16,52 @@ export default function AnimalBox(props) {
     setList(props.list);
   }, [props.list]);
 
-  const onGoDetail = (index) => {
-    dispatch(animalGetAction(props.list[index]));
+  const onGoDetail = (item) => {
+    dispatch(animalGetAction(item));
     navigate(`/animals/detail`);
   };
 
   const onReturn = () => {
     if (list.length >= 1) {
       return list.map((item, index) => {
-        const data = item.children;
         return (
-          <div className="col" key={data[0].value}>
+          <div className="col" key={index}>
             <div className={cn(`${st.card}`)}>
               <img
-                src={data[11].value}
+                src={item.popfileImagePath}
                 className={st.cardImgTop}
                 alt="사진없음"
               />
               <div className={st.cardBody}>
-                <div className={st.processState}>{data[12].value}</div>
+                {props.postState === "notice" ? (
+                  <div className={st.processState}>공고중</div>
+                ) : (
+                  <div className={st.processState}>{item.processState}</div>
+                )}
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <span className={st.title}>공고번호</span>
-                  <span>{data[0].value}</span>
+                  <span>{item.noticeNo}</span>
                 </div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <span className={st.title}>접수일시</span>
-                  <span>
-                    {data[2].value.slice(0, 4)}-{data[2].value.slice(4, 6)}-
-                    {data[2].value.slice(6)}
-                  </span>
+                  <span>{item.happenDate}</span>
                 </div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <span className={st.title}>관할기관</span>
-                  <p className="mt-1">{data[16].value}</p>
+                  <p className="mt-1">{item.organizationName}</p>
                 </div>
                 <div className={cn(`${st.cardText}`, "card-text")}>
                   <div>
                     <span className={st.title}>발견장소</span>
                   </div>
                   <div>
-                    <p>{data[3].value}</p>
+                    <p>{item.happenPlace}</p>
                   </div>
                 </div>
                 <div className={st.detilaBtn}>
                   <button
                     className={st.button}
-                    onClick={() => onGoDetail(index)}
+                    onClick={() => onGoDetail(item)}
                   >
                     자세히 보기
                   </button>

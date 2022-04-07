@@ -24,33 +24,33 @@ function ShelterDetail() {
             <div className={cn(style.main_info)}>
               <div className={style.text_box}>
                 <p className={style.title}>보호센터명</p>
-                <p>{data.careNm}</p>
+                <p>{data.shelterName}</p>
               </div>
               <div className={style.text_box}>
                 <p className={style.title}>전화번호</p>
-                <p>{data.careTel}</p>
+                <p>{data.tel}</p>
               </div>
               <div className={style.text_box}>
                 <p className={style.title}>주소</p>
-                <p>{data.careAddr}</p>
+                <p>{data.address}</p>
               </div>
               <div className={style.text_box}>
                 <p className={style.title}>관리기관명</p>
-                <p>{data.careAddr}</p>
+                <p>{data.organizationName}</p>
               </div>
               <div className={style.text_box}>
                 <p className={style.title}>운영시간</p>
                 <p>
-                  {data.weekOprStime} ~ {data.weekOprEtime}
+                  {data.weekOperationStartTIme} ~ {data.weekOperationEndTime}
                 </p>
               </div>
               <div className={style.text_box}>
                 <p className={style.title}>유형</p>
-                <p>{data.divisionNm}</p>
+                <p>{data.divisionName}</p>
               </div>
               <div className={style.text_box}>
                 <p className={style.title}>구조대상동물</p>
-                <p>{data.saveTrgtAnimal}</p>
+                <p>{data.saveTargetAnimal}</p>
               </div>
             </div>
             {data.lat && data.lng && (
@@ -60,6 +60,11 @@ function ShelterDetail() {
             )}
           </div>
         </section>
+        <div className={style.gotoList}>
+          <a type="button" className={style.button} href="/shelter/list">
+            목록으로
+          </a>
+        </div>
       </main>
     </div>
   );
