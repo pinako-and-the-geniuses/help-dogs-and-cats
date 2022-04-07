@@ -1,9 +1,6 @@
 package com.ssafy.a302.domain.externalapi.service;
 
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterDto;
-import com.ssafy.a302.domain.externalapi.service.dto.ShelterPageDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SidoDto;
-import com.ssafy.a302.domain.externalapi.service.dto.SigunguDto;
+import com.ssafy.a302.domain.externalapi.service.dto.*;
 import com.ssafy.a302.global.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,6 +113,8 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                     .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
                     .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
                     .tel((String) obj.get("careTel"))
+                    .weekOperationStartTIme((String) obj.get("weekOprStime"))
+                    .weekOperationEndTime((String) obj.get("weekOprEtime"))
                     .build());
         }
 
@@ -172,6 +171,8 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                             .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
                             .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
                             .tel((String) obj.get("careTel"))
+                            .weekOperationStartTIme((String) obj.get("weekOprStime"))
+                            .weekOperationEndTime((String) obj.get("weekOprEtime"))
                             .build());
                 }
             }
@@ -206,7 +207,36 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 .vetPersonCount(obj.get("vetPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("vetPersonCnt"))))
                 .specsPersonCount(obj.get("specsPersonCnt") == null ? null : Integer.parseInt(String.valueOf(obj.get("specsPersonCnt"))))
                 .tel((String) obj.get("careTel"))
+                .weekOperationStartTIme((String) obj.get("weekOprStime"))
+                .weekOperationEndTime((String) obj.get("weekOprEtime"))
                 .build();
+    }
+
+    @Override
+    public List<ShelterMiniDto> getShelterMiniDtos(String sidoCode, String sigunguCode) throws IOException, ParseException {
+        StringBuilder urlBuilder = new StringBuilder(animalUrl.concat("/shelter"));
+        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + animalKey);
+        urlBuilder.append("&" + URLEncoder.encode("upr_cd", "UTF-8") + "=" + sidoCode);
+        urlBuilder.append("&" + URLEncoder.encode("org_cd", "UTF-8") + "=" + sigunguCode);
+        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+        String result = httpUtil.getResult(urlBuilder.toString());
+        JSONArray jsonArray = getJsonArray(result);
+
+        List<ShelterMiniDto> shelterMiniDtos = new ArrayList<>();
+        if (jsonArray != null) {
+            for (Object o : jsonArray) {
+                JSONObject obj = (JSONObject) o;
+                String shelterCode = (String) obj.get("careRegNo");
+                String shelterName = (String) obj.get("careNm");
+                shelterMiniDtos.add(ShelterMiniDto.builder()
+                        .code(shelterCode)
+                        .name(shelterName)
+                        .build());
+            }
+        }
+
+        return shelterMiniDtos;
     }
 
     private static JSONArray getJsonArray(String result) throws ParseException {
