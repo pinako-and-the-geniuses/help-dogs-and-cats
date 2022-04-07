@@ -28,8 +28,12 @@ public class ShelterDto {
 
     private final String tel;
 
+    private final String weekOperationStartTIme;
+
+    private final String weekOperationEndTime;
+
     @Builder
-    public ShelterDto(String shelterName, String organizationName, String divisionName, String saveTargetAnimal, String address, String jibunAddress, String closeDay, Integer vetPersonCount, Integer specsPersonCount, String tel) {
+    public ShelterDto(String shelterName, String organizationName, String divisionName, String saveTargetAnimal, String address, String jibunAddress, String closeDay, Integer vetPersonCount, Integer specsPersonCount, String tel, String weekOperationStartTIme, String weekOperationEndTime) {
         this.shelterName = shelterName;
         this.organizationName = organizationName;
         this.divisionName = divisionName;
@@ -40,5 +44,7 @@ public class ShelterDto {
         this.vetPersonCount = vetPersonCount;
         this.specsPersonCount = specsPersonCount;
         this.tel = tel;
+        this.weekOperationStartTIme = weekOperationStartTIme;
+        this.weekOperationEndTime = weekOperationEndTime;
     }
 }
