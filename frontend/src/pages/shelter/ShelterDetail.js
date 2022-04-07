@@ -11,7 +11,6 @@ function ShelterDetail() {
   useEffect(() => {
     setData(info);
   }, []);
-  console.log(info);
 
   return (
     <div className={style.shelter_container}>
@@ -41,7 +40,7 @@ function ShelterDetail() {
               <div className={style.text_box}>
                 <p className={style.title}>운영시간</p>
                 <p>
-                  {data.weekOperationStartTIme} ~ {data.weekOperationEndTime}
+                  {data.weekOperationStartTime} ~ {data.weekOperationEndTime}
                 </p>
               </div>
               <div className={style.text_box}>
@@ -53,9 +52,9 @@ function ShelterDetail() {
                 <p>{data.saveTargetAnimal}</p>
               </div>
             </div>
-            {data.lat && data.lng && (
+            {data.lat != "null" && data.lng != "null" && (
               <div className={cn(style.map, "col-6")}>
-                <Map lat={data.lat} lng={data.lng} />
+                <Map lat={info.lat} lng={info.lng} />
               </div>
             )}
           </div>
