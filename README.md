@@ -266,52 +266,41 @@
 
   - BE
 
-    ```yaml
-    version: "3.2"
-    services:
-      database:
-        container_name: database
-        image: mariadb
-        environment:
-          - MYSQL_ROOT_PASSWORD=ehdhkwnrosid
-          - MYSQL_ROOT_HOST=%
-        volumes:
-          - /home/ubuntu/mysql:/var/lib/mysql
-        command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-        ports:
-          - 3306:3306
-    
-      application:
-        container_name: springboot
-        build: .
-        environment:
-          SPRING_DATASOURCE_URL: jdbc:mariadb://database:3306/a302db?&serverTimezone=Asia/Seoul
-          SPRING_DATASOURCE_USERNAME: admin
-          SPRING_DATASOURCE_PASSWORD: ehdhkwnrosid
-        ports:
-          - 8080:8080
-        depends_on:
-          - database
+    ```dockerfile
+    # Backend Dockerfile
+
+    FROM amazoncorretto:11
+    EXPOSE 8080
+    ARG JAR_FILE=build/libs/a302-0.0.1-SNAPSHOT.jar
+    COPY ${JAR_FILE} app.jar
+    ENTRYPOINT ["java", "-jar", "/app.jar"]
     ```
     
   - FE
   
     ```dockerfile
-    FROM node:alpine as builder
-    
-    WORKDIR '/usr/src/app'
-    
-    COPY package.json ./
-    
-    RUN npm install
-    
-    COPY ./ ./
-    
+    # Frontend Dockerfile
+
+    FROM node:16.14.0 as builder
+
+    RUN mkdir /usr/src/app
+    WORKDIR /usr/src/app
+    ENV PATH /usr/src/app/node_modules/.bin:$PATH
+    COPY package.json /usr/src/app/package.json
+    RUN npm install --silent
+
+    COPY . /usr/src/app
     RUN npm run build
-    
-    FROM nginx
-    EXPOSE 80
+
+    FROM nginx:latest
+
+    RUN rm -rf /etc/nginx/conf.d
+    COPY conf /etc/nginx
+
     COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+
+    EXPOSE 80
+    CMD ["nginx", "-g", "daemon off;"]
     ```
   
     
