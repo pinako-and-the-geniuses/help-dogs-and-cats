@@ -91,12 +91,16 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     }
 
     @Override
-    public ShelterPageDto getShelterPageDto(Pageable pageable) throws IOException, ParseException {
+    public ShelterPageDto getShelterPageDto(Pageable pageable, String shelterName) throws IOException, ParseException {
         StringBuilder urlBuilder = new StringBuilder(shelterUrl.concat("/shelterInfo"));
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + shelterKey);
         urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + pageable.getPageNumber());
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + pageable.getPageSize());
         urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+        if (StringUtils.hasText(shelterName)) {
+            urlBuilder.append("&" + URLEncoder.encode("care_nm", "UTF-8") + "=" + URLEncoder.encode(shelterName, "UTF-8"));
+        }
 
         String result = httpUtil.getResult(urlBuilder.toString());
 
@@ -136,12 +140,12 @@ public class ExternalApiServiceImpl implements ExternalApiService {
     }
 
     @Override
-    public ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode) throws IOException, ParseException {
+    public ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode, String shelterName) throws IOException, ParseException {
         StringBuilder urlBuilder = new StringBuilder(animalUrl.concat("/shelter"));
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + animalKey);
+        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("upr_cd", "UTF-8") + "=" + sidoCode);
         urlBuilder.append("&" + URLEncoder.encode("org_cd", "UTF-8") + "=" + sigunguCode);
-        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
 
         String result = httpUtil.getResult(urlBuilder.toString());
         JSONArray jsonArray = getJsonArray(result);
@@ -159,6 +163,10 @@ public class ExternalApiServiceImpl implements ExternalApiService {
                 urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + shelterKey);
                 urlBuilder.append("&" + URLEncoder.encode("care_reg_no", "UTF-8") + "=" + shelterNo);
                 urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+
+                if (StringUtils.hasText(shelterName)) {
+                    urlBuilder.append("&" + URLEncoder.encode("care_nm", "UTF-8") + "=" + URLEncoder.encode(shelterName, "UTF-8"));
+                }
 
                 result = httpUtil.getResult(urlBuilder.toString());
                 JSONArray jsonArr = getJsonArray(result);

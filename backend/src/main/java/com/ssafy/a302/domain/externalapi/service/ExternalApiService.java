@@ -13,9 +13,9 @@ public interface ExternalApiService {
 
     List<SigunguDto> getSigunguDtos(String sidoCode) throws IOException, ParseException;
 
-    ShelterPageDto getShelterPageDto(Pageable pageable) throws IOException, ParseException;
+    ShelterPageDto getShelterPageDto(Pageable pageable, String shelterName) throws IOException, ParseException;
 
-    ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode) throws IOException, ParseException;
+    ShelterPageDto getShelterPageDto(Pageable pageable, String sidoCode, String sigunguCode, String shelterName) throws IOException, ParseException;
 
     ShelterDto getShelterDto(String shelterName) throws IOException, ParseException;
 
