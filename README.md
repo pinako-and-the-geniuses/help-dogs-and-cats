@@ -432,19 +432,26 @@
 
 ![11](README.assets/11.png)
 
-![1](/uploads/666c7689b4ab255ca53ca0e38efca0ef/1.png)
+![2(1)](README.assets/2(1).png)
 
 
 ![1](README.assets/1.png)
 
-![2](/uploads/158bbeb4f946c347ff3c9f4deaefec25/2.png)
+![2(2)](README.assets/2(2).png)
 
 
 
 ### 7. 유기동물
 
-그림만 3,4 장?
+![동물조회1](README.assets/동물조회1.png)
+
+![동물조회2](README.assets/동물조회2.png)
+
+![동물조회3](README.assets/동물조회3.png)
+
 
 ### 8. 보호소
 
-그림만 3,4 장?
+![보호소조회1](README.assets/보호소조회1.png)
+
+![보호소조회2](README.assets/보호소조회2.png)
