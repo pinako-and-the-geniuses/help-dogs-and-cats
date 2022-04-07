@@ -1,7 +1,7 @@
 import style from './styles/VolunteerDetail.module.scss';
 import TeamManage from './TeamManage';
 
-function VolunteerInfo({post, memSeq, getParticipants}){
+function VolunteerInfo({post, memSeq, getParticipants, getPost}){
     return(
         <div className={style.infoBox}>
         <ul>
@@ -13,7 +13,7 @@ function VolunteerInfo({post, memSeq, getParticipants}){
                 인증 봉사시간 : {
                     post.authTime !== '0'
                     ? <span>{post.authTime}시간</span>
-                    : <span>인증 불가</span> //멘트....
+                    : <span>인증 불가</span>
                 }
             </li>
             <li className={style.people}>
@@ -35,6 +35,7 @@ function VolunteerInfo({post, memSeq, getParticipants}){
                                 <TeamManage 
                                     approvedCount={post.approvedCount}
                                     maxParticipantCount={post.maxParticipantCount}
+                                    getPost={getPost}
                                 />
                             </div>
                         </div>
