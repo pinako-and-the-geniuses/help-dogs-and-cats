@@ -157,8 +157,10 @@ export default function AnimalList() {
           </button>
         </div>
       </div>
-      <div className="row row-cols-1 row-cols-md-4 g-5">
-        {list && <AnimalBox list={list} postState={postState} />}
+      <div style={{ minHeight: "40vh" }}>
+        <div className="row row-cols-1 row-cols-md-4 g-5">
+          {list && <AnimalBox list={list} postState={postState} />}
+        </div>
       </div>
 
       <Pagination
