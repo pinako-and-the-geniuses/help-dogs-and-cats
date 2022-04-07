@@ -10,18 +10,16 @@ export default function GetShelter({
   setShelter,
   selected,
   setSelected,
-  setRegionUrl,
 }) {
   // 보호소 조회하기
   function getAPI() {
     if (selected.sidoCode != "0") {
       axios({
-        url: `${URL}/external-api/shelters/part?page=1&size=12&sidoCode=${selected.sidoCode}&sigunguCode=${selected.sigunguCode}`,
+        url: `${URL}/external-api/shelters/code-and-name?sidoCode=${selected.sidoCode}&sigunguCode=${selected.sigunguCode}`,
         method: "GET",
       })
         .then((res) => {
-          console.log("보호소조회", res.data.data.shelterDtos);
-          setShelter(res.data.data.shelterDtos);
+          setShelter(res.data.data);
         })
         .catch((err) => {
           console.log(err);
@@ -32,7 +30,7 @@ export default function GetShelter({
   // 먼저!
   useEffect(() => {
     setShelter("");
-    if (selected.sigunguCode.length > 2) {
+    if (selected.sigunguCode) {
       getAPI();
     }
   }, [selected.sigunguCode, selected.sidoCode]);
@@ -48,25 +46,17 @@ export default function GetShelter({
           sigunguCode: selected.sigunguCode,
           shelterCode: e.target.value,
         });
-        // setRegionUrl(
-        //   `&upr_cd=${selected.sidoCode}&org_cd=${selected.sigunguCode}&care_reg_no=${e.target.value}`
-        // );
       }}
     >
       <option value="">보호소 전체</option>
-      {shelter.length > 1 ? (
-        shelter.map((item, index) => {
+      {shelter &&
+        shelter.map((item) => {
           return (
-            <option key={index} value={item.code}>
-              {item.shelterName}
+            <option key={item.code} value={item.code}>
+              {item.name}
             </option>
           );
-        })
-      ) : shelter.code ? (
-        <option value={shelter.code}>{shelter.shelterName}</option>
-      ) : (
-        ""
-      )}
+        })}
     </select>
   );
 }

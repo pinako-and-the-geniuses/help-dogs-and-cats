@@ -9,7 +9,6 @@ export default function GetSigunguList({
   setSigunguData,
   selected,
   setSelected,
-  setRegionUrl,
 }) {
   // 조회하기
   function getAPI() {
@@ -38,7 +37,6 @@ export default function GetSigunguList({
       className={animal.textBox}
       aria-label="시군구"
       onChange={(e) => {
-        setRegionUrl(`&upr_cd=${selected.sidoCode}&org_cd=${e.target.value}`);
         setSelected({
           sidoCode: selected.sidoCode,
           sigunguCode: e.target.value,
