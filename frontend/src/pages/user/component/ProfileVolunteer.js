@@ -1,4 +1,3 @@
-// import VolunteerModal from "../component/ProfileVolunteerModal";
 import st from "../styles/profile.module.scss";
 import cn from "classnames";
 import { useEffect, useState, useRef } from "react";
@@ -271,27 +270,32 @@ export default function ProfileVolunteer({ category, seq, isLogin }) {
         <div name="인원유무에따라" className={st.input}>
           {modalData.participantInfos
             ? modalData.participantInfos.map((data, index) => {
-                return (
-                  <div key={index} className="form-check form-check-inline">
-                    <input
-                      id={data.memberSeq}
-                      type="checkbox"
-                      style={{
-                        width: "15px",
-                      }}
-                      onChange={(e) => {
-                        changeHandler(e.currentTarget.checked, data.memberSeq);
-                      }}
-                      checked={
-                        checkedInputs.includes(data.memberSeq) ? true : false
-                      }
-                    />
+                if (data.approve) {
+                  return (
+                    <div key={index} className="form-check form-check-inline">
+                      <input
+                        id={data.memberSeq}
+                        type="checkbox"
+                        style={{
+                          width: "15px",
+                        }}
+                        onChange={(e) => {
+                          changeHandler(
+                            e.currentTarget.checked,
+                            data.memberSeq
+                          );
+                        }}
+                        checked={
+                          checkedInputs.includes(data.memberSeq) ? true : false
+                        }
+                      />
 
-                    <label className="form-check-label" htmlFor="memberCheck">
-                      {data.memberNickname}
-                    </label>
-                  </div>
-                );
+                      <label className="form-check-label" htmlFor="memberCheck">
+                        {data.memberNickname}
+                      </label>
+                    </div>
+                  );
+                }
               })
             : "멤버없음"}
         </div>

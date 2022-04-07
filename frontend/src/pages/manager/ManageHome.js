@@ -19,24 +19,18 @@ function ManageHome({ setTab }) {
         closeOnClickOutside: false,
       });
       navigate("/login", { replace: true });
-    }else{
-    axios({
-      url: `${URL}/admins/auth-request-count`,
-      method: "GET",
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((res) => {
-        console.log(res.data.data);
+    } else {
+      axios({
+        url: `${URL}/admins/auth-request-count`,
+        method: "GET",
+        headers: { Authorization: `Bearer ${jwt}` },
+      }).then((res) => {
         const temp = res.data.data;
         setData({ adopt: temp.adoptAuthCount, volun: temp.volunteerAuthCount });
-      })
-      .catch((err) => {
-        console.log(err);
       });
     }
   }, []);
 
-  console.log(data);
   return (
     <div className={st.adimincontainer}>
       <div className={st.left}>

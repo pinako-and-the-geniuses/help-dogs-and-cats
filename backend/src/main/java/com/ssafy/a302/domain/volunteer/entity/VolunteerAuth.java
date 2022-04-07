@@ -71,7 +71,9 @@ public class VolunteerAuth extends BaseLastModifiedEntity {
                 .title(this.getVolunteer().getTitle())
                 .content(content)
                 .status(status)
-                .lastModifiedDate(getLastModifiedDate())
+                .memberSeq(volunteer.getMember().getSeq())
+                .nickname(volunteer.getMember().getDetail().getNickname())
+                .createdDate(getLastModifiedDate().toLocalDate())
                 .build();
     }
 }

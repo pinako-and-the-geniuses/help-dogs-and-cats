@@ -3,22 +3,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "public/config";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+
 export default function AdoptManageDetail({ adoptSeq, setTab }) {
   const [adoptManageDetail, setAdoptManageDetail] = useState("");
   const jwt = sessionStorage.getItem("jwt");
-  const navi = useNavigate();
 
   const onGetDetail = () => {
     axios({
       url: `${URL}/admins/adopts/auth/${adoptSeq}`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((response) => {
-        setAdoptManageDetail(response.data);
-      }) //엑시오스 보낸 결과
-      .catch((err) => console.log(err));
+    }).then((response) => {
+      setAdoptManageDetail(response.data);
+    }); //엑시오스 보낸 결과
   };
 
   useEffect(() => {
@@ -35,11 +32,9 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        onGetDetail();
-      })
-      .catch((err) => console.log(err));
+    }).then((res) => {
+      onGetDetail();
+    });
   };
 
   const onSwal = (approve) => {
@@ -77,19 +72,25 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
         {adoptManageDetail ? (
           <>
             <div className={st.alltitle}>
-              {adoptManageDetail.data.status === "REQUEST" && (
-                <p className={st.tag_p}>미인증</p>
-              )}
-              {adoptManageDetail.data.status === "REJECT" && (
-                <p className={st.tag_p}>거부</p>
-              )}
-              {adoptManageDetail.data.status === "DONE" && (
-                <p className={st.tag_p}>인증</p>
-              )}
+              <div>
+                {adoptManageDetail.data.status === "REQUEST" && (
+                  <p className={st.tag_p}>미인증</p>
+                )}
+                {adoptManageDetail.data.status === "REJECT" && (
+                  <p className={st.tag_p}>거부</p>
+                )}
+                {adoptManageDetail.data.status === "DONE" && (
+                  <p className={st.tag_p}>인증</p>
+                )}
 
-              <p className={st.title_p}>
-                제목 : {adoptManageDetail.data.title}
-              </p>
+                <p className={st.title_p}>
+                  제목 : {adoptManageDetail.data.title}
+                </p>
+              </div>
+              <div>
+                <span>작성자 : {adoptManageDetail.data.nickname}</span> |{" "}
+                <span>{adoptManageDetail.data.createdDate}</span>
+              </div>
             </div>
             <div
               className={st.content_div}

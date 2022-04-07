@@ -13,11 +13,9 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
       url: `${URL}/admins/volunteers/auth/${volunSeq}`,
       method: "GET",
       headers: { Authorization: `Bearer ${jwt}` },
-    })
-      .then((response) => {
-        setVolunteerManageDetail(response.data);
-      }) //엑시오스 보낸 결과
-      .catch((err) => console.log(err));
+    }).then((response) => {
+      setVolunteerManageDetail(response.data);
+    }); //엑시오스 보낸 결과
   };
 
   useEffect(() => {
@@ -34,11 +32,9 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
-    })
-      .then((res) => {
-        onGetDetail();
-      })
-      .catch((err) => console.log(err));
+    }).then((res) => {
+      onGetDetail();
+    });
   };
 
   const onSwal = async (approve) => {
@@ -76,14 +72,20 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
         {volunteerManageDetail ? (
           <>
             <div className={st.alltitle}>
-              <p className={st.tag_p}>
-                {volunteerManageDetail.data.status === "REQUEST"
-                  ? "미인증"
-                  : ""}
-                {volunteerManageDetail.data.status === "REJECT" ? "거부" : ""}
-                {volunteerManageDetail.data.status === "DONE" ? "인증" : ""}
-              </p>
-              <p className={st.title_p}>제목 : 인증</p>
+              <div>
+                <p className={st.tag_p}>
+                  {volunteerManageDetail.data.status === "REQUEST"
+                    ? "미인증"
+                    : ""}
+                  {volunteerManageDetail.data.status === "REJECT" ? "거부" : ""}
+                  {volunteerManageDetail.data.status === "DONE" ? "인증" : ""}
+                </p>
+                <p className={st.title_p}>제목 : 인증</p>
+              </div>
+              <div>
+                <span>작성자 : {volunteerManageDetail.data.nickname}</span> |{" "}
+                <span>{volunteerManageDetail.data.createdDate}</span>
+              </div>
             </div>
             <div
               className={st.content_div}

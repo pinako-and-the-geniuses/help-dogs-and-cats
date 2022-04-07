@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import loading from "public/img/loading.gif";
 
 export default function AnimalBox(props) {
-  // const listNum = 12;
   const [list, setList] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
