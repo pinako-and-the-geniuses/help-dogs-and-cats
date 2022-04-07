@@ -1,4 +1,6 @@
 $sub-color: #e8e8e8;
+$main-color: #b59d7c;
+
 .shelter_container {
   width: 75%;
   margin: 50px auto;
@@ -60,4 +62,19 @@ section {
 }
 
 @media (max-width: 1200px) {
+}
+
+.gotoList {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button {
+  border: 0;
+  color: white;
+  background-color: $main-color;
+  border-radius: 5px;
+  padding: 10px 10px;
+  margin: 5px 0;
 }

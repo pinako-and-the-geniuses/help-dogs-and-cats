@@ -5,15 +5,11 @@ import GetKind from "./GetKind";
 import AnimalBox from "components/animals/AnimalBox";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import XMLParser from "react-xml-parser";
 import st from "./styles/AnimalList.module.scss";
 import "../../components/styles/Paging.css";
 import Pagination from "react-js-pagination";
 import swal from "sweetalert";
-
-const ANIMAL =
-  "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic";
-const ANIMALKEY = process.env.REACT_APP_ANIMAL_KEY;
+import { URL } from "public/config";
 
 export default function AnimalList() {
   const [list, setList] = useState("");
@@ -22,48 +18,39 @@ export default function AnimalList() {
   const [shelter, setShelter] = useState("");
   // 선택 조건
   const [selected, setSelected] = useState({
-    sidoCode: "0",
-    sigunguCode: "0",
-    shelterCode: "0",
+    sidoCode: "",
+    sigunguCode: "",
+    shelterCode: "",
   });
   const [kind, setKind] = useState("");
   const [state, setState] = useState("");
-  // 요청 url
-  const [regionUrl, setRegionUrl] = useState("");
-  const [kindUrl, setKindUrl] = useState("");
-  const [stateUrl, setStateUrl] = useState("");
+  const [postState, setPostState] = useState("");
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const limit = 12;
   const [totalItemCount, setTotalItemCount] = useState(0);
 
-  // 원하는 데이터 뽑아 저장하기
-  const parseStr = (dataSet) => {
-    const arr = new XMLParser().parseFromString(dataSet).children[1];
-    const listData = arr.children[0].children;
-    setTotalItemCount(Number(arr.children[3].value));
-    setList(listData);
-  };
-
   const onGetList = () => {
-    if (regionUrl.length === 23) {
-      swal("시군구 선택 필수", "시도 선택시 시군구 필수입니다.", "info");
-    } else {
-      axios
-        .get(
-          `${ANIMAL}?pageNo=${page}&numOfRows=${limit}${regionUrl}${kindUrl}${stateUrl}&serviceKey=${ANIMALKEY}`
-        )
-        .then((res) => {
-          const dataSet = res.data;
-          parseStr(dataSet);
-        })
-        .catch((err) => {
-          console.log("err", err);
-        });
-    }
+    axios
+      .get(
+        `${URL}/external-api/animals?page=${page}&size=${limit}&sidoCode=${selected.sidoCode}&sigunguCode=${selected.sigunguCode}&shelterCode=${selected.shelterCode}&upkind=${kind}&state=${state}`
+      )
+      .then((res) => {
+        const data = res.data.data;
+        setList(data.animalDtos);
+        if (state === "notice") {
+          setPostState("notice");
+        } else {
+          setPostState("");
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+        swal("", "조건을 확인하세요", "error");
+      });
   };
 
   useEffect(() => {
-    onGetList("");
+    onGetList();
   }, [page]);
 
   return (
@@ -81,7 +68,6 @@ export default function AnimalList() {
                 selected={selected}
                 setSidoData={setSidoData}
                 setSelected={setSelected}
-                setRegionUrl={setRegionUrl}
               />
             </div>
             <div name="시군구" className={st.couple}>
@@ -91,7 +77,6 @@ export default function AnimalList() {
                 setSigunguData={setSigunguData}
                 selected={selected}
                 setSelected={setSelected}
-                setRegionUrl={setRegionUrl}
               />
             </div>
             <div name="보호소" className={st.couple}>
@@ -101,7 +86,6 @@ export default function AnimalList() {
                 setShelter={setShelter}
                 selected={selected}
                 setSelected={setSelected}
-                setRegionUrl={setRegionUrl}
               />
             </div>
           </div>
@@ -110,13 +94,12 @@ export default function AnimalList() {
           <div name="조건2줄" className={st.secondCon}>
             <div name="축종" className={st.couple}>
               <p>축종</p>
-              <GetKind setKind={setKind} setKindUrl={setKindUrl} />
+              <GetKind setKind={setKind} />
             </div>
             <div name="상태" className="ms-4">
               <form
                 onChange={(e) => {
                   setState(e.target.value);
-                  setStateUrl(`&state=${e.target.value}`);
                 }}
               >
                 <div className="form-check form-check-inline">
@@ -174,8 +157,10 @@ export default function AnimalList() {
           </button>
         </div>
       </div>
-      <div className="row row-cols-1 row-cols-md-4 g-5">
-        {list && <AnimalBox list={list} />}
+      <div style={{ minHeight: "40vh" }}>
+        <div className="row row-cols-1 row-cols-md-4 g-5">
+          {list && <AnimalBox list={list} postState={postState} />}
+        </div>
       </div>
 
       <Pagination
