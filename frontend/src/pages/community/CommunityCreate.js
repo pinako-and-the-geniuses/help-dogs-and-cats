@@ -30,7 +30,6 @@ export default function CommunityCreate(api) {
       },
     })
       .then((res) => {
-        console.log(res);
         if (res.status === 201) {
           Swal.fire({
             icon: "success",
@@ -47,13 +46,13 @@ export default function CommunityCreate(api) {
             title: "카테고리를 선택해주세요.",
             confirmButtonColor: `#b59d7c`,
           });
-        } else if(title === ""){
+        } else if (title === "") {
           Swal.fire({
             icon: "warning",
             title: "제목을 써주세요",
             confirmButtonColor: `#b59d7c`,
           });
-        } else if(content === ""){
+        } else if (content === "") {
           Swal.fire({
             icon: "warning",
             title: "내용을 써주세요",

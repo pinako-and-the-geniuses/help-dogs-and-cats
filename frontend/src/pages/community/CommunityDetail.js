@@ -28,14 +28,11 @@ export default function CommunityDetail() {
         url: `${URL}/communities/${seq}`,
         method: "GET",
         headers: { Authorization: `Bearer ${jwt}` },
-      })
-        .then((response) => {
-          console.log(response.data);
-          setWriterSeq(response.data.data.writerSeq);
-          setCommunityDetail(response.data);
-          setComments(response.data.data.comments);
-        }) //엑시오스 보낸 결과
-        .catch((err) => console.log(err));
+      }).then((response) => {
+        setWriterSeq(response.data.data.writerSeq);
+        setCommunityDetail(response.data);
+        setComments(response.data.data.comments);
+      }); //엑시오스 보낸 결과
     }
   };
   useEffect(() => {
@@ -63,12 +60,10 @@ export default function CommunityDetail() {
         headers: { Authorization: `Bearer ${jwt}` },
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 204) {
           navigate(`/community/community`);
         }
-      })
-      .catch((err) => console.log(err));
+      });
   };
 
   const deleteHandler = () => {
@@ -97,13 +92,10 @@ export default function CommunityDetail() {
       },
     })
       .then((res) => {
-        console.log(commentContent);
         getComment();
         setCommentContent("");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   const GotoEdit = () => {
@@ -125,7 +117,9 @@ export default function CommunityDetail() {
                     <p className={st.tag_p}>
                       {communityDetail.data.category === "REPORT" ? "제보" : ""}
                       {communityDetail.data.category === "REVIEW" ? "후기" : ""}
-                      {communityDetail.data.category === "GENERAL"? "잡담" : ""}
+                      {communityDetail.data.category === "GENERAL"
+                        ? "잡담"
+                        : ""}
                     </p>
                     <p className={st.title_p}>
                       제목 : {communityDetail.data.title}
