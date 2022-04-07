@@ -14,14 +14,10 @@ export default function GetSido({
   function getAPI() {
     axios({
       url: `${URL}/external-api/sido`,
-      method: "GET",
-    })
-      .then((res) => {
-        setSidoData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      method: "get",
+    }).then((res) => {
+      setSidoData(res.data.data);
+    });
   }
 
   useEffect(() => {
