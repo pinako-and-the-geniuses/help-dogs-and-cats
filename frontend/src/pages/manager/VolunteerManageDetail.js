@@ -72,14 +72,20 @@ function VolunteerManageDetail({ volunSeq, setTab }) {
         {volunteerManageDetail ? (
           <>
             <div className={st.alltitle}>
-              <p className={st.tag_p}>
-                {volunteerManageDetail.data.status === "REQUEST"
-                  ? "미인증"
-                  : ""}
-                {volunteerManageDetail.data.status === "REJECT" ? "거부" : ""}
-                {volunteerManageDetail.data.status === "DONE" ? "인증" : ""}
-              </p>
-              <p className={st.title_p}>제목 : 인증</p>
+              <div>
+                <p className={st.tag_p}>
+                  {volunteerManageDetail.data.status === "REQUEST"
+                    ? "미인증"
+                    : ""}
+                  {volunteerManageDetail.data.status === "REJECT" ? "거부" : ""}
+                  {volunteerManageDetail.data.status === "DONE" ? "인증" : ""}
+                </p>
+                <p className={st.title_p}>제목 : 인증</p>
+              </div>
+              <div>
+                <span>작성자 : {volunteerManageDetail.data.nickname}</span> |{" "}
+                <span>{volunteerManageDetail.data.createdDate}</span>
+              </div>
             </div>
             <div
               className={st.content_div}

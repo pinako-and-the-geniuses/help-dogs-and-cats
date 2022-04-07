@@ -15,7 +15,6 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
       headers: { Authorization: `Bearer ${jwt}` },
     }).then((response) => {
       setAdoptManageDetail(response.data);
-      console.log(response.data);
     }); //엑시오스 보낸 결과
   };
 
@@ -73,19 +72,25 @@ export default function AdoptManageDetail({ adoptSeq, setTab }) {
         {adoptManageDetail ? (
           <>
             <div className={st.alltitle}>
-              {adoptManageDetail.data.status === "REQUEST" && (
-                <p className={st.tag_p}>미인증</p>
-              )}
-              {adoptManageDetail.data.status === "REJECT" && (
-                <p className={st.tag_p}>거부</p>
-              )}
-              {adoptManageDetail.data.status === "DONE" && (
-                <p className={st.tag_p}>인증</p>
-              )}
+              <div>
+                {adoptManageDetail.data.status === "REQUEST" && (
+                  <p className={st.tag_p}>미인증</p>
+                )}
+                {adoptManageDetail.data.status === "REJECT" && (
+                  <p className={st.tag_p}>거부</p>
+                )}
+                {adoptManageDetail.data.status === "DONE" && (
+                  <p className={st.tag_p}>인증</p>
+                )}
 
-              <p className={st.title_p}>
-                제목 : {adoptManageDetail.data.title}
-              </p>
+                <p className={st.title_p}>
+                  제목 : {adoptManageDetail.data.title}
+                </p>
+              </div>
+              <div>
+                <span>작성자 : {adoptManageDetail.data.nickname}</span> |{" "}
+                <span>{adoptManageDetail.data.createdDate}</span>
+              </div>
             </div>
             <div
               className={st.content_div}
