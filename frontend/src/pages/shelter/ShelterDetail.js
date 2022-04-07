@@ -52,7 +52,7 @@ function ShelterDetail() {
                 <p>{data.saveTargetAnimal}</p>
               </div>
             </div>
-            {data.lat != "null" && data.lng != "null" && (
+            {data.lat !== "null" && data.lng !== "null" && (
               <div className={cn(style.map, "col-6")}>
                 <Map lat={info.lat} lng={info.lng} />
               </div>

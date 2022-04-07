@@ -169,9 +169,11 @@ function VolunteerDetail() {
       method: "delete",
       headers: { Authorization: `Bearer ${jwt}` },
     }).then((res) => {
-      swal("참여 취소 되었습니다");
-      getParticipants();
-    });
+      swal("참여 취소 되었습니다")
+      .then((value)=>{
+        window.location.reload('/');
+      })
+    })
   };
 
   //댓글 작성

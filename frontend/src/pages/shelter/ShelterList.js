@@ -144,7 +144,7 @@ function ShelterList() {
               <th scope="col">관할구역</th>
               <th scope="col">보호센터명</th>
               <th scope="col">전화번호</th>
-              <th scope="col">영업시간</th>
+              <th scope="col">운영시간</th>
               <th scope="col">주소</th>
             </tr>
           </thead>
@@ -162,7 +162,7 @@ function ShelterList() {
                     <td>{item.shelterName}</td>
                     <td>{item.tel}</td>
                     <td>
-                      {item.weekOperationStartTIme} ~{" "}
+                      {item.weekOperationStartTime} ~{" "}
                       {item.weekOperationEndTime}{" "}
                     </td>
                     <td>{item.address}</td>
