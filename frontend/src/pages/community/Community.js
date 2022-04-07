@@ -153,41 +153,30 @@ export default function Community() {
                 </th>
               </tr>
             </thead>
-            {/* 테이블 안에 셀을 고정시키려면 style={{ width: "20rem" }} 사용하면 됨 */}
             {communitys ? (
               <tbody>
-                {/* {communitys.slice(0,2).map((community) => (
-              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
-                {community.category === "NOTICE" ? <td>공지</td> : ""}
+                {communitys.slice(0,2).map((community) => (
+              <tr key={community.seq} 
+                  onClick={() => getSeq(community.seq)} 
+                  className={style.noticeTable}>
+                {community.category === "NOTICE" ? <td><strong>공지</strong></td> : ""}
                 <td>{community.title}</td>
                 <td>{community.memberNickname}</td>
                 <td>{community.createdDate}</td>
                 <td>{community.viewCount}</td>
               </tr>
-            ))}
-            {communitys.slice(2,10).map((community) => (
-              <tr key={community.seq} onClick={() => getSeq(community.seq)}>
-                {community.category === "REPORT" ? <td>제보</td> : ""}
-                {community.category === "REVIEW" ? <td>후기</td> : ""}
-                {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                <td>{community.title}</td>
-                <td>{community.memberNickname}</td>
-                <td>{community.createdDate}</td>
-                <td>{community.viewCount}</td>
-              </tr>
-            ))} */}
-                {communitys.map((community) => (
-                  <tr key={community.seq} onClick={() => getSeq(community.seq)}>
-                    {community.category === "REPORT" ? <td>제보</td> : ""}
-                    {community.category === "REVIEW" ? <td>후기</td> : ""}
-                    {community.category === "GENERAL" ? <td>잡담</td> : ""}
-                    {community.category === "NOTICE" ? <td>공지</td> : ""}
-                    <td>{community.title}</td>
-                    <td>{community.memberNickname}</td>
-                    <td>{community.createdDate}</td>
-                    <td>{community.viewCount}</td>
-                  </tr>
-                ))}
+              ))}
+              {communitys.slice(2,10).map((community) => (
+                <tr key={community.seq} onClick={() => getSeq(community.seq)}>
+                  {community.category === "REPORT" ? <td>제보</td> : ""}
+                  {community.category === "REVIEW" ? <td>후기</td> : ""}
+                  {community.category === "GENERAL" ? <td>잡담</td> : ""}
+                  <td>{community.title}</td>
+                  <td>{community.memberNickname}</td>
+                  <td>{community.createdDate}</td>
+                  <td>{community.viewCount}</td>
+                </tr>
+              ))}
               </tbody>
             ) : (
               <td colSpan="5">작성 글이 없습니다.</td>

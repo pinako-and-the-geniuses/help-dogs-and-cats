@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import swal from "sweetalert";
 export default function CommunityDetail() {
   const isLogin = useSelector((state) => state.userInfo.isLoggedIn);
-  const memberSeq = useSelector((state) => state.userInfo.userInfo.seq); //useSelector로 로그인한 사람의 memberSeq를 가져와서 비교해서 자신이면 수정 취소 보이게 만든다.
+  const memberSeq = useSelector((state) => state.userInfo.userInfo.seq);
   const [communityDetail, setCommunityDetail] = useState("");
   const [writerSeq, setWriterSeq] = useState("");
   const [comments, setComments] = useState("");
@@ -32,13 +32,12 @@ export default function CommunityDetail() {
         setWriterSeq(response.data.data.writerSeq);
         setCommunityDetail(response.data);
         setComments(response.data.data.comments);
-      }); //엑시오스 보낸 결과
+      });
     }
   };
   useEffect(() => {
-    //시작할떄 나옴 //페이지가 바뀔떄마다 변경해줘야함
     getComment();
-  }, []); //한번만 해줄때 []넣는다 //안에 값이 있다면 값이 바뀔떄마다 호출
+  }, []);
   const onCommentChange = (value) => {
     setCommentContent(value);
   };
@@ -51,7 +50,6 @@ export default function CommunityDetail() {
       return;
     }
     CommuComment();
-    // window.location.replace(`/community/communitydetail/${seq}`);
   };
 
   const getDelete = async () => {
@@ -107,59 +105,56 @@ export default function CommunityDetail() {
       <header className={st.communitydetailheader}>
         <h1>커뮤니티</h1>
       </header>
-      <div className={st.topContent}>
-        <div>
-          {communityDetail ? (
-            <>
-              <div className={st.mainDiv}>
-                <div className={st.alltitle}>
-                  <div>
-                    <p className={st.tag_p}>
-                      {communityDetail.data.category === "REPORT" ? "제보" : ""}
-                      {communityDetail.data.category === "REVIEW" ? "후기" : ""}
-                      {communityDetail.data.category === "GENERAL"
-                        ? "잡담"
-                        : ""}
-                    </p>
-                    <p className={st.title_p}>
-                      제목 : {communityDetail.data.title}
-                    </p>
-                  </div>
-                  <div className={st.rightInfo}>
-                    <p className={st.p}>
-                      조회수 : {communityDetail.data.viewCount}
-                    </p>
-                    <p className={st.p}> | </p>
-                    <p className={st.p}>{communityDetail.data.createdDate} </p>
-                    <p className={st.p}> | </p>
-                    <p className={st.p}>
-                      {communityDetail.data.writerNickname}{" "}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className={st.commudetailbox}>
-                <div
-                  className={st.content_div}
-                  dangerouslySetInnerHTML={{
-                    __html: communityDetail.data.content,
-                  }}
-                ></div>
-              </div>
-            </>
-          ) : null}
-        </div>
-        {writerSeq === memberSeq ? (
-          <div className={st.contentbtn}>
-            <>
-              <div className={st.commueditPost}>
+
+      {communityDetail ? (
+        <>
+          <div className={st.titleBox}>
+            {
+              communityDetail.data.category === "REPORT"
+              ? <p className={st.category}>제보</p>
+              : null
+            }
+            {
+              communityDetail.data.category === "REVIEW"
+              ? <p className={st.category}>후기</p>
+              : null
+            }
+            {
+              communityDetail.data.category === "GENERAL"
+              ? <p className={st.category}>잡담</p>
+              : null
+            }
+            {
+              communityDetail.data.category === "NOTICE"
+              ? <p className={st.category}>공지</p>
+              : null
+            }
+            <p className={st.title}>{communityDetail.data.title}</p>
+
+            <div className={st.rightInfo}>
+              <p>조회수 : {communityDetail.data.viewCount}</p>
+              <p> | </p>
+              <p>{communityDetail.data.createdDate}</p>
+              <p> | </p>
+              <p>{communityDetail.data.writerNickname}</p>
+            </div>
+          </div>
+
+          <div className={st.mainBox}>
+            <div dangerouslySetInnerHTML={{__html: communityDetail.data.content}}></div>
+          </div>
+
+          {writerSeq === memberSeq ? (
+              <div className={st.editPost}>
                 <p onClick={GotoEdit}>수정</p>
                 <p onClick={deleteHandler}>삭제</p>
               </div>
-            </>
-          </div>
         ) : null}
-      </div>
+        </>
+      ) : null}
+
+      <br/>
+
       <CommunityComment
         id={seq}
         commentContent={commentContent}

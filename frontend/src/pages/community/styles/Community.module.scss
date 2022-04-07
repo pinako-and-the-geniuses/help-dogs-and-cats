@@ -62,7 +62,7 @@ $sub-color: #999999;
     button {
       background-color: $main-color;
       padding: 5px 13px;
-      margin-left: 30px; //끝으로 보낼거면 없애기
+      margin-left: 30px;
       border-radius: 5px;
       border: 0;
       color: white;
@@ -70,12 +70,11 @@ $sub-color: #999999;
   }
 
   .communitybutton {
-    margin-top: 30px;
+    margin-bottom: 16px;
     display: flex;
     border: 1px solid $sub-color;
     background-color: $main-color;
     padding: 5px 13px;
-    margin-left: 30px; //끝으로 보낼거면 없애기
     border-radius: 5px;
     border: 0;
     color: white;
@@ -85,11 +84,15 @@ $sub-color: #999999;
     margin-top: 5px;
   }
 
+  tbody {
+    cursor: pointer;
+  }
+
   .my_table {
     text-align: center;
   }
 }
 
-.commupage{
-  // border: 1px solid red;
+.noticeTable {
+  background-color: #eeeeee;
 }

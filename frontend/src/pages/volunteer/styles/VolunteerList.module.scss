@@ -114,6 +114,10 @@ $sub-color: #999999;
     text-align: center;
   }
 
+  tbody {
+    cursor: pointer;
+  }
+  
   nav {
     display: flex;
     justify-content: center;
