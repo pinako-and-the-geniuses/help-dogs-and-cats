@@ -40,7 +40,6 @@ function ShelterList() {
     axios
       .get(`${URL}/external-api/shelters?page=${page}&size=${size}`)
       .then((res) => {
-        console.log("보호소 첫목록", res.data.data.shelterDtos);
         setList(res.data.data.shelterDtos);
       })
       .catch((err) => {
@@ -77,9 +76,10 @@ function ShelterList() {
         });
     } // 시도로만 조회
     else if (selected.sidoCode && selected.sigunguCode === "") {
-      swal("선택필수", "시군구 코드를 선택해주세요", "info");
+      swal("시군구코드", "시군구 코드를 선택해주세요", "info");
     } // 시도 + 검색어 조회
     else if (search && selected.sidoCode) {
+      swal("검색조회", "시도코드,검색어", "info");
       console.log("시도+검색어", selected.sidoCode, search);
     } // 검색어로만 조회
     else if (search) {
