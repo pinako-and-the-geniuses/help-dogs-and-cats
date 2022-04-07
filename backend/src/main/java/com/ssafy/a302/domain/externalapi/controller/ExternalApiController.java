@@ -113,10 +113,10 @@ public class ExternalApiController {
     })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/shelters")
-    public BaseResponseDto<ShelterPageDto> shelters(Pageable pageable) throws IOException, ParseException {
+    public BaseResponseDto<ShelterPageDto> shelters(Pageable pageable, @RequestParam(required = false) String shelterName) throws IOException, ParseException {
         log.info("페이징 정보={}", pageable);
 
-        ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable);
+        ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable, shelterName);
 
         return BaseResponseDto.<ShelterPageDto>builder()
                 .message(Message.SUCCESS)
@@ -147,12 +147,14 @@ public class ExternalApiController {
     @GetMapping("/shelters/part")
     public BaseResponseDto<ShelterPageDto> shelterPart(Pageable pageable,
                                                        @RequestParam String sidoCode,
-                                                       @RequestParam String sigunguCode) throws IOException, ParseException {
+                                                       @RequestParam(required = false) String sigunguCode,
+                                                       @RequestParam(required = false) String shelterName) throws IOException, ParseException {
         log.info("페이징 정보={}", pageable);
         log.info("시도 코드={}", sidoCode);
-        log.info("sigunguCode={}", sigunguCode);
+        log.info("시군구 코드={}", sigunguCode);
+        log.info("보호소 이름={}", shelterName);
 
-        ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable, sidoCode, sigunguCode);
+        ShelterPageDto shelterPageDto = externalApiService.getShelterPageDto(pageable, sidoCode, sigunguCode, shelterName);
 
         return BaseResponseDto.<ShelterPageDto>builder()
                 .message(Message.SUCCESS)
