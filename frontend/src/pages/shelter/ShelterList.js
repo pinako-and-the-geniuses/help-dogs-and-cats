@@ -33,18 +33,17 @@ function ShelterList() {
 
   // 첫 페이지 모든 목록 출력 + 보호소명 검색
   const onSetPage = () => {
-    console.log("search", search);
     axios
       .get(
         `${URL}/external-api/shelters?page=${page}&size=${size}&shelterName=${search}`
       )
       .then((res) => {
         setList(res.data.data.shelterDtos);
+        setTotalItemCount(res.data.data.totalCount);
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log(list);
   };
   useEffect(() => {
     onSetPage();
@@ -60,17 +59,15 @@ function ShelterList() {
         )
         .then((res) => {
           const data = res.data.data.shelterDtos;
-          console.log("전체", data);
-
           if (search) {
             const temp = data.filter((item) => {
               return item.shelterName.includes(search);
             });
             setList(temp);
-            console.log("시군구포함 조회 + 검색어", temp);
+            setTotalItemCount(res.data.data.totalCount);
           } else {
             setList(data);
-            console.log("시군구포함 조회", data);
+            setTotalItemCount(res.data.data.totalCount);
           }
         })
         .catch((err) => {
@@ -91,6 +88,13 @@ function ShelterList() {
     dispatch(shelterGetAction(item));
     navigate(`/shelter/detail`);
   };
+
+  const enterKey=()=>{
+    if(window.event.keyCode === 13){
+      onGetList();
+      setPage(1);
+    } 
+}
 
   return (
     <div className={style.main_container}>
@@ -120,6 +124,7 @@ function ShelterList() {
           <input
             type="text"
             value={search}
+            onKeyUp={enterKey}
             onChange={(e) => {
               setSearch(e.target.value);
             }}

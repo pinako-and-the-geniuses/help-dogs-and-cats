@@ -36,6 +36,7 @@ export default function AnimalList() {
       )
       .then((res) => {
         const data = res.data.data;
+        setTotalItemCount(res.data.data.totalCount)
         setList(data.animalDtos);
         if (state === "notice") {
           setPostState("notice");
