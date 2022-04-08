@@ -101,4 +101,8 @@ $sub-color: #999999;
 .my_table {
   text-align: center;
   margin-top: 20px;
+  
+  tbody {
+    cursor: pointer;
+  }
 }
