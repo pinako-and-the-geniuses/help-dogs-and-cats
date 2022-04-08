@@ -54,7 +54,7 @@ export default function NickName({
           id="nickname"
           name="nickname"
           type="text"
-          placeholder="닉네임(4자 이상 / eamil 포함 x)"
+          placeholder="닉네임(4자 이상 / email 포함 x)"
           defaultValue={nickName}
           onChange={onNickNameHandler}
           required
