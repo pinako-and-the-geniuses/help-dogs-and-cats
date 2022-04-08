@@ -1,0 +1,73 @@
+$main-text: #292e3d;
+$main-color: #b59d7c;
+$sub-color: #999999;
+
+.AdoptManage_container {
+  width: 100%;
+  margin: 50px auto;
+  padding: 100px 100px;
+  .AdoptManagehead {
+    margin-bottom: 50px;
+    font-weight: 1000;
+  }
+  .AdoptManage_search_bar {
+    border-radius: 5px;
+    display: flex;
+    justify-content: flex-start; //끝으로 보낼거면 없애고 아래거
+    // justify-content: space-between;
+    padding: 20px 20px;
+    margin: 10px 0;
+
+    div {
+      display: flex;
+      margin-right: 30px;
+
+      p {
+        margin: auto;
+      }
+
+      select,
+      input {
+        border: 1px solid $sub-color;
+        margin-left: 10px;
+        border-radius: 5px;
+      }
+
+      input {
+        padding-left: 8px;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    .search_input {
+      p {
+        font-weight: bold;
+      }
+      select {
+        margin-right: 5px;
+      }
+    }
+    .input {
+      padding-left: 8px;
+      margin-left: 20px;
+      &:focus {
+        outline: none;
+      }
+    }
+    button {
+      background-color: $main-color;
+      padding: 5px 13px;
+      margin-left: 15px; //끝으로 보낼거면 없애기
+      border-radius: 5px;
+      border: 0;
+      color: white;
+    }
+  }
+  .my_table {
+    margin: auto;
+    text-align: center;
+    // border: 1px solid red;
+  }
+}

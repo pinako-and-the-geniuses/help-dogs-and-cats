@@ -1,0 +1,27 @@
+@import "userform.module.scss";
+
+.findForm {
+  max-width: 600px;
+  .findId {
+    margin-top: 20px;
+  }
+  .findCategory {
+    a {
+      text-decoration: none;
+      font-size: medium;
+      color: black;
+    }
+    hr {
+      height: 5px;
+      background-color: rgb(104, 86, 7);
+    }
+  }
+}
+
+.emailBox {
+  margin-top: 20px;
+  text-align: center;
+  span {
+    font-weight: bold;
+  }
+}

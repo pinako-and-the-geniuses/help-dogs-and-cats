@@ -1,0 +1,122 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.loginForm {
+  @extend .userform;
+
+  max-width: 500px;
+}
+
+.userinfoForm {
+  @extend .userformPage;
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.userformPage {
+  overflow: auto;
+  height: 100%;
+  min-height: 72vh;
+  font-family: "Roboto", sans-serif;
+}
+
+.userform {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  text-align: inherit;
+  margin: 50px auto;
+  padding: 45px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  label {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+
+  input {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .longButton {
+    text-transform: uppercase;
+    outline: 0;
+    background: #b59d7c;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #ffffff;
+    font-size: 15px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+  }
+  button:hover,
+  button:active,
+  button:focus {
+    background: #8f6c3b;
+  }
+
+  .checkemail {
+    width: auto;
+  }
+  .message {
+    margin: 15px 0 0;
+    color: #b3b3b3;
+    font-size: 12px;
+    a {
+      color: #6d5029;
+      text-decoration: none;
+    }
+    .find {
+      float: right;
+    }
+  }
+  select {
+    margin: 0 0 15px;
+  }
+}
+.deleteuser {
+  text-decoration: none;
+  color: #6d5029;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.msg {
+  color: #a07947;
+  font-size: small;
+  margin-bottom: 0px;
+}
+.userimg {
+  text-align: center;
+  button {
+    outline: 0;
+    background: #b59d7c;
+    margin-top: 15px;
+    border: 0;
+    padding: 10px;
+    color: #ffffff;
+    text-align: center;
+    border-radius: 16px;
+    font-size: small;
+  }
+  img {
+    width: 150px;
+    height: 150px;
+  }
+}
+.inputImg {
+  display: none;
+}

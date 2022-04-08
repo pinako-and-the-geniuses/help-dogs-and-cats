@@ -1,0 +1,75 @@
+$main-color: #b59d7c;
+$sub-color: #e8e8e8;
+.adopt_commentBox {
+  width: 100%;
+  padding: 100px 100px;
+  .header {
+    font-weight: 1000;
+  }
+
+  .topContent {
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 0px 10px $sub-color;
+    padding: 30px;
+    margin: 50px auto;
+    .alltitle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: auto;
+      align-items: flex-end;
+      border-bottom: 3px solid hsl(36, 32%, 56%);
+      .tag_p {
+        display: inline-block;
+        margin: 20px 30px 20px 10px;
+        padding: 20px;
+        background-color: #b59d7c;
+        border-radius: 40px;
+        font-weight: bold;
+        font-size: large;
+      }
+      .title_p {
+        display: inline-block;
+        font-weight: bold;
+        font-size: large;
+      }
+    }
+
+    .content_div {
+      display: block;
+      width: 100%;
+      padding: 50px;
+      box-shadow: 0px 0px 10px $sub-color;
+    }
+    .contentbtn {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      .listbutton {
+        background-color: $main-color;
+        padding: 10px;
+        border-radius: 5px;
+        border: 0;
+        color: white;
+      }
+      .button {
+        background-color: $main-color;
+        padding: 10px;
+        border-radius: 5px;
+        border: 0;
+        color: white;
+        float: right;
+      }
+      .deletebutton {
+        background-color: $main-color;
+        padding: 10px;
+        border-radius: 5px;
+        margin-left: 10px;
+        border: 0;
+        color: white;
+        float: right;
+      }
+    }
+  }
+}

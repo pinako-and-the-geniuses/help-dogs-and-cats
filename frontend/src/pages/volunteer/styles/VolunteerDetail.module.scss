@@ -1,0 +1,133 @@
+$main-text: #292929;
+$mid-text: #333333;
+$sub-text: #999999;
+$main-color: #b59d7c;
+$sub-color: #E8E8E8;
+
+.myContainer {
+    width: 75%;
+    margin: auto;
+    // margin: 40px 180px;
+    h1 {
+        margin: 40px 0;
+    }
+
+    .listBtn {
+        display: inline;
+        float: right;
+        color: white;
+        background-color: $main-color;
+        border: 0;
+        border-radius: 5px;
+        padding: 7px 20px;
+        margin: 20px 0;
+    }
+}
+
+.titleBox{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $main-color;
+    height: 50px;
+
+    .leftdays {
+        padding: 12px;
+        margin: 0;
+        background-color: $main-color;
+        text-align: center;
+        color: white;
+    }    
+
+    .title {
+        color: $main-text;
+        margin: 0 20px;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 50px;
+    }
+
+    .joinBtn {
+        padding: 0 25px;
+        font-size: 20px;
+        border: none;
+        color: white;
+        background-color: #333333;
+    }
+
+    .joinXBtn {
+        background-color: silver;
+    }
+}
+
+.infoBox {
+    margin: 10px 0;
+    padding: 20px 0;
+    background-color: #f2f2f2;
+    color: $main-text;
+    
+    li {
+        list-style: none;
+        padding:5px;
+    }
+
+    ul,
+    p {
+        margin: 0;
+    }
+
+    .first {
+        display: inline-flex;
+        p {
+            margin-right: 60px;
+        }
+    }
+
+    .people {
+        display: inline-flex;
+
+        .btn1 {
+            font-size: 13px;
+            padding: 0 5px;
+            margin-left: 8px;
+            background-color: $main-color;
+            border-radius: 5px;
+            border: 0;
+            color: white;
+        }
+    }
+
+    .last {
+        padding-bottom: 20px;
+        .contact {
+            float: left;
+        }
+        .writer {
+            float: right;
+            margin-right: 25px;
+        }
+
+    }
+}
+
+.mainBox {
+    background-color: white;
+    box-shadow: 0px 0px 10px $sub-color;
+    padding: 30px;
+    min-height: 300px;
+}
+
+.editPost {
+    text-align: end;
+    right: 30px;
+    padding: 10px 0;
+
+    p {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        color: $sub-text;
+        &:hover{
+            color: $main-text;
+            cursor: pointer;
+        }
+    }
+}

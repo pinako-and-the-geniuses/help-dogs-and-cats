@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    include: jpa,database,openapi
+  task:
+    scheduling:
+      pool:
+        size: 5
+
+
+logging:
+  level:
+    com.ssafy.bjbj: debug
+    org.springframework.web: debug
+    org.hibernate.SQL: debug
+
+#
+server:
+  port: 8090

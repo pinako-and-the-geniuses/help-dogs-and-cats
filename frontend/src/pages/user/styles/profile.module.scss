@@ -1,0 +1,275 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+.profile {
+  background-color: #eed3af6b;
+  min-height: 400px;
+  display: flex;
+
+  .main {
+    display: flex;
+    margin: auto;
+  }
+  .image {
+    margin: 20px 120px 20px 0;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 5px solid #b8a07e;
+  }
+  .info {
+    .nickname {
+      font-weight: bold;
+      font-size: xx-large;
+      margin-right: 10px;
+    }
+    .region {
+      font-size: larger;
+    }
+  }
+}
+
+.level {
+  margin: 25px 0;
+  p {
+    font-size: large;
+    font-weight: bold;
+  }
+}
+.badgeBox {
+  width: 50px;
+  height: 50px;
+  margin-right: 30px;
+}
+.badgeBox:hover,
+.badgeBox:active,
+.badgeBox:focus {
+  cursor: pointer;
+}
+
+.badge {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modalHeader {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(0.3rem - 1px);
+  border-top-right-radius: calc(0.3rem - 1px);
+}
+.modalBadgeBox {
+  width: 50px;
+  height: 50px;
+}
+.modalBody {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+.category {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  background-color: #80808070;
+  min-height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  li {
+    margin: 0 80px;
+    font-size: larger;
+    list-style: none;
+    cursor: pointer;
+  }
+  li.on {
+    color: yellowgreen;
+  }
+  .clear {
+    clear: both;
+  }
+  li:hover,
+  li:active,
+  li:focus {
+    color: rgb(97, 77, 39);
+    font-weight: 600;
+  }
+}
+.now {
+  color: rgb(97, 77, 39);
+  font-weight: 600;
+}
+.notnow {
+  color: aliceblue;
+}
+
+.comment {
+  text-align: center;
+  margin: 50px;
+}
+
+.etcBtn {
+  cursor: pointer;
+}
+.test {
+  text-align: center;
+}
+.testdiv {
+  background-color: rgb(201, 153, 179);
+  margin: 0 100px;
+  display: flex;
+}
+.textinput {
+  width: 100%;
+}
+.dropdown {
+  min-width: auto;
+}
+// 활동 목록 관련
+.listBox {
+  background-color: #f8eddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-height: 55vh;
+  justify-content: space-between;
+}
+.listItem {
+  width: 60%;
+  background-color: #f9fafb9e;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  margin-bottom: 20px;
+  border-radius: 1rem;
+  border: 0px;
+  display: flex;
+}
+.listItem:hover {
+  background-color: rgb(197, 177, 140);
+}
+
+// 커뮤니티 활동 목록 관련
+.itemCategory {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13%;
+  div {
+    width: 80%;
+    padding: 6px;
+    background-color: #d0a96c;
+    border-radius: 2em;
+    text-align: center;
+    color: white;
+    font-weight: 400;
+  }
+}
+.cardTitle {
+  text-align: center;
+}
+.cardEnd {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
+  padding: 10px;
+}
+// 입양 활동 관련
+.activity {
+  width: 80%; //리스트 양쪽 폭 줄일 때
+
+  .btn {
+    width: 60%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px auto;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .body {
+    padding: 0;
+    .name {
+      display: flex;
+
+      border-bottom: 1px solid #dee2e6;
+      .input {
+        padding: 10px;
+        width: 80%;
+        input {
+          width: 100%;
+        }
+      }
+    }
+    .content {
+      display: flex;
+      height: 400px;
+    }
+    .editor {
+      width: 80%;
+      height: 100%;
+      padding: 10px;
+      overflow: hidden;
+    }
+    .label {
+      width: 20%;
+      padding: 10px;
+      border-right: 1px solid #dee2e6;
+    }
+    .classEditor {
+      overflow: hidden;
+    }
+  }
+  .listItem {
+    box-sizing: content-box;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    margin: 10px;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  .htmlDiv {
+    overflow-y: scroll;
+    width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+  }
+  .listItemDiv {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// 페이저 관련
+.pager {
+  list-style: none;
+  width: 800px;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 0;
+  margin: 20px 0;
+  text-align: center;
+  li {
+    list-style: none;
+    float: left;
+  }
+}
+.pager li > button,
+.pager li > span {
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+.paging {
+  position: relative;
+}

@@ -1,0 +1,109 @@
+$main-text: #292929;
+$mid-text: #333333;
+$sub-text: #999999;
+$main-color: #b59d7c;
+$sub-color: #E8E8E8;
+
+.commentBox {
+    background-color: white;
+    box-shadow: 0px 0px 10px $sub-color;
+    padding: 30px;
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: $sub-color;
+    }
+
+    .comment {
+        display: grid;
+        grid-template-columns: 50px auto;
+        padding: 10px 0;
+
+        .content {
+            padding: 0 25px;
+
+            .top {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+
+                .writer {
+                    color: $main-text;
+                    font-weight: bold;
+                }
+
+                .date {
+                    margin-left: 10px;
+                    color: $sub-text;
+                }
+
+                .delete {
+                    margin: 0;
+                    color: $sub-text;
+                    text-align: end;
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+    hr {
+        color: $sub-text;
+    }
+
+    .addComment {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        margin-top: 20px;
+        
+        textarea {
+            padding: 10px;
+            border: 1px solid $mid-text;
+            &:focus {
+                outline: none;
+            }
+        }
+
+        button {
+            height: 40px;
+            padding: 0 10px;
+            border: 0;
+            background-color: $mid-text;
+            color: white;
+            font-size: 14px;
+        }
+
+   }
+
+    .addReply {
+        display: grid;
+        grid-template-columns: 50px auto 50px 30px;
+        margin-bottom: 20px;
+
+        textarea {
+            padding: 10px;
+            border: 1px solid $mid-text;
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .replyBtn {
+            border: 0;
+            color: white;
+            background-color: $mid-text;
+        }
+
+        .XBtn {
+            border: 0;
+            background-color: white;;
+        }
+    }  
+}
+
+.replyBox {
+    margin-left: 50px;
+}

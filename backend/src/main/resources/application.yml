@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    include: jpa,database,jwt,server,springdoc,mail,file,key,url
+
+  devtools:
+    restart:
+      enabled: true
+
+  messages:
+    basename: messages,errors,path,badge-name
+
+#  task:
+#    scheduling:
+#      pool:
+#        size: 3
+
+logging:
+  level:
+    com.ssafy.bjbj: debug
+    org.springframework.web: debug
+    org.hibernate.SQL: debug

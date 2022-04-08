@@ -1,0 +1,76 @@
+$main-text: #292e3d;
+$main-color: #b59d7c;
+$sub-color: #999999;
+
+.commucreatemain {
+  //border: 1px solid red;
+  width: 75%;
+  margin: auto;
+  .commuhead{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    span {
+      color: $main-color;
+    }
+  }
+  .createtopContent {
+    //border: 1px solid red;
+    display: flex;
+    //height: 500px; 높이 자동으로 하고 싶으면 사용
+    // background: #ffffff;
+    margin-bottom: 20px;
+    .search_input {
+      //border: 1px solid $sub-color;
+      margin-bottom: 15px;
+      display: flex;
+      font-size: 20px;
+      color: $main-text;
+      border: 1px solid $main-text;
+    }
+    .Title {
+      font-size: 20px;
+      color: $main-text;
+      width: 100%;
+      input {
+        border: 1px solid $main-text;
+        padding: 10px 10px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+    .content_div {
+      display: inline-block;
+      height: auto;
+      // width: 78%;
+
+      margin-left: 10px;
+      resize: none;
+      font-size: 16px;
+    }
+  }
+  .Editorheight{
+    //border: 1px solid red;
+    min-height: 10vh;
+    height: 600px;
+    overflow: hidden;
+  }
+  .createbuttonContent {
+    // border: 1px solid red;
+    display: flex;
+    justify-content: end;
+    //margin-top: 70px;
+    margin-top: 20px;
+    // width: 70%;
+    .communitycreatebutton {
+      background-color: $main-color;
+      padding: 5px 13px;
+      margin-left: 10px; //끝으로 보낼거면 없애기
+      border-radius: 5px;
+      border: 0;
+      margin-bottom: 60px;
+      color: white;
+    }
+  }
+}
