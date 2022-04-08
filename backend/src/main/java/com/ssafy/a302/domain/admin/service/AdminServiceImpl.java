@@ -4,6 +4,7 @@ import com.ssafy.a302.domain.admin.service.dto.VolunteerAuthDto;
 import com.ssafy.a302.domain.adopt.entity.AdoptAuth;
 import com.ssafy.a302.domain.adopt.repository.AdoptAuthRepository;
 import com.ssafy.a302.domain.adopt.service.dto.AdoptAuthDto;
+import com.ssafy.a302.domain.volunteer.entity.Volunteer;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerAuth;
 import com.ssafy.a302.domain.volunteer.entity.VolunteerParticipant;
 import com.ssafy.a302.domain.volunteer.repository.VolunteerAuthRepository;
@@ -47,6 +48,8 @@ public class AdminServiceImpl implements AdminService {
         findVolunteerAuth.changeVolunteerAuthStatus(volunteerAuthDto.getStatus());
 
         if (volunteerAuthDto.getStatus() == Status.DONE) {
+            findVolunteerAuth.getVolunteer().changeVolunteerStatus(Volunteer.Status.DONE);
+
             for (VolunteerParticipant volunteerParticipant : findVolunteerAuth.getVolunteer().getVolunteerParticipants()) {
                 if (volunteerParticipant.getApprove()) {
                     volunteerParticipant.getMember().getDetail().incrementExp(40);
