@@ -14,9 +14,9 @@
 
 - [참고 데이터](#참고-데이터)
 
-- [와이어 프레임](#와이어프레임)
+- [와이어 프레임](#와이어-프레임)
 
-- [Git Convention](#Git Convention)
+- [Git Convention](#Git-Convention)
 
 - [Jira](#Jira)
 
