@@ -20,9 +20,9 @@
 
 - [Jira](#Jira)
 
-- [실행방법(FE, DB, BE)](#실행방법(FE,-DB,-BE))
+- [실행방법(FE, DB, BE)](#실행방법)
 
-- [CI/CD](#CI/CD(Docker,Jenkins))
+- [CI/CD](#CI/CD)
 
 - [실행화면](#실행-화면-일부)
 
@@ -162,7 +162,7 @@
 
 
 
-## 실행방법(FE, DB, BE)
+## 실행방법
 
 - FE
 
@@ -253,7 +253,7 @@
 
 
 
-## CI/CD(Docker,Jenkins)
+## CI/CD
 
 - Docker
 
