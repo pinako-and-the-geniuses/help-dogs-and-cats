@@ -20,11 +20,11 @@
 
 - [Jira](#Jira)
 
-- [실행방법(FE, DB, BE)](#실행방법)
+- [실행방법(FE, DB, BE)](#실행방법(FE,-DB,-BE))
 
-- [CI/CD](#CI/CD)
+- [CI/CD](#CI-/-CD(Docker,-Jenkins))
 
-- [실행화면](#실행화면)
+- [실행화면](#실행-화면-일부)
 
   
 
