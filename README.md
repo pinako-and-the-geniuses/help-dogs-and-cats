@@ -376,7 +376,7 @@
 
 ###  ![회원가입_로그인](README.assets/회원가입_로그인.png)
 
-
+![회원정보찾기](C:\Users\SSAFY\Desktop\회원정보찾기.png)
 
 ### 3. 유기동물현황 차트
 
